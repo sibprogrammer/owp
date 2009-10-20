@@ -8,24 +8,25 @@ class HwDaemon {
 	const ERROR_PHP = 62;
 	const ERROR_EXCEPTION   = 63;
 	const ERROR_ENVIRONMENT = 64;
-	
+
 	const PID_FILE_NAME = 'hw-daemon.pid';
 	const CONFIG_FILE_NAME = 'hw-daemon.ini';
-	
+
 	private $_socketAddress = 0;
-	private $_socketPort = '7766';
+	private $_socketPort = 7766;
+	private $_maxClients = 10;
 	private $_authKey = '';
-	
+
 	/**
 	 * Create OpenVZ HW-node daemon
 	 *
 	 */
 	public function __construct() {
 		chdir(dirname(__FILE__));
-		
+
 		$this->_readConfig();
 	}
-		
+
 	/**
 	 * PHP errors handler
 	 *
@@ -40,15 +41,15 @@ class HwDaemon {
 		if ((0 == ini_get('error_reporting')) || (E_STRICT == $code)) {
 			return;
 		}
-		
+
 		$fullMessage = "$message\n"
 			. "file: $file\n"
 			. "line: $line\n"
 			. "code: $code";
-		
+
 		$this->_fatalError($fullMessage, self::ERROR_PHP);
 	}
-	
+
 	/**
 	 * Exceptions handler
 	 *
@@ -60,14 +61,14 @@ class HwDaemon {
 			. "line: {$exception->getLine()}\n"
 			. "code: {$exception->getCode()}"
 		);
-		
+
 		$level = ($exception instanceof SoapFault)
 			? self::ERROR_SOAP
 			: self::ERROR_EXCEPTION;
-		
+
 		$this->_fatalError($fullMessage, $level);
 	}
-	
+
 	/**
 	 * Raise fatal error
 	 *
@@ -86,14 +87,16 @@ class HwDaemon {
 	private function _log($message) {
 		echo "$message\n";
 	}
-	
+
 	/**
 	 * Run daemon
 	 *
 	 */
 	public function run() {
+	    set_time_limit(0);
+
 		$command = @$_SERVER['argv'][1];
-		
+
 		if (('' == $command) || ('help' == $command)) {
 			$this->_commandHelp();
 		} else if ('start' == $command) {
@@ -116,38 +119,42 @@ class HwDaemon {
 	 * @param int $signal
 	 */
 	public function signalHandler($signal) {
-		if ((SIGTERM == $signal) || (SIGINT == $signal)) {			
+		if ((SIGTERM == $signal) || (SIGINT == $signal)) {
 			@unlink(self::PID_FILE_NAME);
 			exit(0);
 		} else if (SIGCHLD == $signal) {
-			pcntl_waitpid(-1, $status);	
+			pcntl_waitpid(-1, $status);
 		} else if (SIGHUP == $signal) {
-			
+
 		}
 	}
-	
+
 	/**
 	 * Read config file data
 	 *
 	 */
 	private function _readConfig() {
 		$config = @parse_ini_file(self::CONFIG_FILE_NAME);
-		
+
 		$this->_authKey = @$config['key'];
-		
+
 		if (!$this->_authKey) {
 			$this->_fatalError("Auth key isn't defined.");
 		}
-		
+
 		if (isset($config['address'])) {
 			$this->_socketAddress = $config['address'];
 		}
-		
+
 		if (isset($config['port'])) {
 			$this->_socketPort = $config['port'];
 		}
+
+		if (isset($config['maxClients'])) {
+			$this->_maxClients = $config['maxClients'];
+		}
 	}
-	
+
 	/**
 	 * Check requirements
 	 *
@@ -156,12 +163,12 @@ class HwDaemon {
 		if ('cli' != php_sapi_name()) {
 			$this->_fatalError('Daemon can be runned only under PHP CLI.');
 		}
-		
+
 		if (0 != posix_getuid()) {
 			$this->_fatalError('Daemon must be started under root account.');
 		}
 	}
-	
+
 	/**
 	 * Show help screen
 	 *
@@ -170,18 +177,18 @@ class HwDaemon {
 		$scriptName = $_SERVER['argv'][0];
 		echo "Usage: php $scriptName (start stop restart status help)\n";
 	}
-	
+
 	/**
 	 * Start daemon
 	 *
 	 */
 	private function _commandStart() {
 		$this->_checkEnvironment();
-		
+
 		if ($this->_isDaemonStarted()) {
 			$this->_fatalError('Daemon is already running.');
 		}
-		
+
 		$pid = pcntl_fork();
 
 		if ($pid == -1) {
@@ -193,69 +200,86 @@ class HwDaemon {
 			// child process
 			$this->_log('OpenVZ HW-node daemon started.');
 		}
-		
-		if (!posix_setsid()) {	
+
+		if (!posix_setsid()) {
 			$this->_fatalError('Unable to detach daemon from controlling terminal.');
 		}
-		
+
 		pcntl_signal(SIGTERM, array($this, 'signalHandler'));
 		pcntl_signal(SIGHUP, array($this, 'signalHandler'));
 		pcntl_signal(SIGCHLD, array($this, 'signalHandler'));
 		pcntl_signal(SIGINT, array($this, 'signalHandler'));
-		
+
 		file_put_contents(self::PID_FILE_NAME, posix_getpid());
 		chmod(self::PID_FILE_NAME, 0600);
-		
+
+		$clients = array();
 		$socket = $this->_createSocket();
-		
-		while (1) {
-			$connection = @socket_accept($socket);
-			
-			if (false === $connection) {
-				usleep(100);
-			} else if ($connection > 0) {
-				$this->_runRequestHandler($socket, $connection);
-			} else {
-				$this->_fatalError('Function socket_accept failed - reason: ' . socket_strerror($connection));
-			}			
+
+		while (true) {
+		    $read = array($socket);
+
+		    for ($i = 0; $i < $this->_maxClients; $i++) {
+		        if (isset($clients[$i]) && (null != $clients[$i])) {
+                    $read[$i + 1] = $clients[$i];
+		        }
+		    }
+
+		    $ready = @socket_select($read, $write = null, $except = null, null);
+
+		    if (in_array($socket, $read)) {
+                for ($i = 0; $i < $this->_maxClients; $i++) {
+                    if (!isset($clients[$i])) {
+                        $clients[$i] = @socket_accept($socket);
+
+                        if ($clients[$i] <= 0) {
+                            $this->_fatalError('Function socket_accept failed - reason: ' . socket_strerror($clients[$i]));
+                        }
+
+                        break;
+                    } elseif ($i == $this->_maxClients - 1) {
+                        $this->_log('Max clients limit reached.');
+                    }
+                }
+
+                if (--$ready <= 0) {
+                    continue;
+                }
+            }
+
+            for ($i = 0; $i < $this->_maxClients; $i++) {
+                if (isset($clients[$i]) && in_array($clients[$i], $read)) {
+                    $this->_runRequestHandler($socket, $clients[$i]);
+                    socket_close($clients[$i]);
+                }
+
+                unset($clients[$i]);
+            }
 		}
 	}
-	
+
 	/**
-	 * Run request handler (fork child)
+	 * Run request handler
 	 *
 	 * @param resource $socket
 	 * @param resource $connection
 	 */
 	private function _runRequestHandler($socket, $connection) {
-		if (-1 == ($child = pcntl_fork())) {
-			$this->_fatalError('Unable to fork child to serve connection.');
-		} else if (0 == $child) {
-			// child process
-			socket_close($socket);
-			
-			$request = '';
-			
-			while (true) {
-				$buffer = socket_read($connection, 4096, PHP_NORMAL_READ);
-				$request .= $buffer;
-				
-				if (false !== strpos($request, "\n\n")) {
-					break;
-				}
+		$request = '';
+
+		while (true) {
+			$buffer = socket_read($connection, 4096, PHP_NORMAL_READ);
+			$request .= $buffer;
+
+			if (false !== strpos($request, "\n\n")) {
+				break;
 			}
-									
-			$response = $this->_getResonse($request);			
-			socket_write($connection, $response, strlen($response));			
-			socket_close($connection);
-			
-			exit;
-		} else {
-			// parent process
-			socket_close($connection);
 		}
+
+		$response = $this->_getResonse($request);
+		socket_write($connection, $response, strlen($response));
 	}
-	
+
 	/**
 	 * Ger response on request
 	 *
@@ -264,34 +288,34 @@ class HwDaemon {
 	 */
 	private function _getResonse($request) {
 		$responseXml = simplexml_load_string('<?xml version="1.0" encoding="UTF-8"?><response/>');
-				
+
 		$requestXml = @simplexml_load_string(trim($request));
-		
+
 		if (!$requestXml) {
 			$responseXml->fault = 'Unable to parse request XML.';
 			$responseXml->code = 255;
 			return $responseXml->asXml();
 		}
-				
+
 		if ($this->_authKey != $requestXml->authKey) {
 			$responseXml->fault = 'Invalid auth key.';
 			$responseXml->code = 255;
 			return $responseXml->asXml();
 		}
-		
+
 		exec($requestXml->command, $output, $resultCode);
-		
+
 		if (0 != $resultCode) {
 			$responseXml->fault = 'Unable to execute requested command.';
 			$responseXml->code = $resultCode;
 			return $responseXml->asXml();
 		}
-		
+
 		$responseXml->output = implode("\n", $output);
-				
+
 		return $responseXml->asXml();
 	}
-	
+
 	/**
 	 * Create socket and bind it
 	 *
@@ -301,20 +325,20 @@ class HwDaemon {
 		if (($socket = socket_create(AF_INET, SOCK_STREAM, 0)) < 0) {
 			$this->_fatalError("Function socket_create() failed - reason: " . socket_strerror($socket));
 		}
-		
+
 		if (($result = socket_bind($socket, $this->_socketAddress, $this->_socketPort)) < 0) {
 			$this->_fatalError("Function socket_bind() failed - reason: " . socket_strerror($result));
 		}
-		
+
 		if (($result = socket_listen($socket, 0)) < 0) {
 			$this->_fatalError("Function socket_listen() failed - reason: " . socket_strerror($result));
 		}
-		
-		socket_set_nonblock($socket); 
-		
+
+		socket_set_nonblock($socket);
+
 		return $socket;
 	}
-	
+
 	/**
 	 * Check if daemon is started
 	 *
@@ -322,14 +346,14 @@ class HwDaemon {
 	 */
 	private function _isDaemonStarted() {
 		$pid = @file_get_contents(self::PID_FILE_NAME);
-		
+
 		if (!$pid) {
 			return false;
 		}
-		
+
 		return posix_kill($pid, 0);
 	}
-	
+
 	/**
 	 * Stop daemon
 	 *
@@ -337,23 +361,23 @@ class HwDaemon {
 	 */
 	private function _commandStop($silent = false) {
 		$pid = @file_get_contents(self::PID_FILE_NAME);
-		
+
 		if (!$pid) {
 			if ($silent) {
 				$this->_log('Daemon not running.');
 				return ;
 			}
-			
+
 			$this->_fatalError('Daemon not running.');
 		}
-		
+
 		if (posix_kill($pid, SIGTERM)) {
 			$this->_log('Daemon was stopped.');
 		} else {
 			$this->_fatalError('Unable to stop daemon.');
 		}
 	}
-	
+
 	/**
 	 * Display daemon status
 	 *
@@ -365,7 +389,7 @@ class HwDaemon {
 			$this->_log('Daemon is stopped.');
 		}
 	}
-	
+
 }
 
 $hwDaemon = new HwDaemon();

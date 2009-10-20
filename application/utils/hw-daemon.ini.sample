@@ -1,3 +1,4 @@
 address = 127.0.0.1
 port = 7766
 key = 3bca13ada037a78c02dfa68e815838c5
+maxClients = 5
