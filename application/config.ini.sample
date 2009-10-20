@@ -1,0 +1,6 @@
+[database]
+adapter = PDO_SQLITE
+params.dbname = ./resources/database
+
+[debug]
+enabled = off

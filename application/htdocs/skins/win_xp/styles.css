@@ -1,0 +1,123 @@
+#layoutLogo {
+	float: left;
+	text-align: center;
+	top: 50%;
+	display: table;
+	height: 48px;
+	padding-left: 20px;
+}
+
+#layoutLogoInner {
+	display: table-cell;
+	padding-top: 5px;
+	font-size: 20px;
+	font-weight: bold;
+}
+
+#layoutLogoInner img {
+	vertical-align: middle;
+}
+
+#layoutCopyright {
+	float: right;
+	color: #FFFFFF;
+	text-align: right;
+	padding-right: 30px;
+	display: table;
+	height: 48px;
+	font-weight: normal;
+}
+
+#layoutCopyrightInner {
+	display: table-cell;
+	padding-top: 5px;
+}
+
+#layoutCopyrightInner a {
+	color: #FFFFFF;
+	text-decoration: none;
+}
+
+#layoutCopyrightInner a:hover {
+	color: #F0F0F0;
+}
+
+#panelContentInner {
+	padding: 10px;
+}
+
+.x-tree-node div.menuTitle {
+	background: #eee url(images/menu_title_bg.gif) repeat-x;
+	margin-top: 1px;
+	border-top: 1px solid #ddd;
+	border-bottom: 1px solid #ccc;
+	padding-top: 2px;
+	padding-bottom: 1px;
+	font-weight: bold;
+}
+
+.menuTitle .x-tree-node-icon {
+	display: none;
+}
+
+.menuItem .x-tree-ec-icon {
+    display: none;
+}
+
+.menuItem .x-tree-node-icon {
+	height: 16px;
+	padding-right: 5px;
+}
+
+.x-tree-node div.menuItem {
+	padding: 5px;
+}
+
+#rightPanelHeader > .x-panel-header {
+	height: 25px;
+	line-height: 25px;
+	font-size: 20px;
+	font-weight: normal;
+}
+
+.errorWindowIcon {
+	background: url(images/off.gif) 0 6px no-repeat; 
+}
+
+div#errorWindow .x-window-body th {
+	font-weight: bold;
+}
+
+.x-grid3-row-table a {
+	color: #385F95;
+}
+
+.addServer .x-btn-text {
+    background-image: url(images/add.png);
+}
+
+.removeServer .x-btn-text {
+    background-image: url(images/delete.png);
+}
+
+.loginButton .x-btn-text {
+	background-image: url(images/key.png);
+}
+
+.addShortcut .x-btn-text {
+	background-image: url(images/star.png);
+}
+
+.deleteShortcut .x-btn-text {
+	background-image: url(images/delete.png);
+}
+
+.upLevelLink .x-btn-text {
+	background-image: url(images/arrow_up.png);
+}
+
+.shortcutButton {
+	float: left;
+	padding-right: 10px;
+	padding-bottom: 10px;
+}

@@ -1,0 +1,21 @@
+<?php echo $this->render('_header.phtml'); ?>
+	
+	<?php echo $this->jsFile('/js/layouts/admin.js'); ?>
+
+	<div id="panelMenu">
+		<?php echo $this->layout()->menu; ?>
+	</div>
+	
+	<script type="text/javascript">
+		Owp.Layouts.Admin.pageTitle = '<?php echo $this->escape($this->pageTitle); ?>';
+		Owp.Layouts.Admin.loggedUser = '<?php echo $this->escape($this->loggedUser); ?>';
+		Owp.Layouts.Admin.upLevelLink = '<?php echo $this->escape($this->upLevelLink); ?>';
+	</script>
+	
+	<div id="panelContent">
+		<div id="panelContentInner">
+			<?php echo $this->layout()->content; ?>
+		</div>
+	</div>
+
+<?php echo $this->render('_footer.phtml'); ?>

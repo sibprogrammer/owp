@@ -1,0 +1,9 @@
+<?php echo $this->render('_header.phtml'); ?>
+
+	<?php echo $this->jsFile('/js/layouts/simple.js'); ?>
+		
+	<div id="panelContent">
+		<?php echo $this->layout()->content; ?>
+	</div>
+
+<?php echo $this->render('_footer.phtml'); ?>
