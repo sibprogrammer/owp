@@ -1,25 +1,25 @@
-Owp.Views.Default.Check.Env.renderCheckEnvWindow = function(phpExtensionsJsonData) {
+Owp.Views.Default.Check.Env.renderCheckEnvWindow = function(checksData) {
 	function columnStateRenderer(state) {
 		return (state)
 			? '<img src="/skins/win_xp/images/ok.png">'
 			: '<img src="/skins/win_xp/images/off.gif">';
 	}
-	
+
 	var store = new Ext.data.SimpleStore({
 		fields: [
 			{ name: 'state' },
 			{ name: 'name' }
 		]
 	});
-	
-	store.loadData(phpExtensionsJsonData);
-	
+
+	store.loadData(checksData);
+
 	var grid = new Ext.grid.GridPanel({
 		store: store,
 		cm: new Ext.grid.ColumnModel([
 			{ id: 'state', header: "State", renderer: columnStateRenderer, width: 65,
 				align: 'center', sortable: true, dataIndex: 'state' },
-			{ id: 'name', header: "Extension name", sortable: true, dataIndex: 'name' }
+			{ id: 'name', header: "Parameter", sortable: true, dataIndex: 'name' }
 		]),
 		stripeRows: true,
 		autoExpandColumn: 'name',
@@ -33,11 +33,16 @@ Owp.Views.Default.Check.Env.renderCheckEnvWindow = function(phpExtensionsJsonDat
 			handler: function() {
 				window.location.href = '/login';
 			}
+		}, {
+		    text: 'PHP Info',
+			handler: function() {
+				window.location.href = '/check/phpinfo';
+			}
 		}]
 	});
-	
-	grid.render('phpExtensionsGrid');
-	
+
+	grid.render('checksGrid');
+
 	var checkEnvWindow = new Ext.Window({
 		applyTo: 'checkEnvWindow',
 		width: 650,
@@ -47,6 +52,6 @@ Owp.Views.Default.Check.Env.renderCheckEnvWindow = function(phpExtensionsJsonDat
 		resizable: false,
 		draggable: false
 	});
-	
+
 	checkEnvWindow.show();
 }
