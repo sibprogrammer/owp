@@ -10,6 +10,8 @@ class HwDaemon
     const ERROR_EXCEPTION   = 63;
     const ERROR_ENVIRONMENT = 64;
 
+    const VERSION = '0.1';
+
     const PID_FILE_NAME = 'hw-daemon.pid';
     const CONFIG_FILE_NAME = 'hw-daemon.ini';
 
@@ -17,6 +19,8 @@ class HwDaemon
     private $_socketPort = 7766;
     private $_maxClients = 10;
     private $_authKey = '';
+    private $_logFile = 'hw-daemon.log';
+    private $_debug = false;
 
     /**
      * Create OpenVZ HW-node daemon
@@ -80,7 +84,7 @@ class HwDaemon
      */
     private function _fatalError($message, $level = self::ERROR_INTERNAL)
     {
-        echo "Error ($level): $message\n";
+        $this->_log("Error ($level): $message", true);
         exit($level);
     }
 
@@ -88,10 +92,22 @@ class HwDaemon
      * Log message
      *
      * @param string $message
+     * @param bool $output
      */
-    private function _log($message)
+    private function _log($message, $output = false)
     {
-        echo "$message\n";
+        if (!$this->_logFile) {
+            echo "$message\n";
+        } else {
+            if ($output) {
+                echo "$message\n";
+            }
+
+            $handle = fopen($this->_logFile, 'a+');
+            $date = date("M j H:i:s");
+            fwrite($handle, "$date $message\n");
+            fclose($handle);
+        }
     }
 
     /**
@@ -162,6 +178,14 @@ class HwDaemon
         if (isset($config['maxClients'])) {
             $this->_maxClients = $config['maxClients'];
         }
+
+        if (isset($config['log'])) {
+            $this->_logFile = $config['log'];
+        }
+
+        if (isset($config['debug'])) {
+            $this->_debug = $config['debug'];
+        }
     }
 
     /**
@@ -210,7 +234,7 @@ class HwDaemon
             exit();
         } else {
             // child process
-            $this->_log('OpenVZ HW-node daemon started.');
+            $this->_log('OpenVZ HW-node daemon v.' . self::VERSION . ' started.', true);
         }
 
         if (!posix_setsid()) {
@@ -281,7 +305,13 @@ class HwDaemon
         $request = '';
 
         while (true) {
-            $buffer = socket_read($connection, 4096, PHP_NORMAL_READ);
+            $buffer = @socket_read($connection, 4096, PHP_NORMAL_READ);
+
+            if (false === $buffer) {
+                $this->_log("Socket read error: " . socket_strerror(socket_last_error()));
+                return;
+            }
+
             $request .= $buffer;
 
             if (false !== strpos($request, "\n\n")) {
@@ -306,6 +336,10 @@ class HwDaemon
         $requestXml = @simplexml_load_string(trim($request));
 
         if (!$requestXml) {
+            if ($this->_debug) {
+                $this->_log("Wrong request: $request");
+            }
+
             $responseXml->fault = 'Unable to parse request XML.';
             $responseXml->code = 255;
             return $responseXml->asXml();
@@ -317,7 +351,15 @@ class HwDaemon
             return $responseXml->asXml();
         }
 
+        $this->_log("Executing command: $requestXml->command");
+
         exec($requestXml->command, $output, $resultCode);
+
+        $this->_log("Return code of '$requestXml->command' command: $resultCode");
+
+        if ($this->_debug) {
+            $this->_log("Output of '$requestXml->command' command:\n" . join("\n", $output));
+        }
 
         if (0 != $resultCode) {
             $responseXml->fault = 'Unable to execute requested command.';
@@ -381,7 +423,7 @@ class HwDaemon
 
         if (!$pid) {
             if ($silent) {
-                $this->_log('Daemon not running.');
+                echo "Daemon not running (PID file not found).\n";
                 return ;
             }
 
@@ -389,7 +431,7 @@ class HwDaemon
         }
 
         if (posix_kill($pid, SIGTERM)) {
-            $this->_log('Daemon was stopped.');
+            $this->_log('Daemon was stopped.', true);
         } else {
             $this->_fatalError('Unable to stop daemon.');
         }
@@ -402,9 +444,9 @@ class HwDaemon
     private function _commandStatus()
     {
         if ($this->_isDaemonStarted()) {
-            $this->_log('Daemon is running.');
+            echo "Daemon is running.\n";
         } else {
-            $this->_log('Daemon is stopped.');
+            echo "Daemon is stopped.\n";
         }
     }
 
