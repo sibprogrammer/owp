@@ -2,10 +2,11 @@
 /**
  * Dashboard shortcuts table gateway
  *
- * @author Alexei Yuzhakov <alex@softunity.com.ru> 
+ * @author Alexei Yuzhakov <alex@softunity.com.ru>
  */
-class Owp_Table_Shortcuts extends Zend_Db_Table_Abstract {
-		
-	protected $_name = 'shortcuts';
-	
+class Owp_Table_Shortcuts extends Zend_Db_Table_Abstract
+{
+
+    protected $_name = 'shortcuts';
+
 }

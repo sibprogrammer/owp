@@ -1,35 +1,35 @@
 <?php echo $this->jsFile('/js/views/default/error/error.js'); ?>
 
 <div id="errorWindow" class="x-hidden">
-	<div class="x-window-header">Error</div>
-	
-	<div class="x-window-body">	
-		<table border="0" cellspacing="5" cellpadding="5">
-			<tr>
-				<th>Message</th>
-				<td><?php echo $this->escape($this->exception->getMessage()); ?></td>
-			</tr>
-			
-			<tr>
-				<th>Code</th>
-				<td><?php echo $this->escape($this->exception->getCode()); ?></td>
-			</tr>
-			
-			<tr>
-				<th>File</th>
-				<td><?php echo $this->escape($this->exception->getFile()); ?></td>
-			</tr>
-			
-			<tr>
-				<th>Line</th>
-				<td><?php echo $this->escape($this->exception->getLine()); ?></td>
-			</tr>
-			
-			<tr>
-				<th>Trace</th>
-				<td><?php echo nl2br(($this->exception->getTraceAsString())); ?></td>
-			</tr>
-		</table>
-	</div>
-	
+    <div class="x-window-header">Error</div>
+    
+    <div class="x-window-body">    
+        <table border="0" cellspacing="5" cellpadding="5">
+            <tr>
+                <th>Message</th>
+                <td><?php echo $this->escape($this->exception->getMessage()); ?></td>
+            </tr>
+            
+            <tr>
+                <th>Code</th>
+                <td><?php echo $this->escape($this->exception->getCode()); ?></td>
+            </tr>
+            
+            <tr>
+                <th>File</th>
+                <td><?php echo $this->escape($this->exception->getFile()); ?></td>
+            </tr>
+            
+            <tr>
+                <th>Line</th>
+                <td><?php echo $this->escape($this->exception->getLine()); ?></td>
+            </tr>
+            
+            <tr>
+                <th>Trace</th>
+                <td><?php echo nl2br(($this->exception->getTraceAsString())); ?></td>
+            </tr>
+        </table>
+    </div>
+    
 </div>

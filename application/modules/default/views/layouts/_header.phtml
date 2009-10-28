@@ -1,35 +1,35 @@
 <?php echo $this->doctype('XHTML1_STRICT'); ?>
 <html>
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<title><?php echo $this->escape($this->pageTitle) . " - $this->productName $this->productVersion "; ?></title>
-	<link rel="shortcut icon" href="/images/favicon.ico"/>	
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title><?php echo $this->escape($this->pageTitle) . " - $this->productName $this->productVersion "; ?></title>
+    <link rel="shortcut icon" href="/images/favicon.ico"/>    
 
-	<?php echo $this->jsFile('/ext/adapter/ext/ext-base.js'); ?>
-	<?php echo $this->jsFile('/ext/ext-all.js'); ?>
-	<?php echo $this->cssFile('/ext/resources/css/ext-all.css'); ?>
+    <?php echo $this->jsFile('/ext/adapter/ext/ext-base.js'); ?>
+    <?php echo $this->jsFile('/ext/ext-all.js'); ?>
+    <?php echo $this->cssFile('/ext/resources/css/ext-all.css'); ?>
 
-	<?php echo $this->cssFile('/skins/common.css'); ?>
-	<?php echo $this->cssFile('/skins/win_xp/styles.css'); ?>
-	<?php echo $this->jsFile('/js/namespaces.js'); ?>
-	<?php echo $this->jsFile('/js/layouts/abstract.js'); ?>
+    <?php echo $this->cssFile('/skins/common.css'); ?>
+    <?php echo $this->cssFile('/skins/win_xp/styles.css'); ?>
+    <?php echo $this->jsFile('/js/namespaces.js'); ?>
+    <?php echo $this->jsFile('/js/layouts/abstract.js'); ?>
 </head>
 <body>
 
-	<div id="panelHeader">
-		<div id="layoutLogo">
-			<div id="layoutLogoInner">
-				<img src="/skins/win_xp/images/logo.gif"/>
-				<?php echo "$this->productName $this->productVersion"; ?>
-			</div>
-		</div>
-		
-		<div id="layoutCopyright">
-			<div id="layoutCopyrightInner">
-				<a href="#" onclick="Owp.Layouts.Abstract.onCopyrightClick();">
-					&copy; Copyright 2008 SoftUnity.<br/>
-					All Rights Reserved.
-				</a>
-			</div>
-		</div>
-	</div>
+    <div id="panelHeader">
+        <div id="layoutLogo">
+            <div id="layoutLogoInner">
+                <img src="/skins/win_xp/images/logo.gif"/>
+                <?php echo "$this->productName $this->productVersion"; ?>
+            </div>
+        </div>
+        
+        <div id="layoutCopyright">
+            <div id="layoutCopyrightInner">
+                <a href="#" onclick="Owp.Layouts.Abstract.onCopyrightClick();">
+                    &copy; Copyright 2008 SoftUnity.<br/>
+                    All Rights Reserved.
+                </a>
+            </div>
+        </div>
+    </div>

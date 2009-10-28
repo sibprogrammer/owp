@@ -1,32 +1,32 @@
 <script type="text/javascript">
 Owp.Layouts.Admin.getMainMenu = function() {
-	var mainMenu = new Ext.tree.AsyncTreeNode({
-		expandable: false,
-		expanded: true,
-		children: [			
-			<?php foreach ($this->menus as $menu) : ?>
-			{
-				expanded: true,
-				expandable: false,
-				cls: 'menuTitle',
-				text: '<?php echo $this->escape($menu['title']); ?>',
-				children: [
-					<?php foreach ($menu['items'] as $menuItem) : ?>
-					{
-						cls: 'menuItem',
-						text: '<?php echo $this->escape($menuItem['title']); ?>',
-						href: '<?php echo ($menuItem['link']) ? $this->escape($menuItem['link']) : '#'; ?>',
-						hrefTarget: '<?php echo (isset($menuItem['external']) && $menuItem['external']) ? 'target="_blank"' : ''; ?>',
-						icon: '/skins/win_xp/images/<?php echo (isset($menuItem['icon']) && $menuItem['icon']) ? $menuItem['icon'] : 'menu_icon_default.gif'; ?>',
-						leaf: true
-					} <?php if ($menuItem != end($menu['items'])) { echo ','; } ?>
-					<?php endforeach; ?>
-				]
-			} <?php if ($menu != end($this->menus)) { echo ','; } ?>
-			<?php endforeach; ?>
-		]
-	});
-	
-	return mainMenu;	
+    var mainMenu = new Ext.tree.AsyncTreeNode({
+        expandable: false,
+        expanded: true,
+        children: [            
+            <?php foreach ($this->menus as $menu) : ?>
+            {
+                expanded: true,
+                expandable: false,
+                cls: 'menuTitle',
+                text: '<?php echo $this->escape($menu['title']); ?>',
+                children: [
+                    <?php foreach ($menu['items'] as $menuItem) : ?>
+                    {
+                        cls: 'menuItem',
+                        text: '<?php echo $this->escape($menuItem['title']); ?>',
+                        href: '<?php echo ($menuItem['link']) ? $this->escape($menuItem['link']) : '#'; ?>',
+                        hrefTarget: '<?php echo (isset($menuItem['external']) && $menuItem['external']) ? 'target="_blank"' : ''; ?>',
+                        icon: '/skins/win_xp/images/<?php echo (isset($menuItem['icon']) && $menuItem['icon']) ? $menuItem['icon'] : 'menu_icon_default.gif'; ?>',
+                        leaf: true
+                    } <?php if ($menuItem != end($menu['items'])) { echo ','; } ?>
+                    <?php endforeach; ?>
+                ]
+            } <?php if ($menu != end($this->menus)) { echo ','; } ?>
+            <?php endforeach; ?>
+        ]
+    });
+    
+    return mainMenu;    
 }
 </script>
