@@ -105,7 +105,13 @@ class Admin_HardwareServerController extends Owp_Controller_Action_Admin
         }
 
         $virtualServers = new Owp_Table_VirtualServers();
-        $vzlistRawData = $hwServer->execDaemonRequest('vzlist', '-a -H -o veid,hostname,ip,status');
+        $vzlistRawData = trim($hwServer->execDaemonRequest('vzlist', '-a -H -o veid,hostname,ip,status'));
+
+        if (!$vzlistRawData) {
+            $this->_helper->json(array('success' => true));
+            return ;
+        }
+
         $vzlist = explode("\n", $vzlistRawData);
 
         foreach ($vzlist as $vzlistEntry) {
