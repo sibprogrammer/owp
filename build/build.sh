@@ -32,6 +32,10 @@ cd `dirname $0`
 			patch -p0 < Zend.patch
 			rm Zend.zip Zend.patch
 		cd ../../
+		
+		cd application/resources/
+			sqlite3 database < ./sql/sqlite/structure.sql
+		cd ../../
 	cd ..
 
 	[ -f $PROJECT-r$REVISION.tgz ] && rm $PROJECT-r$REVISION.tgz
