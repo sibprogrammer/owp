@@ -24,6 +24,13 @@ class Owp_Config_Defaults
                 'enabled' => false,
             ),
 
+            'database' => array(
+                'adapter' => 'PDO_SQLITE',
+                'params' => array(
+                    'dbname' => './resources/database',
+                )
+            ),
+
             'routes' => array(
                 'login' => array(
                     'type' => 'Zend_Controller_Router_Route_Static',

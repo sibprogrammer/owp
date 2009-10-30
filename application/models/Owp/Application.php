@@ -29,9 +29,14 @@ class Owp_Application
     private function _initConfig()
     {
         $config = new Zend_Config(Owp_Config_Defaults::getDefaults(), true);
-        $configFromFile = new Zend_Config_Ini(ROOT_PATH . '/config.ini');
 
-        $config->merge($configFromFile);
+        $configIniFileName = ROOT_PATH . '/config.ini';
+
+        if (file_exists($configIniFileName)) {
+            $configFromFile = new Zend_Config_Ini($configIniFileName);
+            $config->merge($configFromFile);
+        }
+
         $config->setReadOnly();
 
         Zend_Registry::set('config', $config);

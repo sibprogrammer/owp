@@ -1,6 +1,9 @@
-[database]
-adapter = PDO_SQLITE
-params.dbname = ./resources/database
-
-[debug]
-enabled = off
+; Default configuration.
+; Uncomment necessary lines if you want to change default configuration. 
+;
+;[database]
+;adapter = PDO_SQLITE
+;params.dbname = ./resources/database
+;
+;[debug]
+;enabled = off
