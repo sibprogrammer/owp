@@ -1,0 +1,294 @@
+<% @page_title = t('admin.hardware_servers.show.title', :name => @hardware_server.host) %>
+
+<% javascript_tag do -%>
+Ext.onReady(function() {
+
+  var changeStateAction = function(action) {
+    Owp.list.groupAction({
+      gridName: 'virtualServersGrid',
+      url: '/admin/virtual-servers/change_state',
+      command: action,
+      waitMsg: '<%= tjs('form.performing_task') %>',
+      failure: {
+        title: '<%= tjs('form.error.title') %>',
+        msg: '<%= tjs('admin.virtual_servers.form.change_state.failed') %>'
+      }
+    });
+  }
+  
+  var windowAddVirtualServer;
+  
+  function addVirtualServer() {
+    if (!windowAddVirtualServer) {
+      var osTemapltesStore = new Ext.data.JsonStore({
+        url: '/admin/os-templates/list_data?hardware_server_id=<%= @hardware_server.id %>',
+        root: 'data',
+        autoLoad: true,
+        fields: [
+          { name: 'id' },
+          { name: 'name' }
+        ]
+      });
+    
+      var formAddVirtualServer = new Ext.form.FormPanel({
+        baseCls: 'x-plain',
+        labelWidth: 180,
+        url: '/admin/virtual-servers/create?hardware_server_id=<%= @hardware_server.id %>',        
+        waitMsgTarget: true,
+        
+        items: [{
+          xtype: 'fieldset',
+          title: '<%= tjs('admin.virtual_servers.form.create_server.fieldset.general') %>',
+          autoHeight: true,
+          defaults: { width: 170 },
+          defaultType: 'textfield',
+          items: [{        
+            fieldLabel: '<%= tjs('admin.virtual_servers.form.create_server.field.identity') %>',
+            name: 'identity',
+            allowBlank: false
+          }, {
+            fieldLabel: '<%= tjs('admin.virtual_servers.form.create_server.field.os_template') %>',
+            xtype: 'combo',
+            hiddenName: 'os_template_id',
+            valueField: 'id',
+            displayField: 'name',
+            name: 'os_template_id',
+            forceSelection: true,
+            triggerAction: 'all',
+            emptyText: '<%= tjs('admin.virtual_servers.form.create_server.field.select_os_template') %>',
+            mode: 'local',
+            allowBlank: false,
+            editable: false,
+            store: osTemapltesStore
+          }]
+        }, {
+          xtype: 'fieldset',
+          title: '<%= tjs('admin.virtual_servers.form.create_server.fieldset.network') %>',
+          autoHeight: true,
+          defaults: { width: 170 },
+          defaultType: 'textfield',
+          items: [{
+            fieldLabel: '<%= tjs('admin.virtual_servers.form.create_server.field.ip_address') %>',
+            name: 'ip_address',
+            allowBlank: false
+          }, {
+            fieldLabel: '<%= tjs('admin.virtual_servers.form.create_server.field.host_name') %>',
+            name: 'host_name',
+            allowBlank: false
+          }]
+        }, {
+          xtype: 'fieldset',
+          title: '<%= tjs('admin.virtual_servers.form.create_server.fieldset.system_access') %>',
+          autoHeight: true,
+          defaults: { width: 170 },
+          defaultType: 'textfield',
+          items: [{
+            fieldLabel: '<%= tjs('admin.virtual_servers.form.create_server.field.password') %>',
+            name: 'password',
+            inputType: 'password',
+            allowBlank: false
+          }, {
+            fieldLabel: '<%= tjs('admin.virtual_servers.form.create_server.field.confirm_password') %>',
+            name: 'confirm_password',
+            inputType: 'password',
+            allowBlank: false
+          }]
+        }, {
+          xtype: 'fieldset',
+          title: '<%= tjs('admin.virtual_servers.form.create_server.fieldset.start_options') %>',
+          autoHeight: true,
+          defaultType: 'checkbox',
+          labelWidth: 180,
+          items: [{
+            fieldLabel: '<%= tjs('admin.virtual_servers.form.create_server.field.start_on_boot') %>',
+            checked: true,
+            name: 'start_on_boot'
+          }, {
+            fieldLabel: '<%= tjs('admin.virtual_servers.form.create_server.field.start_after_creation') %>',
+            checked: true,
+            name: 'start_after_creation'
+          }]
+        }]
+      });
+      
+      windowAddVirtualServer = new Ext.Window({
+        title: '<%= tjs('admin.virtual_servers.form.create_server.title') %>',
+        iconCls: 'icon-window-add',
+        width: 420,
+        height: 465,
+        modal: true,
+        layout: 'fit',
+        plain: true,
+        border: false,
+        bodyStyle: 'padding: 5px;',
+        resizable: false,
+        items: formAddVirtualServer,
+        closeAction: 'hide',
+        
+        buttons: [{
+          text: '<%= tjs('admin.virtual_servers.form.create_server.button_create') %>',
+          iconCls: 'icon-button-add',
+          handler: function() {
+            formAddVirtualServer.form.submit({
+              waitMsg: '<%= tjs('form.loading') %>',
+              success: function() {
+                virtualServersGrid.store.reload();
+                windowAddVirtualServer.hide();
+              },
+              failure: function(form, action) {
+                Owp.form.errorHandler(form, action);
+              }
+            });
+          }
+        }, {
+          text: '<%= tjs('form.button.cancel') %>',
+          iconCls: 'icon-button-cancel',
+          handler: function() {
+            windowAddVirtualServer.hide();
+          }
+        }]
+      });
+      
+      windowAddVirtualServer.on('show', function() {
+        formAddVirtualServer.getForm().reset();
+      });
+    }
+    
+    windowAddVirtualServer.show();    
+  }
+  
+  function removeVirtaulServer() {            
+    Ext.MessageBox.confirm(
+      '<%= tjs('form.confirmation') %>',
+      '<%= tjs('admin.virtual_servers.form.remove_server.sure_to_remove') %>',
+      function(button, text) {
+        if ('yes' == button) { 
+          Owp.list.groupAction({
+            gridName: 'virtualServersGrid',
+            url: '/admin/virtual-servers/delete',
+            waitMsg: '<%= tjs('form.performing_task') %>',
+            failure: {
+              title: '<%= tjs('form.error.title') %>',
+              msg: '<%= tjs('admin.virtual_servers.form.remove_server.deletion_failed') %>'
+            }
+          });
+        }
+      }
+    );
+  }
+
+  var store = new Ext.data.JsonStore({
+    url: '/admin/virtual-servers/list_data?hardware_server_id=<%= @hardware_server.id %>',
+    root: 'data',
+    autoLoad: true,
+    fields: [
+      { name: 'id' },
+      { name: 'identity' },
+      { name: 'ip_address' },
+      { name: 'host_name' },
+      { name: 'state' },
+      { name: 'os_template_name' }
+    ]
+  });
+  
+  var selectionModel = new Ext.grid.CheckboxSelectionModel({ 
+    listeners: {
+      selectionchange: function(selectionModel) {
+        if (selectionModel.getCount()) {
+          virtualServersGrid.removeButton.enable();
+          virtualServersGrid.changeStateButton.enable();
+        } else {
+          virtualServersGrid.removeButton.disable();
+          virtualServersGrid.changeStateButton.disable();
+        }
+      }
+    }
+  });
+  
+  var virtualServersGrid = new Ext.grid.GridPanel({
+    id: 'virtualServersGrid',
+    title: '<%= tjs('admin.virtual_servers.grid.title') %>',
+    iconCls: 'icon-items-list',
+    store: store,
+    cm: new Ext.grid.ColumnModel([
+      selectionModel, 
+      { 
+        id: 'state',
+        header: '<%= tjs('admin.virtual_servers.grid.column.state') %>',
+        renderer: function(value) {
+          var image = ('running' == value) ? 'control_play_blue.png' : 'control_stop_blue.png';
+          return '<img src="/images/' + image + '"/>';
+        },
+        width: 60,
+        align: 'center',
+        sortable: true,
+        dataIndex: 'state'
+      }, { 
+        id: 'identity',
+        header: '<%= tjs('admin.virtual_servers.grid.column.identity') %>',
+        width: 60,
+        sortable: true,
+        dataIndex: 'identity'
+      }, {
+        id: 'ip_address',
+        header: '<%= tjs('admin.virtual_servers.grid.column.ip_address') %>',
+        sortable: true,
+        dataIndex: 'ip_address'
+      }, {
+        id: 'host_name',
+        header: '<%= tjs('admin.virtual_servers.grid.column.host_name') %>',
+        sortable: true,
+        dataIndex: 'host_name'
+      }, {
+        id: 'os_template_name',
+        header: '<%= tjs('admin.virtual_servers.grid.column.os_template') %>',
+        sortable: true,
+        dataIndex: 'os_template_name' 
+      }
+    ]),
+    sm: selectionModel,
+    stripeRows: true,
+    autoExpandColumn: 'os_template_name',
+    autoHeight: true,
+    autoWidth: true,
+    stripeRows: true,
+    frame: true,
+    tbar: [{
+      text: '<%= tjs('admin.virtual_servers.grid.button.create') %>',
+      cls: 'x-btn-text-icon',
+      icon: '/images/add.png',
+      handler: addVirtualServer
+    }, {
+      text: '<%= tjs('admin.virtual_servers.grid.button.destroy') %>', 
+      cls: 'x-btn-text-icon',
+      icon: '/images/delete.png',     
+      handler: removeVirtaulServer,
+      ref: '../removeButton',
+      disabled: true
+    }, '-', {      
+      text: '<%= tjs('admin.virtual_servers.grid.button.change_state') %>',
+      iconCls: 'icon-button-change-state',
+      ref: '../changeStateButton',
+      disabled: true,
+      menu: [{
+        text: '<%= tjs('admin.virtual_servers.grid.button.start') %>',
+        iconCls: 'icon-button-start-server',
+        handler: changeStateAction.createCallback('start')
+      }, {
+        text: '<%= tjs('admin.virtual_servers.grid.button.stop') %>',
+        iconCls: 'icon-button-stop-server',
+        handler: changeStateAction.createCallback('stop')
+      }, {
+        text: '<%= tjs('admin.virtual_servers.grid.button.restart') %>',
+        iconCls: 'icon-button-restart-server',
+        handler: changeStateAction.createCallback('restart')
+      }] 
+    }]
+  });
+  
+  virtualServersGrid.render('virtaul-servers-list');  
+});
+<% end -%>
+
+<div id="virtaul-servers-list"></div>
+

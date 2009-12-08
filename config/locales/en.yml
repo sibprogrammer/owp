@@ -1,0 +1,145 @@
+en:
+  language:
+    title: "English"
+  form:
+    loading: "Please wait..."
+    confirmation: "Confirm"
+    performing_task: "Please wait. Performing task..."
+    error:
+      title: "Error"
+      fill_form: "Please, fill the form."
+    button:
+      save: "Save"
+      cancel: "Cancel"
+      create: "Create"
+  activerecord:
+    errors:
+      models:
+        user:
+          attributes:
+            password:
+              confirmation: "Password and confirmation are not equal."
+              too_short: "Password is too short (minimum symbols: {{count}})."
+        hardware_server:
+          attributes:
+            host:
+              taken: "Server with such name is already present."
+  about:
+    copyright: "Copyright 2008-2009 SoftUnity."
+    right_reserved: "All Rights Reserved."
+    about_program: "About program"
+    author: "Author"
+    web_site: "Web site"
+  login:
+    page_title: "Login"
+    window_title: "Log in to {{product}}"
+    username: "User name"
+    password: "Password"
+    remember_me: "Remember me"
+    button_login: "Log in"
+    locale: "Language"
+    bad_login: "Invalid login or password."
+  admin:
+    menu:
+      title: "Menu"
+      general:
+        title: "General"
+        dashboard: "Dashboard"
+        hardware_servers: "Hardware servers"
+        my_profile: "My profile"
+        logout: "Logout"
+      help:
+        title: "Help"
+        documentation: "Documentation"
+        support: "Support"
+    operations:
+      up_level: "Up Level"
+    logout: "Are you sure you want to log out?"
+    my_profile:
+      title: "My profile"
+      user_name: "User Name"
+      current_password: "Current Password"
+      new_password: "New Password"
+      confirm_password: "Confirm Password"
+      bad_current_password: "Invalid current password."
+    dashboard:
+      title: "Dashboard"
+      intro:
+        title: "Intro"
+        text: "OpenVZ Web Panel is a GUI web-based frontend for controlling of hardware servers with OpenVZ virtualization technology."
+      stats_grid:
+        title: "Statistics"
+        column:
+          parameter: "Parameter"
+          value: "Value"
+        parameter:
+          panel_users: "Panel users"
+          hardware_servers: "Hardware servers"
+          virtual_servers: "Virtual servers"
+          virtual_servers_running: "Virtual servers - running"
+          virtual_servers_stopped: "Virtual servers - stopped"
+          os_templates: "OS templates"
+    hardware_servers:
+      title: "Hardware Servers"
+      grid:
+        title: "Hardware servers list"
+        column:
+          host_name: "Host name"
+          description: "Description"
+        button:
+          connect: "Connect new server"
+          reconnect: "Reconnect server"
+          disconnect: "Disconnect server"      
+      form:
+        connect_server:
+          title: "Connect new hardware server"
+          button_connect: "Connect"
+          field:
+            host_name: "Host name"
+            auth_key: "Auth key"
+            description: "Description"
+        disconnect_server:
+          sure_to_disconnect: "Are you sure you want to disconnect selected servers?"
+          deletion_failed: "Servers disconnection request failed."
+      show:
+        title: "Hardware Server {{name}}"
+    virtual_servers:
+      grid:
+        title: "Virtual servers list"
+        column:
+          state: "State"
+          identity: "VEID"
+          ip_address: "IP Address"
+          host_name: "Host Name"
+          os_template: "OS Template"
+        button:
+          create: "Create virtual server"
+          destroy: "Remove virtual server"
+          change_state: "Change state"
+          start: "Start"
+          restart: "Restart"
+          stop: "Stop"
+      form:
+        change_state:
+          failed: "Unable to change virtual server state."
+        remove_server:
+          sure_to_remove: "Are you sure you want to remove selected virtual servers?"
+          deletion_failed: "Unable to delete some virtual servers."
+        create_server:
+          title: "Create new virtual server"
+          button_create: "Create"
+          field:
+            identity: "Server ID (VEID)"
+            os_template: "OS Template"
+            select_os_template: "Select OS template"
+            ip_address: "IP Address"
+            host_name: "Host Name"
+            password: "Root Password"
+            confirm_password: "Confirm Password"
+            start_on_boot: "Start on Boot"
+            start_after_creation: "Start after Creation"
+          fieldset:
+            general: "General"
+            network: "Network"
+            system_access: "System Access"
+            start_options: "Start Options"

@@ -1,0 +1,95 @@
+<% @page_title = t('login.page_title') %>
+
+<% javascript_tag do -%>
+Ext.onReady(function() {     
+
+  var loginFormSubmitAction = function() {
+    loginForm.getForm().submit({
+      waitMsg: '<%= tjs('form.loading') %>',
+      success: function() {
+        document.location.href = '/admin/dashboard';
+      },
+      failure: function(form, action) { 
+        Owp.form.errorHandler(form, action, { 
+          fn: function() { 
+            Ext.get('login').focus();
+          } 
+        });
+      }
+    });
+  }
+
+  var loginForm = new Ext.FormPanel({
+    baseCls: 'x-plain',
+    labelWidth: 100,
+    url: '/session',
+    bodyStyle: 'padding: 15px 15px 0',
+    defaultType: 'textfield',
+    waitMsgTarget: true,
+    
+    keys: [{
+      key: Ext.EventObject.ENTER,
+      fn: loginFormSubmitAction
+    }],
+        
+    items: [{
+      fieldLabel: '<%= tjs('login.username') %>',
+      name: 'login',
+      id: 'login',
+      width: 210,
+      allowBlank: false
+    }, {
+      fieldLabel: '<%= tjs('login.password') %>',
+      name: 'password',
+      width: 210,
+      inputType: 'password',
+      allowBlank: false
+    }, {
+      fieldLabel: '<%= tjs('login.locale') %>',
+      name: 'locale',
+      xtype: 'combo',
+      mode: 'local',      
+      hiddenName: 'locale',
+      valueField: 'locale',
+      value: '<%= I18n.locale %>',
+      displayField: 'languageTitle',
+      editable: false,
+      triggerAction: 'all',
+      store: new Ext.data.ArrayStore({
+        id: 0,
+        fields: ['locale', 'languageTitle'],
+        data: <%= @available_locales.to_json %>
+      })
+    }, {
+      fieldLabel: '<%= tjs('login.remember_me') %>',
+      name: 'remember_me',
+      xtype: 'checkbox',
+      checked: true
+    }]
+  });
+  
+  var loginWindow = new Owp.form.BasicFormWindow({
+    applyTo: 'login-window',
+    title: '<%= tjs('login.window_title', :product => PRODUCT_NAME + ' ' + PRODUCT_VERSION) %>',
+    iconCls: 'icon-window-login',
+    width: 380,
+    height: 190,
+    y: 150,
+    closable: false,
+    resizable: false,
+    draggable: false,
+    plain: true,
+    items: loginForm,
+    buttons: [{
+      text: '<%= tjs('login.button_login') %>',
+      iconCls: 'icon-button-login',
+      handler: loginFormSubmitAction
+    }]
+  });
+    
+  loginWindow.show();
+  
+});
+<% end -%>
+
+<div id='login-window'></div>

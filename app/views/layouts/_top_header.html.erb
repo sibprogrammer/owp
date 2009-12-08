@@ -1,0 +1,37 @@
+<div id="top-header">
+  <div class="logo">
+    <div>
+      <img src="/images/logo.gif"/>
+      <%= PRODUCT_NAME + ' ' + PRODUCT_VERSION %>
+    </div>
+  </div>
+  
+  <div class="copyright">
+    <div>
+      <a id="copyright-link" href="#">
+        &copy; <%= t('about.copyright') %><br/>
+				<%= t('about.right_reserved') %>
+      </a>
+    </div>
+    <% javascript_tag do -%>
+      Ext.onReady(function() {
+        Ext.get('copyright-link').on('click', function(event) {
+          Ext.MessageBox.show({
+            title: '<%= escape_javascript t('about.about_program') %>',
+            icon: Ext.MessageBox.INFO,
+            buttons: Ext.Msg.OK,
+            animEl: 'copyright-link',
+						minWidth: 400,
+            msg: '<%= escape_javascript t('about.author') %>' +
+						  ': <a href="mailto:sibprogrammer@gmail.com">Alexei Yuzhakov</a><br/>' +
+              '<%= escape_javascript t('about.web_site') %>' +
+							': <a href="http://code.google.com/p/ovz-web-panel/" target="_blank">' +
+              'http://code.google.com/p/ovz-web-panel/</a><br/><br/>' +
+              '&copy; ' + '<%= escape_javascript t('about.copyright') %>' + '<br/>' + 
+							'<%= escape_javascript t('about.right_reserved') %>'
+          });
+        });
+      });
+    <% end -%>
+  </div>
+</div>

@@ -1,0 +1,57 @@
+<% @page_title = t('admin.dashboard.title') %>
+
+<% javascript_tag do -%>
+Ext.onReady(function() {
+
+  new Ext.Panel({
+    title: '<%= tjs('admin.dashboard.intro.title') %>',
+    collapsible: true,
+    renderTo: 'panel-dashboard-intro',
+    html: '<p>' + '<%= tjs('admin.dashboard.intro.text') %>' + '</p>'
+  });
+  
+  var storeData = <%= @stats_data.to_json %> ;
+  
+  var store = new Ext.data.ArrayStore({
+    fields: [{
+      name: 'parameter'
+    }, {
+      name: 'value'
+    }]
+  });
+  
+  store.loadData(storeData);
+  
+  var statsGrid = new Ext.grid.GridPanel({
+    id: 'statsGrid',
+    title: '<%= tjs('admin.dashboard.stats_grid.title') %>',
+    iconCls: 'icon-items-list',
+    store: store,
+    collapsible: true,
+    autoHeight: true,
+    autoWidth: true,
+    stripeRows: true,
+    autoExpandColumn: 'value',
+    cm: new Ext.grid.ColumnModel([{
+      id: 'parameter',
+      header: '<%= tjs('admin.dashboard.stats_grid.column.parameter') %>',
+      width: 250,
+      sortable: true,
+      dataIndex: 'parameter'
+    }, {
+      id: 'value',
+      header: '<%= tjs('admin.dashboard.stats_grid.column.value') %>',
+      sortable: true,
+      dataIndex: 'value'
+    }])    
+  });
+  
+  statsGrid.render('panel-dashboard-stats');  
+
+});
+<% end -%>
+
+<div id="panel-dashboard-intro"></div>
+
+<div id="panel-dashboard-stats"></div>
+

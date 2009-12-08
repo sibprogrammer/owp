@@ -1,0 +1,227 @@
+<%= render :partial => 'layouts/header' %>   
+  
+  <% javascript_tag do -%>
+    Ext.onReady(function() {
+      var formMyProfile = new Ext.form.FormPanel({
+        baseCls: 'x-plain',
+        labelWidth: 150,
+        url: '/admin/users/save_profile',
+        defaultType: 'textfield',
+        defaults: { width: 200 },
+        waitMsgTarget: true,
+        
+        items: [{
+          fieldLabel: '<%= tjs('admin.my_profile.user_name') %>',
+          value: '<%= escape_javascript @current_user.login %>',
+          xtype: 'displayfield'
+        }, {
+          fieldLabel: '<%= tjs('admin.my_profile.current_password') %>',
+          name: 'current_password',
+          inputType: 'password',
+          allowBlank: false
+        }, {
+          fieldLabel: '<%= tjs('admin.my_profile.new_password') %>',
+          name: 'password',
+          inputType: 'password',
+          allowBlank: false
+        }, {
+          fieldLabel: '<%= tjs('admin.my_profile.confirm_password') %>',
+          name: 'confirm_password',
+          inputType: 'password',
+          allowBlank: false
+        }]
+      });  
+      
+      var windowMyProfile = new Owp.form.BasicFormWindow({
+        title: '<%= tjs('admin.my_profile.title') %>',
+        iconCls: 'icon-window-my-profile',
+        width: 410,
+        height: 185,
+        modal: true,
+        layout: 'fit',
+        plain: true,
+        bodyStyle: 'padding: 5px;',
+        resizable: false,
+        items: formMyProfile,
+        closeAction: 'hide',
+        
+        buttons: [{
+          text: '<%= tjs('form.button.save') %>',
+          iconCls: 'icon-button-save',
+          handler: function() {
+            formMyProfile.form.submit({
+              waitMsg: '<%= tjs('form.loading') %>',
+              success: function() {
+                windowMyProfile.hide();
+              },
+              failure: function(form, action) {
+                Owp.form.errorHandler(form, action);
+              }
+            });
+          }
+        }, {
+          text: '<%= tjs('form.button.cancel') %>',
+          iconCls: 'icon-button-cancel',
+          handler: function() {
+            windowMyProfile.hide();
+          }
+        }]
+      });
+      
+      windowMyProfile.on('show', function() {
+        formMyProfile.getForm().reset();
+      });  
+    
+      var mainMenu = new Ext.tree.AsyncTreeNode({
+        expandable: false,
+        expanded: true,
+        children: [{
+          expanded: true,
+          expandable: false,
+          cls: 'menu-title',
+          text: '<%= tjs('admin.menu.general.title') %>',
+          children: [{
+            cls: 'menu-item',
+            text: '<%= tjs('admin.menu.general.dashboard') %>',
+            href: '/admin/dashboard',
+            icon: '/images/application.png',
+            leaf: true
+          }, {
+            cls: 'menu-item',
+            text: '<%= tjs('admin.menu.general.hardware_servers') %>',
+            href: '/admin/hardware-servers/list',
+            icon: '/images/server.png',
+            leaf: true
+          }, {
+            cls: 'menu-item',
+            text: '<%= tjs('admin.menu.general.my_profile') %>',
+            icon: '/images/vcard.png',
+            leaf: true,
+            listeners: {
+              click: function() {
+                windowMyProfile.show();
+              }
+            }
+          }, {
+            cls: 'menu-item',
+            text: '<%= tjs('admin.menu.general.logout') %>',
+            icon: '/images/key_go.png',
+            leaf: true,
+            listeners: {
+              click: function() {
+                Ext.MessageBox.confirm('<%= tjs('form.confirmation') %>', '<%= tjs('admin.logout') %>', function(button, text) {
+                  if ('yes' == button) {
+                    window.location.href = '/logout';
+                  }
+                });
+              }
+            }
+          }]
+        }, {
+          expanded: true,
+          expandable: false,
+          cls: 'menu-title',
+          text: '<%= tjs('admin.menu.help.title') %>',
+          children: [{
+            cls: 'menu-item',
+            text: '<%= tjs('admin.menu.help.documentation') %>',
+            href: 'http://code.google.com/p/ovz-web-panel/w/list',
+            icon: '/images/help.png',
+            leaf: true
+          }, {
+            cls: 'menu-item',
+            text: '<%= tjs('admin.menu.help.support') %>',
+            href: 'http://code.google.com/p/ovz-web-panel/issues/list',
+            icon: '/images/bug.png',
+            leaf: true
+          }]
+        }]
+      });
+      
+      function getTopBar() {
+        var upLevelLink = '<%= @up_level %>';
+      
+        var topBar = [{ 
+          xtype: 'tbfill'
+        }, {
+          text: '<%= tjs('admin.operations.up_level') %>',
+          handler: function() {
+            document.location.href = upLevelLink;
+          },
+          disabled: ('' == upLevelLink),
+          cls: 'x-btn-text-icon',
+          icon: '/images/arrow_up.png'
+        }];
+      
+        return topBar;
+      }
+
+      var viewport = new Ext.Viewport({
+        layout: 'border',
+        items: [
+          new Ext.BoxComponent({
+            region: 'north',
+            el: 'top-header',
+            cls: 'x-panel-header',
+            height: 50
+          }), {
+            region: 'west',
+            stateId: 'adminWestPanel',
+            title: '<%= tjs('admin.menu.title') %>',
+            contentEl: 'main-menu',
+            split: true,
+            width: 250,
+            minSize: 200,
+            maxSize: 400,
+            collapsible: true,
+            margins: '5 0 5 5',
+            layout: 'accordion',
+            layoutConfig: { animate: true },                
+            xtype: 'treepanel',
+            loader: new Ext.tree.TreeLoader(),
+            rootVisible: false,
+            lines: false,
+            root: mainMenu,
+            listeners: {
+              click: function(node) {
+                var href = node.attributes.href;
+                if ('undefined' != typeof href) {
+                  if (href.indexOf('http') === 0) {
+                    window.open(href);
+                    return false;
+                  } else {
+                    window.location.href = href;
+                  }
+                }
+              }
+            }
+          }, {
+            region: 'center',
+            margins: '5 5 5 0',
+            contentEl: 'main-content',
+            xtype: 'panel',
+            autoScroll: true,
+            title: '<%= escape_javascript(@page_title) %>',
+            id: 'main-content-wrapper',
+            bodyStyle: 'background: #FFFFFF url(/images/openvz-big-logo.gif) no-repeat scroll right bottom',
+            tbar: getTopBar(), 
+            bbar: [{
+              xtype: 'box',
+              height: 22,
+              id: 'statusbar'
+            }]
+          }
+        ]
+      });
+    });
+  <% end -%>
+  
+  <%= render :partial => 'layouts/top_header' %>
+  
+  <div id='main-menu'></div>
+  
+  <div id='main-content'>
+    <%= yield %>
+  </div>
+  
+<%= render :partial => 'layouts/footer' %>

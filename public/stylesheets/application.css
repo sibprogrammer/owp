@@ -1,0 +1,38 @@
+html, body { margin: 0px; padding: 0px; font-family: Arial; font-size: 11px; background-color: #F9F8F8; height: 100%; }
+
+.x-form-checkbox { margin-top: 4px; }
+.x-panel-body p { margin: 10px; }
+.x-grid3-row td { vertical-align: middle; }
+
+.logo { float: left; text-align: center; top: 50%; display: table; height: 48px; padding-left: 20px; }
+.logo div { display: table-cell; padding-top: 5px; font-size: 20px; font-weight: bold; }
+.logo img { vertical-align: middle; }
+
+.copyright { float: right; color: #FFFFFF; text-align: right; padding-right: 30px; display: table; height: 48px; font-weight: normal; }
+.copyright div { display: table-cell; padding-top: 5px; }
+.copyright a { color: #FFFFFF; text-decoration: none; }
+.copyright a:hover { color: #F0F0F0; }
+
+#main-content-wrapper > .x-panel-header { height: 25px; line-height: 25px; font-size: 20px; font-weight: normal; }
+#main-content { padding: 10px; }
+
+#panel-dashboard-stats { margin-top: 10px; }
+
+.x-tree-node div.menu-title { background: #eee; margin-top: 1px; border-top: 1px solid #ddd; border-bottom: 1px solid #ccc; padding: 2px 0 1px; font-weight: bold; }
+.menu-title .x-tree-node-icon { display: none; }
+.menu-item .x-tree-ec-icon { display: none; }
+.menu-item .x-tree-node-icon { height: 16px; padding-right: 5px; }
+.x-tree-node div.menu-item { padding: 5px; }
+
+.icon-items-list { background-image: url(/images/table.png) !important; }
+.icon-window-login { background-image: url(/images/key.png) !important; }
+.icon-window-my-profile { background-image: url(/images/vcard.png) !important; }
+.icon-window-add { background-image: url(/images/add.png) !important; }
+.icon-button-login { background-image: url(/images/arrow_right.png) !important; }
+.icon-button-save { background-image: url(/images/accept.png) !important; }
+.icon-button-add { background-image: url(/images/add.png) !important; }
+.icon-button-cancel { background-image: url(/images/cancel.png) !important; }
+.icon-button-change-state { background-image: url(/images/control_equalizer_blue.png) !important; }
+.icon-button-start-server { background-image: url(/images/control_play_blue.png) !important; }
+.icon-button-stop-server { background-image: url(/images/control_stop_blue.png) !important; }
+.icon-button-restart-server { background-image: url(/images/control_repeat_blue.png) !important; }

@@ -1,0 +1,169 @@
+<% @page_title = t('admin.hardware_servers.title') %>
+
+<% javascript_tag do -%>
+Ext.onReady(function() {
+
+  var windowAddServer;
+  
+  function addHwServer() {
+    if (!windowAddServer) {
+      var formAddServer = new Ext.form.FormPanel({
+        baseCls: 'x-plain',
+        labelWidth: 150,
+        url: '/admin/hardware-servers/connect',
+        defaultType: 'textfield',
+        waitMsgTarget: true,
+        defaults: { width: 200 },
+        
+        items: [{
+          fieldLabel: '<%= tjs('admin.hardware_servers.form.connect_server.field.host_name') %>',
+          name: 'host',
+          allowBlank: false
+        }, {
+          fieldLabel: '<%= tjs('admin.hardware_servers.form.connect_server.field.auth_key') %>',
+          name: 'auth_key',
+          allowBlank: false
+        }, {
+          fieldLabel: '<%= tjs('admin.hardware_servers.form.connect_server.field.description') %>',
+          name: 'description'
+        }]
+      });
+      
+      windowAddServer = new Ext.Window({
+        title: '<%= tjs('admin.hardware_servers.form.connect_server.title') %>',
+        iconCls: 'icon-window-add',
+        width: 400,
+        height: 160,
+        modal: true,
+        layout: 'fit',
+        plain: true,
+        bodyStyle: 'padding:5px;',
+        resizable: false,
+        items: formAddServer,
+        closeAction: 'hide',
+        
+        buttons: [{
+          text: '<%= tjs('admin.hardware_servers.form.connect_server.button_connect') %>',
+          iconCls: 'icon-button-add',
+          handler: function() {
+            formAddServer.form.submit({
+              waitMsg: '<%= tjs('form.loading') %>',
+              success: function() {
+                hwServersGrid.store.reload();
+                windowAddServer.hide();
+              },
+              failure: function(form, action) {
+                Owp.form.errorHandler(form, action);
+              }
+            });
+          }
+        }, {
+          text: '<%= tjs('form.button.cancel') %>',
+          iconCls: 'icon-button-cancel',
+          handler: function() {
+            windowAddServer.hide();
+          }
+        }]
+      });
+      
+      windowAddServer.on('show', function() {
+        formAddServer.getForm().reset();
+      });
+    }
+    
+    windowAddServer.show();   
+  }
+  
+  function removeHwServer() {            
+    Ext.MessageBox.confirm(
+      '<%= tjs('form.confirmation') %>',
+      '<%= tjs('admin.hardware_servers.form.disconnect_server.sure_to_disconnect') %>',
+      function(button, text) {
+        if ('yes' == button) { 
+          Owp.list.groupAction({
+            gridName: 'hwServersGrid',
+            url: '/admin/hardware-servers/disconnect',
+            waitMsg: '<%= tjs('form.performing_task') %>',
+            failure: {
+              title: '<%= tjs('form.error.title') %>',
+              msg: '<%= tjs('admin.hardware_servers.form.disconnect_server.deletion_failed') %>'
+            }
+          });
+        }
+      }
+    );
+  }
+
+  var store = new Ext.data.JsonStore({
+    url: '/admin/hardware-servers/list_data',
+    root: 'data',
+    autoLoad: true,
+    fields: [
+      { name: 'id' },
+      { name: 'host' },
+      { name: 'description' }
+    ]
+  });
+  
+  var selectionModel = new Ext.grid.CheckboxSelectionModel({ 
+    listeners: {
+      selectionchange: function(selectionModel) {
+        if (selectionModel.getCount()) {
+          hwServersGrid.removeButton.enable();
+        } else {
+          hwServersGrid.removeButton.disable();
+        }
+      }
+    }
+  });
+  
+  var hwServersGrid = new Ext.grid.GridPanel({
+    id: 'hwServersGrid',
+    store: store,
+    title: '<%= tjs('admin.hardware_servers.grid.title') %>',
+    cm: new Ext.grid.ColumnModel([
+      selectionModel,
+      {
+        id: 'host',
+        header: '<%= tjs('admin.hardware_servers.grid.column.host_name') %>',
+        renderer: function(host, metadata, record) {
+          return "<a href='/admin/hardware-servers/show?id=" + record.data.id + "'>" + host + "</a>";
+        },
+        sortable: true,
+        dataIndex: 'host'
+      }, { 
+        id: 'description',
+        header: '<%= tjs('admin.hardware_servers.grid.column.description') %>',
+        sortable: true,
+        dataIndex: 'description'
+      }
+    ]),
+    sm: selectionModel,
+    stripeRows: true,
+    autoExpandColumn: 'description',
+    autoHeight: true,
+    autoWidth: true,
+    stripeRows: true,
+    frame: true,
+    iconCls: 'icon-items-list',
+    tbar: [{
+      text: '<%= tjs('admin.hardware_servers.grid.button.connect') %>',
+      handler: addHwServer,
+      cls: 'x-btn-text-icon',
+      icon: '/images/add.png'
+    }, {
+      text: '<%= tjs('admin.hardware_servers.grid.button.disconnect') %>',
+      handler: removeHwServer,
+      cls: 'x-btn-text-icon',
+      icon: '/images/delete.png',
+      ref: '../removeButton',
+      disabled: true
+    }]
+  });
+  
+  hwServersGrid.render('hw-servers-list');
+});
+<% end -%>
+
+<div id="hw-servers-list"></div>
+

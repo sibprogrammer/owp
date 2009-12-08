@@ -1,0 +1,15 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=7"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title><%= @page_title + ' - ' + PRODUCT_NAME + ' ' + PRODUCT_VERSION %></title>
+    <link rel="shortcut icon" href="/favicon.ico"/>
+    <%= stylesheet_link_tag '/ext/resources/css/ext-all.css' %>
+    <%= stylesheet_link_tag 'application' %>
+    <%= javascript_include_tag '/ext/adapter/ext/ext-base.js' %>
+    <%= javascript_include_tag '/ext/ext-all.js' %>
+    <%= javascript_include_tag 'application' %>
+    <%= javascript_include_tag '/ext/locale/ext-lang-' + I18n.locale.to_s + '.js' %>
+  </head>
+<body>
