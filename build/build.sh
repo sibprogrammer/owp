@@ -28,6 +28,7 @@ cd `dirname $0`
     rm -rf build test
     
     # prepare database
+    rake db:migrate RAILS_ENV="production"
   cd ..
   
   [ -f $PROJECT-r$REVISION.tgz ] && rm $PROJECT-r$REVISION.tgz
