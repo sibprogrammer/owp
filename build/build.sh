@@ -25,10 +25,11 @@ cd `dirname $0`
   fi
   
   cd $PROJECT
-    rm -rf build test
-    
     # prepare database
     rake db:migrate RAILS_ENV="production"
+    
+    # minimize distribution size
+    rm -rf build test vendor/rails/railties/doc/guides vendor/rails/activerecord/test
   cd ..
   
   [ -f $PROJECT-r$REVISION.tgz ] && rm $PROJECT-r$REVISION.tgz
