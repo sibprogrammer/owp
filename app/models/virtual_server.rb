@@ -1,5 +1,6 @@
 class VirtualServer < ActiveRecord::Base
-  attr_accessible :identity, :ip_address, :host_name, :hardware_server_id, :os_template_id, :password, :start_on_boot, :start_after_creation
+  attr_accessible :identity, :ip_address, :host_name, :hardware_server_id, 
+    :os_template_id, :password, :start_on_boot, :start_after_creation, :state
   attr_accessor :password, :start_on_boot, :start_after_creation
   belongs_to :hardware_server
   belongs_to :os_template
