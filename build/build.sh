@@ -25,6 +25,9 @@ cd `dirname $0`
   fi
   
   cd $PROJECT
+    VERSION=`grep "PRODUCT_VERSION" config/environment.rb | sed -e 's/[^0-9.]//g'`
+    echo $VERSION > version
+
     # prepare database
     rake db:migrate RAILS_ENV="production"
     
@@ -32,7 +35,7 @@ cd `dirname $0`
     rm -rf build test vendor/rails/railties/doc/guides vendor/rails/activerecord/test
   cd ..
   
-  [ -f $PROJECT-r$REVISION.tgz ] && rm $PROJECT-r$REVISION.tgz
-  tar --owner 0 -czf $PROJECT-r$REVISION.tgz ./$PROJECT
+  [ -f $PROJECT-$VERSION.$REVISION.tgz ] && rm $PROJECT-$VERSION.$REVISION.tgz
+  tar --owner 0 -czf $PROJECT-$VERSION.$REVISION.tgz ./$PROJECT
   
 } 2>&1 | tee build.log

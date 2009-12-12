@@ -28,7 +28,7 @@ will be used for OpenVZ containers:
 Place build archive to the server where you plan to run the panel. Move 
 build archive content to destination directory, e.g. /opt/ovz-web-panel/.
 This can be achived using the following command:
-tar -xzvf ovz-web-panel-rXXX.tgz -C /opt/
+tar -xzvf ovz-web-panel-X.X.XXX.tgz -C /opt/
 
 Panel is written on Ruby. So you need to have it to run the panel. Please check
 ruby version:
