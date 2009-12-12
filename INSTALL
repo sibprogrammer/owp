@@ -13,16 +13,17 @@ Table of contents:
 
 The following software is required to be installed on server with panel:
 * Ruby 1.8.6+
-* rubygems
+* RubyGems
 * Ruby SQLite3 support
 
 The following software is required to be installed on hardware server, which 
 will be used for OpenVZ containers:
 * OpenVZ kernel
 * OpenVZ tools (vzctl, vzlist)
+* Ruby 1.8.6+
 
 
-2. Installation the build
+2. Installation of the build
 ---
 
 Place build archive to the server where you plan to run the panel. Move 
@@ -31,7 +32,7 @@ This can be achived using the following command:
 tar -xzvf ovz-web-panel-X.X.XXX.tgz -C /opt/
 
 Panel is written on Ruby. So you need to have it to run the panel. Please check
-ruby version:
+the Ruby version:
 ruby -v
 If you haven't ruby installed jet it's time to install it. For example on Ubuntu
 using apt:
@@ -53,7 +54,7 @@ generated using the  following command for example:
 head -c 200 /dev/urandom | md5sum
 Key should be placed to hw-daemon.ini as a value of "key" parameter. Now daemon
 can be  started by the command: "sudo ruby hw-daemon.rb start". Daemon should
-work  under root user to be able to maniplate with containers.
+work  under root user to be able to manipulate with containers.
 
 To start the daemon run:
 sudo ruby hw-daemon.rb start
