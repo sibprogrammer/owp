@@ -105,6 +105,8 @@ ru:
           deletion_failed: "Во время отключения произошла ошибка."
       show:
         title: "Физический сервер {{name}}"
+      top_toolbar:
+        os_templates: "Шаблоны OS"
     virtual_servers:
       grid:
         title: "Список виртуальных серверов"
@@ -145,3 +147,9 @@ ru:
             network: "Сеть"
             system_access: "Доступ к системе"
             start_options: "Опции запуска"
+    os_templates:
+      title: "Шаблоны OS на физическом сервере {{name}}"
+      grid:
+        title: "Установленные шаблоны OS"
+        column:
+          name: "Имя"

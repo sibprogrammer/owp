@@ -105,6 +105,8 @@ en:
           deletion_failed: "Servers disconnection request failed."
       show:
         title: "Hardware Server {{name}}"
+      top_toolbar:
+        os_templates: "OS Templates"
     virtual_servers:
       grid:
         title: "Virtual servers list"
@@ -145,3 +147,9 @@ en:
             network: "Network"
             system_access: "System Access"
             start_options: "Start Options"
+    os_templates:
+      title: "OS Templates on Physical Server {{name}}"
+      grid:
+        title: "Installed OS Templates"
+        column:
+          name: "Name"

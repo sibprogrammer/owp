@@ -15,7 +15,7 @@ a { color: #000 }
 .copyright a { color: #FFFFFF; text-decoration: none; }
 .copyright a:hover { color: #F0F0F0; }
 
-#main-content-wrapper > .x-panel-header { height: 25px; line-height: 25px; font-size: 20px; font-weight: normal; }
+.main-content-center-panel > .x-panel-header { height: 25px; line-height: 25px; font-size: 20px; font-weight: normal; }
 #main-content { padding: 10px; }
 
 #panel-dashboard-stats { margin-top: 10px; }

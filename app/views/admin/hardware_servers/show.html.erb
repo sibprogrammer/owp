@@ -286,9 +286,18 @@ Ext.onReady(function() {
     }]
   });
   
-  virtualServersGrid.render('virtaul-servers-list');  
+  virtualServersGrid.render('virtaul-servers-list');
+  
+  var mainContentCenterPanel = Ext.getCmp('mainContentCenterPanel');
+  mainContentCenterPanel.getTopToolbar().insertButton(0, {
+    text: '<%= tjs('admin.hardware_servers.top_toolbar.os_templates') %>',
+    icon: '/images/table.png',
+    handler: function() {
+      document.location.href = '/admin/os-templates/list?hardware_server_id=<%= @hardware_server.id %>';
+    }
+  });
+  mainContentCenterPanel.doLayout()
 });
 <% end -%>
 
 <div id="virtaul-servers-list"></div>
-
