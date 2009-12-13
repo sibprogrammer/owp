@@ -101,6 +101,7 @@ Ext.onReady(function() {
     fields: [
       { name: 'id' },
       { name: 'host' },
+      { name: 'virtual_servers' },
       { name: 'description' }
     ]
   });
@@ -131,6 +132,12 @@ Ext.onReady(function() {
         },
         sortable: true,
         dataIndex: 'host'
+      }, { 
+        id: 'virtualServers',
+        header: '<%= tjs('admin.hardware_servers.grid.column.virtual_servers') %>',
+        sortable: true,
+        width: 200,
+        dataIndex: 'virtual_servers'
       }, { 
         id: 'description',
         header: '<%= tjs('admin.hardware_servers.grid.column.description') %>',

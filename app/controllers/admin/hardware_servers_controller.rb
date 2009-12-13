@@ -9,6 +9,7 @@ class Admin::HardwareServersController < AdminController
     @hardware_servers.map! { |item| {
       :id => item.id,
       :host => item.host,
+      :virtual_servers => item.virtual_servers.count,
       :description => item.description
     }}
     render :json => { :data => @hardware_servers }  

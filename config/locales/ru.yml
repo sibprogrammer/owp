@@ -86,6 +86,7 @@ ru:
         column:
           host_name: "Имя хоста"
           description: "Описание"
+          virtual_servers: "Виртуальные сервера"
         button:
           connect: "Подключить новый сервер"
           reconnect: "Переподключить сервер"

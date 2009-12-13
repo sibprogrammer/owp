@@ -86,6 +86,7 @@ en:
         column:
           host_name: "Host name"
           description: "Description"
+          virtual_servers: "Virtual Servers"
         button:
           connect: "Connect new server"
           reconnect: "Reconnect server"
