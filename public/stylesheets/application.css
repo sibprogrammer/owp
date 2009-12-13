@@ -1,5 +1,7 @@
 html, body { margin: 0px; padding: 0px; font-family: Arial; font-size: 11px; background-color: #F9F8F8; height: 100%; }
 
+a { color: #000 }
+
 .x-form-checkbox { margin-top: 4px; }
 .x-panel-body p { margin: 10px; }
 .x-grid3-row td { vertical-align: middle; }
