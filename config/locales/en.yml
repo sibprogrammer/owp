@@ -45,7 +45,7 @@ en:
       general:
         title: "General"
         dashboard: "Dashboard"
-        hardware_servers: "Hardware servers"
+        hardware_servers: "Physical servers"
         my_profile: "My profile"
         logout: "Logout"
       help:
@@ -66,7 +66,7 @@ en:
       title: "Dashboard"
       intro:
         title: "Intro"
-        text: "OpenVZ Web Panel is a GUI web-based frontend for controlling of hardware servers with OpenVZ virtualization technology."
+        text: "OpenVZ Web Panel is a GUI web-based frontend for controlling of physical servers with OpenVZ virtualization technology."
       stats_grid:
         title: "Statistics"
         column:
@@ -74,15 +74,15 @@ en:
           value: "Value"
         parameter:
           panel_users: "Panel users"
-          hardware_servers: "Hardware servers"
+          hardware_servers: "Physical servers"
           virtual_servers: "Virtual servers"
           virtual_servers_running: "Virtual servers - running"
           virtual_servers_stopped: "Virtual servers - stopped"
           os_templates: "OS templates"
     hardware_servers:
-      title: "Hardware Servers"
+      title: "Physical Servers"
       grid:
-        title: "Hardware servers list"
+        title: "Physical servers list"
         column:
           host_name: "Host name"
           description: "Description"
@@ -94,7 +94,7 @@ en:
           details: "Details"   
       form:
         connect_server:
-          title: "Connect new hardware server"
+          title: "Connect new physical server"
           button_connect: "Connect"
           field:
             host_name: "Host name"
@@ -104,7 +104,7 @@ en:
           sure_to_disconnect: "Are you sure you want to disconnect selected servers?"
           deletion_failed: "Servers disconnection request failed."
       show:
-        title: "Hardware Server {{name}}"
+        title: "Physical Server {{name}}"
       top_toolbar:
         os_templates: "OS Templates"
     virtual_servers:

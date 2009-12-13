@@ -16,7 +16,7 @@ The following software is required to be installed on server with panel:
 * RubyGems
 * Ruby SQLite3 support
 
-The following software is required to be installed on hardware server, which 
+The following software is required to be installed on physical server, which 
 will be used for OpenVZ containers:
 * OpenVZ kernel
 * OpenVZ tools (vzctl, vzlist)
@@ -46,8 +46,8 @@ kill -9 `pidof ruby`
 
 Then need to place hardware daemon on the server with OpenVZ. There are two
 possible scenarios: panel is installed on hardware node or panel is on separate
-server. Hardware server daemon located at <install-root>/utils/hw-daemon/ 
-Copy content of directory to OpenVZ hardware server node. Then copy 
+server. Physical server daemon located at <install-root>/utils/hw-daemon/ 
+Copy content of directory to OpenVZ physical server. Then copy 
 hw-daemon.ini.sample to hw-daemon.ini. Next step is to generate unique key, 
 which will be used for authorization between panel and daemon. Key can be 
 generated using the  following command for example:

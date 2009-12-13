@@ -22,7 +22,7 @@ Additional information can be found in LICENSE file.
 2. Description
 ---
 
-OpenVZ Web Panel is a GUI web-based frontend for controlling of the hardware 
+OpenVZ Web Panel is a GUI web-based frontend for controlling of the physical 
 and virtual servers with the OpenVZ virtualization technology.
 
 
@@ -30,8 +30,8 @@ and virtual servers with the OpenVZ virtualization technology.
 ---
 
 * Web-based control of OpenVZ contaniers
-* Ability to control several hardware servers
-* Separate hardware server daemon (ability to set up panel inside VE)
+* Ability to control several physical servers
+* Separate physical server daemon (ability to set up panel inside VE)
 * Pretty interface
 * Multilanguage support
 
