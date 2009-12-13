@@ -27,7 +27,7 @@ Owp.form.errorHandler = function(form, action, params) {
   // highlight fields with errors
   var errorsHash = new Array();  
   
-  Ext.each(action.result.errors, function(message) {
+  Ext.each(action.result.form_errors, function(message) {
     messageField = message[0];
     messageContent = message[1];
     

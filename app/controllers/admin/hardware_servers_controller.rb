@@ -21,7 +21,7 @@ class Admin::HardwareServersController < AdminController
     if @hardware_server.connect
       render :json => { :success => true }  
     else
-      render :json => { :success => false, :errors => @hardware_server.errors }
+      render :json => { :success => false, :form_errors => @hardware_server.errors }
     end
   end
   

@@ -50,7 +50,7 @@ class Admin::VirtualServersController < AdminController
     if virtual_server.create_physically
       render :json => { :success => true }  
     else
-      render :json => { :success => false, :errors => virtual_server.errors }
+      render :json => { :success => false, :form_errors => virtual_server.errors }
     end    
   end
   

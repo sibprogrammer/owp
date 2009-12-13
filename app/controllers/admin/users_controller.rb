@@ -4,7 +4,7 @@ class Admin::UsersController < AdminController
     user = User.authenticate(@current_user.login, params[:current_password])
     
     if !user
-      render :json => { :success => false, :errors => [['current_password', t('admin.my_profile.bad_current_password')]] }
+      render :json => { :success => false, :form_errors => [['current_password', t('admin.my_profile.bad_current_password')]] }
       return
     end
         
@@ -14,7 +14,7 @@ class Admin::UsersController < AdminController
     if user.save
       render :json => { :success => true }  
     else
-      render :json => { :success => false, :errors => user.errors }
+      render :json => { :success => false, :form_errors => user.errors }
     end
   end
   
