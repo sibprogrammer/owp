@@ -93,6 +93,11 @@ Ext.onReady(function() {
       }
     );
   }
+  
+  function seeDetails() {
+    var selectedNode = Ext.getCmp('hwServersGrid').getSelectionModel().getSelected();
+    document.location.href = '/admin/hardware-servers/show?id=' + selectedNode.id;
+  }
 
   var store = new Ext.data.JsonStore({
     url: '/admin/hardware-servers/list_data',
@@ -113,6 +118,12 @@ Ext.onReady(function() {
           hwServersGrid.removeButton.enable();
         } else {
           hwServersGrid.removeButton.disable();
+        }
+        
+        if (1 == selectionModel.getCount()) {
+          hwServersGrid.detailsButton.enable();
+        } else {
+          hwServersGrid.detailsButton.disable();
         }
       }
     }
@@ -164,6 +175,13 @@ Ext.onReady(function() {
       cls: 'x-btn-text-icon',
       icon: '/images/delete.png',
       ref: '../removeButton',
+      disabled: true
+    }, '-', {
+      text: '<%= tjs('admin.hardware_servers.grid.button.details') %>',
+      handler: seeDetails,
+      cls: 'x-btn-text-icon',
+      icon: '/images/wrench.png',
+      ref: '../detailsButton',
       disabled: true
     }]
   });

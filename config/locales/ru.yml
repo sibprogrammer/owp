@@ -91,6 +91,7 @@ ru:
           connect: "Подключить новый сервер"
           reconnect: "Переподключить сервер"
           disconnect: "Отключить сервер"
+          details: "Детали"
       form:
         connect_server:
           title: "Подключить новый физический сервер"

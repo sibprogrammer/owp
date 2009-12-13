@@ -90,7 +90,8 @@ en:
         button:
           connect: "Connect new server"
           reconnect: "Reconnect server"
-          disconnect: "Disconnect server"      
+          disconnect: "Disconnect server"   
+          details: "Details"   
       form:
         connect_server:
           title: "Connect new hardware server"
