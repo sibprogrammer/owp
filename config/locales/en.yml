@@ -24,6 +24,9 @@ en:
           attributes:
             host:
               taken: "Server with such name is already present."
+              connection: "Connection failed. Maybe daemon is not running."
+            auth_key:
+              bad_auth: "Unable to authorize. Probably incorrect auth key."
   about:
     copyright: "Copyright 2008-2009 SoftUnity."
     right_reserved: "All Rights Reserved."

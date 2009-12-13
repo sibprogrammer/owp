@@ -24,15 +24,24 @@ class HwDaemonClient
     rpc_call('hwDaemon.version')
   end
   
+  def ping
+    rpc_call('hwDaemon.version')
+  end
+  
   private
   
   def rpc_call(*args)
-    ok, result = @rpc_client.call2(*args)
+    begin
+      ok, result = @rpc_client.call2(*args)
+    rescue RuntimeError => error
+      RAILS_DEFAULT_LOGGER.error "XML-RPC runtime error: #{error}"
+      return false
+    end
     
     if ok then
       return result
     else
-      RAILS_DEFAULT_LOGGER.err "XML-RPC call error: #{result.faultCode}; #{result.faultString}"
+      RAILS_DEFAULT_LOGGER.error "XML-RPC call error: #{result.faultCode}; #{result.faultString}"
     end
   end
   

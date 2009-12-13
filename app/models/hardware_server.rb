@@ -5,11 +5,26 @@ class HardwareServer < ActiveRecord::Base
   has_many :virtual_servers, :dependent => :destroy
   
   def connect
-    save
-        
-    rpc_client = HwDaemonClient.new(self.host, self.auth_key)    
-    add_os_templates(rpc_client)
-    add_virtual_servers(rpc_client)
+    rpc_client = HwDaemonClient.new(self.host, self.auth_key)
+    
+    begin
+      if !rpc_client.ping
+        self.errors.add :auth_key, :bad_auth
+        return false
+      end
+    rescue SocketError => socket_error
+      self.errors.add :host, :connection
+      return false
+    end
+    
+    result = save
+    
+    if result
+      add_os_templates(rpc_client)
+      add_virtual_servers(rpc_client)
+    end
+    
+    result
   end
   
   def disconnect
