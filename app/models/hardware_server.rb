@@ -4,9 +4,7 @@ class HardwareServer < ActiveRecord::Base
   has_many :os_templates, :dependent => :destroy
   has_many :virtual_servers, :dependent => :destroy
   
-  def connect
-    rpc_client = HwDaemonClient.new(self.host, self.auth_key)
-    
+  def connect    
     begin
       if !rpc_client.ping
         self.errors.add :auth_key, :bad_auth
@@ -31,9 +29,23 @@ class HardwareServer < ActiveRecord::Base
     destroy
   end
   
+  def rpc_client
+    HwDaemonClient.new(self.host, self.auth_key)
+  end
+  
   def exec_command(command, args = '')
-    rpc_client = HwDaemonClient.new(self.host, self.auth_key)
     rpc_client.exec(command, args)
+  end
+    
+  def sync_os_templates
+    rpc_client.exec('ls', '/vz/template/cache')['output'].split.each { |template_name|
+      template_name.sub!(/\.tar.\gz/, '')
+      if !OsTemplate.find_by_name(template_name)
+        os_template = OsTemplate.new(:name => template_name)
+        os_template.hardware_server = self
+        os_template.save
+      end
+    }
   end
   
   private

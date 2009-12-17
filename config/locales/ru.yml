@@ -8,6 +8,8 @@ ru:
     error:
       title: "Ошибка"
       fill_form: "Пожалуйста, заполните форму."
+    info:
+      title: "Информация"
     button:
       save: "Сохранить"
       cancel: "Отмена"
@@ -81,7 +83,7 @@ ru:
           virtual_servers: "Виртуальные сервера"
           virtual_servers_running: "Виртуальные сервера - запущенные"
           virtual_servers_stopped: "Виртуальные сервера - остановленные"
-          os_templates: "Шаблоны OS"
+          os_templates: "Шаблоны ОС"
     hardware_servers:
       title: "Физические сервера"
       grid:
@@ -109,7 +111,7 @@ ru:
       show:
         title: "Физический сервер {{name}}"
       top_toolbar:
-        os_templates: "Шаблоны OS"
+        os_templates: "Шаблоны ОС"
     virtual_servers:
       grid:
         title: "Список виртуальных серверов"
@@ -118,7 +120,7 @@ ru:
           identity: "VEID"
           ip_address: "IP адрес"
           host_name: "Имя хоста"
-          os_template: "Шаблон OS"
+          os_template: "Шаблон ОС"
         button:
           create: "Создать вирутальный сервер"
           destroy: "Удалить вирутальный сервер"
@@ -137,8 +139,8 @@ ru:
           button_create: "Создать"
           field:
             identity: "ID сервера (VEID)"
-            os_template: "Шаблон OS"
-            select_os_template: "Выберите шаблон OS"
+            os_template: "Шаблон ОС"
+            select_os_template: "Выберите шаблон ОС"
             ip_address: "IP адрес"
             host_name: "Имя хоста"
             password: "Пароль root'а"
@@ -151,8 +153,19 @@ ru:
             system_access: "Доступ к системе"
             start_options: "Опции запуска"
     os_templates:
-      title: "Шаблоны OS на физическом сервере {{name}}"
+      title: "Шаблоны ОС на физическом сервере {{name}}"
       grid:
-        title: "Установленные шаблоны OS"
+        title: "Установленные шаблоны OС"
         column:
           name: "Имя"
+        button:
+          install_new_template: "Установить новый шаблон ОС"
+      form:
+        install:
+          title: "Установка нового шаблона ОС"
+          tab:
+            official: "Официальные"
+            contributed: "Пользовательские"
+          button_install: "Установить"  
+          failed: "Невозможно начать установку шаблонов ОС."
+          scheduled: "Инсталляция шаблонов ОС запланирована. Новые шаблоны появятся по прошествии некоторого времени."

@@ -1,7 +1,7 @@
 require 'webrick'
 require 'xmlrpc/server.rb'
 
-DAEMON_VERSION = '1.0'
+DAEMON_VERSION = '1.1'
 CURRENT_DIR = File.expand_path(File.dirname(__FILE__)) + '/'
 CONFIG_FILE = CURRENT_DIR + 'hw-daemon.ini';
 PID_FILE = CURRENT_DIR + 'hw-daemon.pid';
@@ -11,6 +11,7 @@ $SERVER_PORT = 7767
 $AUTH_KEY = ""
 $DEBUG = false
 $LOG = WEBrick::Log.new(LOG_FILE)
+$THREADS = {}
 
 class HwDaemonApiHandler < XMLRPC::WEBrickServlet  
   
@@ -25,6 +26,31 @@ class HwDaemonApiHandler < XMLRPC::WEBrickServlet
     { 'exit_code' => exit_code.to_i, 'output' => output }
   end
   
+  def job(command, args = '')
+    job_id = generate_id
+    
+    t = Thread.new do
+      result = self.exec(command, args)
+      $THREADS[job_id]['result'] = result
+    end    
+    
+    $THREADS[job_id] = { 'thread' => t }
+    
+    { 'job_id' => job_id }
+  end
+  
+  def job_status(job_id)
+    found = $THREADS.has_key?(job_id)
+    result = ''
+    
+    if found
+      alive = $THREADS[job_id]['thread'].alive?
+      result = $THREADS[job_id]['result'] unless alive
+    end
+    
+    { 'found' => found, 'alive' => alive, 'result' => result }
+  end
+  
   def service(request, response)
     WEBrick::HTTPAuth.basic_auth(request, response, '') do |user, password|
       user == 'admin' && password == $AUTH_KEY
@@ -36,6 +62,13 @@ class HwDaemonApiHandler < XMLRPC::WEBrickServlet
   def handle(method, *params)
     $LOG.debug("Execute method: #{method}")    
     super
+  end
+  
+  private
+  
+  def generate_id
+    symbols = [('0'..'9'),('a'..'f')].map{ |i| i.to_a }.flatten
+    (1..32).map{ symbols[rand(symbols.length)] }.join
   end
   
 end
@@ -155,4 +188,3 @@ class HwDaemonUtil
 end
 
 HwDaemonUtil.new
-

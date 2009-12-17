@@ -18,7 +18,16 @@ class HwDaemonClient
   def exec(command, args = '')
     RAILS_DEFAULT_LOGGER.info "Executing command: #{command} #{args}"
     rpc_call('hwDaemon.exec', command, args)
-  end  
+  end
+  
+  def job(command, args = '')
+    RAILS_DEFAULT_LOGGER.info "Scheduling job: #{command} #{args}"
+    rpc_call('hwDaemon.job', command, args)
+  end
+  
+  def job_status(job_id)
+    rpc_call('hwDaemon.job_status', job_id)
+  end
   
   def daemon_version
     rpc_call('hwDaemon.version')
