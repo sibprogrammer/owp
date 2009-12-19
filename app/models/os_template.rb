@@ -29,7 +29,7 @@ class OsTemplate < ActiveRecord::Base
   end
   
   def self.download(hardware_server, path, name)
-    hardware_server.job_command('wget', "-P /vz/template/cache/ ftp://download.openvz.org/#{path}/#{name}.tar.gz")
+    hardware_server.rpc_client.job('wget', "-P /vz/template/cache/ ftp://download.openvz.org/#{path}/#{name}.tar.gz")
   end
   
 end
