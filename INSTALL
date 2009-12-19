@@ -29,7 +29,7 @@ will be used for OpenVZ containers:
 Place build archive to the server where you plan to run the panel. Move 
 build archive content to destination directory, e.g. /opt/ovz-web-panel/.
 This can be achived using the following command:
-tar -xzvf ovz-web-panel-X.X.XXX.tgz -C /opt/
+tar -xzvf ovz-web-panel-X.X.tgz -C /opt/
 
 Panel is written on Ruby. So you need to have it to run the panel. Please check
 the Ruby version:
@@ -39,10 +39,10 @@ using apt:
 apt-get install ruby rubygems libsqlite3-ruby
 
 To start the panel run the command:
-ruby /opt/ovz-web-panel/script/server -e production -d
+sudo ruby /opt/ovz-web-panel/script/server -e production -d
 
 To shutdown application the following command can be used (be careful):
-kill -9 `pidof ruby`
+sudo kill -9 `pidof ruby`
 
 Then need to place hardware daemon on the server with OpenVZ. There are two
 possible scenarios: panel is installed on hardware node or panel is on separate

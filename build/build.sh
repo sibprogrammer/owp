@@ -35,7 +35,7 @@ cd `dirname $0`
     rm -rf build test vendor/rails/railties/doc/guides vendor/rails/activerecord/test
   cd ..
   
-  [ -f $PROJECT-$VERSION.$REVISION.tgz ] && rm $PROJECT-$VERSION.$REVISION.tgz
-  tar --owner 0 -czf $PROJECT-$VERSION.$REVISION.tgz ./$PROJECT
+  [ -f $PROJECT-$VERSION.tgz ] && rm $PROJECT-$VERSION.tgz
+  tar --owner 0 -czf $PROJECT-$VERSION.tgz ./$PROJECT
   
 } 2>&1 | tee build.log
