@@ -19,13 +19,16 @@ Ext.onReady(function() {
   }
   
   function clearGridsSelections() {
-    if ('undefined' != typeof windowInstallNewTemplate.officialTemplatesGrid) {
-      windowInstallNewTemplate.officialTemplatesGrid.getSelectionModel().clearSelections();
-    }
-    
-    if ('undefined' != typeof windowInstallNewTemplate.contributedTemplatesGrid) {
-      windowInstallNewTemplate.contributedTemplatesGrid.getSelectionModel().clearSelections();
-    }
+    // TODO: remove try-catch after detailed investigation
+    try {
+      if ('undefined' != typeof windowInstallNewTemplate.officialTemplatesGrid) {
+        windowInstallNewTemplate.officialTemplatesGrid.getSelectionModel().clearSelections();
+      }
+      
+      if ('undefined' != typeof windowInstallNewTemplate.contributedTemplatesGrid) {
+        windowInstallNewTemplate.contributedTemplatesGrid.getSelectionModel().clearSelections();
+      }
+    } catch(e) { }
   }
 
   function installTemplates() {
@@ -104,6 +107,20 @@ Ext.onReady(function() {
     });
   
     if (!windowInstallNewTemplate) {
+      var storeOfficialTemplates = new Ext.data.JsonStore({
+        url: '/admin/os-templates/available_list_data?hardware_server_id=' + <%= @hardware_server.id %>,
+        root: 'data',
+        autoLoad: true,
+        fields: [{ name: 'name' }]
+      });
+      
+      var storeContributedTemplates = new Ext.data.JsonStore({
+        url: '/admin/os-templates/available_list_data?contributed=yes&hardware_server_id=' + <%= @hardware_server.id %>,
+        root: 'data',
+        autoLoad: true,
+        fields: [{ name: 'name' }]
+      });
+    
       windowInstallNewTemplate = new Ext.Window({
         title: '<%= tjs('admin.os_templates.form.install.title') %>',
         iconCls: 'icon-window-add',
@@ -123,12 +140,7 @@ Ext.onReady(function() {
             xtype: 'grid',
             layout: 'fit',
             ref: '../officialTemplatesGrid',
-            store: new Ext.data.JsonStore({
-              url: '/admin/os-templates/available_list_data?hardware_server_id=' + <%= @hardware_server.id %>,
-              root: 'data',
-              autoLoad: true,
-              fields: [{ name: 'name' }]
-            }),
+            store: storeOfficialTemplates,
             cm: new Ext.grid.ColumnModel([selectionModelOfficial, {
               id: 'name',
               header: '<%= tjs('admin.os_templates.grid.column.name') %>',
@@ -147,12 +159,7 @@ Ext.onReady(function() {
             xtype: 'grid',
             layout: 'fit',
             ref: '../contributedTemplatesGrid',
-            store: new Ext.data.JsonStore({
-              url: '/admin/os-templates/available_list_data?contributed=yes&hardware_server_id=' + <%= @hardware_server.id %>,
-              root: 'data',
-              autoLoad: true,
-              fields: [{ name: 'name' }]
-            }),
+            store: storeContributedTemplates,
             cm: new Ext.grid.ColumnModel([selectionModelContributed, {
               id: 'name',
               header: '<%= tjs('admin.os_templates.grid.column.name') %>',
