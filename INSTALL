@@ -42,7 +42,7 @@ To start the panel run the command:
 sudo ruby /opt/ovz-web-panel/script/server -e production -d
 
 To shutdown application the following command can be used (be careful):
-sudo kill -9 `pidof ruby`
+sudo kill -2 `pidof ruby`
 
 Then need to place hardware daemon on the server with OpenVZ. There are two
 possible scenarios: panel is installed on hardware node or panel is on separate
