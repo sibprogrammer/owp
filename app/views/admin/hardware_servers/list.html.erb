@@ -133,6 +133,13 @@ Ext.onReady(function() {
     id: 'hwServersGrid',
     store: store,
     title: '<%= tjs('admin.hardware_servers.grid.title') %>',
+    loadMask: true,
+    tools: [{ 
+      id: 'refresh',
+      handler: function() {
+        hwServersGrid.getStore().reload();
+      }
+    }],
     cm: new Ext.grid.ColumnModel([
       selectionModel,
       {

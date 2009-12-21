@@ -205,6 +205,13 @@ Ext.onReady(function() {
     id: 'osTemplatesGrid',
     store: store,
     title: '<%= tjs('admin.os_templates.grid.title') %>',
+    loadMask: true,
+    tools: [{ 
+      id: 'refresh',
+      handler: function() {
+        osTemplatesGrid.getStore().reload();
+      }
+    }],
     cm: new Ext.grid.ColumnModel([
       selectionModel,
       {

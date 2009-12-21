@@ -210,6 +210,13 @@ Ext.onReady(function() {
     title: '<%= tjs('admin.virtual_servers.grid.title') %>',
     iconCls: 'icon-items-list',
     store: store,
+    loadMask: true,
+    tools: [{ 
+      id: 'refresh',
+      handler: function() {
+        virtualServersGrid.getStore().reload();
+      }
+    }],
     cm: new Ext.grid.ColumnModel([
       selectionModel, 
       { 
