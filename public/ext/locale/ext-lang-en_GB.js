@@ -1,5 +1,5 @@
 /*!
- * Ext JS Library 3.0.0
+ * Ext JS Library 3.1.0
  * Copyright(c) 2006-2009 Ext JS, LLC
  * licensing@extjs.com
  * http://www.extjs.com/license
@@ -129,6 +129,10 @@ if(Ext.PagingToolbar){
     displayMsg     : "Displaying {0} - {1} of {2}",
     emptyMsg       : 'No data to display'
   });
+}
+
+if(Ext.form.BasicForm){
+    Ext.form.BasicForm.prototype.waitTitle = "Please Wait..."
 }
 
 if(Ext.form.Field){

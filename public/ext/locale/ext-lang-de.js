@@ -1,14 +1,14 @@
 /*!
- * Ext JS Library 3.0.0
+ * Ext JS Library 3.1.0
  * Copyright(c) 2006-2009 Ext JS, LLC
  * licensing@extjs.com
  * http://www.extjs.com/license
  */
 /*
  * German translation
- * By schmidetzki and humpdi
- * 04-07-2007
- * Updated by wm003 10-31-2007
+ * 2007-Apr-07 update by schmidetzki and humpdi
+ * 2007-Oct-31 update by wm003
+ * 2009-Jul-10 update by Patrick Matsumura and Rupert Quaderer
  */
 
 Ext.UpdateManager.defaults.indicatorText = '<div class="loading-indicator">Übertrage Daten ...</div>';
@@ -299,7 +299,7 @@ if(Ext.grid.BooleanColumn){
 
 if(Ext.grid.NumberColumn){
     Ext.apply(Ext.grid.NumberColumn.prototype, {
-        format : '0.000,00'
+        format : '0.000,00/i'
     });
 }
 
