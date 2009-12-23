@@ -9,7 +9,7 @@ class Admin::VirtualServersController < AdminController
       :ip_address => item.ip_address,
       :host_name => item.host_name,
       :state => item.state,
-      :os_template_name => item.os_template.name
+      :os_template_name => item.os_template ? item.os_template.name : '-'
     }}
     render :json => { :data => virtual_servers }  
   end
