@@ -223,7 +223,7 @@ Ext.onReady(function() {
         id: 'state',
         header: '<%= tjs('admin.virtual_servers.grid.column.state') %>',
         renderer: function(value) {
-          var image = ('running' == value) ? 'control_play_blue.png' : 'control_stop_blue.png';
+          var image = ('running' == value) ? 'run.png' : 'stop.png';
           return '<img src="/images/' + image + '"/>';
         },
         width: 60,
