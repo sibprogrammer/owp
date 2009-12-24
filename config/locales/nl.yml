@@ -1,0 +1,172 @@
+nl:
+  language:
+    title: "Nederlands"
+  form:
+    loading: "Even geduld aub...."
+    confirmation: "Bevestigen"
+    performing_task: "Even geduld aub, de taak word uitgevoerd" 
+    error:
+      title: "Error"
+      fill_form: "Vul aub het formulier in"
+    info:
+      title: "Informatie"
+    button:
+      save: "Opslaan"
+      cancel: "Annuleren"
+      create: "Creeer"
+  activerecord:
+    errors:
+      models:
+        user:
+          attributes:
+            password:
+              confirmation: "Paswoorden zijn niet gelijk."
+              too_short: "Paswoord is te kort (minimum symbolen: {{count}})."
+        hardware_server:
+          attributes:
+            host:
+              taken: "Server met dezelde naam al aanwezig."
+              connection: "Connectie niet gelukt. Draait de daemon wel?"
+            auth_key:
+              bad_auth: "Authenticeren mislukt. Klopt de auth key wel?"
+  about:
+    copyright: "Copyright 2008-2009 SoftUnity."
+    right_reserved: "All Rights Reserved."
+    about_program: "Over dit programma"
+    author: "Autheur"
+    web_site: "Web site"
+  login:
+    page_title: "Login"
+    window_title: "Login in {{product}}"
+    username: "Gebruikersnaam"
+    password: "Paswoord"
+    remember_me: "Onthoud mij"
+    button_login: "Log in"
+    locale: "Taal"
+    bad_login: "login of paswoord niet correct."
+  admin:
+    menu:
+      title: "Menu"
+      general:
+        title: "Hoofdmenu"
+        dashboard: "Dashboard"
+        hardware_servers: "Hardware Node(s)"
+        my_profile: "Mijn profiel"
+        logout: "Log uit"
+      help:
+        title: "Help"
+        documentation: "Documentatie"
+        support: "Support"
+    operations:
+      up_level: "Omhoog"
+    logout: "Weet je zeker dat je uit wilt loggen?"
+    my_profile:
+      title: "Mijn profiel"
+      user_name: "User Name"
+      current_password: "Huidig Paswoord"
+      new_password: "Nieuw Paswoord"
+      confirm_password: "Bevestig Paswoord"
+      bad_current_password: "Foutief Wachtwoord"
+    dashboard:
+      title: "Dashboard"
+      intro:
+        title: "Intro"
+        text: "OpenVZ Web Panel is een GUI web-based frontend voor het besturen van servers met OpenVZ virtualizatie technologie."
+      stats_grid:
+        title: "Statistieken"
+        column:
+          parameter: "Parameter"
+          value: "Waarde"
+        parameter:
+          panel_users: "Paneel gebruikers"
+          hardware_servers: "Hardware Nodes"
+          virtual_servers: "Virtuele servers"
+          virtual_servers_running: "Virtuele servers - Draaiend"
+          virtual_servers_stopped: "Virtuele servers - Gestopt"
+          os_templates: "OS templates"
+    hardware_servers:
+      title: "Hardware Node(s)"
+      grid:
+        title: "Hardware Node(s) lijst"
+        column:
+          host_name: "Host name"
+          description: "Beschrijving"
+          virtual_servers: "Virtuele Servers"
+        button:
+          connect: "Verbind nieuwe server"
+          reconnect: "Verbind server opnieuw"
+          disconnect: "Verbreek server verbinding"   
+          details: "Details"   
+      form:
+        connect_server:
+          title: "Verbind nieuwe Hardware Node"
+          button_connect: "Verbind"
+          field:
+            host_name: "Host name"
+            auth_key: "Authorisatie Sleutel"
+            description: "Beschrijving"
+        disconnect_server:
+          sure_to_disconnect: "Weet je zeker dat je de verbinding met de gekozen server wilt verbreken?" 
+          deletion_failed: "Verzoek Mislukt."
+      show:
+        title: "Hardware Node {{name}}"
+      top_toolbar:
+        os_templates: "OS Templates"
+    virtual_servers:
+      grid:
+        title: "Virtuele servers lijst"
+        column:
+          state: "Status"
+          identity: "VEID"
+          ip_address: "IP Adres"
+          host_name: "Host Name"
+          os_template: "OS Template"
+        button:
+          create: "Maak virtuele server"
+          destroy: "Verwijder virtuele server"
+          change_state: "Status aanpassen"
+          start: "Start"
+          restart: "Herstart"
+          stop: "Stop"
+      form:
+        change_state:
+          failed: "Status aanpassing mislukt"
+        remove_server:
+          sure_to_remove: "Weet je zeker dat je de gekozen virtuele servers wilt verwijderen?"
+          deletion_failed: "verwijderen mislukt."
+        create_server:
+          title: "Nieuwe virtuele server maken"
+          button_create: "Creeer"
+          field:
+            identity: "Server ID (VEID)"
+            os_template: "OS Template"
+            select_os_template: "Kies OS template"
+            ip_address: "IP Adres"
+            host_name: "Host Name"
+            password: "Root Paswoord"
+            confirm_password: "Bevestig Paswoord"
+            start_on_boot: "Opstarten bij HardwareNode boot?"
+            start_after_creation: "Starten na aanmaken?"
+          fieldset:
+            general: "Generiek"
+            network: "Netwerk"
+            system_access: "System Toegang"
+            start_options: "Start Opties"
+    os_templates:
+      title: "OS Templates Op Hardware Node {{name}}"
+      grid:
+        title: "Geintalleerde OS Templates"
+        column:
+          name: "Naam"
+        button:
+          install_new_template: "Installeer Nieuwe OS Template(s)"
+      form:
+        install:
+          title: "Installatie van nieuw OS template"
+          tab:
+            official: "Officiele Templates"
+            contributed: "Community Templates"
+          button_install: "Installeer"
+          failed: "Installatie can OS templates mislukt."
+          scheduled: "OS templates installatie is geplanned. Nieuwe templates verschijnen na een tijdje." 
+
