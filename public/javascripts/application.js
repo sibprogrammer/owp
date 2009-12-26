@@ -115,7 +115,9 @@ Owp.list.groupAction = function(config) {
           icon: Ext.MessageBox.ERROR
         });
       } else {
-        Ext.getCmp(config.gridName).store.reload();
+        var grid = Ext.getCmp(config.gridName);
+        grid.store.reload();
+        grid.getSelectionModel().clearSelections();
       }      
     },
     failure: function() {
