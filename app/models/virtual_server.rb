@@ -6,31 +6,31 @@ class VirtualServer < ActiveRecord::Base
   belongs_to :os_template
   
   def start
-    self.hardware_server.exec_command('vzctl', 'start ' + self.identity.to_s)
+    self.hardware_server.rpc_client.exec('vzctl', 'start ' + self.identity.to_s)
     self.state = 'running'
     save
   end
   
   def stop
-    self.hardware_server.exec_command('vzctl', 'stop ' + self.identity.to_s)
+    self.hardware_server.rpc_client.exec('vzctl', 'stop ' + self.identity.to_s)
     self.state = 'stopped'
     save
   end
   
   def restart
-    self.hardware_server.exec_command('vzctl', 'restart ' + self.identity.to_s)
+    self.hardware_server.rpc_client.exec('vzctl', 'restart ' + self.identity.to_s)
     self.state = 'running'
     save
   end
     
   def delete_physically
     stop
-    self.hardware_server.exec_command('vzctl', 'destroy ' + self.identity.to_s)
+    self.hardware_server.rpc_client.exec('vzctl', 'destroy ' + self.identity.to_s)
     destroy
   end
      
   def create_physically    
-    self.hardware_server.exec_command('vzctl', "create #{self.identity.to_s}" +
+    self.hardware_server.rpc_client.exec('vzctl', "create #{self.identity.to_s}" +
       " --ostemplate #{self.os_template.name}" +
       " --ipadd #{self.ip_address}" +
       " --hostname #{self.host_name}"
@@ -44,8 +44,8 @@ class VirtualServer < ActiveRecord::Base
   private
   
   def tune_server_settings    
-    self.hardware_server.exec_command('vzctl', "set #{self.identity.to_s} --userpasswd root:#{password}") if password
-    self.hardware_server.exec_command('vzctl', "set #{self.identity.to_s} --onboot yes --save") if start_on_boot
+    self.hardware_server.rpc_client.exec('vzctl', "set #{self.identity.to_s} --userpasswd root:#{password}") if password
+    self.hardware_server.rpc_client.exec('vzctl', "set #{self.identity.to_s} --onboot yes --save") if start_on_boot
     self.start if start_after_creation
   end
   

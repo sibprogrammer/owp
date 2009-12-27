@@ -27,11 +27,7 @@ class HardwareServer < ActiveRecord::Base
   def rpc_client
     HwDaemonClient.new(self.host, self.auth_key)
   end
-  
-  def exec_command(command, args = '')
-    rpc_client.exec(command, args)
-  end
-    
+      
   def sync_os_templates
     os_templates_on_server = rpc_client.exec('ls', '/vz/template/cache')['output'].split
     
