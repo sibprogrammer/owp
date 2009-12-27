@@ -91,7 +91,9 @@
             text: '<%= tjs('admin.menu.general.hardware_servers') %>',
             href: '/admin/hardware-servers/list',
             icon: '/images/server.png',
-            leaf: true
+            expandable: false,
+            expanded: true,
+            children: <%= @servers_list.to_json %>
           }, {
             cls: 'menu-item',
             text: '<%= tjs('admin.menu.general.my_profile') %>',
