@@ -18,6 +18,11 @@ class OsTemplate < ActiveRecord::Base
   def self.install_contributed(hardware_server, name)
     self.download(hardware_server, '/template/precreated/contrib/', name)
   end
+
+  def delete_physically
+    hardware_server.rpc_client.exec("rm /vz/template/cache/#{self.name}.tar.gz")
+    destroy
+  end
   
   private
   

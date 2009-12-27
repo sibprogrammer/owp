@@ -160,6 +160,7 @@ en:
           name: "Name"
         button:
           install_new_template: "Install New OS Template"
+          remove: "Remove Template"
       form:
         install:
           title: "Installation of new OS template"
@@ -169,3 +170,6 @@ en:
           button_install: "Install"
           failed: "Failed to start installation of OS templates."
           scheduled: "OS templates installation was scheduled. New templates appeared after some time."
+        remove_template:
+          sure_to_remove: "Are you sure you want to remove selected OS templates?"
+          deletion_failed: "Unable to delete some OS templates."

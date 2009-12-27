@@ -55,4 +55,17 @@ class Admin::OsTemplatesController < AdminController
     render :json => { :success => true }  
   end
   
+  def delete
+    params[:ids].split(',').each { |id|
+      os_template = OsTemplate.find(id) 
+      
+      if !os_template.delete_physically
+        render :json => { :success => false }  
+        return
+      end
+    }
+    
+    render :json => { :success => true }
+  end
+  
 end
