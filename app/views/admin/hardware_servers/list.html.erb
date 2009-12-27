@@ -98,6 +98,18 @@ Ext.onReady(function() {
     var selectedNode = Ext.getCmp('hwServersGrid').getSelectionModel().getSelected();
     document.location.href = '/admin/hardware-servers/show?id=' + selectedNode.id;
   }
+  
+  function syncHwServer() {
+    Owp.list.groupAction({
+      gridName: 'hwServersGrid',
+      url: '/admin/hardware-servers/sync',
+      waitMsg: '<%= tjs('form.performing_task') %>',
+      failure: {
+        title: '<%= tjs('form.error.title') %>',
+        msg: '<%= tjs('admin.hardware_servers.form.sync.sync_failed') %>'
+      }
+    });
+  }
 
   var store = new Ext.data.JsonStore({
     url: '/admin/hardware-servers/list_data',
@@ -116,8 +128,10 @@ Ext.onReady(function() {
       selectionchange: function(selectionModel) {
         if (selectionModel.getCount()) {
           hwServersGrid.removeButton.enable();
+          hwServersGrid.syncButton.enable();
         } else {
           hwServersGrid.removeButton.disable();
+          hwServersGrid.syncButton.disable();
         }
         
         if (1 == selectionModel.getCount()) {
@@ -182,6 +196,13 @@ Ext.onReady(function() {
       cls: 'x-btn-text-icon',
       icon: '/images/delete.png',
       ref: '../removeButton',
+      disabled: true
+    }, '-', {
+      text: '<%= tjs('admin.hardware_servers.grid.button.sync') %>',
+      handler: syncHwServer,
+      cls: 'x-btn-text-icon',
+      icon: '/images/arrow_refresh.png',
+      ref: '../syncButton',
       disabled: true
     }, '-', {
       text: '<%= tjs('admin.hardware_servers.grid.button.details') %>',

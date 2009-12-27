@@ -96,7 +96,8 @@ en:
           connect: "Connect new server"
           reconnect: "Reconnect server"
           disconnect: "Disconnect server"   
-          details: "Details"   
+          details: "Details" 
+          sync: "Synchronization"  
       form:
         connect_server:
           title: "Connect new physical server"
@@ -108,6 +109,8 @@ en:
         disconnect_server:
           sure_to_disconnect: "Are you sure you want to disconnect selected servers?"
           deletion_failed: "Servers disconnection request failed."
+        sync:
+          sync_failed: "Unable to synchronize information on some physical servers."
       show:
         title: "Physical Server {{name}}"
       top_toolbar:

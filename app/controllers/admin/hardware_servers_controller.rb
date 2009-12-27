@@ -45,4 +45,17 @@ class Admin::HardwareServersController < AdminController
     @up_level = '/admin/hardware-servers/list'
   end
   
+  def sync
+    params[:ids].split(',').each { |id|
+      hardware_server = HardwareServer.find(id)
+      
+      if !hardware_server.sync
+        render :json => { :success => false }  
+        return
+      end
+    }
+    
+    render :json => { :success => true }  
+  end
+  
 end
