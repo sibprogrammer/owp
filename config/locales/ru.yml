@@ -52,6 +52,7 @@ ru:
         dashboard: "Рабочий стол"
         hardware_servers: "Физические сервера"
         my_profile: "Мой профиль"
+        event_log: "Журнал событий"
         logout: "Выход" 
       help:
         title: "Помощь"
@@ -67,6 +68,14 @@ ru:
       new_password: "Новый пароль"
       confirm_password: "Подтверждение пароля"
       bad_current_password: "Неверный текущий пароль."
+    events:
+      hardware_server:
+        connect: "Физический сервер {{host}} был подключен."
+        disconnect: "Физический сервер {{host}} был отключен."
+        sync: "Состояние сервера {{host}} было синхронизировано."
+      virtual_server:
+        created: "Виртуальный сервер {{identity}} был создан."
+        removed: "Виртуальный сервер {{identity}} был удален."
     dashboard:
       title: "Рабочий стол"
       intro:
@@ -176,3 +185,12 @@ ru:
         remove_template:
           sure_to_remove: "Вы действительно хотите удалить выбранные шаблоны ОС"
           deletion_failed: "Не удалось удалить некоторые шаблоны ОС."
+    event_log:
+      title: "Журнал событий"
+      grid:
+        title: "Последние события"
+        column:
+          level: "Статус"
+          created_at: "Дата"
+          message: "Сообщение"
+          id: "ID"

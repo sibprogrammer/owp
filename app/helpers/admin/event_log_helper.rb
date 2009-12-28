@@ -1,0 +1,2 @@
+module Admin::EventLogHelper
+end

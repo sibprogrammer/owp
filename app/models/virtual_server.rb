@@ -27,6 +27,7 @@ class VirtualServer < ActiveRecord::Base
     stop
     self.hardware_server.rpc_client.exec('vzctl', 'destroy ' + self.identity.to_s)
     destroy
+    EventLog.info("virtual_server.removed", { :identity => self.identity })
   end
      
   def create_physically    
@@ -38,6 +39,7 @@ class VirtualServer < ActiveRecord::Base
     self.state = 'stopped'
     result = save
     tune_server_settings
+    EventLog.info("virtual_server.created", { :identity => self.identity })
     result
   end
   

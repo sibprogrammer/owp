@@ -1,0 +1,84 @@
+<% @page_title = t('admin.event_log.title') %>
+
+<% javascript_tag do -%>
+Ext.onReady(function() {
+
+  var store = new Ext.data.JsonStore({
+    url: '/admin/event-log/list_data',
+    root: 'data',
+    autoLoad: true,
+    fields: [
+      { name: 'id' },
+      { name: 'level' },
+      { name: 'created_at' },
+      { name: 'message' }
+    ]
+  });
+
+  var selectionModel = new Ext.grid.RowSelectionModel();
+
+  var eventLogGrid = new Ext.grid.GridPanel({
+    id: 'eventLogGrid',
+    store: store,
+    title: '<%= tjs('admin.event_log.grid.title') %>',
+    loadMask: true,
+    tools: [{ 
+      id: 'refresh',
+      handler: function() {
+        eventLogGrid.getStore().reload();
+      }
+    }],
+    cm: new Ext.grid.ColumnModel([
+      {
+        id: 'level',
+        header: '<%= tjs('admin.event_log.grid.column.level') %>',
+        width: 50,
+        renderer: function(level, metadata, record) {
+          var icon = "exclamation.png";
+          
+          if (0 == level) {
+            icon = "bug.png";
+          } else if (1 == level) {
+            icon = "information.png";
+          }
+          
+          return '<img src="/images/' + icon + '"/>';
+        },
+        align: 'center',
+        sortable: true,
+        dataIndex: 'level'
+      }, { 
+        id: 'id',
+        header: '<%= tjs('admin.event_log.grid.column.id') %>',
+        width: 50,
+        sortable: true,
+        dataIndex: 'id'
+      }, {
+        id: 'created_at',
+        header: '<%= tjs('admin.event_log.grid.column.created_at') %>',
+        width: 130,
+        sortable: true,
+        dataIndex: 'created_at'
+      }, { 
+        id: 'message',
+        header: '<%= tjs('admin.event_log.grid.column.message') %>',
+        sortable: true,
+        dataIndex: 'message'
+      }
+    ]),
+    sm: selectionModel,
+    stripeRows: true,
+    autoExpandColumn: 'message',
+    autoHeight: true,
+    autoWidth: true,
+    stripeRows: true,
+    frame: true,
+    iconCls: 'icon-items-list'
+  });
+  
+  eventLogGrid.render('event-log-list');
+
+});
+<% end -%>
+
+<div id="event-log-list"></div>

@@ -52,6 +52,7 @@ en:
         dashboard: "Dashboard"
         hardware_servers: "Physical servers"
         my_profile: "My profile"
+        event_log: "Events log"
         logout: "Logout"
       help:
         title: "Help"
@@ -67,6 +68,14 @@ en:
       new_password: "New Password"
       confirm_password: "Confirm Password"
       bad_current_password: "Invalid current password."
+    events:
+      hardware_server:
+        connect: "Physical server {{host}} was connected."
+        disconnect: "Physical server {{host}} was disconnected."
+        sync: "Server's {{host}} state was synchronized."
+      virtual_server:
+        created: "Virtual server {{identity}} was created."
+        removed: "Virtual server {{identity}} was removed."
     dashboard:
       title: "Dashboard"
       intro:
@@ -176,3 +185,12 @@ en:
         remove_template:
           sure_to_remove: "Are you sure you want to remove selected OS templates?"
           deletion_failed: "Unable to delete some OS templates."
+    event_log:
+      title: "Events Log"
+      grid:
+        title: "Latest events"
+        column:
+          level: "Status"
+          created_at: "Date"
+          message: "Message"
+          id: "ID"

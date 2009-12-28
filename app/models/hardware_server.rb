@@ -16,12 +16,14 @@ class HardwareServer < ActiveRecord::Base
     end
     
     result = save    
-    sync if result    
+    sync if result
+    EventLog.info("hardware_server.connect", { :host => self.host })
     result
   end
   
   def disconnect
     destroy
+    EventLog.info("hardware_server.disconnect", { :host => self.host })
   end
   
   def rpc_client
@@ -81,6 +83,7 @@ class HardwareServer < ActiveRecord::Base
   def sync
     sync_os_templates
     sync_virtual_servers
+    EventLog.info("hardware_server.sync", { :host => self.host })
   end
     
 end
