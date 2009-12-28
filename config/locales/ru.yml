@@ -33,7 +33,9 @@ ru:
     copyright: "Авторское право 2008-2009 SoftUnity."
     right_reserved: "Все права зарезервированы."
     about_program: "О программе"
-    author: "Автор"
+    author: "Главный разработчик"
+    contributors: "Участники"
+    contributors_list: "список"
     web_site: "Веб-сайт"
   login:
     page_title: "Вход"
