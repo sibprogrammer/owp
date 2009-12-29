@@ -109,9 +109,11 @@ ru:
           disconnect: "Отключить сервер"
           details: "Детали"
           sync: "Синхронизация"
+          edit: "Изменить настройки"
       form:
         connect_server:
           title: "Подключить новый физический сервер"
+          edit_title: "Изменить настройки физического сервера"
           button_connect: "Подключить"
           field:
             host_name: "Имя хоста"

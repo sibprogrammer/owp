@@ -30,6 +30,7 @@ a { color: #000 }
 .icon-window-login { background-image: url(/images/key.png) !important; }
 .icon-window-my-profile { background-image: url(/images/vcard.png) !important; }
 .icon-window-add { background-image: url(/images/add.png) !important; }
+.icon-window-edit { background-image: url(/images/wrench.png) !important; }
 .icon-button-login { background-image: url(/images/arrow_right.png) !important; }
 .icon-button-save { background-image: url(/images/accept.png) !important; }
 .icon-button-add { background-image: url(/images/add.png) !important; }

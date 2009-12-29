@@ -108,10 +108,12 @@ en:
           reconnect: "Reconnect server"
           disconnect: "Disconnect server"   
           details: "Details" 
-          sync: "Synchronization"  
+          sync: "Synchronization"
+          edit: "Change settings"
       form:
         connect_server:
           title: "Connect new physical server"
+          edit_title: "Change physical server settings"
           button_connect: "Connect"
           field:
             host_name: "Host name"
