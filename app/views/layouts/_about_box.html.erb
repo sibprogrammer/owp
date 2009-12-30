@@ -1,0 +1,18 @@
+Ext.get('copyright-link').on('click', function(event) {
+  Ext.MessageBox.show({
+    title: '<%= tjs('about.about_program') %>',
+    icon: Ext.MessageBox.INFO,
+    buttons: Ext.Msg.OK,
+    animEl: 'copyright-link',
+    minWidth: 400,
+    msg: '<%= tjs('about.author') %>' +
+      ': <a href="mailto:sibprogrammer@gmail.com">Alexei Yuzhakov</a><br/>' +
+      '<%= tjs('about.contributors') %>' +
+      ': <a href="http://code.google.com/p/ovz-web-panel/wiki/Contributors" target="_blank"><%= tjs('about.contributors_list') %></a><br/>' +
+      '<%= tjs('about.web_site') %>' +
+      ': <a href="http://code.google.com/p/ovz-web-panel/" target="_blank">' +
+      'http://code.google.com/p/ovz-web-panel/</a><br/><br/>' +
+      '&copy; ' + '<%= tjs('about.copyright') %>' + '<br/>' + 
+      '<%= tjs('about.right_reserved') %>'
+  });
+});

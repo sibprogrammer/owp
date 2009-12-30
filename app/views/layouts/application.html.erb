@@ -1,28 +1,32 @@
 <%= render :partial => 'layouts/header' %>
-	
+  
   <% javascript_tag do -%>
-		Ext.onReady(function() {
-		  var viewport = new Ext.Viewport({
-		    layout: 'border',
-		    items: [
-		      new Ext.BoxComponent({
-	          region: 'north',
-	          el: 'top-header',
-	          cls: 'x-panel-header',
-	          height: 50
-		      }), {
-		        region: 'center',
-		        contentEl: 'main-content',
-		        bodyStyle: 'background: #3D71B8 url(/images/desktop.jpg) no-repeat scroll left top'
-		    }]
-		  });
-		});
-	<% end -%>
-	
-  <%= render :partial => 'layouts/top_header' %>
-	
+    Ext.onReady(function() {
+      var viewport = new Ext.Viewport({
+        layout: 'border',
+        items: [
+          new Ext.BoxComponent({
+            region: 'north',
+            id: 'top-header',
+            cls: 'x-panel-header',
+            html: '<%= escape_javascript(render :partial => 'layouts/top_header') %>',
+            height: 50,
+            listeners: {
+              afterrender: function() {
+                <%= render :partial => 'layouts/about_box' %>
+              }
+            }
+          }), {
+            region: 'center',
+            contentEl: 'main-content',
+            bodyStyle: 'background: #3D71B8 url(/images/desktop.jpg) no-repeat scroll left top'
+        }]
+      });
+    });
+  <% end -%>
+    
   <div id='main-content'>
-  	<%= yield %>
+    <%= yield %>
   </div>
 
 <%= render :partial => 'layouts/footer' %>

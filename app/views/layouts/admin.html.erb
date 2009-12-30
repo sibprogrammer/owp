@@ -1,4 +1,4 @@
-<%= render :partial => 'layouts/header' %>   
+<%= render :partial => 'layouts/header' %>
   
   <% javascript_tag do -%>
     Ext.onReady(function() {
@@ -168,9 +168,15 @@
         items: [
           new Ext.BoxComponent({
             region: 'north',
-            el: 'top-header',
+            id: 'top-header',
             cls: 'x-panel-header',
-            height: 50
+            html: '<%= escape_javascript(render :partial => 'layouts/top_header') %>',
+            height: 50,
+            listeners: {
+              afterrender: function() {
+                <%= render :partial => 'layouts/about_box' %>
+              }
+            }
           }), {
             region: 'west',
             stateId: 'adminWestPanel',
@@ -223,12 +229,10 @@
     });
   <% end -%>
   
-  <%= render :partial => 'layouts/top_header' %>
-  
   <div id='main-menu'></div>
   
-  <div id='main-content'>
-    <%= yield %>
-  </div>
+  <div id='main-content'></div>
+  
+  <div style="display: none;"><%= yield %></div>
   
 <%= render :partial => 'layouts/footer' %>
