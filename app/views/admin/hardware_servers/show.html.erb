@@ -256,7 +256,6 @@ Ext.onReady(function() {
     sm: selectionModel,
     stripeRows: true,
     autoExpandColumn: 'os_template_name',
-    autoHeight: true,
     autoWidth: true,
     stripeRows: true,
     frame: true,
@@ -292,8 +291,8 @@ Ext.onReady(function() {
       }] 
     }]
   });
-  
-  virtualServersGrid.render('virtaul-servers-list');
+
+  Owp.layout.addToCenter(virtualServersGrid);
   
   var mainContentCenterPanel = Ext.getCmp('mainContentCenterPanel');
   mainContentCenterPanel.getTopToolbar().insertButton(0, {
@@ -306,5 +305,3 @@ Ext.onReady(function() {
   mainContentCenterPanel.doLayout()
 });
 <% end -%>
-
-<div id="virtaul-servers-list"></div>

@@ -69,16 +69,12 @@ Ext.onReady(function() {
     sm: selectionModel,
     stripeRows: true,
     autoExpandColumn: 'message',
-    autoHeight: true,
     autoWidth: true,
     stripeRows: true,
     frame: true,
     iconCls: 'icon-items-list'
   });
   
-  eventLogGrid.render('event-log-list');
-
+  Owp.layout.addToCenter(eventLogGrid);
 });
 <% end -%>
-
-<div id="event-log-list"></div>

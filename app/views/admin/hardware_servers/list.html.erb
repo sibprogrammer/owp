@@ -13,7 +13,7 @@ Ext.onReady(function() {
       defaults: { width: 200 },      
       items: [{
         name: 'id',
-        xtype: 'hidden',
+        xtype: 'hidden'
       }, {
         fieldLabel: '<%= tjs('admin.hardware_servers.form.connect_server.field.host_name') %>',
         name: 'host',
@@ -203,7 +203,6 @@ Ext.onReady(function() {
     sm: selectionModel,
     stripeRows: true,
     autoExpandColumn: 'description',
-    autoHeight: true,
     autoWidth: true,
     stripeRows: true,
     frame: true,
@@ -243,10 +242,7 @@ Ext.onReady(function() {
       disabled: true
     }]
   });
-  
-  hwServersGrid.render('hw-servers-list');
+
+  Owp.layout.addToCenter(hwServersGrid);
 });
 <% end -%>
-
-<div id="hw-servers-list"></div>
-

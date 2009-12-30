@@ -261,7 +261,6 @@ Ext.onReady(function() {
     sm: selectionModel,
     stripeRows: true,
     autoExpandColumn: 'name',
-    autoHeight: true,
     autoWidth: true,
     stripeRows: true,
     frame: true,
@@ -280,9 +279,7 @@ Ext.onReady(function() {
       disabled: true
     }]
   });
-  
-  osTemplatesGrid.render('os-templates-list');
+
+  Owp.layout.addToCenter(osTemplatesGrid);
 });
 <% end -%>
-
-<div id="os-templates-list"></div>

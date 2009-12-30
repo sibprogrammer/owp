@@ -135,3 +135,11 @@ Owp.list.groupAction = function(config) {
     scope: this
   });
 }
+
+Ext.ns('Owp.layout');
+
+Owp.layout.addToCenter = function(item) {
+  var centerPanel = Ext.getCmp('mainContentCenterPanel');
+  centerPanel.add(item);
+  centerPanel.doLayout();
+}
