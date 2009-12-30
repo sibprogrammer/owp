@@ -18,8 +18,6 @@ a { color: #000 }
 .main-content-center-panel > .x-panel-header { height: 25px; line-height: 25px; font-size: 20px; font-weight: normal; }
 #main-content { padding: 10px; }
 
-#panel-dashboard-stats { margin-top: 10px; }
-
 .x-tree-node div.menu-title { background: #eee; margin-top: 1px; border-top: 1px solid #ddd; border-bottom: 1px solid #ccc; padding: 2px 0 1px; font-weight: bold; }
 .menu-title .x-tree-node-icon { display: none; }
 .menu-item .x-tree-ec-icon { display: none; }
