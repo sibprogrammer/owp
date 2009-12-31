@@ -46,7 +46,7 @@ class Admin::VirtualServersController < AdminController
     redirect_to :controller => 'hardware_servers', :action => 'list' if !hardware_server
     
     virtual_server = (params[:id].to_i > 0) ? VirtualServer.find_by_id(params[:id]) : VirtualServer.new
-    if virtual_server.id > 0
+    if !virtual_server.new_record?
       params.delete(:identity)
       params.delete(:start_after_creation)
     end
