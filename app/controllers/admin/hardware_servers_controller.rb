@@ -17,7 +17,7 @@ class Admin::HardwareServersController < AdminController
   
   def save
     @hardware_server = (params[:id].to_i > 0) ? HardwareServer.find_by_id(params[:id]) : HardwareServer.new
-    params.delete(:auth_key) if @hardware_server.id > 0 && params[:auth_key].empty?
+    params.delete(:auth_key) if !@hardware_server.new_record? && params[:auth_key].empty?
     @hardware_server.attributes = params
     
     if @hardware_server.connect
