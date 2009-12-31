@@ -113,7 +113,7 @@ en:
       form:
         connect_server:
           title: "Connect new physical server"
-          edit_title: "Change physical server settings"
+          edit_title: "Change settings of physical server"
           button_connect: "Connect"
           field:
             host_name: "Host name"
@@ -144,6 +144,7 @@ en:
           start: "Start"
           restart: "Restart"
           stop: "Stop"
+          edit: "Change settings"
       form:
         change_state:
           failed: "Unable to change virtual server state."
@@ -152,6 +153,7 @@ en:
           deletion_failed: "Unable to delete some virtual servers."
         create_server:
           title: "Create new virtual server"
+          edit_title: "Change settings of virtual server"
           button_create: "Create"
           field:
             identity: "Server ID (VEID)"

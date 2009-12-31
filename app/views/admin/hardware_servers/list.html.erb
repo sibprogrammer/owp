@@ -28,7 +28,7 @@ Ext.onReady(function() {
       }]
     });
     
-    windowEditServer = new Ext.Window({
+    var windowEditServer = new Ext.Window({
       title: ('add' == mode)
         ? '<%= tjs('admin.hardware_servers.form.connect_server.title') %>'
         : '<%= tjs('admin.hardware_servers.form.connect_server.edit_title') %>',

@@ -30,13 +30,19 @@ class VirtualServer < ActiveRecord::Base
     EventLog.info("virtual_server.removed", { :identity => self.identity })
   end
      
-  def create_physically    
-    self.hardware_server.rpc_client.exec('vzctl', "create #{self.identity.to_s}" +
-      " --ostemplate #{self.os_template.name}" +
-      " --ipadd #{self.ip_address}" +
-      " --hostname #{self.host_name}"
-    )
-    self.state = 'stopped'
+  def save_physically
+    if self.new_record?
+      self.hardware_server.rpc_client.exec('vzctl', "create #{self.identity.to_s}" +
+        " --ostemplate #{self.os_template.name}" +
+        " --ipadd #{self.ip_address}" +
+        " --hostname #{self.host_name}"
+      )
+      self.state = 'stopped'
+    else
+      self.hardware_server.rpc_client.exec('vzctl', "set #{self.identity.to_s} --hostname #{self.host_name} --save")
+      self.hardware_server.rpc_client.exec('vzctl', "set #{self.identity.to_s} --ipdel all --ipadd #{self.ip_address} --save")
+    end
+  
     result = save
     tune_server_settings
     EventLog.info("virtual_server.created", { :identity => self.identity })
