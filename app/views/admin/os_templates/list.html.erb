@@ -159,6 +159,7 @@ Ext.onReady(function() {
             title: '<%= tjs('admin.os_templates.form.install.tab.official') %>',
             xtype: 'grid',
             layout: 'fit',
+            loadMask: true,
             ref: '../officialTemplatesGrid',
             store: storeOfficialTemplates,
             cm: new Ext.grid.ColumnModel([selectionModelOfficial, {
