@@ -1,0 +1,68 @@
+#!/bin/sh
+#
+# chkconfig: 35 90 12
+# description: OpenVZ Web Panel
+#
+
+INSTALL_DIR=`dirname $0`/../
+LOCK_FILE="/var/lock/owp"
+
+check_environment() {
+  if [ -f /proc/vz/version ]; then
+    ENVIRONMENT="HW-NODE"
+  else
+    ENVIRONMENT="STANDALONE"
+  fi
+}
+
+start() {
+  if [ -f $LOCK_FILE ]; then
+    echo "OpenVZ Web Panel is already running!"
+  else
+    echo  "Starting OpenVZ Web Panel"
+    ruby $INSTALL_DIR/script/server webrick -e production -d
+    [ "$ENVIRONMENT" = "HW-NODE" ] && ruby $INSTALL_DIR/utils/hw-daemon/hw-daemon.rb start
+    touch $LOCK_FILE
+  fi
+}
+
+stop() {
+  echo "Stopping OpenVZ Web Panel server"
+  PANEL_APP_PID=`ps auxww | grep ruby | grep script/server | awk '{ print $2 }'`
+  [ -n "$PANEL_APP_PID" ] && kill -2 $PANEL_APP_PID
+  [ "$ENVIRONMENT" = "HW-NODE" ] && ruby $INSTALL_DIR/utils/hw-daemon/hw-daemon.rb stop
+  rm -f $LOCK_FILE
+}
+
+status() {
+  if [ -f $LOCK_FILE ]; then
+    echo "OpenVZ Web Panel is running!"
+    exit 0
+  else
+    echo "OpenVZ Web Panel is NOT running!"
+    exit 1
+  fi
+}
+
+# main()
+check_environment
+case "$1" in
+  start)
+    start
+    ;;
+  stop)
+    stop
+    ;;
+  status)
+    status 
+    ;;
+  restart|reload|condrestart)
+    stop
+    start
+    ;;
+  *)
+    echo $"Usage: $0 {start|stop|restart|reload|status}"
+    exit 1
+esac
+
+exit 0
