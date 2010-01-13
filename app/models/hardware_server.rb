@@ -68,7 +68,7 @@ class HardwareServer < ActiveRecord::Base
       virtual_server = virtual_servers.find_by_identity(ve_id)
       virtual_server = VirtualServer.new(:identity => ve_id) unless virtual_server
       
-      virtual_server.host_name = host_name
+      virtual_server.host_name = host_name unless ('-' == host_name)
       virtual_server.ip_address = ip_address
       virtual_server.state = ve_state
         
