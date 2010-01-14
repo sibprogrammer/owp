@@ -1,60 +1,60 @@
 class VirtualServer < ActiveRecord::Base
   attr_accessible :identity, :ip_address, :host_name, :hardware_server_id, 
-    :os_template_id, :password, :start_on_boot, :start_after_creation, :state
-  attr_accessor :password, :start_on_boot, :start_after_creation
+    :os_template_id, :password, :start_on_boot, :start_after_creation, :state,
+    :nameserver, :search_domain, :diskspace, :memory
+  attr_accessor :password, :start_after_creation
   belongs_to :hardware_server
   belongs_to :os_template
   
   def start
-    self.hardware_server.rpc_client.exec('vzctl', 'start ' + self.identity.to_s)
+    hardware_server.rpc_client.exec('vzctl', 'start ' + identity.to_s)
     self.state = 'running'
     save
   end
   
   def stop
-    self.hardware_server.rpc_client.exec('vzctl', 'stop ' + self.identity.to_s)
+    hardware_server.rpc_client.exec('vzctl', 'stop ' + identity.to_s)
     self.state = 'stopped'
     save
   end
   
   def restart
-    self.hardware_server.rpc_client.exec('vzctl', 'restart ' + self.identity.to_s)
+    hardware_server.rpc_client.exec('vzctl', 'restart ' + identity.to_s)
     self.state = 'running'
     save
   end
     
   def delete_physically
     stop
-    self.hardware_server.rpc_client.exec('vzctl', 'destroy ' + self.identity.to_s)
+    hardware_server.rpc_client.exec('vzctl', 'destroy ' + identity.to_s)
     destroy
-    EventLog.info("virtual_server.removed", { :identity => self.identity })
+    EventLog.info("virtual_server.removed", { :identity => identity })
   end
      
   def save_physically
-    if self.new_record?
-      self.hardware_server.rpc_client.exec('vzctl', "create #{self.identity.to_s}" +
-        " --ostemplate #{self.os_template.name}" +
-        " --ipadd #{self.ip_address}" +
-        " --hostname #{self.host_name}"
-      )
+    if new_record?
+      hardware_server.rpc_client.exec('vzctl', "create #{identity.to_s} --ostemplate #{os_template.name}")
       self.state = 'stopped'
-    else
-      self.hardware_server.rpc_client.exec('vzctl', "set #{self.identity.to_s} --hostname #{self.host_name} --save")
-      self.hardware_server.rpc_client.exec('vzctl', "set #{self.identity.to_s} --ipdel all --ipadd #{self.ip_address} --save")
     end
   
+    vzctl_set("--hostname #{host_name} --save") if host_name
+    vzctl_set("--ipdel all --ipadd #{ip_address} --save")
+    vzctl_set("--userpasswd root:#{password}") if password
+    vzctl_set("--onboot " + (start_on_boot ? "yes" : "no") + " --save")
+    vzctl_set("--nameserver #{nameserver} --save") if nameserver
+    vzctl_set("--searchdomain #{search_domain} --save") if search_domain
+    vzctl_set("--diskspace #{diskspace * 1024} --privvmpages #{memory * 1024 / 4} --save")
+    start if start_after_creation
+  
     result = save
-    tune_server_settings
-    EventLog.info("virtual_server.created", { :identity => self.identity })
+    EventLog.info("virtual_server.created", { :identity => identity })
     result
   end
   
   private
-  
-  def tune_server_settings    
-    self.hardware_server.rpc_client.exec('vzctl', "set #{self.identity.to_s} --userpasswd root:#{password}") if password
-    self.hardware_server.rpc_client.exec('vzctl', "set #{self.identity.to_s} --onboot yes --save") if start_on_boot
-    self.start if start_after_creation
-  end
+
+    def vzctl_set(param)
+      hardware_server.rpc_client.exec('vzctl', "set #{identity.to_s} #{param}")
+    end
   
 end

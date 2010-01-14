@@ -165,11 +165,20 @@ ru:
             confirm_password: "Подтверждение пароля"
             start_on_boot: "Запуск после загрузки"
             start_after_creation: "Запуск после создания"
+            nameserver: "DNS сервер"
+            searchdomain: "Домен для поиска"
+            diskspace: "Размер диска, Mb"
+            memory: "RAM память, Mb"
           fieldset:
             general: "Общее"
             network: "Сеть"
             system_access: "Доступ к системе"
             start_options: "Опции запуска"
+            dns_settings: "DNS настройки"
+            limits: "Ограничения"
+          tab:
+            main_settings: "Основные настройки"
+            additional_settings: "Дополнительные настройки"
     os_templates:
       title: "Шаблоны ОС на физическом сервере {{name}}"
       grid:

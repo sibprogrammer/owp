@@ -165,11 +165,20 @@ en:
             confirm_password: "Confirm Password"
             start_on_boot: "Start on Boot"
             start_after_creation: "Start after Creation"
+            nameserver: "DNS Server"
+            searchdomain: "Search Domain"
+            diskspace: "Disk Space, Mb"
+            memory: "RAM Memory, Mb"
           fieldset:
             general: "General"
             network: "Network"
             system_access: "System Access"
             start_options: "Start Options"
+            dns_settings: "DNS Settings"
+            limits: "Limits"
+          tab:
+            main_settings: "Main Settings"
+            additional_settings: "Additional Settings"
     os_templates:
       title: "OS Templates on Physical Server {{name}}"
       grid:

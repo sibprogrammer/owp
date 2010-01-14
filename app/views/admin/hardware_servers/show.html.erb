@@ -32,84 +32,144 @@ Ext.onReady(function() {
       labelWidth: 180,
       url: '/admin/virtual-servers/create?hardware_server_id=<%= @hardware_server.id %>',        
       waitMsgTarget: true,
-      
       items: [{
         name: 'id',
         xtype: 'hidden'
       }, {
-        xtype: 'fieldset',
-        title: '<%= tjs('admin.virtual_servers.form.create_server.fieldset.general') %>',
-        autoHeight: true,
-        defaults: { width: 170 },
-        defaultType: 'textfield',
-        items: [{        
-          fieldLabel: '<%= tjs('admin.virtual_servers.form.create_server.field.identity') %>',
-          name: 'identity',
-          xtype: ('add' == mode) ? 'textfield' : 'displayfield',
-          allowBlank: false
-        }, {
-          fieldLabel: '<%= tjs('admin.virtual_servers.form.create_server.field.os_template') %>',
-          xtype: ('add' == mode) ? 'combo' : 'displayfield',
-          hiddenName: 'os_template_id',
-          valueField: 'id',
-          displayField: 'name',
-          name: 'os_template_id',
-          forceSelection: true,
-          triggerAction: 'all',
-          emptyText: '<%= tjs('admin.virtual_servers.form.create_server.field.select_os_template') %>',
-          mode: 'local',
-          allowBlank: false,
-          editable: false,
-          readOnly: ('edit' == mode),
-          store: osTemplatesStore
-        }]
-      }, {
-        xtype: 'fieldset',
-        title: '<%= tjs('admin.virtual_servers.form.create_server.fieldset.network') %>',
-        autoHeight: true,
-        defaults: { width: 170 },
-        defaultType: 'textfield',
+        xtype: 'tabpanel',
+        activeTab: 0,
+        baseCls: 'x-plain',
+        plain: true,
+        defaults: {
+          autoHeight: true,
+          bodyStyle: 'padding: 5px; background-color: transparent'
+        }, 
         items: [{
-          fieldLabel: '<%= tjs('admin.virtual_servers.form.create_server.field.ip_address') %>',
-          name: 'ip_address',
-          allowBlank: false
+          title: '<%= tjs('admin.virtual_servers.form.create_server.tab.main_settings') %>',
+          layout: 'form',
+          items: [{
+            xtype: 'fieldset',
+            title: '<%= tjs('admin.virtual_servers.form.create_server.fieldset.general') %>',
+            autoHeight: true,
+            defaults: { width: 155 },
+            defaultType: 'textfield',
+            items: [{        
+              fieldLabel: '<%= tjs('admin.virtual_servers.form.create_server.field.identity') %>',
+              name: 'identity',
+              xtype: ('add' == mode) ? 'textfield' : 'displayfield',
+              allowBlank: false
+            }, {
+              fieldLabel: '<%= tjs('admin.virtual_servers.form.create_server.field.os_template') %>',
+              xtype: ('add' == mode) ? 'combo' : 'displayfield',
+              hiddenName: 'os_template_id',
+              valueField: 'id',
+              displayField: 'name',
+              name: 'os_template_id',
+              forceSelection: true,
+              triggerAction: 'all',
+              emptyText: '<%= tjs('admin.virtual_servers.form.create_server.field.select_os_template') %>',
+              mode: 'local',
+              allowBlank: false,
+              editable: false,
+              readOnly: ('edit' == mode),
+              store: osTemplatesStore
+            }]
+          }, {
+            xtype: 'fieldset',
+            title: '<%= tjs('admin.virtual_servers.form.create_server.fieldset.network') %>',
+            autoHeight: true,
+            defaults: { width: 155 },
+            defaultType: 'textfield',
+            items: [{
+              fieldLabel: '<%= tjs('admin.virtual_servers.form.create_server.field.ip_address') %>',
+              name: 'ip_address',
+              allowBlank: false
+            }, {
+              fieldLabel: '<%= tjs('admin.virtual_servers.form.create_server.field.host_name') %>',
+              name: 'host_name'
+            }]
+          }, {
+            xtype: 'fieldset',
+            title: '<%= tjs('admin.virtual_servers.form.create_server.fieldset.system_access') %>',
+            autoHeight: true,
+            defaults: { width: 155 },
+            defaultType: 'textfield',
+            items: [{
+              fieldLabel: '<%= tjs('admin.virtual_servers.form.create_server.field.password') %>',
+              name: 'password',
+              inputType: 'password',
+              allowBlank: ('edit' == mode)
+            }, {
+              fieldLabel: '<%= tjs('admin.virtual_servers.form.create_server.field.confirm_password') %>',
+              name: 'confirm_password',
+              inputType: 'password',
+              allowBlank: ('edit' == mode)
+            }]
+          }]
         }, {
-          fieldLabel: '<%= tjs('admin.virtual_servers.form.create_server.field.host_name') %>',
-          name: 'host_name',
-          allowBlank: false
-        }]
-      }, {
-        xtype: 'fieldset',
-        title: '<%= tjs('admin.virtual_servers.form.create_server.fieldset.system_access') %>',
-        autoHeight: true,
-        defaults: { width: 170 },
-        defaultType: 'textfield',
-        items: [{
-          fieldLabel: '<%= tjs('admin.virtual_servers.form.create_server.field.password') %>',
-          name: 'password',
-          inputType: 'password',
-          allowBlank: ('edit' == mode)
-        }, {
-          fieldLabel: '<%= tjs('admin.virtual_servers.form.create_server.field.confirm_password') %>',
-          name: 'confirm_password',
-          inputType: 'password',
-          allowBlank: ('edit' == mode)
-        }]
-      }, {
-        xtype: 'fieldset',
-        title: '<%= tjs('admin.virtual_servers.form.create_server.fieldset.start_options') %>',
-        autoHeight: true,
-        defaultType: 'checkbox',
-        labelWidth: 180,
-        items: [{
-          fieldLabel: '<%= tjs('admin.virtual_servers.form.create_server.field.start_on_boot') %>',
-          checked: true,
-          name: 'start_on_boot'
-        }, {
-          fieldLabel: '<%= tjs('admin.virtual_servers.form.create_server.field.start_after_creation') %>',
-          xtype: ('add' == mode) ? 'checkbox' : 'hidden',
-          checked: true,
-          name: 'start_after_creation'
+          title: '<%= tjs('admin.virtual_servers.form.create_server.tab.additional_settings') %>',
+          layout: 'form',
+          autoHeight: true,
+          listeners: {
+            render: function() {
+              if ('add' == mode) {
+                Ext.getCmp('checkboxStartOnBoot').setValue(true);
+                Ext.getCmp('checkboxStartAfterCreation').setValue(true);
+                Ext.getCmp('fieldDiskspace').setValue(1024);
+                Ext.getCmp('fieldMemory').setValue(256);
+              }
+            }
+          },
+          items: [{
+            xtype: 'fieldset',
+            title: '<%= tjs('admin.virtual_servers.form.create_server.fieldset.limits') %>',
+            autoHeight: true,
+            defaults: { width: 155 },
+            defaultType: 'numberfield',
+            items: [{
+              fieldLabel: '<%= tjs('admin.virtual_servers.form.create_server.field.diskspace') %>',
+              id: 'fieldDiskspace',
+              allowBlank: false,
+              name: 'diskspace'
+            }, {
+              fieldLabel: '<%= tjs('admin.virtual_servers.form.create_server.field.memory') %>',
+              id: 'fieldMemory',
+              allowBlank: false,
+              name: 'memory'
+            }]
+          }, {
+            xtype: 'fieldset',
+            title: '<%= tjs('admin.virtual_servers.form.create_server.fieldset.dns_settings') %>',
+            autoHeight: true,
+            defaults: { width: 155 },
+            defaultType: 'textfield',
+            items: [{
+              fieldLabel: '<%= tjs('admin.virtual_servers.form.create_server.field.nameserver') %>',
+              name: 'nameserver'
+            }, {
+              fieldLabel: '<%= tjs('admin.virtual_servers.form.create_server.field.searchdomain') %>',
+              name: 'search_domain'
+            }]
+          }, {
+            xtype: 'fieldset',
+            title: '<%= tjs('admin.virtual_servers.form.create_server.fieldset.start_options') %>',
+            autoHeight: true,
+            defaultType: 'checkbox',
+            labelWidth: 180,
+            items: [{
+              fieldLabel: '<%= tjs('admin.virtual_servers.form.create_server.field.start_on_boot') %>',
+              xtype: 'checkbox',
+              checked: true,
+              name: 'start_on_boot',
+              id: 'checkboxStartOnBoot'
+            }, {
+              fieldLabel: '<%= tjs('admin.virtual_servers.form.create_server.field.start_after_creation') %>',
+              xtype: ('add' == mode) ? 'checkbox' : 'hidden',
+              checked: true,
+              name: 'start_after_creation',
+              id: 'checkboxStartAfterCreation'
+            }]
+          }]
         }]
       }]
     });
@@ -128,8 +188,6 @@ Ext.onReady(function() {
       bodyStyle: 'padding: 5px;',
       resizable: false,
       items: formEditVirtualServer,
-      closeAction: 'hide',
-      
       buttons: [{
         text: ('add' == mode)
           ? '<%= tjs('admin.virtual_servers.form.create_server.button_create') %>'
@@ -140,7 +198,8 @@ Ext.onReady(function() {
             waitMsg: '<%= tjs('form.loading') %>',
             success: function() {
               virtualServersGrid.store.reload();
-              windowEditVirtualServer.hide();
+              windowEditVirtualServer.close();
+              virtualServersGrid.getSelectionModel().clearSelections();
             },
             failure: function(form, action) {
               Owp.form.errorHandler(form, action);
@@ -151,7 +210,7 @@ Ext.onReady(function() {
         text: '<%= tjs('form.button.cancel') %>',
         iconCls: 'icon-button-cancel',
         handler: function() {
-          windowEditVirtualServer.hide();
+          windowEditVirtualServer.close();
         }
       }]
     });

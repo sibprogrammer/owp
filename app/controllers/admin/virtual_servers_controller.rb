@@ -51,6 +51,7 @@ class Admin::VirtualServersController < AdminController
       params.delete(:start_after_creation)
     end
     virtual_server.attributes = params
+    virtual_server.start_on_boot = params.key?(:start_on_boot)
     
     if virtual_server.save_physically
       render :json => { :success => true }  
@@ -69,6 +70,11 @@ class Admin::VirtualServersController < AdminController
       :os_template_id => virtual_server.os_template ? virtual_server.os_template.name : '-',
       :ip_address => virtual_server.ip_address,
       :host_name => virtual_server.host_name,
+      :start_on_boot => virtual_server.start_on_boot,
+      :nameserver => virtual_server.nameserver,
+      :search_domain => virtual_server.search_domain,
+      :diskspace => virtual_server.diskspace,
+      :memory => virtual_server.memory,
     }}  
   end
   
