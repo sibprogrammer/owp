@@ -12,26 +12,21 @@ Ext.onReady(function() {
       failure: function(form, action) { 
         Owp.form.errorHandler(form, action, { 
           fn: function() { 
-            Ext.get('login').focus();
+            Ext.get('password').focus();
           } 
         });
       }
     });
   }
 
-  var loginForm = new Ext.FormPanel({
-    baseCls: 'x-plain',
+  var loginForm = new Owp.form.BasicForm({
     labelWidth: 100,
     url: '/session',
     bodyStyle: 'padding: 15px 15px 0',
-    defaultType: 'textfield',
-    waitMsgTarget: true,
-    
     keys: [{
       key: Ext.EventObject.ENTER,
       fn: loginFormSubmitAction
     }],
-        
     items: [{
       fieldLabel: '<%= tjs('login.username') %>',
       name: 'login',
@@ -41,6 +36,7 @@ Ext.onReady(function() {
     }, {
       fieldLabel: '<%= tjs('login.password') %>',
       name: 'password',
+      id: 'password',
       width: 210,
       inputType: 'password',
       allowBlank: false

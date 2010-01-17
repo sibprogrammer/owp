@@ -43,10 +43,16 @@ Owp.form.errorHandler = function(form, action, params) {
   });
 }
 
+Owp.form.BasicForm = Ext.extend(Ext.FormPanel, {
+  baseCls: 'x-plain',
+  waitMsgTarget: true,
+  defaultType: 'textfield'
+});
+
 Owp.form.BasicFormWindow = Ext.extend(Ext.Window, {
   findFirst: function(item) {
     if (item instanceof Ext.form.Field && !(item instanceof Ext.form.DisplayField)
-      && !item.hidden && !item.disabled
+      && (item.inputType != 'hidden') && !item.disabled
     ) {
       item.focus(false, 50); // delayed focus by 50 ms
       return true;

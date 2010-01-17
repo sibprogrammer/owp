@@ -27,11 +27,15 @@ Ext.onReady(function() {
       ]
     });
   
-    var formEditVirtualServer = new Ext.form.FormPanel({
-      baseCls: 'x-plain',
+    var formEditVirtualServer = new Owp.form.BasicForm({
       labelWidth: 180,
-      url: '/admin/virtual-servers/create?hardware_server_id=<%= @hardware_server.id %>',        
-      waitMsgTarget: true,
+      url: '/admin/virtual-servers/create?hardware_server_id=<%= @hardware_server.id %>',
+      keys: [{
+        key: Ext.EventObject.ENTER,
+        fn: function() {
+          windowEditVirtualServer.submitButton.handler();
+        }
+      }],
       items: [{
         name: 'id',
         xtype: 'hidden'
@@ -174,7 +178,7 @@ Ext.onReady(function() {
       }]
     });
     
-    var windowEditVirtualServer = new Ext.Window({
+    var windowEditVirtualServer = new Owp.form.BasicFormWindow({
       title: ('add' == mode)
         ? '<%= tjs('admin.virtual_servers.form.create_server.title') %>'
         : '<%= tjs('admin.virtual_servers.form.create_server.edit_title') %>',
@@ -193,6 +197,7 @@ Ext.onReady(function() {
           ? '<%= tjs('admin.virtual_servers.form.create_server.button_create') %>'
           : '<%= tjs('form.button.save') %>',
         iconCls: ('add' == mode) ? 'icon-button-add' : 'icon-button-save',
+        ref: '../submitButton',
         handler: function() {
           formEditVirtualServer.form.submit({
             waitMsg: '<%= tjs('form.loading') %>',
@@ -218,10 +223,14 @@ Ext.onReady(function() {
     windowEditVirtualServer.on('show', function() {
       if ('add' == mode) {
         formEditVirtualServer.getForm().reset();
+        windowEditVirtualServer.focus();
       } else {
         var selectedNode = Ext.getCmp('virtualServersGrid').getSelectionModel().getSelected();
         formEditVirtualServer.getForm().load({
           waitMsg: '<%= tjs('form.loading') %>',
+          success: function() {
+            windowEditVirtualServer.focus();
+          },
           url: '/admin/virtual-servers/load_data?hardware_server_id=<%= @hardware_server.id %>',
           params: {
             id: selectedNode.id
@@ -231,7 +240,7 @@ Ext.onReady(function() {
       }
     });
     
-    windowEditVirtualServer.show();    
+    windowEditVirtualServer.show();
   }
   
   function addVirtualServer() {

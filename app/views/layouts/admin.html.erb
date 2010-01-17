@@ -2,14 +2,16 @@
   
   <% javascript_tag do -%>
     Ext.onReady(function() {
-      var formMyProfile = new Ext.form.FormPanel({
-        baseCls: 'x-plain',
+      var formMyProfile = new Owp.form.BasicForm({
         labelWidth: 150,
         url: '/admin/users/save_profile',
-        defaultType: 'textfield',
         defaults: { width: 200 },
-        waitMsgTarget: true,
-        
+        keys: [{
+          key: Ext.EventObject.ENTER,
+          fn: function() {
+            windowMyProfile.submitButton.handler();
+          }
+        }],
         items: [{
           fieldLabel: '<%= tjs('admin.my_profile.user_name') %>',
           value: '<%= escape_javascript @current_user.login %>',
@@ -48,6 +50,7 @@
         buttons: [{
           text: '<%= tjs('form.button.save') %>',
           iconCls: 'icon-button-save',
+          ref: '../submitButton',
           handler: function() {
             formMyProfile.form.submit({
               waitMsg: '<%= tjs('form.loading') %>',
@@ -56,6 +59,7 @@
               },
               failure: function(form, action) {
                 Owp.form.errorHandler(form, action);
+                windowMyProfile.focus();
               }
             });
           }
