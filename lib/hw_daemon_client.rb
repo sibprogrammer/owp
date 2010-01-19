@@ -8,7 +8,7 @@ class HwDaemonClient
     @rpc_client = XMLRPC::Client.new3({
       :host => @host,
       :path => "/xmlrpc",
-      :port => HW_DAEMON_PORT, 
+      :port => AppConfig.hw_daemon.port,
       :user => 'admin', 
       :password => @auth_key,
       :timeout => 5 * 60

@@ -1,0 +1,7 @@
+hw_daemon:
+  port: 7767
+
+os_templates:
+  mirror:
+    host: download.openvz.org
+    path: /template/
