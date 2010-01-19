@@ -75,5 +75,5 @@ Rails::Initializer.run do |config|
 end
 
 PRODUCT_NAME = 'OpenVZ Web Panel'
-PRODUCT_VERSION = '0.5'
+PRODUCT_VERSION = '0.6'
 HW_DAEMON_PORT = 7767
