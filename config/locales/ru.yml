@@ -30,7 +30,7 @@ ru:
             auth_key:
               bad_auth: "Невозможно выполнить авторизацию. Возможно неверный ключ авторизации."
   about:
-    copyright: "Авторское право 2008-2009 SoftUnity."
+    copyright: "Авторское право 2008-2010 SoftUnity."
     right_reserved: "Все права зарезервированы."
     about_program: "О программе"
     author: "Главный разработчик"

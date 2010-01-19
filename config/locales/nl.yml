@@ -30,7 +30,7 @@ nl:
             auth_key:
               bad_auth: "Authenticeren mislukt. Klopt de auth key wel?"
   about:
-    copyright: "Copyright 2008-2009 SoftUnity."
+    copyright: "Copyright 2008-2010 SoftUnity."
     right_reserved: "All Rights Reserved."
     about_program: "Over dit programma"
     author: "Autheur"
