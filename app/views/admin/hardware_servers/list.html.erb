@@ -144,6 +144,7 @@ Ext.onReady(function() {
     url: '/admin/hardware-servers/list_data',
     root: 'data',
     autoLoad: true,
+    sortInfo: { field: 'host', direction: 'ASC' },
     fields: [
       { name: 'id' },
       { name: 'host' },

@@ -21,6 +21,7 @@ Ext.onReady(function() {
       url: '/admin/os-templates/list_data?hardware_server_id=<%= @hardware_server.id %>',
       root: 'data',
       autoLoad: true,
+      sortInfo: { field: 'name', direction: 'ASC' },
       fields: [
         { name: 'id' },
         { name: 'name' }
@@ -275,6 +276,7 @@ Ext.onReady(function() {
     url: '/admin/virtual-servers/list_data?hardware_server_id=<%= @hardware_server.id %>',
     root: 'data',
     autoLoad: true,
+    sortInfo: { field: 'identity', direction: 'ASC' },
     fields: [
       { name: 'id' },
       { name: 'identity' },

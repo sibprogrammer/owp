@@ -131,6 +131,7 @@ Ext.onReady(function() {
         url: '/admin/os-templates/available_list_data?hardware_server_id=' + <%= @hardware_server.id %>,
         root: 'data',
         autoLoad: true,
+        sortInfo: { field: 'name', direction: 'ASC' },
         fields: [{ name: 'name' }]
       });
       
@@ -138,6 +139,7 @@ Ext.onReady(function() {
         url: '/admin/os-templates/available_list_data?contributed=yes&hardware_server_id=' + <%= @hardware_server.id %>,
         root: 'data',
         autoLoad: true,
+        sortInfo: { field: 'name', direction: 'ASC' },
         fields: [{ name: 'name' }]
       });
     
@@ -221,6 +223,7 @@ Ext.onReady(function() {
     url: '/admin/os-templates/list_data?hardware_server_id=' + <%= @hardware_server.id %>,
     root: 'data',
     autoLoad: true,
+    sortInfo: { field: 'name', direction: 'ASC' },
     fields: [
       { name: 'id' },
       { name: 'name' }
