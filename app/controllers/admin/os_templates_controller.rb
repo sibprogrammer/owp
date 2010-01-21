@@ -16,11 +16,16 @@ class Admin::OsTemplatesController < AdminController
     render :json => { :data => os_templates }  
   end
   
-  def available_list_data 
+  def available_list_data
+    hardware_server = HardwareServer.find_by_id(params[:hardware_server_id])
+    installed_templates = hardware_server.os_templates.map { |item| item.name }
+
     os_templates = params[:contributed] ? OsTemplate.get_available_contributed : OsTemplate.get_available_official
-    os_templates.map! { |item| {
-      :name => item.sub(/\.tar\.gz$/, ''),
-    }}
+    os_templates.map! { |item|
+      template_name = item.sub(/\.tar\.gz$/, '')
+      installed_templates.include?(template_name) ? nil : { :name => template_name }
+    }.compact!
+    
     render :json => { :data => os_templates }  
   end
   
