@@ -61,7 +61,7 @@ Ext.onReady(function() {
             items: [{        
               fieldLabel: '<%= tjs('admin.virtual_servers.form.create_server.field.identity') %>',
               name: 'identity',
-              xtype: ('add' == mode) ? 'textfield' : 'displayfield',
+              xtype: ('add' == mode) ? 'numberfield' : 'displayfield',
               allowBlank: false
             }, {
               fieldLabel: '<%= tjs('admin.virtual_servers.form.create_server.field.os_template') %>',
@@ -106,7 +106,7 @@ Ext.onReady(function() {
               allowBlank: ('edit' == mode)
             }, {
               fieldLabel: '<%= tjs('admin.virtual_servers.form.create_server.field.confirm_password') %>',
-              name: 'confirm_password',
+              name: 'password_confirmation',
               inputType: 'password',
               allowBlank: ('edit' == mode)
             }]

@@ -29,6 +29,17 @@ ru:
               connection: "Не удалось подключиться. Возможно демон не запущен."
             auth_key:
               bad_auth: "Невозможно выполнить авторизацию. Возможно неверный ключ авторизации."
+        virtual_server:
+          attributes:
+            ip_address:
+              invalid: "Неверный IP адрес."
+              taken: "IP адрес уже присвоен другому серверу."
+            identity:
+              taken: "Такой идентификатор уже принадлежит другому серверу."
+            password:
+              confirmation: "Пароль и его подтверждение не совпадают."
+            nameserver:
+              invalid: "Неверный IP-адрес DNS-сервера."
   about:
     copyright: "Авторское право 2008-2010 SoftUnity."
     right_reserved: "Все права зарезервированы."

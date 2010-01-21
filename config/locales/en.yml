@@ -29,6 +29,17 @@ en:
               connection: "Connection failed. Maybe daemon is not running."
             auth_key:
               bad_auth: "Unable to authorize. Probably incorrect auth key."
+        virtual_server:
+          attributes:
+            ip_address:
+              invalid: "Incorrect IP address."
+              taken: "IP address was assigned already to the other server."
+            identity:
+              taken: "Such identity belongs to the other server."
+            password:
+              confirmation: "Password and confirmation are not equal."
+            nameserver:
+              invalid: "DNS server IP address is invalid."
   about:
     copyright: "Copyright 2008-2010 SoftUnity."
     right_reserved: "All Rights Reserved."

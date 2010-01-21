@@ -1,11 +1,17 @@
 class VirtualServer < ActiveRecord::Base
   attr_accessible :identity, :ip_address, :host_name, :hardware_server_id, 
     :os_template_id, :password, :start_on_boot, :start_after_creation, :state,
-    :nameserver, :search_domain, :diskspace, :memory
-  attr_accessor :password, :start_after_creation
+    :nameserver, :search_domain, :diskspace, :memory, :password_confirmation
+  attr_accessor :password, :password_confirmation, :start_after_creation
   belongs_to :hardware_server
   belongs_to :os_template
   
+  validates_format_of :ip_address, :with => /^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/
+  validates_uniqueness_of :ip_address
+  validates_uniqueness_of :identity, :scope => :hardware_server_id
+  validates_confirmation_of :password
+  validates_format_of :nameserver, :with => /^(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})?$/
+
   def start
     hardware_server.rpc_client.exec('vzctl', 'start ' + identity.to_s)
     self.state = 'running'
@@ -32,6 +38,8 @@ class VirtualServer < ActiveRecord::Base
   end
      
   def save_physically
+    return false if !valid?
+    
     if new_record?
       hardware_server.rpc_client.exec('vzctl', "create #{identity.to_s} --ostemplate #{os_template.name}")
       self.state = 'stopped'
