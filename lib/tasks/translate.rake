@@ -1,0 +1,49 @@
+namespace :translate do
+  
+  desc "Check for missed keys"
+  task :missed => :environment do
+    default_locale = I18n.default_locale.to_s
+    locale = ENV['LOCALE']
+    
+    puts "Comparision of #{default_locale} locale with #{locale}"
+
+    default_locale_keys = get_locale_key(default_locale)
+    puts "Default locale #{default_locale} contains: #{default_locale_keys.size} keys."
+    locale_keys = get_locale_key(locale)
+    puts "Locale #{locale} contains: #{locale_keys.size} keys."
+
+    missed_keys = default_locale_keys.map{ |key| key unless locale_keys.include?(key) }.compact
+    if !missed_keys.empty?
+      puts "Missed #{missed_keys.size} keys:"
+      puts "\t" + missed_keys.sort.join("\n\t")
+    end
+    
+    unknown_keys = locale_keys.map{ |key| key unless default_locale_keys.include?(key) }.compact
+    if !unknown_keys.empty?
+      puts "Unknown (obsoleted) #{unknown_keys.size} keys:"
+      puts "\t" + unknown_keys.sort.join("\n\t")
+    end
+  end
+
+  private
+  
+  def flat_keys(hash, keys = [], prefix = '')
+    prefix << "." unless prefix.blank?
+    
+    hash.each { |key, value|
+      if value.is_a?(Hash)
+        keys + flat_keys(value, keys, prefix + key)
+      else
+        keys << (prefix + key)
+      end
+    }
+    
+    return keys
+  end
+  
+  def get_locale_key(code)
+    locale_hash = YAML::load(File.open(File.join("config", "locales", "#{code}.yml")))[code]
+    flat_keys(locale_hash)
+  end
+  
+end
