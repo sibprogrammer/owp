@@ -7,9 +7,8 @@ class Admin::UsersController < AdminController
       render :json => { :success => false, :form_errors => [['current_password', t('admin.my_profile.bad_current_password')]] }
       return
     end
-        
-    user.password = params[:password]
-    user.password_confirmation = params[:confirm_password]
+    
+    user.attributes = params
     
     if user.save
       render :json => { :success => true }  
