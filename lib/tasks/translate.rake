@@ -12,13 +12,13 @@ namespace :translate do
     locale_keys = get_locale_key(locale)
     puts "Locale #{locale} contains: #{locale_keys.size} keys."
 
-    missed_keys = default_locale_keys.map{ |key| key unless locale_keys.include?(key) }.compact
+    missed_keys = default_locale_keys - locale_keys
     if !missed_keys.empty?
       puts "Missed #{missed_keys.size} keys:"
       puts "\t" + missed_keys.sort.join("\n\t")
     end
     
-    unknown_keys = locale_keys.map{ |key| key unless default_locale_keys.include?(key) }.compact
+    unknown_keys = locale_keys - default_locale_keys
     if !unknown_keys.empty?
       puts "Unknown (obsoleted) #{unknown_keys.size} keys:"
       puts "\t" + unknown_keys.sort.join("\n\t")
