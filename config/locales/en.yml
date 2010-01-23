@@ -148,6 +148,8 @@ en:
           ip_address: "IP Address"
           host_name: "Host Name"
           os_template: "OS Template"
+          memory: "Memory, Mb"
+          diskspace: "Diskspace, Mb"
         button:
           create: "Create virtual server"
           destroy: "Remove virtual server"

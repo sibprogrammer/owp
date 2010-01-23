@@ -283,7 +283,9 @@ Ext.onReady(function() {
       { name: 'ip_address' },
       { name: 'host_name' },
       { name: 'state' },
-      { name: 'os_template_name' }
+      { name: 'os_template_name' },
+      { name: 'memory' },
+      { name: 'diskspace' }
     ]
   });
   
@@ -348,6 +350,16 @@ Ext.onReady(function() {
         header: '<%= tjs('admin.virtual_servers.grid.column.host_name') %>',
         sortable: true,
         dataIndex: 'host_name'
+      }, {
+        id: 'memory',
+        header: '<%= tjs('admin.virtual_servers.grid.column.memory') %>',
+        sortable: true,
+        dataIndex: 'memory'
+      }, {
+        id: 'diskspace',
+        header: '<%= tjs('admin.virtual_servers.grid.column.diskspace') %>',
+        sortable: true,
+        dataIndex: 'diskspace'
       }, {
         id: 'os_template_name',
         header: '<%= tjs('admin.virtual_servers.grid.column.os_template') %>',
