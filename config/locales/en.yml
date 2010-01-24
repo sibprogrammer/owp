@@ -22,6 +22,10 @@ en:
             password:
               confirmation: "Password and confirmation are not equal."
               too_short: "Password is too short (minimum symbols: {{count}})."
+            password_confirmation:
+              blank: "Password confirmation is required."
+            login:
+              taken: "User with such login is already exist."
         hardware_server:
           attributes:
             host:
@@ -65,6 +69,7 @@ en:
         dashboard: "Dashboard"
         hardware_servers: "Physical servers"
         my_profile: "My profile"
+        users: "Users"
         event_log: "Events log"
         logout: "Logout"
       help:
@@ -94,6 +99,9 @@ en:
       intro:
         title: "Intro"
         text: "OpenVZ Web Panel is a GUI web-based frontend for controlling of physical servers with OpenVZ virtualization technology."
+      profile:
+        title: "Profile"
+        text: "You logged in as {{login}}."
       stats_grid:
         title: "Statistics"
         column:
@@ -222,3 +230,26 @@ en:
           created_at: "Date"
           message: "Message"
           id: "ID"
+    users:
+      title: "Users"
+      grid:
+        title: "Users list"
+        column:
+          login: "Login"
+          created_at: "Creation Date"
+        button:
+          add: "Add User"
+          remove: "Delete User"
+          edit: "Edit User"
+      form:
+        remove_user:
+          sure_to_remove: "Are you sure you want to remove selected users?"
+          deletion_failed: "Unable to delete some users."
+        create:
+          title: "Create new user"
+          edit_title: "Edit user"
+          button_create: "Create"
+          field:
+            login: "Login"
+            password: "Password"
+            confirm_password: "Confirm Password"

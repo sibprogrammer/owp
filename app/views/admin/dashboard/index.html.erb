@@ -6,9 +6,17 @@ Ext.onReady(function() {
   var introPanel = new Ext.Panel({
     title: '<%= tjs('admin.dashboard.intro.title') %>',
     collapsible: true,
-    region: 'north',
     stateId: 'introPanel',
+    cls: 'panel-dashboard',
     html: '<p>' + '<%= tjs('admin.dashboard.intro.text') %>' + '</p>'
+  });
+  
+  var profilePanel = new Ext.Panel({
+    title: '<%= tjs('admin.dashboard.profile.title') %>',
+    collapsible: true,
+    stateId: 'profilePanel',
+    cls: 'panel-dashboard',
+    html: '<p>' + '<%= tjs('admin.dashboard.profile.text', :login => '<b>' + @current_user.login + '</b>') %>' + '</p>'
   });
   
   var storeData = <%= @stats_data.to_json %> ;
@@ -27,11 +35,14 @@ Ext.onReady(function() {
     id: 'statsGrid',
     title: '<%= tjs('admin.dashboard.stats_grid.title') %>',
     iconCls: 'icon-items-list',
-    region: 'center',
+    cls: 'panel-dashboard',
     store: store,
     autoWidth: true,
+    autoHeight: true,
     stripeRows: true,
     autoExpandColumn: 'value',
+    collapsible: true,
+    stateId: 'statsGrid',
     cm: new Ext.grid.ColumnModel([{
       id: 'parameter',
       header: '<%= tjs('admin.dashboard.stats_grid.column.parameter') %>',
@@ -45,8 +56,8 @@ Ext.onReady(function() {
   });
   
   var container = new Ext.Container({
-    layout: 'border',
-    items: [ introPanel, statsGrid ]
+    layout: 'anchor',
+    items: [ introPanel, profilePanel, statsGrid ]
   });
   
   Owp.layout.addToCenter(container);

@@ -1,0 +1,228 @@
+<% @page_title = t('admin.users.title') %>
+
+<% javascript_tag do -%>
+Ext.onReady(function() {
+
+  function showUserEditForm(mode) {
+    var formEditUser = new Owp.form.BasicForm({
+      labelWidth: 150,
+      url: '/admin/users/update',
+      defaults: { width: 200 },
+      keys: [{
+        key: Ext.EventObject.ENTER,
+        fn: function() {
+          windowEditUser.submitButton.handler();
+        }
+      }],
+      items: [{
+        name: 'id',
+        xtype: 'hidden'
+      }, {
+        fieldLabel: '<%= tjs('admin.users.form.create.field.login') %>',
+        name: 'login',
+        xtype: ('add' == mode) ? 'textfield' : 'displayfield',
+        allowBlank: ('edit' == mode)
+      }, {
+        fieldLabel: '<%= tjs('admin.users.form.create.field.password') %>',
+        name: 'password',
+        inputType: 'password',
+        allowBlank: ('edit' == mode)
+      }, {
+        fieldLabel: '<%= tjs('admin.users.form.create.field.confirm_password') %>',
+        name: 'password_confirmation',
+        inputType: 'password',
+        allowBlank: ('edit' == mode)
+      }]
+    });
+    
+    var windowEditUser = new Owp.form.BasicFormWindow({
+      title: ('add' == mode)
+        ? '<%= tjs('admin.users.form.create.title') %>'
+        : '<%= tjs('admin.users.form.create.edit_title') %>',
+      iconCls: ('add' == mode) ? 'icon-window-add' : 'icon-window-edit',
+      width: 410,
+      autoHeight: true,
+      modal: true,
+      layout: 'fit',
+      plain: true,
+      bodyStyle: 'padding: 5px;',
+      resizable: false,
+      items: formEditUser,
+      buttons: [{
+        text: ('add' == mode)
+          ? '<%= tjs('admin.users.form.create.button_create') %>'
+          : '<%= tjs('form.button.save') %>',
+        iconCls: ('add' == mode) ? 'icon-button-add' : 'icon-button-save',
+        ref: '../submitButton',
+        handler: function() {
+          formEditUser.form.submit({
+            waitMsg: '<%= tjs('form.loading') %>',
+            success: function() {
+              usersGrid.store.reload();
+              windowEditUser.close();
+              usersGrid.getSelectionModel().clearSelections();
+            },
+            failure: function(form, action) {
+              Owp.form.errorHandler(form, action);
+            }
+          });
+        }
+      }, {
+        text: '<%= tjs('form.button.cancel') %>',
+        iconCls: 'icon-button-cancel',
+        handler: function() {
+          windowEditUser.close();
+        }
+      }]
+    });
+    
+    windowEditUser.on('show', function() {
+      if ('add' == mode) {
+        formEditUser.getForm().reset();
+        windowEditUser.focus();
+      } else {
+        var selectedNode = Ext.getCmp('usersGrid').getSelectionModel().getSelected();
+        formEditUser.getForm().load({
+          waitMsg: '<%= tjs('form.loading') %>',
+          success: function() {
+            windowEditUser.focus();
+          },
+          url: '/admin/users/load_data',
+          params: {
+            id: selectedNode.id
+          }
+        });
+        formEditUser.getForm().findField('id').setValue(selectedNode.id);
+      }
+    });
+    
+    windowEditUser.show();
+  }
+
+  function addUser() {
+    showUserEditForm('add');
+  }
+  
+  function editUser() {
+    showUserEditForm('edit');
+  }
+  
+  function removeUser() {
+    Ext.MessageBox.confirm(
+      '<%= tjs('form.confirmation') %>',
+      '<%= tjs('admin.users.form.remove_user.sure_to_remove') %>',
+      function(button, text) {
+        if ('yes' == button) { 
+          Owp.list.groupAction({
+            gridName: 'usersGrid',
+            url: '/admin/users/delete',
+            waitMsg: '<%= tjs('form.performing_task') %>',
+            failure: {
+              title: '<%= tjs('form.error.title') %>',
+              msg: '<%= tjs('admin.users.form.remove_user.deletion_failed') %>'
+            }
+          });
+        }
+      }
+    );
+  }
+
+  var store = new Ext.data.JsonStore({
+    url: '/admin/users/list_data',
+    root: 'data',
+    autoLoad: true,
+    sortInfo: { field: 'login', direction: 'ASC' },
+    fields: [
+      { name: 'id' },
+      { name: 'login' },
+      { name: 'created_at' }
+    ]
+  });
+
+  var selectionModel = new Ext.grid.CheckboxSelectionModel({
+    renderer: function(value, metaData, record) {
+      if ('admin' == record.get('login')) {
+        return;
+      }
+      return Ext.grid.CheckboxSelectionModel.prototype.renderer.apply(this, arguments);
+    },
+    listeners: {
+      beforerowselect: function(selectionModel, rowIndex, keepExisting, record) {
+          if ('admin' == record.get('login')) {
+            return false;
+          }
+      },
+      selectionchange: function(selectionModel) {
+        if (selectionModel.getCount()) {
+          usersGrid.removeButton.enable();
+        } else {
+          usersGrid.removeButton.disable();
+        }
+        
+        if (1 == selectionModel.getCount()) {
+          usersGrid.editButton.enable();
+        } else {
+          usersGrid.editButton.disable();
+        }
+      }
+    }
+  });
+
+  var usersGrid = new Ext.grid.GridPanel({
+    id: 'usersGrid',
+    store: store,
+    title: '<%= tjs('admin.users.grid.title') %>',
+    loadMask: true,
+    tools: [{ 
+      id: 'refresh',
+      handler: function() {
+        usersGrid.getStore().reload();
+      }
+    }],
+    cm: new Ext.grid.ColumnModel([
+      selectionModel,
+      {
+        id: 'login',
+        header: '<%= tjs('admin.users.grid.column.login') %>',
+        sortable: true,
+        dataIndex: 'login'
+      }, {
+        id: 'created_at',
+        header: '<%= tjs('admin.users.grid.column.created_at') %>',
+        width: 130,
+        sortable: true,
+        dataIndex: 'created_at'
+      }
+    ]),
+    sm: selectionModel,
+    stripeRows: true,
+    autoExpandColumn: 'created_at',
+    autoWidth: true,
+    stripeRows: true,
+    frame: true,
+    iconCls: 'icon-items-list',
+    tbar: [{
+      text: '<%= tjs('admin.users.grid.button.add') %>',
+      handler: addUser,
+      cls: 'x-btn-text-icon',
+      icon: '/images/add.png'
+    }, {
+      text: '<%= tjs('admin.users.grid.button.remove') %>',
+      handler: removeUser,
+      cls: 'x-btn-text-icon',
+      icon: '/images/delete.png',
+      ref: '../removeButton',
+      disabled: true
+    }, {
+      text: '<%= tjs('admin.users.grid.button.edit') %>',
+      handler: editUser,
+      cls: 'x-btn-text-icon',
+      icon: '/images/wrench.png',
+      ref: '../editButton',
+      disabled: true
+    }]
+  });
+
+  Owp.layout.addToCenter(usersGrid);
+});
+<% end -%>
