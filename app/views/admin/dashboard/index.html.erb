@@ -56,9 +56,23 @@ Ext.onReady(function() {
   });
   
   var container = new Ext.Container({
-    layout: 'anchor',
-    items: [ introPanel, profilePanel, statsGrid ]
+    layout: 'anchor'
   });
+  
+  <% if @updates %>
+    var updatesPanel = new Ext.Panel({
+      header: false,
+      cls: 'panel-dashboard',
+      html: '<p><img src="/images/information.png" class="icon-inline"/>' 
+        + '<%= tjs('admin.dashboard.updates.text', :product => '<b>' + PRODUCT_NAME + ' ' + @updates[:version] + '</b>') %> '
+        + '<%= tjs('admin.dashboard.updates.update_command', :command => '<span class="no-wrap">' + @updates[:update_command] + '</span>') %>'
+        + '</p>'
+    });
+    
+    container.add(updatesPanel);
+  <% end -%>
+  
+  container.add(introPanel, profilePanel, statsGrid);
   
   Owp.layout.addToCenter(container);
 });

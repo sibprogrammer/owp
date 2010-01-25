@@ -38,4 +38,9 @@ a { color: #000 }
 .icon-button-stop-server { background-image: url(/images/stop.png) !important; }
 .icon-button-restart-server { background-image: url(/images/restart.png) !important; }
 
+.icon-inline { height: 16px; padding-right: 5px; vertical-align: middle; }
+
 .panel-dashboard { margin: 10px; }
+
+.no-wrap { white-space: nowrap; }
+

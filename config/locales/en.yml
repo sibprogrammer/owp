@@ -102,6 +102,9 @@ en:
       profile:
         title: "Profile"
         text: "You logged in as {{login}}."
+      updates:
+        text: "New version is available: {{product}}."
+        update_command: "To perform the update need to run the following command: {{command}}"
       stats_grid:
         title: "Statistics"
         column:

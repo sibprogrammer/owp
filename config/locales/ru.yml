@@ -102,6 +102,9 @@ ru:
       profile:
         title: "Профиль"
         text: "Вы вошли как пользователь {{login}}."
+      updates:
+        text: "Новая версия доступна: {{product}}."
+        update_command: "Для обновления необходимо выполнить команду: {{command}}"
       stats_grid:
         title: "Статистика"
         column:
