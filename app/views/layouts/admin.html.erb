@@ -4,6 +4,7 @@
     Ext.onReady(function() {
       var formMyProfile = new Owp.form.BasicForm({
         labelWidth: 150,
+        waitMsgTarget: true,
         url: '/admin/users/save_profile',
         defaults: { width: 200 },
         keys: [{

@@ -6,6 +6,7 @@ Ext.onReady(function() {
   function showHwServerEditForm(mode) {
     var formEditServer = new Owp.form.BasicForm({
       labelWidth: 150,
+      waitMsgTarget: true,
       url: '/admin/hardware-servers/save',
       defaults: { width: 200 },
       keys: [{

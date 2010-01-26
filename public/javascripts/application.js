@@ -45,7 +45,6 @@ Owp.form.errorHandler = function(form, action, params) {
 
 Owp.form.BasicForm = Ext.extend(Ext.FormPanel, {
   baseCls: 'x-plain',
-  waitMsgTarget: true,
   defaultType: 'textfield'
 });
 

@@ -6,6 +6,7 @@ Ext.onReady(function() {
   function showUserEditForm(mode) {
     var formEditUser = new Owp.form.BasicForm({
       labelWidth: 150,
+      waitMsgTarget: true,
       url: '/admin/users/update',
       defaults: { width: 200 },
       keys: [{

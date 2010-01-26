@@ -30,6 +30,7 @@ Ext.onReady(function() {
   
     var formEditVirtualServer = new Owp.form.BasicForm({
       labelWidth: 180,
+      waitMsgTarget: true,
       url: '/admin/virtual-servers/create?hardware_server_id=<%= @hardware_server.id %>',
       keys: [{
         key: Ext.EventObject.ENTER,
