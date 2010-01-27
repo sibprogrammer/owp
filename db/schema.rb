@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100114160251) do
+ActiveRecord::Schema.define(:version => 20100127143637) do
 
   create_table "event_logs", :force => true do |t|
     t.integer  "level"
@@ -49,12 +49,12 @@ ActiveRecord::Schema.define(:version => 20100114160251) do
     t.string  "host_name"
     t.string  "state",              :limit => 20
     t.integer "hardware_server_id"
-    t.integer "os_template_id"
     t.boolean "start_on_boot",                    :default => true
     t.string  "nameserver"
     t.string  "search_domain"
     t.integer "diskspace",                        :default => 1024
     t.integer "memory",                           :default => 256
+    t.string  "orig_os_template"
   end
 
 end

@@ -9,7 +9,7 @@ class Admin::VirtualServersController < AdminController
       :ip_address => virtual_server.ip_address,
       :host_name => virtual_server.host_name,
       :state => virtual_server.state,
-      :os_template_name => virtual_server.os_template ? virtual_server.os_template.name : '-',
+      :os_template_name => virtual_server.orig_os_template,
       :diskspace => virtual_server.diskspace,
       :memory => virtual_server.memory,
     }}
@@ -69,7 +69,7 @@ class Admin::VirtualServersController < AdminController
     
     render :json => { :success => true, :data => {
       :identity => virtual_server.identity,
-      :os_template_id => virtual_server.os_template ? virtual_server.os_template.name : '-',
+      :orig_os_template => virtual_server.orig_os_template,
       :ip_address => virtual_server.ip_address,
       :host_name => virtual_server.host_name,
       :start_on_boot => virtual_server.start_on_boot,

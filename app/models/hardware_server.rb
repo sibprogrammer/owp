@@ -73,8 +73,7 @@ class HardwareServer < ActiveRecord::Base
         
       parser = IniParser.new(rpc_client.exec('cat', "/etc/vz/conf/#{ve_id}.conf")['output'])
       
-      os_template = os_templates.find_by_name(parser.get('OSTEMPLATE'))
-      virtual_server.os_template = os_template
+      virtual_server.orig_os_template = parser.get('OSTEMPLATE')
       virtual_server.start_on_boot = ('yes' == parser.get('ONBOOT'))
       virtual_server.host_name = parser.get('HOSTNAME')
       virtual_server.nameserver = parser.get('NAMESERVER')

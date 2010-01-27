@@ -1,10 +1,9 @@
 class VirtualServer < ActiveRecord::Base
   attr_accessible :identity, :ip_address, :host_name, :hardware_server_id, 
-    :os_template_id, :password, :start_on_boot, :start_after_creation, :state,
+    :orig_os_template, :password, :start_on_boot, :start_after_creation, :state,
     :nameserver, :search_domain, :diskspace, :memory, :password_confirmation
   attr_accessor :password, :password_confirmation, :start_after_creation
   belongs_to :hardware_server
-  belongs_to :os_template
   
   validates_format_of :ip_address, :with => /^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/
   validates_uniqueness_of :ip_address
@@ -41,7 +40,7 @@ class VirtualServer < ActiveRecord::Base
     return false if !valid?
     
     if new_record?
-      hardware_server.rpc_client.exec('vzctl', "create #{identity.to_s} --ostemplate #{os_template.name}")
+      hardware_server.rpc_client.exec('vzctl', "create #{identity.to_s} --ostemplate #{orig_os_template}")
       self.state = 'stopped'
     end
   

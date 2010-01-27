@@ -67,10 +67,10 @@ Ext.onReady(function() {
             }, {
               fieldLabel: '<%= tjs('admin.virtual_servers.form.create_server.field.os_template') %>',
               xtype: ('add' == mode) ? 'combo' : 'displayfield',
-              hiddenName: 'os_template_id',
-              valueField: 'id',
+              hiddenName: 'orig_os_template',
+              valueField: 'name',
               displayField: 'name',
-              name: 'os_template_id',
+              name: 'orig_os_template',
               forceSelection: true,
               triggerAction: 'all',
               emptyText: '<%= tjs('admin.virtual_servers.form.create_server.field.select_os_template') %>',
