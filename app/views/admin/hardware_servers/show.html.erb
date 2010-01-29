@@ -32,6 +32,7 @@ Ext.onReady(function() {
       labelWidth: 180,
       waitMsgTarget: true,
       url: '/admin/virtual-servers/create?hardware_server_id=<%= @hardware_server.id %>',
+      autoHeight: true,
       keys: [{
         key: Ext.EventObject.ENTER,
         fn: function() {
