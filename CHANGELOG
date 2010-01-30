@@ -1,0 +1,57 @@
+= OpenVZ Web Panel 0.6 (2010-01-30) =
+
+This version is a preview release. The following items were fixed and/or added:
+
+  * Ability to upgrade the panel using auto installer (issue 30).
+  * Ability to create panel users (issue #20).
+  * Ability to install OS templates from mirrors (issue 23).
+  * Start/stop script for the panel (issue 29).
+  * Redesing of virtual server creation form.
+  * Ability to specify diskspace and memory for virtual server (issue 34).
+  * Fixed validation of password on virtual server creation form (issue 10).
+  * Notifications about new versions availability (issue 41).
+
+
+= OpenVZ Web Panel 0.5 (2009-12-31) =
+
+This version is a preview release. The following items were fixed and/or added:
+
+  * Ability to synchronize physical server state (issue 13).
+  * Ability to update physical server connection settings (issue 17).
+  * Ability to see log of events.
+  * Ability to remove OS template (issue 24).
+  * Automatic installer (issue 25).
+  * Dutch language support (issue 32).
+  * New icons for showing of virtual server state (issue 33). 
+  * Fixed issue with wrong OS template detection (issue 27).
+  * Ext JS was upgraded to version 3.1.0.
+
+
+= OpenVZ Web Panel 0.4 (2009-12-19) =
+
+This version is a preview release. The following items were fixed and/or added:
+
+  * Project was rewritten from scratch using Ruby on Rails.
+  * Ext JS was upgraded to version 3.0.0.
+  * Pages shortcuts functionality was dropped.
+  * Improved error handling on connecting of physical server (issue 11,
+    issue 14, issue 15). 
+  * Correct state of virtual servers after connecting of physical server 
+    (issue 9).
+  * Ability to install OS template (issue 18).
+
+
+= OpenVZ Web Panel 0.3 (2009-09-17) =
+
+Initial public release. The following items were fixed and/or added:
+
+  * Publication of source codes due to users requests after one year of the
+    project's freeze.
+  * Server-side code is based on Zend Framework 1.6.0.
+  * Client-side code is based on Ext JS 2.2.
+  * Separate physical server daemon.
+  * Ability to control several physical servers.
+  * Ability to create/delete virtual servers.
+  * Ability to see list of available OS templates.
+  * Ability to create shortcut to the page and see it on dashboard.
+
