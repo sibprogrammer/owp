@@ -132,7 +132,7 @@ Ext.onReady(function() {
         root: 'data',
         autoLoad: true,
         sortInfo: { field: 'name', direction: 'ASC' },
-        fields: [{ name: 'name' }]
+        fields: [{ name: 'name' }, { name: 'size' }]
       });
       
       var storeContributedTemplates = new Ext.data.JsonStore({
@@ -140,7 +140,7 @@ Ext.onReady(function() {
         root: 'data',
         autoLoad: true,
         sortInfo: { field: 'name', direction: 'ASC' },
-        fields: [{ name: 'name' }]
+        fields: [{ name: 'name' }, { name: 'size' }]
       });
     
       windowInstallNewTemplate = new Ext.Window({
@@ -169,6 +169,12 @@ Ext.onReady(function() {
               header: '<%= tjs('admin.os_templates.grid.column.name') %>',
               sortable: true,
               dataIndex: 'name'
+            }, {
+              id: 'size',
+              header: '<%= tjs('admin.os_templates.grid.column.size') %>',
+              width: 100,
+              sortable: true,
+              dataIndex: 'size'
             }]),
             sm: selectionModelOfficial,
             stripeRows: true,
@@ -188,6 +194,12 @@ Ext.onReady(function() {
               header: '<%= tjs('admin.os_templates.grid.column.name') %>',
               sortable: true,
               dataIndex: 'name'
+            }, {
+              id: 'size',
+              header: '<%= tjs('admin.os_templates.grid.column.size') %>',
+              width: 100,
+              sortable: true,
+              dataIndex: 'size'
             }]),
             sm: selectionModelContributed,
             stripeRows: true,

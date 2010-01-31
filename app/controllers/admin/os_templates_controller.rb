@@ -21,9 +21,13 @@ class Admin::OsTemplatesController < AdminController
     installed_templates = hardware_server.os_templates.map { |item| item.name }
 
     os_templates = params[:contributed] ? OsTemplate.get_available_contributed : OsTemplate.get_available_official
-    os_templates.map! { |item|
-      template_name = item.sub(/\.tar\.gz$/, '')
-      installed_templates.include?(template_name) ? nil : { :name => template_name }
+    os_templates.map! { |file|
+      template_name = file['name'].sub(/\.tar\.gz$/, '')
+      if installed_templates.include?(template_name) 
+        nil
+      else 
+        { :name => template_name, :size => file['size'].to_i / (1024 * 1024) }
+      end
     }.compact!
     
     render :json => { :data => os_templates }  

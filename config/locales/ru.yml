@@ -209,6 +209,7 @@ ru:
         title: "Установленные шаблоны OС"
         column:
           name: "Имя"
+          size: "Размер, Мб"
         button:
           install_new_template: "Установить новый шаблон ОС"
           remove: "Удалить шаблон ОС"

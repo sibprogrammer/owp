@@ -30,7 +30,9 @@ class OsTemplate < ActiveRecord::Base
     ftp = Net::FTP.new(AppConfig.os_templates.mirror.host)
     ftp.login
     ftp.chdir(dir)
-    ftp.nlst().find_all { |file| file =~ /tar.gz$/  }
+    ftp.list('-a').map{ |file| 
+      { 'name' => file.split.last, 'size' => file.split[4] } if file =~ /tar.gz$/ 
+    }.compact
   end
   
   def self.download(hardware_server, path, name)

@@ -209,6 +209,7 @@ en:
         title: "Installed OS Templates"
         column:
           name: "Name"
+          size: "Size, Mb"
         button:
           install_new_template: "Install New OS Template"
           remove: "Remove Template"
