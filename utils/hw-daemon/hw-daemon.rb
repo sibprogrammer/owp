@@ -1,6 +1,9 @@
 require 'webrick'
 require 'xmlrpc/server.rb'
 
+# workaround for clients with incorrect DNS records
+Socket.do_not_reverse_lookup = true
+
 DAEMON_VERSION = '1.1'
 CURRENT_DIR = File.expand_path(File.dirname(__FILE__)) + '/'
 CONFIG_FILE = CURRENT_DIR + 'hw-daemon.ini';
