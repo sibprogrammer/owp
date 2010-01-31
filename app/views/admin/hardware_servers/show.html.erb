@@ -52,7 +52,12 @@ Ext.onReady(function() {
           hideMode: 'offsets',
           autoHeight: true,
           bodyStyle: 'padding: 5px; background-color: transparent'
-        }, 
+        },
+        listeners: {
+          tabchange: function(tabPanel, activePanel) {
+            windowEditVirtualServer.syncSize();
+          }
+        },
         items: [{
           title: '<%= tjs('admin.virtual_servers.form.create_server.tab.main_settings') %>',
           layout: 'form',
