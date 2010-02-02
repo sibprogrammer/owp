@@ -44,12 +44,12 @@ class VirtualServer < ActiveRecord::Base
       self.state = 'stopped'
     end
   
-    vzctl_set("--hostname #{host_name} --save") if host_name
+    vzctl_set("--hostname #{host_name} --save") if !host_name.empty?
     vzctl_set("--ipdel all --ipadd #{ip_address} --save")
-    vzctl_set("--userpasswd root:#{password}") if password
+    vzctl_set("--userpasswd root:#{password}") if !password.empty?
     vzctl_set("--onboot " + (start_on_boot ? "yes" : "no") + " --save")
-    vzctl_set(nameserver.split.map { |ip| "--nameserver #{ip} " }.join + "--save") if nameserver
-    vzctl_set("--searchdomain #{search_domain} --save") if search_domain
+    vzctl_set(nameserver.split.map { |ip| "--nameserver #{ip} " }.join + "--save") if !nameserver.empty?
+    vzctl_set("--searchdomain #{search_domain} --save") if !search_domain.empty?
     vzctl_set("--diskspace #{diskspace * 1024} --privvmpages #{memory * 1024 / 4} --save")
     start if start_after_creation
   
