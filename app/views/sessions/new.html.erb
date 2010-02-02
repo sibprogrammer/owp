@@ -11,7 +11,8 @@ Ext.onReady(function() {
       },
       failure: function(form, action) { 
         Owp.form.errorHandler(form, action, { 
-          fn: function() { 
+          fn: function() {
+            Ext.getCmp('password').setValue('');
             Ext.get('password').focus();
           } 
         });
