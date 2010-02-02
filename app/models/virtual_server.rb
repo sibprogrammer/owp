@@ -9,7 +9,7 @@ class VirtualServer < ActiveRecord::Base
   validates_uniqueness_of :ip_address
   validates_uniqueness_of :identity, :scope => :hardware_server_id
   validates_confirmation_of :password
-  validates_format_of :nameserver, :with => /^(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})?$/
+  validates_format_of :nameserver, :with => /^((\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})|\s)*$/
 
   def start
     hardware_server.rpc_client.exec('vzctl', 'start ' + identity.to_s)
@@ -48,7 +48,7 @@ class VirtualServer < ActiveRecord::Base
     vzctl_set("--ipdel all --ipadd #{ip_address} --save")
     vzctl_set("--userpasswd root:#{password}") if password
     vzctl_set("--onboot " + (start_on_boot ? "yes" : "no") + " --save")
-    vzctl_set("--nameserver #{nameserver} --save") if nameserver
+    vzctl_set(nameserver.split.map { |ip| "--nameserver #{ip} " }.join + "--save") if nameserver
     vzctl_set("--searchdomain #{search_domain} --save") if search_domain
     vzctl_set("--diskspace #{diskspace * 1024} --privvmpages #{memory * 1024 / 4} --save")
     start if start_after_creation
