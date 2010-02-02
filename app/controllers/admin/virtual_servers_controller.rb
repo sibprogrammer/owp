@@ -6,7 +6,7 @@ class Admin::VirtualServersController < AdminController
     virtual_servers.map! { |virtual_server| {
       :id => virtual_server.id,
       :identity => virtual_server.identity,
-      :ip_address => virtual_server.ip_address,
+      :ip_address => virtual_server.ip_address.split.join(', '),
       :host_name => virtual_server.host_name,
       :state => virtual_server.state,
       :os_template_name => virtual_server.orig_os_template,

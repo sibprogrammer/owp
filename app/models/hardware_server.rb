@@ -68,7 +68,6 @@ class HardwareServer < ActiveRecord::Base
       virtual_server = virtual_servers.find_by_identity(ve_id)
       virtual_server = VirtualServer.new(:identity => ve_id) unless virtual_server
       
-      virtual_server.ip_address = ip_address
       virtual_server.state = ve_state
         
       parser = IniParser.new(rpc_client.exec('cat', "/etc/vz/conf/#{ve_id}.conf")['output'])
@@ -76,6 +75,7 @@ class HardwareServer < ActiveRecord::Base
       virtual_server.orig_os_template = parser.get('OSTEMPLATE')
       virtual_server.start_on_boot = ('yes' == parser.get('ONBOOT'))
       virtual_server.host_name = parser.get('HOSTNAME')
+      virtual_server.ip_address = parser.get('IP_ADDRESS')
       virtual_server.nameserver = parser.get('NAMESERVER')
       virtual_server.search_domain = parser.get('SEARCHDOMAIN')
       virtual_server.diskspace = parser.get('DISKSPACE').split(":").last.to_i / 1024

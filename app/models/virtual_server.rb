@@ -5,7 +5,7 @@ class VirtualServer < ActiveRecord::Base
   attr_accessor :password, :password_confirmation, :start_after_creation
   belongs_to :hardware_server
   
-  validates_format_of :ip_address, :with => /^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/
+  validates_format_of :ip_address, :with => /^((\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})|\s)*$/
   validates_uniqueness_of :ip_address
   validates_uniqueness_of :identity, :scope => :hardware_server_id
   validates_confirmation_of :password
@@ -45,7 +45,7 @@ class VirtualServer < ActiveRecord::Base
     end
   
     vzctl_set("--hostname #{host_name} --save") if !host_name.empty?
-    vzctl_set("--ipdel all --ipadd #{ip_address} --save")
+    vzctl_set("--ipdel all " + ip_address.split.map { |ip| "--ipadd #{ip} " }.join + "--save")
     vzctl_set("--userpasswd root:#{password}") if !password.empty?
     vzctl_set("--onboot " + (start_on_boot ? "yes" : "no") + " --save")
     vzctl_set(nameserver.split.map { |ip| "--nameserver #{ip} " }.join + "--save") if !nameserver.empty?
