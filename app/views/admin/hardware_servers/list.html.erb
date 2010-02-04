@@ -217,6 +217,12 @@ Ext.onReady(function() {
     stripeRows: true,
     frame: true,
     iconCls: 'icon-items-list',
+    listeners: {
+      celldblclick: function(grid, rowIndex, columnIndex, eventObject) {
+        var selectedNode = grid.getSelectionModel().getSelected();
+        document.location.href = '/admin/hardware-servers/show?id=' + selectedNode.data.id;
+      }
+    },
     tbar: [{
       text: '<%= tjs('admin.hardware_servers.grid.button.connect') %>',
       handler: addHwServer,

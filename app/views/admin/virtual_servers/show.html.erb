@@ -1,0 +1,76 @@
+<%
+  @page_title = t('admin.virtual_servers.show.title', 
+    :name => @virtual_server.host_name.empty? ? "#" + @virtual_server.identity.to_s : @virtual_server.host_name )
+%>
+
+<% javascript_tag do -%>
+Ext.onReady(function() {
+
+  var storeData = [[
+    '<%= tjs('admin.virtual_servers.form.create_server.field.identity') %>',
+    '<%= escape_javascript(@virtual_server.identity.to_s) %>'
+  ], [
+    '<%= tjs('admin.virtual_servers.form.create_server.field.os_template') %>',
+    '<%= escape_javascript(@virtual_server.orig_os_template) %>'
+  ], [
+    '<%= tjs('admin.virtual_servers.form.create_server.field.ip_address') %>',
+    '<%= escape_javascript(@virtual_server.ip_address) %>'
+  ], [
+    '<%= tjs('admin.virtual_servers.form.create_server.field.host_name') %>',
+    '<%= escape_javascript(@virtual_server.host_name) %>'
+  ], [
+    '<%= tjs('admin.virtual_servers.form.create_server.field.diskspace') %>',
+    '<%= escape_javascript(@virtual_server.diskspace.to_s) %>'
+  ], [
+    '<%= tjs('admin.virtual_servers.form.create_server.field.memory') %>',
+    '<%= escape_javascript(@virtual_server.memory.to_s) %>'
+  ], [
+    '<%= tjs('admin.virtual_servers.form.create_server.field.nameserver') %>',
+    '<%= escape_javascript(@virtual_server.nameserver) %>'
+  ], [
+    '<%= tjs('admin.virtual_servers.form.create_server.field.searchdomain') %>',
+    '<%= escape_javascript(@virtual_server.search_domain) %>'
+  ]];
+  
+  var store = new Ext.data.ArrayStore({
+    fields: [{
+      name: 'parameter'
+    }, {
+      name: 'value'
+    }]
+  });
+  
+  store.loadData(storeData);
+  
+  var virtualServerInfoGrid = new Ext.grid.GridPanel({
+    id: 'virtualServerInfoGrid',
+    title: '<%= tjs('admin.virtual_servers.show.grid.title') %>',
+    loadMask: true,
+    tools: [{ 
+      id: 'refresh',
+      handler: function() {
+        hwServersGrid.getStore().reload();
+      }
+    }],
+    iconCls: 'icon-items-list',
+    store: store,
+    autoWidth: true,
+    stripeRows: true,
+    autoExpandColumn: 'value',
+    stateId: 'virtualServerInfoGrid',
+    cm: new Ext.grid.ColumnModel([{
+      id: 'parameter',
+      header: '<%= tjs('admin.virtual_servers.show.grid.column.parameter') %>',
+      width: 250,
+      dataIndex: 'parameter'
+    }, {
+      id: 'value',
+      header: '<%= tjs('admin.virtual_servers.show.grid.column.value') %>',
+      dataIndex: 'value'
+    }])
+  });
+  
+  Owp.layout.addToCenter(virtualServerInfoGrid);
+
+});
+<% end -%>

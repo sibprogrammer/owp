@@ -80,4 +80,10 @@ class Admin::VirtualServersController < AdminController
     }}  
   end
   
+  def show
+    @virtual_server = VirtualServer.find_by_id(params[:id])
+    redirect_to :controller => 'hardware_servers', :action => 'list' and return if !@virtual_server
+    @up_level = '/admin/hardware-servers/show?id=' + @virtual_server.hardware_server.id.to_s
+  end
+  
 end

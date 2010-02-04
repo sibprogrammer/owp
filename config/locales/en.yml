@@ -203,6 +203,13 @@ en:
           tab:
             main_settings: "Main Settings"
             additional_settings: "Additional Settings"
+      show:
+        title: "Virtual server {{name}}"
+        grid:
+          title: "Virtual server information"
+          column:
+            parameter: "Parameter"
+            value: "Value"
     os_templates:
       title: "OS Templates on Physical Server {{name}}"
       grid:

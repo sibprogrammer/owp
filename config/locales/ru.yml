@@ -203,6 +203,13 @@ ru:
           tab:
             main_settings: "Основные настройки"
             additional_settings: "Дополнительные настройки"
+      show:
+        title: "Виртуальный сервер {{name}}"
+        grid:
+          title: "Информация о виртуальном сервере"
+          column:
+            parameter: "Параметр"
+            value: "Значение"
     os_templates:
       title: "Шаблоны ОС на физическом сервере {{name}}"
       grid:

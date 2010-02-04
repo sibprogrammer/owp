@@ -348,7 +348,10 @@ Ext.onReady(function() {
         header: '<%= tjs('admin.virtual_servers.grid.column.identity') %>',
         width: 60,
         sortable: true,
-        dataIndex: 'identity'
+        dataIndex: 'identity',
+        renderer: function(identity, metadata, record) {
+          return "<a href='/admin/virtual-servers/show?id=" + record.data.id + "'>" + identity + "</a>";
+        }
       }, {
         id: 'ip_address',
         header: '<%= tjs('admin.virtual_servers.grid.column.ip_address') %>',
@@ -382,6 +385,12 @@ Ext.onReady(function() {
     autoWidth: true,
     stripeRows: true,
     frame: true,
+    listeners: {
+      celldblclick: function(grid, rowIndex, columnIndex, eventObject) {
+        var selectedNode = grid.getSelectionModel().getSelected();
+        document.location.href = '/admin/virtual-servers/show?id=' + selectedNode.data.id;
+      }
+    },
     tbar: [{
       text: '<%= tjs('admin.virtual_servers.grid.button.create') %>',
       cls: 'x-btn-text-icon',
