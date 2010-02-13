@@ -1,0 +1,266 @@
+de:
+  language:
+    title: "Deutsch"
+  form:
+    loading: "Bitte warten..."
+    confirmation: "Best&auml;tigen"
+    performing_task: "Bitte warten. Performing task..."
+    error:
+      title: "Fehler"
+      fill_form: "Bitte Formular ausf&uuml;llen."
+    info:
+      title: "Information"
+    button:
+      save: "Speichern"
+      cancel: "Abbrechen"
+      create: "Erstellen"
+  activerecord:
+    errors:
+      models:
+        user:
+          attributes:
+            password:
+              confirmation: "Passwort und Best&auml;tigung stimmen nicht &uuml;berein."
+              too_short: "Passwort ist zu kurz: (minimale L&auml;nge: {{count}})."
+            password_confirmation:
+              blank: "Passwortbest&auml;tigung ist erforderlich."
+            login:
+              taken: "Ein Benutzer mit diesem Benutzernamen existiert bereits."
+        hardware_server:
+          attributes:
+            host:
+              taken: "Ein Server mit diesem Namen existiert bereits."
+              connection: "Verbindung fehlgeschlagen. Eventuell wurde der Daemon nicht gestartet."
+            auth_key:
+              bad_auth: "Login nicht m&ouml;glich. Eventuell falsches Passwort eingegeben."
+        virtual_server:
+          attributes:
+            ip_address:
+              invalid: "Falsche IP-Adresse."
+              taken: "IP-Adresse wurde bereits einem anderen Server zugewiesen."
+            identity:
+              taken: "Diese Identit&auml;t geh&ouml;rt zu einem anderen Server."
+            password:
+              confirmation: "Passwort und Best&auml;tigung stimmen nicht &uuml;berein."
+            nameserver:
+              invalid: "IP-Adresse des DNS-Servers ist ung&uuml;ltig."
+  about:
+    copyright: "Copyright 2008-2010 SoftUnity."
+    right_reserved: "Alle Rechte vorbehalten."
+    about_program: "&Uuml;ber"
+    author: "Hauptentwickler"
+    contributors: "Unterst&uuml;tzer"
+    contributors_list: "Liste"
+    web_site: "Webseite"
+  login:
+    page_title: "Anmeldevorgang"
+    window_title: "An {{product}} anmelden"
+    username: "Benutzername"
+    password: "Passwort"
+    remember_me: "Angemeldet bleiben"
+    button_login: "Anmelden"
+    locale: "Sprache"
+    bad_login: "Ung&uuml;ltiger Benutzername oder Passwort."
+  admin:
+    menu:
+      title: "Men&uuml;"
+      general:
+        title: "Allgemein"
+        dashboard: "&Uuml;bersicht"
+        hardware_servers: "Physische Server"
+        my_profile: "Mein Profil"
+        users: "Benutzer"
+        event_log: "Ereignisanzeige"
+        logout: "Abmelden"
+      help:
+        title: "Hilfe"
+        documentation: "Dokumentation"
+        support: "Support"
+    operations:
+      up_level: "Up Level"
+    logout: "Sind Sie sicher, dass Sie sich abmelden wollen?"
+    my_profile:
+      title: "Mein Profil"
+      user_name: "Benutzername"
+      current_password: "Aktuelles Passwort"
+      new_password: "Neues Passwort"
+      confirm_password: "Passwort best&auml;tigen"
+      bad_current_password: "Aktuelles Passwort ist falsch."
+    events:
+      hardware_server:
+        connect: "Physischen Server {{host}} eingebunden."
+        disconnect: "Physischen Server {{host}} entfernt."
+        sync: "Server's {{host}} Status wurde synchronisiert."
+      virtual_server:
+        created: "Virtuellen Server {{identity}} erstellt."
+        removed: "Virtuellen Server {{identity}} entfernt."
+    dashboard:
+      title: "&Uuml;bersicht"
+      intro:
+        title: "Intro"
+        text: "OpenVZ Web Panel ist eine web-basierte GUI um physische Server mit OpenVZ Virtualisierung zu verwalten."
+      profile:
+        title: "Profil"
+        text: "Sie sind als {{login}} angemeldet."
+      updates:
+        text: "Eine neue Version ist verf&uuml;gbar: {{product}}."
+        update_command: "Um das Update durchzuf&uuml;hren m&uuml;ssen Sie folgenden Befehl ausf&uuml;hren: {{command}}"
+      stats_grid:
+        title: "Statistiken"
+        column:
+          parameter: "Parameter"
+          value: "Wert"
+        parameter:
+          panel_users: "Panel-Benutzer"
+          hardware_servers: "Physische Server"
+          virtual_servers: "Virtuelle Server"
+          virtual_servers_running: "Virtuelle Server - gestartet"
+          virtual_servers_stopped: "Virtuelle Server - gestoppt"
+          os_templates: "Betriebssystem-Vorlagen"
+    hardware_servers:
+      title: "Physische Server"
+      grid:
+        title: "Liste physischer Server"
+        column:
+          host_name: "Hostname"
+          description: "Beschreibung"
+          virtual_servers: "Virtuelle Server"
+        button:
+          connect: "Neuen Server einbinden"
+          reconnect: "Server wiederverbinden"
+          disconnect: "Server entfernen"   
+          details: "Details" 
+          sync: "Synchronisierung"
+          edit: "Einstellungen verwalten"
+      form:
+        connect_server:
+          title: "Neuen physischen Server einbinden"
+          edit_title: "Einstellungen des physischen Servers bearbeiten"
+          button_connect: "Einbinden"
+          field:
+            host_name: "Hostname"
+            auth_key: "Authorisierungsschl&uuml;ssel"
+            description: "Beschreibung"
+        disconnect_server:
+          sure_to_disconnect: "M&ouml;chten Sie die ausgew&auml;hlten Server wirklich entfernen?"
+          deletion_failed: "Einige Server konnten nicht entfernt werden."
+        sync:
+          sync_failed: "Einige physische Server konnten nicht synchronisiert werden."
+      show:
+        title: "Physischer Server {{name}}"
+      top_toolbar:
+        os_templates: "Betriebssystem-Vorlagen"
+    virtual_servers:
+      grid:
+        title: "Liste virtueller Server"
+        column:
+          state: "Status"
+          identity: "VEID"
+          ip_address: "IP-Adresse"
+          host_name: "Hostname"
+          os_template: "Betriebssystem-Vorlagen"
+          memory: "Arbeitsspeicher, Mb"
+          diskspace: "Diskspace, Mb"
+        button:
+          create: "Create virtual server"
+          destroy: "Remove virtual server"
+          change_state: "Change state"
+          start: "Start"
+          restart: "Restart"
+          stop: "Stop"
+          edit: "Change settings"
+      form:
+        change_state:
+          failed: "Unable to change virtual server state."
+        remove_server:
+          sure_to_remove: "Are you sure you want to remove selected virtual servers?"
+          deletion_failed: "Unable to delete some virtual servers."
+        create_server:
+          title: "Create new virtual server"
+          edit_title: "Change settings of virtual server"
+          button_create: "Create"
+          field:
+            identity: "Server ID (VEID)"
+            os_template: "OS Template"
+            select_os_template: "Select OS template"
+            ip_address: "IP Address"
+            host_name: "Host Name"
+            password: "Root Password"
+            confirm_password: "Confirm Password"
+            start_on_boot: "Start on Boot"
+            start_after_creation: "Start after Creation"
+            nameserver: "DNS Server"
+            searchdomain: "Search Domain"
+            diskspace: "Disk Space, Mb"
+            memory: "RAM Memory, Mb"
+          fieldset:
+            general: "General"
+            network: "Network"
+            system_access: "System Access"
+            start_options: "Start Options"
+            dns_settings: "DNS Settings"
+            limits: "Limits"
+          tab:
+            main_settings: "Main Settings"
+            additional_settings: "Additional Settings"
+      show:
+        title: "Virtueller Server {{name}}"
+        grid:
+          title: "Informationen &uuml;ber virtuellen Server"
+          column:
+            parameter: "Parameter"
+            value: "Wert"
+    os_templates:
+      title: "Betriebssystem Vorlagen auf physischem Server {{name}}"
+      grid:
+        title: "Installierte Betriebssystem-Vorlagen"
+        column:
+          name: "Name"
+          size: "Gr&ouml;&szlig;e, Mb"
+        button:
+          install_new_template: "Neue Betriebssystem-Vorlage installieren"
+          remove: "Vorlage entfernen"
+      form:
+        install:
+          title: "Installation einer neuen Betriebssystem-Vorlage"
+          tab:
+            official: "Offiziell"
+            contributed: "Beigesteuert"
+          button_install: "Installieren"
+          failed: "Fehler beim Start der Installation der Betriebssystem-Vorlage."
+          scheduled: "Installation der Betriebssystem-Vorlage wurde eingeleitet."
+        remove_template:
+          sure_to_remove: "M&ouml;chten Sie die ausgew&auml;hlten Betriebssystem-Vorlagen wirklich entfernen?"
+          deletion_failed: "Einige Betriebssystem-Vorlagen konnten nicht entfernt werden."
+    event_log:
+      title: "Ereignisanzeige"
+      grid:
+        title: "Letzte Ereignisse"
+        column:
+          level: "Status"
+          created_at: "Datum"
+          message: "Ereignis"
+          id: "ID"
+    users:
+      title: "Benutzer"
+      grid:
+        title: "Benutzerliste"
+        column:
+          login: "Benutzername"
+          created_at: "Erstellungsdatum"
+        button:
+          add: "Benutzer hinzuf&uuml;gen"
+          remove: "Benutzer l&ouml;schen"
+          edit: "Benutzer bearbeiten"
+      form:
+        remove_user:
+          sure_to_remove: "M&ouml;chten Sie die ausgew&auml;hlten Benutzer wirklich entfernen?"
+          deletion_failed: "Einige Benutzer konnten nicht entfernt werden."
+        create:
+          title: "Neuen Benutzer erstellen"
+          edit_title: "Benutzer bearbeiten"
+          button_create: "Erstellen"
+          field:
+            login: "Benutzername"
+            password: "Passwort"
+            confirm_password: "Passwort best&auml;tigen"
