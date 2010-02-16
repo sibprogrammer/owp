@@ -79,6 +79,8 @@ end
 class HwDaemonUtil
   
   def initialize
+    check_environment
+    
     if (0 == ARGV.size)
       do_help
     end
@@ -99,6 +101,18 @@ class HwDaemonUtil
         do_status
       else
         do_help
+    end
+  end
+  
+  def check_environment
+    if RUBY_VERSION !~ /1\.8\..+/
+      puts "Ruby #{RUBY_VERSION} is not supported."
+      exit(1)
+    end
+    
+    if !File.exists?('/proc/vz/version')
+      puts "Daemon should be run on the server with OpenVZ."
+      exit(1)
     end
   end
   
