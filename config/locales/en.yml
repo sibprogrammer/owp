@@ -26,6 +26,7 @@ en:
               blank: "Password confirmation is required."
             login:
               taken: "User with such login is already exist."
+              too_short: "Login is too short (minimum symbols: {{count}})."
         hardware_server:
           attributes:
             host:
