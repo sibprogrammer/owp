@@ -86,4 +86,39 @@ class Admin::VirtualServersController < AdminController
     @up_level = '/admin/hardware-servers/show?id=' + @virtual_server.hardware_server.id.to_s
   end
   
+  def get_properties
+    virtual_server = VirtualServer.find_by_id(params[:id])
+
+    render :json => { :success => true, :data => [
+      {
+        :parameter => t('admin.virtual_servers.form.create_server.field.identity'),
+        :value => virtual_server.identity,
+      }, {
+        :parameter => t('admin.virtual_servers.form.create_server.field.status'),
+        :value => '<img src="/images/' + (('running' == virtual_server.state) ? 'run' : 'stop') + '.png"/>',
+      }, {
+        :parameter => t('admin.virtual_servers.form.create_server.field.os_template'),
+        :value => virtual_server.orig_os_template,
+      }, {
+        :parameter => t('admin.virtual_servers.form.create_server.field.ip_address'),
+        :value => virtual_server.ip_address,
+      }, {
+        :parameter => t('admin.virtual_servers.form.create_server.field.host_name'),
+        :value => virtual_server.host_name,
+      }, {
+        :parameter => t('admin.virtual_servers.form.create_server.field.diskspace'),
+        :value => virtual_server.diskspace,
+      }, {
+        :parameter => t('admin.virtual_servers.form.create_server.field.memory'),
+        :value => virtual_server.memory,
+      }, {
+        :parameter => t('admin.virtual_servers.form.create_server.field.nameserver'),
+        :value => virtual_server.nameserver,
+      }, {
+        :parameter => t('admin.virtual_servers.form.create_server.field.searchdomain'),
+        :value => virtual_server.search_domain,
+      }
+    ]}
+  end
+  
 end

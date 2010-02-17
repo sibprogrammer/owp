@@ -1,46 +1,20 @@
 <%
   @page_title = t('admin.virtual_servers.show.title', 
-    :name => @virtual_server.host_name.empty? ? "#" + @virtual_server.identity.to_s : @virtual_server.host_name )
+    :name => @virtual_server.host_name.blank? ? "#" + @virtual_server.identity.to_s : @virtual_server.host_name )
 %>
 
 <% javascript_tag do -%>
 Ext.onReady(function() {
 
-  var storeData = [[
-    '<%= tjs('admin.virtual_servers.form.create_server.field.identity') %>',
-    '<%= escape_javascript(@virtual_server.identity.to_s) %>'
-  ], [
-    '<%= tjs('admin.virtual_servers.form.create_server.field.os_template') %>',
-    '<%= escape_javascript(@virtual_server.orig_os_template) %>'
-  ], [
-    '<%= tjs('admin.virtual_servers.form.create_server.field.ip_address') %>',
-    '<%= escape_javascript(@virtual_server.ip_address) %>'
-  ], [
-    '<%= tjs('admin.virtual_servers.form.create_server.field.host_name') %>',
-    '<%= escape_javascript(@virtual_server.host_name) %>'
-  ], [
-    '<%= tjs('admin.virtual_servers.form.create_server.field.diskspace') %>',
-    '<%= escape_javascript(@virtual_server.diskspace.to_s) %>'
-  ], [
-    '<%= tjs('admin.virtual_servers.form.create_server.field.memory') %>',
-    '<%= escape_javascript(@virtual_server.memory.to_s) %>'
-  ], [
-    '<%= tjs('admin.virtual_servers.form.create_server.field.nameserver') %>',
-    '<%= escape_javascript(@virtual_server.nameserver) %>'
-  ], [
-    '<%= tjs('admin.virtual_servers.form.create_server.field.searchdomain') %>',
-    '<%= escape_javascript(@virtual_server.search_domain) %>'
-  ]];
-  
-  var store = new Ext.data.ArrayStore({
-    fields: [{
-      name: 'parameter'
-    }, {
-      name: 'value'
-    }]
+  var store = new Ext.data.JsonStore({
+    url: '/admin/virtual-servers/get_properties?id=<%= @virtual_server.id %>',
+    root: 'data',
+    autoLoad: true,
+    fields: [
+      { name: 'parameter' },
+      { name: 'value' }
+    ]
   });
-  
-  store.loadData(storeData);
   
   var virtualServerInfoGrid = new Ext.grid.GridPanel({
     id: 'virtualServerInfoGrid',
@@ -49,7 +23,7 @@ Ext.onReady(function() {
     tools: [{ 
       id: 'refresh',
       handler: function() {
-        hwServersGrid.getStore().reload();
+        virtualServerInfoGrid.getStore().reload();
       }
     }],
     iconCls: 'icon-items-list',
@@ -71,6 +45,40 @@ Ext.onReady(function() {
   });
   
   Owp.layout.addToCenter(virtualServerInfoGrid);
+
+  var changeStateAction = function(action) {
+    Owp.list.groupAction({
+      gridName: 'virtualServerInfoGrid',
+      url: '/admin/virtual-servers/change_state?ids=<%= @virtual_server.id %>',
+      command: action,
+      waitMsg: '<%= tjs('form.performing_task') %>',
+      failure: {
+        title: '<%= tjs('form.error.title') %>',
+        msg: '<%= tjs('admin.virtual_servers.form.change_state.failed') %>'
+      }
+    });
+  }
+
+  var mainContentCenterPanel = Ext.getCmp('mainContentCenterPanel');
+  mainContentCenterPanel.getTopToolbar().insertButton(0, {
+    text: '<%= tjs('admin.virtual_servers.grid.button.change_state') %>',
+    iconCls: 'icon-button-change-state',
+    ref: '../changeStateButton',
+    menu: [{
+      text: '<%= tjs('admin.virtual_servers.grid.button.start') %>',
+      iconCls: 'icon-button-start-server',
+      handler: changeStateAction.createCallback('start')
+    }, {
+      text: '<%= tjs('admin.virtual_servers.grid.button.stop') %>',
+      iconCls: 'icon-button-stop-server',
+      handler: changeStateAction.createCallback('stop')
+    }, {
+      text: '<%= tjs('admin.virtual_servers.grid.button.restart') %>',
+      iconCls: 'icon-button-restart-server',
+      handler: changeStateAction.createCallback('restart')
+    }] 
+  });
+  mainContentCenterPanel.doLayout()
 
 });
 <% end -%>

@@ -69,6 +69,56 @@ Owp.form.BasicFormWindow = Ext.extend(Ext.Window, {
   }
 });
 
+Ext.ns('Owp.button');
+
+Owp.button.action = function(config) {
+  config = Ext.apply({
+    url: '',
+    command: '',
+    waitMsg: '',
+    failure: {
+      title: '',
+      msg: ''
+    }
+  }, config);
+  
+  var progressBar = Ext.Msg.wait(config.waitMsg);
+  
+  Ext.Ajax.request({
+    url: config.url,
+    success: function(response) {
+      progressBar.hide();
+         
+      var result = Ext.util.JSON.decode(response.responseText);
+      
+      if (!result.success) {
+        Ext.MessageBox.show({
+          title: config.failure.title,
+          msg: config.failure.msg,
+          buttons: Ext.Msg.OK,
+          icon: Ext.MessageBox.ERROR
+        });
+      } else {
+        var grid = Ext.getCmp(config.gridName);
+        grid.store.reload();
+        grid.getSelectionModel().clearSelections();
+      }      
+    },
+    failure: function() {
+      Ext.MessageBox.show({
+        title: config.failure.title,
+        msg: 'Internal error occured. See logs for details.',
+        buttons: Ext.Msg.OK,
+        icon: Ext.MessageBox.ERROR
+      });
+    },
+    params: {
+      command: config.command
+    },
+    scope: this
+  });
+}
+
 Ext.ns('Owp.list');
 
 Owp.list.getSelectedIds = function(gridName) {
@@ -93,16 +143,7 @@ Owp.list.groupAction = function(config) {
       msg: ''
     }
   }, config);
-  
-  function showError() {
-    Ext.MessageBox.show({
-      title: config.failure.title,
-      msg: config.failure.msg,
-      buttons: Ext.Msg.OK,
-      icon: Ext.MessageBox.ERROR
-    });
-  }  
-  
+
   var progressBar = Ext.Msg.wait(config.waitMsg);
   
   Ext.Ajax.request({

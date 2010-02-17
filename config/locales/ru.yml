@@ -193,6 +193,7 @@ ru:
             searchdomain: "Домен для поиска"
             diskspace: "Размер диска, Mb"
             memory: "RAM память, Mb"
+            status: "Статус"
           fieldset:
             general: "Общее"
             network: "Сеть"

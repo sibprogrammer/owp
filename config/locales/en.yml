@@ -193,6 +193,7 @@ en:
             searchdomain: "Search Domain"
             diskspace: "Disk Space, Mb"
             memory: "RAM Memory, Mb"
+            status: "Status"
           fieldset:
             general: "General"
             network: "Network"
