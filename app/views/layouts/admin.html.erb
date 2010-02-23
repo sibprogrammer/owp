@@ -91,7 +91,7 @@
             href: '/admin/dashboard',
             icon: '/images/application.png',
             leaf: true
-          }, {
+          }, <% if @current_user.superadmin? %> {
             cls: 'menu-item',
             text: '<%= tjs('admin.menu.general.hardware_servers') %>',
             href: '/admin/hardware-servers/list',
@@ -99,7 +99,15 @@
             expandable: false,
             expanded: true,
             children: <%= @servers_list.to_json %>
-          }, {
+          }, <% else %> {
+            cls: 'menu-item',
+            text: '<%= tjs('admin.menu.general.virtual_servers') %>',
+            href: '/admin/virtual-servers/list',
+            icon: '/images/server.png',
+            expandable: false,
+            expanded: true,
+            children: <%= @servers_list.to_json %>
+          }, <% end -%> {
             cls: 'menu-item',
             text: '<%= tjs('admin.menu.general.my_profile') %>',
             icon: '/images/vcard.png',
@@ -109,7 +117,7 @@
                 windowMyProfile.show();
               }
             }
-          }, {
+          }, <% if @current_user.superadmin? %> {
             cls: 'menu-item',
             text: '<%= tjs('admin.menu.general.users') %>',
             href: '/admin/users/list',
@@ -120,7 +128,7 @@
             text: '<%= tjs('admin.menu.general.event_log') %>',
             href: '/admin/event-log/list',
             icon: '/images/table.png'
-          }, {
+          }, <% end -%> {
             cls: 'menu-item',
             text: '<%= tjs('admin.menu.general.logout') %>',
             icon: '/images/key_go.png',

@@ -27,6 +27,17 @@ Ext.onReady(function() {
         { name: 'name' }
       ]
     });
+    
+    var ownersStore = new Ext.data.JsonStore({
+      url: '/admin/users/virtual_servers_owners',
+      root: 'data',
+      autoLoad: true,
+      sortInfo: { field: 'login', direction: 'ASC' },
+      fields: [
+        { name: 'id' },
+        { name: 'login' }
+      ]
+    });
   
     var formEditVirtualServer = new Owp.form.BasicForm({
       labelWidth: 180,
@@ -183,6 +194,26 @@ Ext.onReady(function() {
               name: 'start_after_creation',
               id: 'checkboxStartAfterCreation'
             }]
+          }, {
+            xtype: 'fieldset',
+            title: '<%= tjs('admin.virtual_servers.form.create_server.fieldset.panel_access') %>',
+            autoHeight: true,
+            defaultType: 'checkbox',
+            labelWidth: 180,
+            items: [{
+              fieldLabel: '<%= tjs('admin.virtual_servers.form.create_server.field.owner') %>',
+              xtype: 'combo',
+              mode: 'local',
+              editable: false,
+              forceSelection: true,
+              triggerAction: 'all',
+              hiddenName: 'user_id',
+              valueField: 'id',
+              displayField: 'login',
+              name: 'user_id',
+              emptyText: '<%= tjs('admin.virtual_servers.form.create_server.field.select_owner') %>',
+              store: ownersStore
+            }]
           }]
         }]
       }]
@@ -294,7 +325,8 @@ Ext.onReady(function() {
       { name: 'state' },
       { name: 'os_template_name' },
       { name: 'memory' },
-      { name: 'diskspace' }
+      { name: 'diskspace' },
+      { name: 'owner' }
     ]
   });
   
@@ -376,7 +408,12 @@ Ext.onReady(function() {
         id: 'os_template_name',
         header: '<%= tjs('admin.virtual_servers.grid.column.os_template') %>',
         sortable: true,
-        dataIndex: 'os_template_name' 
+        dataIndex: 'os_template_name'
+      }, {
+        id: 'owner',
+        header: '<%= tjs('admin.virtual_servers.grid.column.owner') %>',
+        sortable: true,
+        dataIndex: 'owner'
       }
     ]),
     sm: selectionModel,

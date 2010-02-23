@@ -13,9 +13,11 @@ class User < ActiveRecord::Base
   # HACK HACK HACK -- how to do attr_accessible from here?
   # prevents a user from submitting a crafted form that bypasses activation
   # anything else you want your user to change should be added here.
-  attr_accessible :login, :password, :password_confirmation
+  attr_accessible :login, :password, :password_confirmation, :role_type
   
   attr_accessor :password, :password_confirmation
+  
+  has_many :virtual_servers
 
   # Authenticates a user by their login name and unencrypted password.  Returns the user or nil.
   #
@@ -31,6 +33,18 @@ class User < ActiveRecord::Base
 
   def login=(value)
     write_attribute :login, (value ? value.downcase : nil)
+  end
+  
+  def superadmin?
+    role_type == 1
+  end
+  
+  def ve_admin?
+    role_type == 2
+  end
+  
+  def self.get_virtual_servers_owners
+    User.find(:all, :conditions => { :role_type => 2 })
   end
 
   protected

@@ -1,19 +1,17 @@
 class Admin::VirtualServersController < AdminController
   
+  def list
+    @up_level = '/admin/dashboard'
+  end
+  
+  def owner_list_data
+    render :json => { :data => get_virtual_servers_map(@current_user.virtual_servers) }
+  end
+  
   def list_data
     hardware_server = HardwareServer.find_by_id(params[:hardware_server_id])
     virtual_servers = hardware_server.virtual_servers
-    virtual_servers.map! { |virtual_server| {
-      :id => virtual_server.id,
-      :identity => virtual_server.identity,
-      :ip_address => virtual_server.ip_address.split.join(', '),
-      :host_name => virtual_server.host_name,
-      :state => virtual_server.state,
-      :os_template_name => virtual_server.orig_os_template,
-      :diskspace => virtual_server.diskspace,
-      :memory => virtual_server.memory,
-    }}
-    render :json => { :data => virtual_servers }  
+    render :json => { :data => get_virtual_servers_map(virtual_servers) }
   end
   
   def change_state    
@@ -77,13 +75,19 @@ class Admin::VirtualServersController < AdminController
       :search_domain => virtual_server.search_domain,
       :diskspace => virtual_server.diskspace,
       :memory => virtual_server.memory,
+      :user_id => virtual_server.user_id,
     }}  
   end
   
   def show
     @virtual_server = VirtualServer.find_by_id(params[:id])
     redirect_to :controller => 'hardware_servers', :action => 'list' and return if !@virtual_server
-    @up_level = '/admin/hardware-servers/show?id=' + @virtual_server.hardware_server.id.to_s
+    
+    if @current_user.superadmin?
+      @up_level = '/admin/hardware-servers/show?id=' + @virtual_server.hardware_server.id.to_s
+    else
+      @up_level = '/admin/virtual-servers/list'
+    end
   end
   
   def get_properties
@@ -119,6 +123,22 @@ class Admin::VirtualServersController < AdminController
         :value => virtual_server.search_domain,
       }
     ]}
+  end
+  
+  private 
+  
+  def get_virtual_servers_map(virtual_servers)
+    virtual_servers = virtual_servers.map { |virtual_server| {
+      :id => virtual_server.id,
+      :identity => virtual_server.identity,
+      :ip_address => virtual_server.ip_address.split.join(', '),
+      :host_name => virtual_server.host_name,
+      :state => virtual_server.state,
+      :os_template_name => virtual_server.orig_os_template,
+      :diskspace => virtual_server.diskspace,
+      :memory => virtual_server.memory,
+      :owner => virtual_server.user ? virtual_server.user.login : '',
+    }} 
   end
   
 end

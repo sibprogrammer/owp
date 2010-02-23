@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100127143637) do
+ActiveRecord::Schema.define(:version => 20100223142301) do
 
   create_table "event_logs", :force => true do |t|
     t.integer  "level"
@@ -39,6 +39,7 @@ ActiveRecord::Schema.define(:version => 20100127143637) do
     t.datetime "updated_at"
     t.string   "remember_token",            :limit => 40
     t.datetime "remember_token_expires_at"
+    t.integer  "role_type",                               :default => 1
   end
 
   add_index "users", ["login"], :name => "index_users_on_login", :unique => true
@@ -55,6 +56,7 @@ ActiveRecord::Schema.define(:version => 20100127143637) do
     t.integer "diskspace",                        :default => 1024
     t.integer "memory",                           :default => 256
     t.string  "orig_os_template"
+    t.integer "user_id",                          :default => 0
   end
 
 end

@@ -1,9 +1,11 @@
 class VirtualServer < ActiveRecord::Base
   attr_accessible :identity, :ip_address, :host_name, :hardware_server_id, 
     :orig_os_template, :password, :start_on_boot, :start_after_creation, :state,
-    :nameserver, :search_domain, :diskspace, :memory, :password_confirmation
+    :nameserver, :search_domain, :diskspace, :memory, :password_confirmation,
+    :user_id
   attr_accessor :password, :password_confirmation, :start_after_creation
   belongs_to :hardware_server
+  belongs_to :user
   
   validates_format_of :ip_address, :with => /^((\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})|\s)*$/
   validates_uniqueness_of :ip_address

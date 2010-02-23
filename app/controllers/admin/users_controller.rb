@@ -26,6 +26,7 @@ class Admin::UsersController < AdminController
     users.map! { |user| {
       :id => user.id,
       :login => user.login,
+      :role_type => t('admin.users.role.' + (1 == user.role_type ? 'infrastructure_admin' : 'virtual_server_owner')),
       :created_at => user.created_at.strftime("%Y.%m.%d %H:%M:%S"),
     }}
     render :json => { :data => users }  
@@ -61,7 +62,18 @@ class Admin::UsersController < AdminController
     
     render :json => { :success => true, :data => {
       :login => user.login,
+      :role_type => user.role_type,
     }}
+  end
+  
+  def virtual_servers_owners
+    users = User.get_virtual_servers_owners
+    users.map! { |user| {
+      :id => user.id,
+      :login => user.login,
+    }}
+    users << { :id => 0, :login => t('admin.virtual_servers.form.create_server.field.no_owner') }
+    render :json => { :data => users }  
   end
   
 end

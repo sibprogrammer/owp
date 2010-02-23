@@ -34,6 +34,26 @@ Ext.onReady(function() {
         name: 'password_confirmation',
         inputType: 'password',
         allowBlank: ('edit' == mode)
+      }, {
+        fieldLabel: '<%= tjs('admin.users.form.create.field.role') %>',
+        name: 'role_type',
+        xtype: 'combo',
+        allowBlank: false,
+        editable: false,
+        mode: 'local',
+        forceSelection: true,
+        triggerAction: 'all',
+        displayField: 'name',
+        valueField: 'role_type',
+        hiddenName: 'role_type',
+        emptyText: '<%= tjs('admin.users.form.create.field.select_role') %>',
+        store: new Ext.data.ArrayStore({
+          fields: ['role_type', 'name'],
+          data: [
+            [1, '<%= tjs('admin.users.role.infrastructure_admin') %>'],
+            [2, '<%= tjs('admin.users.role.virtual_server_owner') %>']
+          ]
+        })
       }]
     });
     
@@ -137,6 +157,7 @@ Ext.onReady(function() {
     fields: [
       { name: 'id' },
       { name: 'login' },
+      { name: 'role_type' },
       { name: 'created_at' }
     ]
   });
@@ -189,6 +210,11 @@ Ext.onReady(function() {
         sortable: true,
         dataIndex: 'login'
       }, {
+        id: 'role_type',
+        header: '<%= tjs('admin.users.grid.column.role') %>',
+        sortable: true,
+        dataIndex: 'role_type'
+      }, {
         id: 'created_at',
         header: '<%= tjs('admin.users.grid.column.created_at') %>',
         width: 130,
@@ -198,7 +224,7 @@ Ext.onReady(function() {
     ]),
     sm: selectionModel,
     stripeRows: true,
-    autoExpandColumn: 'created_at',
+    autoExpandColumn: 'role_type',
     autoWidth: true,
     stripeRows: true,
     frame: true,

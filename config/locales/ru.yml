@@ -69,6 +69,7 @@ ru:
         title: "Общее"
         dashboard: "Рабочий стол"
         hardware_servers: "Физические сервера"
+        virtual_servers: "Виртуальные сервера"
         my_profile: "Мой профиль"
         users: "Пользователи"
         event_log: "Журнал событий"
@@ -152,6 +153,7 @@ ru:
       top_toolbar:
         os_templates: "Шаблоны ОС"
     virtual_servers:
+      title: "Виртуальные сервера"
       grid:
         title: "Список виртуальных серверов"
         column:
@@ -162,6 +164,7 @@ ru:
           os_template: "Шаблон ОС"
           memory: "Память, Мб"
           diskspace: "Диск, Мб"
+          owner: "Владелец"
         button:
           create: "Создать вирутальный сервер"
           destroy: "Удалить вирутальный сервер"
@@ -195,6 +198,9 @@ ru:
             diskspace: "Размер диска, Mb"
             memory: "RAM память, Mb"
             status: "Статус"
+            owner: "Владелец"
+            select_owner: "Выберите владельца"
+            no_owner: "Нет владельца"
           fieldset:
             general: "Общее"
             network: "Сеть"
@@ -202,6 +208,7 @@ ru:
             start_options: "Опции запуска"
             dns_settings: "DNS настройки"
             limits: "Ограничения"
+            panel_access: "Доступ к панели"
           tab:
             main_settings: "Основные настройки"
             additional_settings: "Дополнительные настройки"
@@ -244,12 +251,16 @@ ru:
           message: "Сообщение"
           id: "ID"
     users:
+      role:
+        infrastructure_admin: "Администратор инфраструктуры"
+        virtual_server_owner: "Владелец виртуального сервера"
       title: "Пользователи"
       grid:
         title: "Список пользователей"
         column:
           login: "Логин"
           created_at: "Дата создания"
+          role: "Роль"
         button:
           add: "Добавить пользователя"
           remove: "Удалить пользователя"
@@ -266,3 +277,5 @@ ru:
             login: "Логин"
             password: "Пароль"
             confirm_password: "Подтверждение пароля"
+            role: "Роль"
+            select_role: "Выберите роль"

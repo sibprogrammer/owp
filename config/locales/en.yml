@@ -69,6 +69,7 @@ en:
         title: "General"
         dashboard: "Dashboard"
         hardware_servers: "Physical servers"
+        virtual_servers: "Virtual servers"
         my_profile: "My profile"
         users: "Users"
         event_log: "Events log"
@@ -152,6 +153,7 @@ en:
       top_toolbar:
         os_templates: "OS Templates"
     virtual_servers:
+      title: "Virtual Servers"
       grid:
         title: "Virtual servers list"
         column:
@@ -162,6 +164,7 @@ en:
           os_template: "OS Template"
           memory: "Memory, Mb"
           diskspace: "Diskspace, Mb"
+          owner: "Owner"
         button:
           create: "Create virtual server"
           destroy: "Remove virtual server"
@@ -195,6 +198,9 @@ en:
             diskspace: "Disk Space, Mb"
             memory: "RAM Memory, Mb"
             status: "Status"
+            owner: "Owner"
+            select_owner: "Select an owner"
+            no_owner: "No owner"
           fieldset:
             general: "General"
             network: "Network"
@@ -202,6 +208,7 @@ en:
             start_options: "Start Options"
             dns_settings: "DNS Settings"
             limits: "Limits"
+            panel_access: "Panel access"
           tab:
             main_settings: "Main Settings"
             additional_settings: "Additional Settings"
@@ -244,12 +251,16 @@ en:
           message: "Message"
           id: "ID"
     users:
+      role:
+        infrastructure_admin: "Infrastructure administrator"
+        virtual_server_owner: "Virtual server owner"
       title: "Users"
       grid:
         title: "Users list"
         column:
           login: "Login"
           created_at: "Creation Date"
+          role: "Role"
         button:
           add: "Add User"
           remove: "Delete User"
@@ -266,3 +277,5 @@ en:
             login: "Login"
             password: "Password"
             confirm_password: "Confirm Password"
+            role: "Role"
+            select_role: "Select a role"

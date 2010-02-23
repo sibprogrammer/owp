@@ -1,0 +1,145 @@
+<% @page_title = t('admin.virtual_servers.title') %>
+
+<% javascript_tag do -%>
+Ext.onReady(function() {
+
+  var changeStateAction = function(action) {
+    Owp.list.groupAction({
+      gridName: 'virtualServersGrid',
+      url: '/admin/virtual-servers/change_state',
+      command: action,
+      waitMsg: '<%= tjs('form.performing_task') %>',
+      failure: {
+        title: '<%= tjs('form.error.title') %>',
+        msg: '<%= tjs('admin.virtual_servers.form.change_state.failed') %>'
+      }
+    });
+  }
+
+  var store = new Ext.data.JsonStore({
+    url: '/admin/virtual-servers/owner_list_data',
+    root: 'data',
+    autoLoad: true,
+    sortInfo: { field: 'identity', direction: 'ASC' },
+    fields: [
+      { name: 'id' },
+      { name: 'identity' },
+      { name: 'ip_address' },
+      { name: 'host_name' },
+      { name: 'state' },
+      { name: 'os_template_name' },
+      { name: 'memory' },
+      { name: 'diskspace' }
+    ]
+  });
+  
+  var selectionModel = new Ext.grid.CheckboxSelectionModel({ 
+    listeners: {
+      selectionchange: function(selectionModel) {
+        if (selectionModel.getCount()) {
+          virtualServersGrid.changeStateButton.enable();
+        } else {
+          virtualServersGrid.changeStateButton.disable();
+        }
+      }
+    }
+  });
+  
+  var virtualServersGrid = new Ext.grid.GridPanel({
+    id: 'virtualServersGrid',
+    title: '<%= tjs('admin.virtual_servers.grid.title') %>',
+    iconCls: 'icon-items-list',
+    store: store,
+    loadMask: true,
+    tools: [{ 
+      id: 'refresh',
+      handler: function() {
+        virtualServersGrid.getStore().reload();
+      }
+    }],
+    cm: new Ext.grid.ColumnModel([
+      selectionModel, 
+      { 
+        id: 'state',
+        header: '<%= tjs('admin.virtual_servers.grid.column.state') %>',
+        renderer: function(value) {
+          var image = ('running' == value) ? 'run.png' : 'stop.png';
+          return '<img src="/images/' + image + '"/>';
+        },
+        width: 60,
+        align: 'center',
+        sortable: true,
+        dataIndex: 'state'
+      }, { 
+        id: 'identity',
+        header: '<%= tjs('admin.virtual_servers.grid.column.identity') %>',
+        width: 60,
+        sortable: true,
+        dataIndex: 'identity',
+        renderer: function(identity, metadata, record) {
+          return "<a href='/admin/virtual-servers/show?id=" + record.data.id + "'>" + identity + "</a>";
+        }
+      }, {
+        id: 'ip_address',
+        header: '<%= tjs('admin.virtual_servers.grid.column.ip_address') %>',
+        sortable: true,
+        dataIndex: 'ip_address'
+      }, {
+        id: 'host_name',
+        header: '<%= tjs('admin.virtual_servers.grid.column.host_name') %>',
+        sortable: true,
+        dataIndex: 'host_name'
+      }, {
+        id: 'memory',
+        header: '<%= tjs('admin.virtual_servers.grid.column.memory') %>',
+        sortable: true,
+        dataIndex: 'memory'
+      }, {
+        id: 'diskspace',
+        header: '<%= tjs('admin.virtual_servers.grid.column.diskspace') %>',
+        sortable: true,
+        dataIndex: 'diskspace'
+      }, {
+        id: 'os_template_name',
+        header: '<%= tjs('admin.virtual_servers.grid.column.os_template') %>',
+        sortable: true,
+        dataIndex: 'os_template_name'
+      }
+    ]),
+    sm: selectionModel,
+    stripeRows: true,
+    autoExpandColumn: 'os_template_name',
+    autoWidth: true,
+    stripeRows: true,
+    frame: true,
+    listeners: {
+      celldblclick: function(grid, rowIndex, columnIndex, eventObject) {
+        var selectedNode = grid.getSelectionModel().getSelected();
+        document.location.href = '/admin/virtual-servers/show?id=' + selectedNode.data.id;
+      }
+    },
+    tbar: [{
+      text: '<%= tjs('admin.virtual_servers.grid.button.change_state') %>',
+      iconCls: 'icon-button-change-state',
+      ref: '../changeStateButton',
+      disabled: true,
+      menu: [{
+        text: '<%= tjs('admin.virtual_servers.grid.button.start') %>',
+        iconCls: 'icon-button-start-server',
+        handler: changeStateAction.createCallback('start')
+      }, {
+        text: '<%= tjs('admin.virtual_servers.grid.button.stop') %>',
+        iconCls: 'icon-button-stop-server',
+        handler: changeStateAction.createCallback('stop')
+      }, {
+        text: '<%= tjs('admin.virtual_servers.grid.button.restart') %>',
+        iconCls: 'icon-button-restart-server',
+        handler: changeStateAction.createCallback('restart')
+      }] 
+    }]
+  });
+  
+  Owp.layout.addToCenter(virtualServersGrid);
+
+});
+<% end -%>
