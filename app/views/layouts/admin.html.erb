@@ -207,11 +207,12 @@
             lines: false,
             root: mainMenu,
             listeners: {
-              click: function(node) {
+              click: function(node, event) {
                 var href = node.attributes.href;
                 if ('undefined' != typeof href) {
                   if (href.indexOf('http') === 0) {
                     window.open(href);
+                    event.stopEvent();
                     return false;
                   } else {
                     window.location.href = href;
