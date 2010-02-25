@@ -52,5 +52,9 @@ class User < ActiveRecord::Base
   end
 
   protected
+  
+  def before_destroy
+    login != 'admin'
+  end
     
 end
