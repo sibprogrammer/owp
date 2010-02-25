@@ -1,4 +1,5 @@
 class Admin::HardwareServersController < AdminController
+  before_filter :superadmin_required
   
   def list
     @up_level = '/admin/dashboard'

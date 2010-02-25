@@ -46,6 +46,10 @@ class User < ActiveRecord::Base
   def self.get_virtual_servers_owners
     User.find(:all, :conditions => { :role_type => 2 })
   end
+  
+  def can_control(server)    
+    superadmin? or (server.user and (server.user.id == self.id))
+  end
 
   protected
     

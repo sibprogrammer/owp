@@ -1,4 +1,5 @@
 class Admin::VirtualServersController < AdminController
+  before_filter :superadmin_required, :only => [:list_data, :delete, :create, :load_data]
   
   def list
     @up_level = '/admin/dashboard'
@@ -14,9 +15,10 @@ class Admin::VirtualServersController < AdminController
     render :json => { :data => get_virtual_servers_map(virtual_servers) }
   end
   
-  def change_state    
+  def change_state
     params[:ids].split(',').each { |id|
       virtual_server = VirtualServer.find_by_id(id)
+      next if !@current_user.can_control(virtual_server)
       
       case params[:command]  
         when 'start' then virtual_server.start
@@ -81,7 +83,7 @@ class Admin::VirtualServersController < AdminController
   
   def show
     @virtual_server = VirtualServer.find_by_id(params[:id])
-    redirect_to :controller => 'hardware_servers', :action => 'list' and return if !@virtual_server
+    redirect_to :controller => 'dashboard' and return if !@virtual_server or !@current_user.can_control(@virtual_server)
     
     if @current_user.superadmin?
       @up_level = '/admin/hardware-servers/show?id=' + @virtual_server.hardware_server.id.to_s
@@ -92,6 +94,7 @@ class Admin::VirtualServersController < AdminController
   
   def get_properties
     virtual_server = VirtualServer.find_by_id(params[:id])
+    redirect_to :controller => 'dashboard' and return if !virtual_server or !@current_user.can_control(virtual_server)
 
     render :json => { :success => true, :data => [
       {
