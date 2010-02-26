@@ -73,6 +73,7 @@ Ext.ns('Owp.button');
 
 Owp.button.action = function(config) {
   config = Ext.apply({
+    gridName: '',
     url: '',
     command: '',
     waitMsg: '',
@@ -99,9 +100,11 @@ Owp.button.action = function(config) {
           icon: Ext.MessageBox.ERROR
         });
       } else {
-        var grid = Ext.getCmp(config.gridName);
-        grid.store.reload();
-        grid.getSelectionModel().clearSelections();
+        if (config.gridName) {
+          var grid = Ext.getCmp(config.gridName);
+          grid.store.reload();
+          grid.getSelectionModel().clearSelections();
+        }
       }      
     },
     failure: function() {

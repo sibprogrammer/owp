@@ -3,6 +3,26 @@
 <% javascript_tag do -%>
 Ext.onReady(function() {
 
+  function clearLog() {
+    Ext.MessageBox.confirm(
+      '<%= tjs('form.confirmation') %>',
+      '<%= tjs('admin.event_log.form.clear.sure_to_clear') %>',
+      function(button, text) {
+        if ('yes' == button) { 
+          Owp.button.action({
+            gridName: 'eventLogGrid',
+            url: '/admin/event-log/clear',
+            waitMsg: '<%= tjs('form.performing_task') %>',
+            failure: {
+              title: '<%= tjs('form.error.title') %>',
+              msg: '<%= tjs('admin.event_log.form.clear.clear_failed') %>'
+            }
+          });
+        }
+      }
+    );
+  }
+
   var store = new Ext.data.JsonStore({
     url: '/admin/event-log/list_data',
     root: 'data',
@@ -73,7 +93,13 @@ Ext.onReady(function() {
     autoWidth: true,
     stripeRows: true,
     frame: true,
-    iconCls: 'icon-items-list'
+    iconCls: 'icon-items-list',
+    tbar: [{
+      text: '<%= tjs('admin.event_log.grid.button.clear') %>',
+      handler: clearLog,
+      cls: 'x-btn-text-icon',
+      icon: '/images/delete.png'
+    }]
   });
   
   Owp.layout.addToCenter(eventLogGrid);

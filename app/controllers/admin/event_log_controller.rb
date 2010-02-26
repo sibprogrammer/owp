@@ -16,4 +16,8 @@ class Admin::EventLogController < AdminController
     render :json => { :data => @events }  
   end
   
+  def clear
+    render :json => { :success => EventLog.delete_all }
+  end
+  
 end

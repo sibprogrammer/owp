@@ -250,6 +250,12 @@ en:
           created_at: "Date"
           message: "Message"
           id: "ID"
+        button:
+          clear: "Clear Log"
+      form:
+        clear:
+          sure_to_clear: "Are you sure you want to remove all records?"
+          clear_failed: "Unable to clear log."
     users:
       role:
         infrastructure_admin: "Infrastructure administrator"

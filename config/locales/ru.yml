@@ -250,6 +250,12 @@ ru:
           created_at: "Дата"
           message: "Сообщение"
           id: "ID"
+        button:
+          clear: "Очистить журнал"
+      form:
+        clear:
+          sure_to_clear: "Вы действительно хотите удалить все записи?"
+          clear_failed: "Не удалось очистить журнал."
     users:
       role:
         infrastructure_admin: "Администратор инфраструктуры"
