@@ -55,9 +55,9 @@ class HardwareServer < ActiveRecord::Base
     ves_ids_on_server = ves_on_server.map { |vzlist_entry|
       vzlist_entry = vzlist_entry.split.first
     }
-    
+
     virtual_servers.each { |virtual_server|
-      if !ves_ids_on_server.include?(virtual_server.identity)
+      if !ves_ids_on_server.include?(virtual_server.identity.to_s)
         virtual_server.destroy
       end
     }
