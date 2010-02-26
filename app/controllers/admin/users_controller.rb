@@ -67,14 +67,4 @@ class Admin::UsersController < AdminController
     }}
   end
   
-  def virtual_servers_owners
-    users = User.get_virtual_servers_owners
-    users.map! { |user| {
-      :id => user.id,
-      :login => user.login,
-    }}
-    users << { :id => 0, :login => t('admin.virtual_servers.form.create_server.field.no_owner') }
-    render :json => { :data => users }  
-  end
-  
 end

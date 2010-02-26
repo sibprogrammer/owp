@@ -85,7 +85,14 @@ class HardwareServer < ActiveRecord::Base
     }
   end
   
+  def sync_config
+    parser = IniParser.new(rpc_client.exec('cat', "/etc/vz/vz.conf")['output'])
+    self.default_os_template = parser.get('DEF_OSTEMPLATE')
+    save
+  end
+  
   def sync
+    sync_config
     sync_os_templates
     sync_virtual_servers
     EventLog.info("hardware_server.sync", { :host => self.host })

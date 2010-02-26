@@ -18,25 +18,21 @@ Ext.onReady(function() {
   
   function showVirtualServerEditForm(mode) {
     var osTemplatesStore = new Ext.data.JsonStore({
-      url: '/admin/os-templates/list_data?hardware_server_id=<%= @hardware_server.id %>',
-      root: 'data',
-      autoLoad: true,
       sortInfo: { field: 'name', direction: 'ASC' },
       fields: [
         { name: 'id' },
         { name: 'name' }
-      ]
+      ],
+      data: <%= @os_templates.to_json %>
     });
     
     var ownersStore = new Ext.data.JsonStore({
-      url: '/admin/users/virtual_servers_owners',
-      root: 'data',
-      autoLoad: true,
       sortInfo: { field: 'login', direction: 'ASC' },
       fields: [
         { name: 'id' },
         { name: 'login' }
-      ]
+      ],
+      data: <%= @virtual_servers_owners.to_json %>
     });
   
     var formEditVirtualServer = new Owp.form.BasicForm({
@@ -264,6 +260,11 @@ Ext.onReady(function() {
     windowEditVirtualServer.on('show', function() {
       if ('add' == mode) {
         formEditVirtualServer.getForm().reset();
+        var defaultOsTemplate = '<%= @hardware_server.default_os_template %>';
+        var templateField = formEditVirtualServer.getForm().findField('orig_os_template');
+        if (-1 != templateField.getStore().findExact('name', defaultOsTemplate)) {
+          templateField.setValue(defaultOsTemplate);
+        }
         windowEditVirtualServer.focus();
       } else {
         var selectedNode = Ext.getCmp('virtualServersGrid').getSelectionModel().getSelected();
