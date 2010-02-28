@@ -20,7 +20,7 @@ Ext.onReady(function() {
     container.add(updatesPanel);
   <% end -%>
 
-  var introPanel = new Ext.Panel({
+  var introPanel = new Owp.Panel({
     title: '<%= tjs('admin.dashboard.intro.title') %>',
     collapsible: true,
     stateId: 'introPanel',
@@ -30,7 +30,7 @@ Ext.onReady(function() {
   
   container.add(introPanel);
   
-  var profilePanel = new Ext.Panel({
+  var profilePanel = new Owp.Panel({
     title: '<%= tjs('admin.dashboard.profile.title') %>',
     collapsible: true,
     stateId: 'profilePanel',
@@ -53,7 +53,7 @@ Ext.onReady(function() {
     
     store.loadData(storeData);
     
-    var statsGrid = new Ext.grid.GridPanel({
+    var statsGrid = new Owp.grid.GridPanel({
       id: 'statsGrid',
       title: '<%= tjs('admin.dashboard.stats_grid.title') %>',
       iconCls: 'icon-items-list',

@@ -192,3 +192,26 @@ Owp.layout.addToCenter = function(item) {
   centerPanel.add(item);
   centerPanel.doLayout();
 }
+
+Owp.Panel = Ext.extend(Ext.Panel, {
+  stateEvents: ['collapse', 'expand'],
+  
+  getState: function() {
+    return {
+      collapsed: this.collapsed
+    };
+  }
+});
+
+Ext.ns('Owp.grid');
+
+Owp.grid.GridPanel = Ext.extend(Ext.grid.GridPanel, {
+  stateEvents: ['collapse', 'expand'],
+  
+  getState: function() {
+    var state = Owp.grid.GridPanel.superclass.getState.call(this);
+    return Ext.apply(state, {
+      collapsed: this.collapsed
+    });
+  }
+});
