@@ -71,11 +71,3 @@ svn checkout http://ovz-web-panel.googlecode.com/svn/trunk/ owp
 
 File http://code.google.com/p/ovz-web-panel/source/browse/trunk/build/build.sh
 contains information on how to prepare working copy.
- 
-
-4. Known problems
----
-
-Daemon expects that vz partition located at /vz. On Ubuntu it's need to create
-symlink:
-ln -s /var/lib/vz /vz

@@ -20,7 +20,7 @@ class OsTemplate < ActiveRecord::Base
   end
 
   def delete_physically
-    hardware_server.rpc_client.exec("rm /vz/template/cache/#{self.name}.tar.gz")
+    hardware_server.rpc_client.exec("rm #{hardware_server.templates_dir}/cache/#{self.name}.tar.gz")
     destroy
   end
   
@@ -36,7 +36,7 @@ class OsTemplate < ActiveRecord::Base
   end
   
   def self.download(hardware_server, path, name)
-    hardware_server.rpc_client.job('wget', "-P /vz/template/cache/ ftp://" +
+    hardware_server.rpc_client.job('wget', "-P #{hardware_server.templates_dir}/cache/ ftp://" +
       AppConfig.os_templates.mirror.host + "/#{path}/#{name}.tar.gz")
   end
   

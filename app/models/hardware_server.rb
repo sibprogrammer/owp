@@ -31,7 +31,7 @@ class HardwareServer < ActiveRecord::Base
   end
       
   def sync_os_templates
-    os_templates_on_server = rpc_client.exec('ls', '/vz/template/cache')['output'].split
+    os_templates_on_server = rpc_client.exec('ls', "#{self.templates_dir}/cache")['output'].split
     
     os_templates.each { |template|
       if !os_templates_on_server.include?(template.name + '.tar.gz')
@@ -88,6 +88,7 @@ class HardwareServer < ActiveRecord::Base
   def sync_config
     parser = IniParser.new(rpc_client.exec('cat', "/etc/vz/vz.conf")['output'])
     self.default_os_template = parser.get('DEF_OSTEMPLATE')
+    self.templates_dir = parser.get('TEMPLATE')
     save
   end
   
