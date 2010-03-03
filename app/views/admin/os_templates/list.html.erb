@@ -78,6 +78,8 @@ Ext.onReady(function() {
             buttons: Ext.Msg.OK,
             icon: Ext.MessageBox.INFO
           });
+          
+          Owp.statusUpdater.start();
         }
       },
       failure: function() {

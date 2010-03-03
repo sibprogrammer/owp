@@ -215,3 +215,30 @@ Owp.grid.GridPanel = Ext.extend(Ext.grid.GridPanel, {
     });
   }
 });
+
+Ext.ns('Owp.statusUpdater');
+
+Owp.statusUpdater = {
+  task: {
+    run: function() {
+      Ext.Ajax.request({
+        url: '/admin/tasks/status',
+        success: function(response) {
+          var result = Ext.util.JSON.decode(response.responseText);
+          var statusbar = Ext.get('statusbar');
+          if (result.message) {
+            statusbar.update('<img src="/images/spinner.gif" class="icon-inline"> ' + result.message);
+          } else {
+            statusbar.update('');
+            Ext.TaskMgr.stop(Owp.statusUpdater.task);
+          }
+        }
+      });
+    },
+    interval: 5000
+  },
+  
+  start: function() {
+    Ext.TaskMgr.start(Owp.statusUpdater.task);
+  }
+}

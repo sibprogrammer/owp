@@ -72,6 +72,7 @@ en:
         virtual_servers: "Virtual servers"
         my_profile: "My profile"
         users: "Users"
+        tasks: "Tasks"
         event_log: "Events log"
         logout: "Logout"
       help:
@@ -96,6 +97,9 @@ en:
       virtual_server:
         created: "Virtual server {{identity}} was created."
         removed: "Virtual server {{identity}} was removed."
+    tasks:
+      os_templates:
+        install: "OS templates installation on the server {{host}}."
     dashboard:
       title: "Dashboard"
       intro:
@@ -285,3 +289,11 @@ en:
             confirm_password: "Confirm Password"
             role: "Role"
             select_role: "Select a role"
+    task:
+      title: "Tasks"
+      grid:
+        title: "Tasks list"
+        column:
+          status: "Status"
+          id: "ID"
+          description: "Description"

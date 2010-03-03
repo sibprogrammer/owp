@@ -13,6 +13,7 @@ ActionController::Routing::Routes.draw do |map|
     admin.connect '/virtual-servers/:action', :controller => 'virtual_servers'
     admin.connect '/os-templates/:action', :controller => 'os_templates'
     admin.connect '/event-log/:action', :controller => 'event_log'
+    admin.connect '/tasks/:action', :controller => 'tasks'
   end
 
   map.root :controller => 'sessions', :action => 'new'

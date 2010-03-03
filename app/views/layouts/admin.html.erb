@@ -125,6 +125,11 @@
             leaf: true
           }, {
             cls: 'menu-item',
+            text: '<%= tjs('admin.menu.general.tasks') %>',
+            href: '/admin/tasks/list',
+            icon: '/images/time.png'
+          }, {
+            cls: 'menu-item',
             text: '<%= tjs('admin.menu.general.event_log') %>',
             href: '/admin/event-log/list',
             icon: '/images/table.png'
@@ -184,6 +189,13 @@
 
       var viewport = new Ext.Viewport({
         layout: 'border',
+        listeners: {
+          afterrender: function() {
+            <% if @current_user.superadmin? %>
+              Owp.statusUpdater.start();
+            <% end -%>
+          }
+        },
         items: [
           new Ext.BoxComponent({
             region: 'north',
@@ -241,6 +253,7 @@
             bbar: [{
               xtype: 'box',
               height: 22,
+              style: { lineHeight: '22px', paddingLeft: '10px' },
               id: 'statusbar'
             }]
           }

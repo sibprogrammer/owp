@@ -48,6 +48,8 @@ class Admin::OsTemplatesController < AdminController
     }
       
     spawn do
+      job = BackgroundJob.create('os_templates.install', { :host => hardware_server.host })
+      
       while true
         jobs_running = false        
         jobs_ids.each { |job_id|
@@ -57,6 +59,7 @@ class Admin::OsTemplatesController < AdminController
         sleep 10
       end
       
+      job.finish
       hardware_server.sync_os_templates
       logger.debug "Installation of OS templates was finished."
     end

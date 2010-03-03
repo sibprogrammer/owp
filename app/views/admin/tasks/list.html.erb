@@ -1,0 +1,71 @@
+<% @page_title = t('admin.task.title') %>
+
+<% javascript_tag do -%>
+Ext.onReady(function() {
+
+  var store = new Ext.data.JsonStore({
+    url: '/admin/tasks/list_data',
+    root: 'data',
+    autoLoad: true,
+    sortInfo: { field: 'id', direction: 'DESC' },
+    fields: [
+      { name: 'id' },
+      { name: 'status' },
+      { name: 'description' }
+    ]
+  });
+  
+  var selectionModel = new Ext.grid.RowSelectionModel();
+  
+  var tasksGrid = new Ext.grid.GridPanel({
+    id: 'tasksGrid',
+    store: store,
+    title: '<%= tjs('admin.task.grid.title') %>',
+    loadMask: true,
+    tools: [{ 
+      id: 'refresh',
+      handler: function() {
+        tasksGrid.getStore().reload();
+      }
+    }],
+    cm: new Ext.grid.ColumnModel([
+      {
+        id: 'host',
+        header: '<%= tjs('admin.task.grid.column.status') %>',
+        renderer: function(value) {
+          if (1 == value) {
+            var image = 'spinner.gif';
+          } else {
+            var image = 'accept.png';
+          }
+          return '<img src="/images/' + image + '"/>';
+        },
+        width: 60,
+        align: 'center',
+        sortable: true,
+        dataIndex: 'status'
+      }, { 
+        id: 'id',
+        header: '<%= tjs('admin.task.grid.column.id') %>',
+        width: 50,
+        sortable: true,
+        dataIndex: 'id'
+      }, { 
+        id: 'description',
+        header: '<%= tjs('admin.task.grid.column.description') %>',
+        sortable: true,
+        dataIndex: 'description'
+      }
+    ]),
+    sm: selectionModel,
+    stripeRows: true,
+    autoExpandColumn: 'description',
+    autoWidth: true,
+    stripeRows: true,
+    frame: true,
+    iconCls: 'icon-items-list'
+  });
+
+  Owp.layout.addToCenter(tasksGrid);
+});
+<% end -%>

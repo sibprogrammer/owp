@@ -72,6 +72,7 @@ ru:
         virtual_servers: "Виртуальные сервера"
         my_profile: "Мой профиль"
         users: "Пользователи"
+        tasks: "Задачи"
         event_log: "Журнал событий"
         logout: "Выход" 
       help:
@@ -96,6 +97,9 @@ ru:
       virtual_server:
         created: "Виртуальный сервер {{identity}} был создан."
         removed: "Виртуальный сервер {{identity}} был удален."
+    tasks:
+      os_templates:
+        install: "Установка шаблонов ОС на сервер {{host}}."
     dashboard:
       title: "Рабочий стол"
       intro:
@@ -285,3 +289,12 @@ ru:
             confirm_password: "Подтверждение пароля"
             role: "Роль"
             select_role: "Выберите роль"
+    task:
+      title: "Задачи"
+      grid:
+        title: "Список задач"
+        column:
+          status: "Статус"
+          id: "ID"
+          description: "Описание"
+          
