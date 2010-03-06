@@ -3,20 +3,16 @@ ActionController::Routing::Routes.draw do |map|
   
   map.logout '/logout', :controller => 'sessions', :action => 'destroy'
   map.login '/login', :controller => 'sessions', :action => 'new'
-  
-  map.resource :session
-  
+
   map.namespace :admin do |admin|
-    admin.dashboard '/dashboard', :controller => 'dashboard'
-    admin.connect '/users/:action', :controller => 'users'
     admin.connect '/hardware-servers/:action', :controller => 'hardware_servers'
     admin.connect '/virtual-servers/:action', :controller => 'virtual_servers'
     admin.connect '/os-templates/:action', :controller => 'os_templates'
     admin.connect '/event-log/:action', :controller => 'event_log'
-    admin.connect '/tasks/:action', :controller => 'tasks'
   end
-
-  map.root :controller => 'sessions', :action => 'new'
-
+  
+  map.connect ':controller/:action'
+  
+  map.root :login
   map.connect '*anything', :controller => 'sessions', :action => 'new'
 end
