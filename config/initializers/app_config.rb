@@ -16,6 +16,12 @@ config_defaults = {
     'disabled' => false,
     'period' => 3 * 24 * 60 * 60, # 3 days
     'url' => 'http://ovz-web-panel.googlecode.com/svn/installer/updates/info.xml'
+  },
+  'log' => {
+    'max_records' => 1000
+  },
+  'tasks' => {
+    'max_records' => 3
   }
 }
 
