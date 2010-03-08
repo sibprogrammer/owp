@@ -13,6 +13,27 @@ class VirtualServer < ActiveRecord::Base
   validates_confirmation_of :password
   validates_format_of :nameserver, :with => /^((\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})|\s)*$/
 
+  def get_limits
+    parser = IniParser.new(hardware_server.rpc_client.exec('cat', "/etc/vz/conf/#{identity.to_s}.conf")['output'])
+    
+    limits = [
+      'KMEMSIZE', 'LOCKEDPAGES', 'PRIVVMPAGES', 'SHMPAGES', 'NUMPROC', 
+      'PHYSPAGES', 'VMGUARPAGES', 'OOMGUARPAGES', 'NUMTCPSOCK', 'NUMFLOCK',
+      'NUMPTY', 'NUMSIGINFO', 'TCPSNDBUF', 'TCPRCVBUF', 'OTHERSOCKBUF',
+      'OTHERSOCKBUF', 'DGRAMRCVBUF', 'NUMOTHERSOCK', 'DCACHESIZE', 'NUMFILE',
+      'AVNUMPROC', 'NUMIPTENT', 'DISKSPACE', 'DISKINODES'
+    ]
+    
+    result = []
+    
+    limits.each { |limit|
+      limit_values = parser.get(limit).split(":")
+      result.push({ :name => limit, :soft_limit => limit_values[0].to_i, :hard_limit => limit_values[1].to_i })
+    }
+    
+    result
+  end
+
   def start
     hardware_server.rpc_client.exec('vzctl', 'start ' + identity.to_s)
     self.state = 'running'

@@ -177,6 +177,7 @@ en:
           restart: "Restart"
           stop: "Stop"
           edit: "Change settings"
+          limits: "Limits"
       form:
         change_state:
           failed: "Unable to change virtual server state."
@@ -216,6 +217,13 @@ en:
           tab:
             main_settings: "Main Settings"
             additional_settings: "Additional Settings"
+        limits:
+          title: "Limits"
+          grid:
+            column:
+              name: "Name"
+              soft_limit: "Barrier"
+              hard_limit: "Limit"
       show:
         title: "Virtual server {{name}}"
         grid:

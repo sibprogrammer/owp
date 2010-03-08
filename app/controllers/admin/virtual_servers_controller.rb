@@ -128,6 +128,13 @@ class Admin::VirtualServersController < AdminController
     ]}
   end
   
+  def get_limits
+    virtual_server = VirtualServer.find_by_id(params[:id])
+    redirect_to :controller => 'dashboard' and return if !virtual_server or !@current_user.can_control(virtual_server)
+    
+    render :json => { :success => true, :data => virtual_server.get_limits }
+  end
+  
   private 
   
   def get_virtual_servers_map(virtual_servers)

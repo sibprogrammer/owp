@@ -58,8 +58,73 @@ Ext.onReady(function() {
       }
     });
   }
+  
+  var limitsAction = function() {
+    var storeLimits = new Ext.data.JsonStore({
+      url: '/admin/virtual-servers/get_limits?id=<%= @virtual_server.id %>',
+      root: 'data',
+      autoLoad: true,
+      fields: [
+        { name: 'name' },
+        { name: 'soft_limit' },
+        { name: 'hard_limit' }
+      ]
+    });
+  
+    windowLimitsForm = new Ext.Window({
+      title: '<%= tjs('admin.virtual_servers.form.limits.title') %>',
+      iconCls: 'icon-items-list',
+      width: 400,
+      height: 400,
+      modal: true,
+      layout: 'fit',
+      plain: true,
+      bodyStyle: 'padding:5px;',
+      resizable: false,
+      items: [{
+        xtype: 'grid',
+        layout: 'fit',
+        loadMask: true,
+        ref: '../limitsGrid',
+        store: storeLimits,
+        cm: new Ext.grid.ColumnModel([{
+          id: 'name',
+          header: '<%= tjs('admin.virtual_servers.form.limits.grid.column.name') %>',
+          sortable: true,
+          dataIndex: 'name'
+        }, {
+          id: 'soft_limit',
+          header: '<%= tjs('admin.virtual_servers.form.limits.grid.column.soft_limit') %>',
+          width: 100,
+          sortable: true,
+          dataIndex: 'soft_limit'
+        }, {
+          id: 'hard_limit',
+          header: '<%= tjs('admin.virtual_servers.form.limits.grid.column.hard_limit') %>',
+          width: 100,
+          sortable: true,
+          dataIndex: 'hard_limit'
+        }]),
+        stripeRows: true,
+        autoExpandColumn: 'name',
+        autoWidth: true,
+        stripeRows: true,
+        iconCls: 'icon-items-list'
+      }]
+    });
+    
+    windowLimitsForm.show();
+  }
 
   var mainContentCenterPanel = Ext.getCmp('mainContentCenterPanel');
+  
+  mainContentCenterPanel.getTopToolbar().insertButton(0, {
+    text: '<%= tjs('admin.virtual_servers.grid.button.limits') %>',
+    iconCls: 'icon-items-list',
+    ref: '../limitsButton',
+    handler: limitsAction
+  });
+  
   mainContentCenterPanel.getTopToolbar().insertButton(0, {
     text: '<%= tjs('admin.virtual_servers.grid.button.change_state') %>',
     iconCls: 'icon-button-change-state',
@@ -78,6 +143,7 @@ Ext.onReady(function() {
       handler: changeStateAction.createCallback('restart')
     }] 
   });
+  
   mainContentCenterPanel.doLayout()
 
 });

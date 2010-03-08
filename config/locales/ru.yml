@@ -177,6 +177,7 @@ ru:
           restart: "Рестарт"
           stop: "Стоп"
           edit: "Изменить настройки"
+          limits: "Ограничения"
       form:
         change_state:
           failed: "Невозможно изменить состояние виртуального сервера."
@@ -216,6 +217,13 @@ ru:
           tab:
             main_settings: "Основные настройки"
             additional_settings: "Дополнительные настройки"
+        limits:
+          title: "Ограничения"
+          grid:
+            column:
+              name: "Имя"
+              soft_limit: "Барьер"
+              hard_limit: "Лимит"
       show:
         title: "Виртуальный сервер {{name}}"
         grid:
