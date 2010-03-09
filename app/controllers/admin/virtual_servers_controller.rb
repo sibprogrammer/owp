@@ -70,6 +70,7 @@ class Admin::VirtualServersController < AdminController
     render :json => { :success => true, :data => {
       :identity => virtual_server.identity,
       :orig_os_template => virtual_server.orig_os_template,
+      :orig_server_template => virtual_server.orig_server_template,
       :ip_address => virtual_server.ip_address,
       :host_name => virtual_server.host_name,
       :start_on_boot => virtual_server.start_on_boot,
@@ -106,6 +107,9 @@ class Admin::VirtualServersController < AdminController
       }, {
         :parameter => t('admin.virtual_servers.form.create_server.field.os_template'),
         :value => virtual_server.orig_os_template,
+      }, {
+        :parameter => t('admin.virtual_servers.form.create_server.field.server_template'),
+        :value => virtual_server.orig_server_template,
       }, {
         :parameter => t('admin.virtual_servers.form.create_server.field.ip_address'),
         :value => virtual_server.ip_address,

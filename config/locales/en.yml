@@ -156,6 +156,7 @@ en:
         title: "Physical Server {{name}}"
       top_toolbar:
         os_templates: "OS Templates"
+        server_templates: "Server Templates"
     virtual_servers:
       title: "Virtual Servers"
       grid:
@@ -206,6 +207,8 @@ en:
             owner: "Owner"
             select_owner: "Select an owner"
             no_owner: "No owner"
+            server_template: "Server Template"
+            select_server_template: "Select server template"
           fieldset:
             general: "General"
             network: "Network"
@@ -305,3 +308,18 @@ en:
           status: "Status"
           id: "ID"
           description: "Description"
+    server_templates:
+      title: "Server Templates on Physical Server {{name}}"
+      grid:
+        title: "Available Server Templates"
+        column:
+          name: "Name"
+          template_default: "default"
+        button:
+          add: "Add Template"
+          remove: "Remove Template"
+          edit: "Change Template"
+      form:
+        remove_template:
+          sure_to_remove: "Are you sure you want to remove selected server templates?"
+          deletion_failed: "Unable to delete some server templates."

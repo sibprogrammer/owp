@@ -26,6 +26,15 @@ Ext.onReady(function() {
       data: <%= @os_templates.to_json %>
     });
     
+    var serverTemplatesStore = new Ext.data.JsonStore({
+      sortInfo: { field: 'name', direction: 'ASC' },
+      fields: [
+        { name: 'id' },
+        { name: 'name' }
+      ],
+      data: <%= @server_templates.to_json %>
+    });
+    
     var ownersStore = new Ext.data.JsonStore({
       sortInfo: { field: 'login', direction: 'ASC' },
       fields: [
@@ -94,6 +103,20 @@ Ext.onReady(function() {
               editable: false,
               readOnly: ('edit' == mode),
               store: osTemplatesStore
+            }, {
+              fieldLabel: '<%= tjs('admin.virtual_servers.form.create_server.field.server_template') %>',
+              xtype: 'combo',
+              hiddenName: 'orig_server_template',
+              valueField: 'name',
+              displayField: 'name',
+              name: 'orig_server_template',
+              forceSelection: true,
+              triggerAction: 'all',
+              emptyText: '<%= tjs('admin.virtual_servers.form.create_server.field.select_server_template') %>',
+              mode: 'local',
+              allowBlank: false,
+              editable: false,
+              store: serverTemplatesStore
             }]
           }, {
             xtype: 'fieldset',
@@ -260,11 +283,19 @@ Ext.onReady(function() {
     windowEditVirtualServer.on('show', function() {
       if ('add' == mode) {
         formEditVirtualServer.getForm().reset();
+        
         var defaultOsTemplate = '<%= @hardware_server.default_os_template %>';
         var templateField = formEditVirtualServer.getForm().findField('orig_os_template');
         if (-1 != templateField.getStore().findExact('name', defaultOsTemplate)) {
           templateField.setValue(defaultOsTemplate);
         }
+        
+        var defaultServerTemplate = '<%= @hardware_server.default_server_template %>';
+        var templateField = formEditVirtualServer.getForm().findField('orig_server_template');
+        if (-1 != templateField.getStore().findExact('name', defaultServerTemplate)) {
+          templateField.setValue(defaultServerTemplate);
+        }
+        
         windowEditVirtualServer.focus();
       } else {
         var selectedNode = Ext.getCmp('virtualServersGrid').getSelectionModel().getSelected();
@@ -472,6 +503,15 @@ Ext.onReady(function() {
   Owp.layout.addToCenter(virtualServersGrid);
   
   var mainContentCenterPanel = Ext.getCmp('mainContentCenterPanel');
+  
+  mainContentCenterPanel.getTopToolbar().insertButton(0, {
+    text: '<%= tjs('admin.hardware_servers.top_toolbar.server_templates') %>',
+    icon: '/images/table.png',
+    handler: function() {
+      document.location.href = '/admin/server-templates/list?hardware_server_id=<%= @hardware_server.id %>';
+    }
+  });
+  
   mainContentCenterPanel.getTopToolbar().insertButton(0, {
     text: '<%= tjs('admin.hardware_servers.top_toolbar.os_templates') %>',
     icon: '/images/table.png',
@@ -479,6 +519,7 @@ Ext.onReady(function() {
       document.location.href = '/admin/os-templates/list?hardware_server_id=<%= @hardware_server.id %>';
     }
   });
+  
   mainContentCenterPanel.doLayout()
 });
 <% end -%>

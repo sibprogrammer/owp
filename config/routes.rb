@@ -9,6 +9,7 @@ ActionController::Routing::Routes.draw do |map|
   map.namespace :admin do |admin|
     admin.connect '/hardware-servers/:action', :controller => 'hardware_servers'
     admin.connect '/virtual-servers/:action', :controller => 'virtual_servers'
+    admin.connect '/server-templates/:action', :controller => 'server_templates'
     admin.connect '/os-templates/:action', :controller => 'os_templates'
     admin.connect '/event-log/:action', :controller => 'event_log'
   end

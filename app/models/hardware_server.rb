@@ -2,6 +2,7 @@ class HardwareServer < ActiveRecord::Base
   attr_accessible :host, :auth_key, :description  
   validates_uniqueness_of :host
   has_many :os_templates, :dependent => :destroy
+  has_many :server_templates, :dependent => :destroy
   has_many :virtual_servers, :dependent => :destroy
   
   def connect    
@@ -49,6 +50,26 @@ class HardwareServer < ActiveRecord::Base
     }
   end
   
+  def sync_server_templates
+    path = '/etc/vz/conf';
+    server_templates_on_server = rpc_client.exec('ls', "#{path}/ve-*.conf-sample")['output'].split
+    
+    server_templates.each { |template|
+      if !server_templates_on_server.include?("#{path}/ve-" + template.name + '.conf-sample')
+        template.destroy
+      end
+    }
+    
+    server_templates_on_server.each { |template_name|
+      template_name.sub!(/\/etc\/vz\/conf\/ve\-(.*)\.conf\-sample/, '\1')
+      if !ServerTemplate.find_by_name_and_hardware_server_id(template_name, self.id)
+        server_template = ServerTemplate.new(:name => template_name)
+        server_template.hardware_server = self
+        server_template.save
+      end
+    }
+  end
+  
   def sync_virtual_servers
     ves_on_server = rpc_client.exec('vzlist', '-a -H -o veid,hostname,ip,status')['output'].split("\n")
     
@@ -73,6 +94,7 @@ class HardwareServer < ActiveRecord::Base
       parser = IniParser.new(rpc_client.exec('cat', "/etc/vz/conf/#{ve_id}.conf")['output'])
       
       virtual_server.orig_os_template = parser.get('OSTEMPLATE')
+      virtual_server.orig_server_template = parser.get('ORIGIN_SAMPLE')
       virtual_server.start_on_boot = ('yes' == parser.get('ONBOOT'))
       virtual_server.host_name = parser.get('HOSTNAME')
       virtual_server.ip_address = parser.get('IP_ADDRESS')
@@ -88,6 +110,7 @@ class HardwareServer < ActiveRecord::Base
   def sync_config
     parser = IniParser.new(rpc_client.exec('cat', "/etc/vz/vz.conf")['output'])
     self.default_os_template = parser.get('DEF_OSTEMPLATE')
+    self.default_server_template = parser.get('CONFIGFILE')
     self.templates_dir = parser.get('TEMPLATE')
     save
   end
@@ -95,6 +118,7 @@ class HardwareServer < ActiveRecord::Base
   def sync
     sync_config
     sync_os_templates
+    sync_server_templates
     sync_virtual_servers
     EventLog.info("hardware_server.sync", { :host => self.host })
   end

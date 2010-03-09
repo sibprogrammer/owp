@@ -9,7 +9,13 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100228060843) do
+ActiveRecord::Schema.define(:version => 20100309143652) do
+
+  create_table "background_jobs", :force => true do |t|
+    t.string  "description"
+    t.string  "params"
+    t.integer "status"
+  end
 
   create_table "event_logs", :force => true do |t|
     t.integer  "level"
@@ -24,11 +30,17 @@ ActiveRecord::Schema.define(:version => 20100228060843) do
     t.string "description"
     t.string "default_os_template"
     t.string "templates_dir"
+    t.string "default_server_template"
   end
 
   add_index "hardware_servers", ["host"], :name => "index_hardware_servers_on_host", :unique => true
 
   create_table "os_templates", :force => true do |t|
+    t.string  "name"
+    t.integer "hardware_server_id"
+  end
+
+  create_table "server_templates", :force => true do |t|
     t.string  "name"
     t.integer "hardware_server_id"
   end
@@ -50,15 +62,16 @@ ActiveRecord::Schema.define(:version => 20100228060843) do
     t.integer "identity"
     t.string  "ip_address"
     t.string  "host_name"
-    t.string  "state",              :limit => 20
+    t.string  "state",                :limit => 20
     t.integer "hardware_server_id"
-    t.boolean "start_on_boot",                    :default => true
+    t.boolean "start_on_boot",                      :default => true
     t.string  "nameserver"
     t.string  "search_domain"
-    t.integer "diskspace",                        :default => 1024
-    t.integer "memory",                           :default => 256
+    t.integer "diskspace",                          :default => 1024
+    t.integer "memory",                             :default => 256
     t.string  "orig_os_template"
-    t.integer "user_id",                          :default => 0
+    t.integer "user_id",                            :default => 0
+    t.string  "orig_server_template"
   end
 
 end

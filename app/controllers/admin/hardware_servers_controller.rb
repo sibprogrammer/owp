@@ -51,6 +51,11 @@ class Admin::HardwareServersController < AdminController
       :name => item.name,
     }}
     
+    @server_templates = @hardware_server.server_templates.map { |item| {
+      :id => item.id,
+      :name => item.name,
+    }}
+    
     @virtual_servers_owners = User.get_virtual_servers_owners.map { |user| {
       :id => user.id,
       :login => user.login,

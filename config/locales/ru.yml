@@ -156,6 +156,7 @@ ru:
         title: "Физический сервер {{name}}"
       top_toolbar:
         os_templates: "Шаблоны ОС"
+        server_templates: "Шаблоны серверов"
     virtual_servers:
       title: "Виртуальные сервера"
       grid:
@@ -206,6 +207,8 @@ ru:
             owner: "Владелец"
             select_owner: "Выберите владельца"
             no_owner: "Нет владельца"
+            server_template: "Шаблон сервера"
+            select_server_template: "Выберите шаблон сервера"
           fieldset:
             general: "Общее"
             network: "Сеть"
@@ -305,4 +308,18 @@ ru:
           status: "Статус"
           id: "ID"
           description: "Описание"
-          
+    server_templates:
+      title: "Шаблоны серверов на физическом сервере {{name}}"
+      grid:
+        title: "Доступные шаблоны серверов"
+        column:
+          name: "Имя"
+          template_default: "по-умолчанию"
+        button:
+          add: "Добавить шаблон"
+          remove: "Удалить шаблон"
+          edit: "Изменить шаблон"
+      form:
+        remove_template:
+          sure_to_remove: "Вы действительно хотите удалить выбранные шаблоны серверов?"
+          deletion_failed: "Не удалось удалить некоторые шаблоны серверов."

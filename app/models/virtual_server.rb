@@ -2,7 +2,7 @@ class VirtualServer < ActiveRecord::Base
   attr_accessible :identity, :ip_address, :host_name, :hardware_server_id, 
     :orig_os_template, :password, :start_on_boot, :start_after_creation, :state,
     :nameserver, :search_domain, :diskspace, :memory, :password_confirmation,
-    :user_id
+    :user_id, :orig_server_template
   attr_accessor :password, :password_confirmation, :start_after_creation
   belongs_to :hardware_server
   belongs_to :user
@@ -63,10 +63,14 @@ class VirtualServer < ActiveRecord::Base
     return false if !valid?
     
     if new_record?
-      hardware_server.rpc_client.exec('vzctl', "create #{identity.to_s} --ostemplate #{orig_os_template}")
+      hardware_server.rpc_client.exec('vzctl', "create #{identity.to_s} --ostemplate #{orig_os_template} --config #{orig_server_template}")
       self.state = 'stopped'
     end
   
+    if orig_server_template_changed?
+      vzctl_set("--applyconfig #{orig_server_template} --save")
+    end
+    
     vzctl_set("--hostname #{host_name} --save") if !host_name.empty?
     vzctl_set("--ipdel all " + ip_address.split.map { |ip| "--ipadd #{ip} " }.join + "--save")
     vzctl_set("--userpasswd root:#{password}") if !password.empty?
