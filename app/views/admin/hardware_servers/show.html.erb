@@ -116,7 +116,23 @@ Ext.onReady(function() {
               mode: 'local',
               allowBlank: false,
               editable: false,
-              store: serverTemplatesStore
+              store: serverTemplatesStore,
+              listeners: {
+                select: function(combo, record) {
+                  if ('add' == mode) {
+                    formEditVirtualServer.getForm().load({
+                      waitMsg: '<%= tjs('form.loading') %>',
+                      success: function() {
+                        windowEditVirtualServer.focus();
+                      },
+                      url: '/admin/virtual-servers/load_template',
+                      params: {
+                        id: record.data.id
+                      }
+                    });
+                  }
+                }
+              }
             }]
           }, {
             xtype: 'fieldset',
@@ -157,10 +173,7 @@ Ext.onReady(function() {
           listeners: {
             render: function() {
               if ('add' == mode) {
-                Ext.getCmp('checkboxStartOnBoot').setValue(true);
                 Ext.getCmp('checkboxStartAfterCreation').setValue(true);
-                Ext.getCmp('fieldDiskspace').setValue(1024);
-                Ext.getCmp('fieldMemory').setValue(256);
               }
             }
           },
@@ -294,6 +307,9 @@ Ext.onReady(function() {
         var templateField = formEditVirtualServer.getForm().findField('orig_server_template');
         if (-1 != templateField.getStore().findExact('name', defaultServerTemplate)) {
           templateField.setValue(defaultServerTemplate);
+          var templateIndex = templateField.getStore().findExact('name', defaultServerTemplate);
+          var templateRecord = templateField.getStore().getAt(templateIndex);
+          templateField.fireEvent('select', templateField, templateRecord);
         }
         
         windowEditVirtualServer.focus();

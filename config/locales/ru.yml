@@ -45,6 +45,10 @@ ru:
               confirmation: "Пароль и его подтверждение не совпадают."
             nameserver:
               invalid: "Неверный IP-адрес DNS-сервера."
+        server_template:
+          attributes:
+            name:
+              taken: "Шаблон сервера с таким именем уже существует."
   about:
     copyright: "Авторское право 2008-2010 SoftUnity."
     right_reserved: "Все права зарезервированы."
@@ -323,3 +327,28 @@ ru:
         remove_template:
           sure_to_remove: "Вы действительно хотите удалить выбранные шаблоны серверов?"
           deletion_failed: "Не удалось удалить некоторые шаблоны серверов."
+        create_server:
+          title: "Создание нового шаблона сервера"
+          edit_title: "Редактирование шаблона сервера"
+          button_create: "Создать"
+          tab:
+            main_settings: "Главные настройки"
+            advanced_settings: "Дополнительные настройки"
+          fieldset:
+            general: "Общие"
+            limits: "Лимиты"
+            dns_settings: "DNS настройки"
+            start_options: "Опции запуска"
+          field:
+            name: "Имя"
+            diskspace: "Размер диска, Mb"
+            memory: "RAM память, Mb"
+            start_on_boot: "Запуск после загрузки"
+            nameserver: "DNS сервер"
+            searchdomain: "Домен для поиска"
+            cpu_units: "CPU единиц"
+          grid:
+            column:
+              name: "Имя"
+              soft_limit: "Барьер"
+              hard_limit: "Лимит"

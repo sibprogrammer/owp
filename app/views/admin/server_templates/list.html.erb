@@ -3,8 +3,237 @@
 <% javascript_tag do -%>
 Ext.onReady(function() {
 
-  function addTemplate() {
+  function showServerTemplateEditForm(mode) {
+    var storeLimits = new Ext.data.JsonStore({
+      id: 'storeLimits',
+      fields: [
+        { name: 'name' },
+        { name: 'soft_limit' },
+        { name: 'hard_limit' }
+      ],
+      data: <%= @advanced_limits.to_json %>
+    });
+  
+    var formEditServerTemplate = new Owp.form.BasicForm({
+      labelWidth: 180,
+      waitMsgTarget: true,
+      url: '/admin/server-templates/save?hardware_server_id=<%= @hardware_server.id %>',
+      autoHeight: true,
+      keys: [{
+        key: Ext.EventObject.ENTER,
+        fn: function() {
+          windowEditServerTemplate.submitButton.handler();
+        }
+      }],
+      items: [{
+        name: 'id',
+        xtype: 'hidden'
+      }, {
+        xtype: 'tabpanel',
+        activeTab: 0,
+        baseCls: 'x-plain',
+        plain: true,
+        deferredRender: false,
+        defaults: {
+          hideMode: 'offsets',
+          autoHeight: true,
+          bodyStyle: 'padding: 5px; background-color: transparent'
+        },
+        listeners: {
+          tabchange: function(tabPanel, activePanel) {
+            windowEditServerTemplate.syncSize();
+          }
+        },
+        items: [{
+          title: '<%= tjs('admin.server_templates.form.create_server.tab.main_settings') %>',
+          layout: 'form',
+          items: [{
+            xtype: 'fieldset',
+            title: '<%= tjs('admin.server_templates.form.create_server.fieldset.general') %>',
+            autoHeight: true,
+            defaults: { width: 155 },
+            defaultType: 'textfield',
+            items: [{
+              fieldLabel: '<%= tjs('admin.server_templates.form.create_server.field.name') %>',
+              id: 'fieldName',
+              allowBlank: false,
+              name: 'name'
+            }]
+          }, {
+            xtype: 'fieldset',
+            title: '<%= tjs('admin.server_templates.form.create_server.fieldset.limits') %>',
+            autoHeight: true,
+            defaults: { width: 155 },
+            defaultType: 'numberfield',
+            items: [{
+              fieldLabel: '<%= tjs('admin.server_templates.form.create_server.field.diskspace') %>',
+              id: 'fieldDiskspace',
+              allowBlank: false,
+              name: 'diskspace'
+            }, {
+              fieldLabel: '<%= tjs('admin.server_templates.form.create_server.field.memory') %>',
+              id: 'fieldMemory',
+              allowBlank: false,
+              name: 'memory'
+            }, {
+              fieldLabel: '<%= tjs('admin.server_templates.form.create_server.field.cpu_units') %>',
+              id: 'fieldCpuUnits',
+              allowBlank: false,
+              name: 'cpu_units'
+            }]
+          }, {
+            xtype: 'fieldset',
+            title: '<%= tjs('admin.server_templates.form.create_server.fieldset.dns_settings') %>',
+            autoHeight: true,
+            defaults: { width: 155 },
+            defaultType: 'textfield',
+            items: [{
+              fieldLabel: '<%= tjs('admin.server_templates.form.create_server.field.nameserver') %>',
+              name: 'nameserver'
+            }, {
+              fieldLabel: '<%= tjs('admin.server_templates.form.create_server.field.searchdomain') %>',
+              name: 'search_domain'
+            }]
+          }, {
+            xtype: 'fieldset',
+            title: '<%= tjs('admin.server_templates.form.create_server.fieldset.start_options') %>',
+            autoHeight: true,
+            defaultType: 'checkbox',
+            labelWidth: 180,
+            items: [{
+              fieldLabel: '<%= tjs('admin.server_templates.form.create_server.field.start_on_boot') %>',
+              xtype: 'checkbox',
+              checked: true,
+              name: 'start_on_boot',
+              id: 'checkboxStartOnBoot'
+            }]
+          }]
+        }, {
+          title: '<%= tjs('admin.server_templates.form.create_server.tab.advanced_settings') %>',
+          items: [{
+            xtype: 'editorgrid',
+            layout: 'fit',
+            height: 350,
+            width: 390,
+            loadMask: true,
+            ref: '../limitsGrid',
+            store: storeLimits,
+            cm: new Ext.grid.ColumnModel([{
+              id: 'name',
+              header: '<%= tjs('admin.server_templates.form.create_server.grid.column.name') %>',
+              sortable: true,
+              dataIndex: 'name'
+            }, {
+              id: 'soft_limit',
+              header: '<%= tjs('admin.server_templates.form.create_server.grid.column.soft_limit') %>',
+              width: 100,
+              sortable: true,
+              dataIndex: 'soft_limit',
+              editor: new Ext.form.NumberField({
+                allowBlank: false,
+                allowNegative: false
+              })
+            }, {
+              id: 'hard_limit',
+              header: '<%= tjs('admin.server_templates.form.create_server.grid.column.hard_limit') %>',
+              width: 100,
+              sortable: true,
+              dataIndex: 'hard_limit',
+              editor: new Ext.form.NumberField({
+                allowBlank: false,
+                allowNegative: false
+              })
+            }]),
+            stripeRows: true,
+            autoExpandColumn: 'name',
+            stripeRows: true,
+            iconCls: 'icon-items-list'
+          }]
+        }]
+      }]
+    });
     
+    var windowEditServerTemplate = new Owp.form.BasicFormWindow({
+      title: ('add' == mode)
+        ? '<%= tjs('admin.server_templates.form.create_server.title') %>'
+        : '<%= tjs('admin.server_templates.form.create_server.edit_title') %>',
+      iconCls: ('add' == mode) ? 'icon-window-add' : 'icon-window-edit',
+      width: 420,
+      autoHeight: true,
+      modal: true,
+      layout: 'fit',
+      plain: true,
+      border: false,
+      bodyStyle: 'padding: 5px;',
+      resizable: false,
+      items: formEditServerTemplate,
+      buttons: [{
+        text: ('add' == mode)
+          ? '<%= tjs('admin.server_templates.form.create_server.button_create') %>'
+          : '<%= tjs('form.button.save') %>',
+        iconCls: ('add' == mode) ? 'icon-button-add' : 'icon-button-save',
+        ref: '../submitButton',
+        handler: function() {
+          var limits = [];
+          Ext.StoreMgr.get('storeLimits').query().each(function(item) {
+            limits.push(item.data);
+          });
+        
+          formEditServerTemplate.form.submit({
+            params: { 'raw_limits': Ext.util.JSON.encode(limits) },
+            waitMsg: '<%= tjs('form.loading') %>',
+            success: function() {
+              serverTemplatesGrid.store.reload();
+              windowEditServerTemplate.close();
+              serverTemplatesGrid.getSelectionModel().clearSelections();
+            },
+            failure: function(form, action) {
+              Owp.form.errorHandler(form, action);
+            }
+          });
+        }
+      }, {
+        text: '<%= tjs('form.button.cancel') %>',
+        iconCls: 'icon-button-cancel',
+        handler: function() {
+          windowEditServerTemplate.close();
+        }
+      }]
+    });
+    
+    windowEditServerTemplate.on('show', function() {
+      if ('add' == mode) {
+        formEditServerTemplate.getForm().reset();
+        Ext.getCmp('fieldCpuUnits').setValue(1000);
+        windowEditServerTemplate.focus();
+      } else {
+        var selectedNode = Ext.getCmp('serverTemplatesGrid').getSelectionModel().getSelected();
+        formEditServerTemplate.getForm().load({
+          waitMsg: '<%= tjs('form.loading') %>',
+          success: function(form, action) {
+            var limits = Ext.decode(action.result.data.raw_limits);
+            storeLimits.loadData(limits);
+            
+            windowEditServerTemplate.focus();
+          },
+          url: '/admin/server-templates/load_data',
+          params: {
+            id: selectedNode.id
+          }
+        });
+        formEditServerTemplate.getForm().findField('id').setValue(selectedNode.id);
+      }
+    });
+    
+    windowEditServerTemplate.show();
+  }
+
+  function addTemplate() {
+    showServerTemplateEditForm('add');
+  }
+  
+  function editTemplate() {
+    showServerTemplateEditForm('edit');
   }
   
   function removeTemplate() {
@@ -27,10 +256,6 @@ Ext.onReady(function() {
     );
   }
   
-  function editTemplate() {
-    
-  }
-
   var store = new Ext.data.JsonStore({
     url: '/admin/server-templates/list_data?hardware_server_id=' + <%= @hardware_server.id %>,
     root: 'data',
@@ -95,26 +320,26 @@ Ext.onReady(function() {
     stripeRows: true,
     frame: true,
     iconCls: 'icon-items-list',
-    tbar: [/*{
+    tbar: [{
       text: '<%= tjs('admin.server_templates.grid.button.add') %>',
       handler: addTemplate,
       cls: 'x-btn-text-icon',
       icon: '/images/add.png'
-    }, */{
+    }, {
       text: '<%= tjs('admin.server_templates.grid.button.remove') %>',
       handler: removeTemplate,
       cls: 'x-btn-text-icon',
       icon: '/images/delete.png',
       ref: '../removeButton',
       disabled: true
-    }/*, {
+    }, {
       text: '<%= tjs('admin.server_templates.grid.button.edit') %>',
       handler: editTemplate,
       cls: 'x-btn-text-icon',
       icon: '/images/wrench.png',
       ref: '../editButton',
       disabled: true
-    }*/]
+    }]
   });
 
   Owp.layout.addToCenter(serverTemplatesGrid);

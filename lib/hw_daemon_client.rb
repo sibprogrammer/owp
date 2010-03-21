@@ -37,6 +37,10 @@ class HwDaemonClient
     rpc_call('hwDaemon.version')
   end
   
+  def write_file(filename, content)
+    rpc_call('hwDaemon.write_file', filename, content)
+  end
+  
   private
   
   def rpc_call(*args)

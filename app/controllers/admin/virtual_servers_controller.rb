@@ -139,6 +139,19 @@ class Admin::VirtualServersController < AdminController
     render :json => { :success => true, :data => virtual_server.get_limits }
   end
   
+  def load_template
+    server_template = ServerTemplate.find_by_id(params[:id])
+    redirect_to :controller => 'hardware_servers', :action => 'list' and return if !server_template
+    
+    render :json => { :success => true, :data => {
+      :start_on_boot => server_template.get_start_on_boot,
+      :nameserver => server_template.get_nameserver,
+      :search_domain => server_template.get_search_domain,
+      :diskspace => server_template.get_diskspace,
+      :memory => server_template.get_memory,
+    }}
+  end
+  
   private 
   
   def get_virtual_servers_map(virtual_servers)

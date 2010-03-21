@@ -5,6 +5,9 @@ class Admin::ServerTemplatesController < AdminController
     @hardware_server = HardwareServer.find_by_id(params[:hardware_server_id])
     redirect_to(:controller => 'hardware_servers', :action => 'list') and return if !@hardware_server
     @up_level = "/admin/hardware-servers/show?id=#{@hardware_server.id}"
+    
+    server_template = ServerTemplate.find_by_name(@hardware_server.default_server_template)
+    @advanced_limits = server_template.get_advanced_limits
   end
   
   def list_data
@@ -29,6 +32,38 @@ class Admin::ServerTemplatesController < AdminController
     }
     
     render :json => { :success => true }
+  end
+  
+  def save
+    hardware_server = HardwareServer.find_by_id(params[:hardware_server_id])
+    redirect_to(:controller => 'hardware_servers', :action => 'list') and return if !hardware_server
+    
+    server_template = (params[:id].to_i > 0) ? ServerTemplate.find_by_id(params[:id]) : ServerTemplate.new
+    params[:raw_limits] = ActiveSupport::JSON.decode(params[:raw_limits])
+    server_template.attributes = params
+    server_template.hardware_server = hardware_server
+
+    if server_template.save
+      render :json => { :success => true }  
+    else
+      render :json => { :success => false, :form_errors => server_template.errors }
+    end
+  end
+  
+  def load_data
+    server_template = ServerTemplate.find_by_id(params[:id])
+    redirect_to :controller => 'server_templates', :action => 'list' and return if !server_template
+    
+    render :json => { :success => true, :data => {
+      :name => server_template.name,
+      :nameserver => server_template.get_nameserver,
+      :search_domain => server_template.get_search_domain,
+      :start_on_boot => server_template.get_start_on_boot,
+      :diskspace => server_template.get_diskspace,
+      :memory => server_template.get_memory,
+      :cpu_units => server_template.get_cpu_units,
+      :raw_limits => server_template.get_advanced_limits.to_json,
+    }}
   end
   
 end

@@ -45,6 +45,10 @@ en:
               confirmation: "Password and confirmation are not equal."
             nameserver:
               invalid: "DNS server IP address is invalid."
+        server_template:
+          attributes:
+            name:
+              taken: "Server template with such name is already exist."
   about:
     copyright: "Copyright 2008-2010 SoftUnity."
     right_reserved: "All Rights Reserved."
@@ -323,3 +327,28 @@ en:
         remove_template:
           sure_to_remove: "Are you sure you want to remove selected server templates?"
           deletion_failed: "Unable to delete some server templates."
+        create_server:
+          title: "Create new server template"
+          edit_title: "Edit server template"
+          button_create: "Create"
+          tab:
+            main_settings: "Main settings"
+            advanced_settings: "Advanced settings"
+          fieldset:
+            general: "General"
+            limits: "Limits"
+            dns_settings: "DNS Settings"
+            start_options: "Start Options"
+          field:
+            name: "Name"
+            diskspace: "Diskspace, Mb"
+            memory: "Memory, Mb"
+            start_on_boot: "Start on Boot"
+            nameserver: "DNS Server"
+            searchdomain: "Search Domain"
+            cpu_units: "CPU Units"
+          grid:
+            column:
+              name: "Name"
+              soft_limit: "Barrier"
+              hard_limit: "Limit"

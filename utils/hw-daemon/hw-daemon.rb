@@ -4,7 +4,7 @@ require 'xmlrpc/server.rb'
 # workaround for clients with incorrect DNS records
 Socket.do_not_reverse_lookup = true
 
-DAEMON_VERSION = '1.1'
+DAEMON_VERSION = '1.2'
 CURRENT_DIR = File.expand_path(File.dirname(__FILE__)) + '/'
 CONFIG_FILE = CURRENT_DIR + 'hw-daemon.ini';
 PID_FILE = CURRENT_DIR + 'hw-daemon.pid';
@@ -52,6 +52,11 @@ class HwDaemonApiHandler < XMLRPC::WEBrickServlet
     end
     
     { 'found' => found, 'alive' => alive, 'result' => result }
+  end
+  
+  def write_file(filename, content)
+    File.open(filename, 'w') { |file| file.write(content) }
+    $LOG.debug("Writing file: #{filename}")
   end
   
   def service(request, response)
