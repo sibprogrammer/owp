@@ -61,6 +61,7 @@ Ext.onReady(function() {
   
   var limitsAction = function() {
     var storeLimits = new Ext.data.JsonStore({
+      id: 'storeLimits',
       url: '/admin/virtual-servers/get_limits?id=<%= @virtual_server.id %>',
       root: 'data',
       autoLoad: true,
@@ -71,18 +72,21 @@ Ext.onReady(function() {
       ]
     });
   
-    windowLimitsForm = new Ext.Window({
-      title: '<%= tjs('admin.virtual_servers.form.limits.title') %>',
-      iconCls: 'icon-items-list',
-      width: 400,
-      height: 400,
-      modal: true,
+    var formLimits = new Owp.form.BasicForm({
+      labelWidth: 180,
+      waitMsgTarget: true,
+      url: '/admin/virtual-servers/save_limits?id=<%= @virtual_server.id %>',
+      keys: [{
+        key: Ext.EventObject.ENTER,
+        fn: function() {
+          <% if @current_user.superadmin? %>
+            windowLimitsForm.submitButton.handler();
+          <% end -%>
+        }
+      }],
       layout: 'fit',
-      plain: true,
-      bodyStyle: 'padding:5px;',
-      resizable: false,
       items: [{
-        xtype: 'grid',
+        xtype: '<%= @current_user.superadmin? ? "editorgrid" : "grid" %>',
         layout: 'fit',
         loadMask: true,
         ref: '../limitsGrid',
@@ -97,13 +101,21 @@ Ext.onReady(function() {
           header: '<%= tjs('admin.virtual_servers.form.limits.grid.column.soft_limit') %>',
           width: 100,
           sortable: true,
-          dataIndex: 'soft_limit'
+          dataIndex: 'soft_limit',
+          editor: new Ext.form.NumberField({
+            allowBlank: false,
+            allowNegative: false
+          })
         }, {
           id: 'hard_limit',
           header: '<%= tjs('admin.virtual_servers.form.limits.grid.column.hard_limit') %>',
           width: 100,
           sortable: true,
-          dataIndex: 'hard_limit'
+          dataIndex: 'hard_limit',
+          editor: new Ext.form.NumberField({
+            allowBlank: false,
+            allowNegative: false
+          })
         }]),
         stripeRows: true,
         autoExpandColumn: 'name',
@@ -111,6 +123,53 @@ Ext.onReady(function() {
         stripeRows: true,
         iconCls: 'icon-items-list'
       }]
+    });
+      
+    var formButtons = null;
+    
+    <% if @current_user.superadmin? %>
+      formButtons = [{
+        text: '<%= tjs('form.button.save') %>',
+        iconCls: 'icon-button-save',
+        ref: '../submitButton',
+        handler: function() {
+          var limits = [];
+          Ext.StoreMgr.get('storeLimits').query().each(function(item) {
+            limits.push(item.data);
+          });
+        
+          formLimits.form.submit({
+            params: { 'limits': Ext.util.JSON.encode(limits) },
+            waitMsg: '<%= tjs('form.loading') %>',
+            success: function() {
+              windowLimitsForm.close();
+            },
+            failure: function(form, action) {
+              Owp.form.errorHandler(form, action);
+            }
+          });
+        }
+      }, {
+        text: '<%= tjs('form.button.cancel') %>',
+        iconCls: 'icon-button-cancel',
+        handler: function() {
+          windowLimitsForm.close();
+        }
+      }];
+    <% end -%>
+  
+    windowLimitsForm = new Ext.Window({
+      title: '<%= tjs('admin.virtual_servers.form.limits.title') %>',
+      iconCls: 'icon-items-list',
+      width: 400,
+      height: 400,
+      modal: true,
+      layout: 'fit',
+      plain: true,
+      bodyStyle: 'padding:5px;',
+      resizable: false,
+      items: formLimits,
+      buttons: formButtons
     });
     
     windowLimitsForm.show();

@@ -139,6 +139,15 @@ class Admin::VirtualServersController < AdminController
     render :json => { :success => true, :data => virtual_server.get_limits }
   end
   
+  def save_limits
+    virtual_server = VirtualServer.find_by_id(params[:id])
+    redirect_to :controller => 'dashboard' and return if !virtual_server or !@current_user.superadmin?
+    
+    virtual_server.save_limits(ActiveSupport::JSON.decode(params[:limits]))
+    
+    render :json => { :success => true }
+  end
+  
   def load_template
     server_template = ServerTemplate.find_by_id(params[:id])
     redirect_to :controller => 'hardware_servers', :action => 'list' and return if !server_template

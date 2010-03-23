@@ -17,11 +17,11 @@ class VirtualServer < ActiveRecord::Base
     parser = IniParser.new(hardware_server.rpc_client.exec('cat', "/etc/vz/conf/#{identity.to_s}.conf")['output'])
     
     limits = [
-      'KMEMSIZE', 'LOCKEDPAGES', 'PRIVVMPAGES', 'SHMPAGES', 'NUMPROC', 
+      'KMEMSIZE', 'LOCKEDPAGES', 'SHMPAGES', 'NUMPROC', 
       'PHYSPAGES', 'VMGUARPAGES', 'OOMGUARPAGES', 'NUMTCPSOCK', 'NUMFLOCK',
       'NUMPTY', 'NUMSIGINFO', 'TCPSNDBUF', 'TCPRCVBUF', 'OTHERSOCKBUF',
       'OTHERSOCKBUF', 'DGRAMRCVBUF', 'NUMOTHERSOCK', 'DCACHESIZE', 'NUMFILE',
-      'AVNUMPROC', 'NUMIPTENT', 'DISKSPACE', 'DISKINODES'
+      'AVNUMPROC', 'NUMIPTENT', 'DISKINODES'
     ]
     
     result = []
@@ -58,7 +58,16 @@ class VirtualServer < ActiveRecord::Base
     destroy
     EventLog.info("virtual_server.removed", { :identity => identity })
   end
-     
+  
+  def save_limits(limits)
+    vzctl_params = ''
+    limits.each { |limit|
+      vzctl_params << "--" + limit['name'].downcase + " " + limit['soft_limit'].to_s + ":" + limit['hard_limit'].to_s + " "
+    }
+    
+    vzctl_set("#{vzctl_params} --save")
+  end
+  
   def save_physically
     return false if !valid?
     
