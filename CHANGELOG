@@ -1,3 +1,29 @@
+= OpenVZ Web Panel 0.9 (2010-03-??) =
+
+This version is a beta release. The following items were fixed and/or added:
+
+  * Ability to see/change virtual server advanced limits (issue 63).
+  * Improved visualisation of OS template installation process (issue 62).
+  * Ability to clear log (issue 61).
+  * Fixed redirect on original page after clicking Help link (issue 60). 
+  * Detect default OS template for new server creation (issue 59).
+  * Prohibit attempts to use Ruby 1.9 (issue 58).
+  * Redirect to dashboard in case of invalid URL access (issue 57).
+  * German language support (issue 56).
+  * Virtual server templates management was introduced (issue 55).
+  * Support multiple IPs for virtual server (issue 54).
+  * Support multiple nameservers for virtual server (issue 53).
+  * Show OS template size at installation dialog (issue 51).
+  * Clear password field after attempt to login using invalid password
+    (issue 50).
+  * Allow two characters logins for users (issue 43).
+  * Translation of too_short validation message on user creation (issue 42).
+  * Roles for users were introduced (issue 40).
+  * Virtual server details screen (issue 39).
+  * Store panels states at Dashboard (issue 37).
+  * Prohibit ability to delete admin user (issue 36).
+  * Proper detection of OS templates directory on Debian/Ubuntu (issue 19).
+
 = OpenVZ Web Panel 0.6 (2010-01-30) =
 
 This version is a preview release. The following items were fixed and/or added:
