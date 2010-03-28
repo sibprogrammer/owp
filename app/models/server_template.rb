@@ -5,7 +5,6 @@ class ServerTemplate < ActiveRecord::Base
   attr_accessor :start_on_boot, :nameserver, :search_domain, :diskspace,
     :memory, :cpu_units, :raw_limits
   validates_uniqueness_of :name, :scope => :hardware_server_id
-  before_save :save_physically
   
   def delete_physically
     if hardware_server.default_server_template == name
@@ -38,6 +37,8 @@ class ServerTemplate < ActiveRecord::Base
   end
   
   def save_physically
+    return false if !valid?
+    
     content = ""
     content << 'ONBOOT="' + (start_on_boot ? "yes" : "no") + '"' + "\n"
     content << "NAMESERVER=\"#{nameserver}\"\n"
@@ -58,7 +59,7 @@ class ServerTemplate < ActiveRecord::Base
     
     hardware_server.rpc_client.write_file("/etc/vz/conf/ve-#{self.name}.conf-sample", content)
     
-    true
+    save
   end
   
   def get_nameserver

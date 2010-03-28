@@ -43,7 +43,7 @@ class Admin::ServerTemplatesController < AdminController
     server_template.attributes = params
     server_template.hardware_server = hardware_server
 
-    if server_template.save
+    if server_template.save_physically
       render :json => { :success => true }  
     else
       render :json => { :success => false, :form_errors => server_template.errors }
