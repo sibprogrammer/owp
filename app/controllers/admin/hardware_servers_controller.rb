@@ -1,4 +1,4 @@
-class Admin::HardwareServersController < AdminController
+class Admin::HardwareServersController < Admin::Base
   before_filter :superadmin_required
   
   def list

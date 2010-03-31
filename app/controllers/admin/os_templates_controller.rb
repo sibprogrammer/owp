@@ -1,4 +1,4 @@
-class Admin::OsTemplatesController < AdminController
+class Admin::OsTemplatesController < Admin::Base
   
   def list
     @hardware_server = HardwareServer.find_by_id(params[:hardware_server_id])    

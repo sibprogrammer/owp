@@ -1,4 +1,4 @@
-class Admin::UsersController < AdminController
+class Admin::UsersController < Admin::Base
   before_filter :superadmin_required
   
   def save_profile    

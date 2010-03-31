@@ -1,4 +1,4 @@
-class Admin::TasksController < AdminController
+class Admin::TasksController < Admin::Base
   before_filter :superadmin_required
   
   def status

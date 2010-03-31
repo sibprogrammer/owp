@@ -1,7 +1,7 @@
 require 'net/http'
 require 'rexml/document'
 
-class Admin::DashboardController < AdminController
+class Admin::DashboardController < Admin::Base
   
   def index 
     @stats_data = get_stats

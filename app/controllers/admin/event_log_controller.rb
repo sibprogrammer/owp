@@ -1,4 +1,4 @@
-class Admin::EventLogController < AdminController
+class Admin::EventLogController < Admin::Base
   before_filter :superadmin_required
   
   def list

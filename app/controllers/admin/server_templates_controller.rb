@@ -1,4 +1,4 @@
-class Admin::ServerTemplatesController < AdminController
+class Admin::ServerTemplatesController < Admin::Base
   before_filter :superadmin_required
   
   def list

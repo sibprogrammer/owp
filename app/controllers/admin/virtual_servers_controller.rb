@@ -1,4 +1,4 @@
-class Admin::VirtualServersController < AdminController
+class Admin::VirtualServersController < Admin::Base
   before_filter :superadmin_required, :only => [:list_data, :delete, :create, :load_data]
   
   def list
