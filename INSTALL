@@ -12,7 +12,7 @@ Table of contents:
 ---
 
 The following software is required to be installed on server with panel:
-* Ruby 1.8.6+
+* Ruby 1.8.5+ (1.9 is not supported)
 * RubyGems
 * Ruby SQLite3 support
 
@@ -20,7 +20,7 @@ The following software is required to be installed on physical server, which
 will be used for OpenVZ containers:
 * OpenVZ kernel
 * OpenVZ tools (vzctl, vzlist)
-* Ruby 1.8.6+
+* Ruby 1.8.5+ (1.9 is not supported)
 
 
 2. Installation of the build
@@ -39,10 +39,10 @@ using apt:
 apt-get install ruby rubygems libsqlite3-ruby
 
 To start the panel run the command:
-sudo ruby /opt/ovz-web-panel/script/server -e production -d
+sudo /opt/ovz-web-panel/script/owp start
 
 To shutdown application the following command can be used (be careful):
-sudo kill -2 `pidof ruby`
+sudo /opt/ovz-web-panel/script/owp stop
 
 Then need to place hardware daemon on the server with OpenVZ. There are two
 possible scenarios: panel is installed on hardware node or panel is on separate
