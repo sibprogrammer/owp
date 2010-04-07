@@ -255,6 +255,7 @@ en:
             official: "Official"
             contributed: "Contributed"
           button_install: "Install"
+          load_failed: "Failed to load OS templates list."
           failed: "Failed to start installation of OS templates."
           scheduled: "OS templates installation was scheduled. New templates appeared after some time."
         remove_template:
