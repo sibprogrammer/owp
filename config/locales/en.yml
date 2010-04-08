@@ -94,6 +94,7 @@ en:
       confirm_password: "Confirm Password"
       bad_current_password: "Invalid current password."
     events:
+      internal_error: "Internal error: {{message}}"
       hardware_server:
         connect: "Physical server {{host}} was connected."
         disconnect: "Physical server {{host}} was disconnected."
@@ -101,6 +102,7 @@ en:
       virtual_server:
         created: "Virtual server {{identity}} was created."
         removed: "Virtual server {{identity}} was removed."
+        change_state_failed: "Failed to change state for virtual server {{identity}}; state: {{state}}; code: {{code}}."
     tasks:
       os_templates:
         install: "OS templates installation on the server {{host}}."

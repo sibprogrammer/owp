@@ -1,5 +1,20 @@
 require "xmlrpc/client"
 
+class HwDaemonException < Exception
+end
+
+class HwDaemonExecException < HwDaemonException
+  def initialize(message, code)
+    super(message)
+    @message = message
+    @code = code
+  end
+  
+  def code
+    @code
+  end
+end
+
 class HwDaemonClient
   
   def initialize(host, auth_key)
@@ -17,7 +32,9 @@ class HwDaemonClient
   
   def exec(command, args = '')
     RAILS_DEFAULT_LOGGER.info "Executing command: #{command} #{args}"
-    rpc_call('hwDaemon.exec', command, args)
+    result = rpc_call('hwDaemon.exec', command, args)
+    raise HwDaemonExecException.new("Command '#{command} #{args}' execution failed with code #{result['exit_code']}\nOutput: #{result['output']}", result['exit_code']) if 0 != result['exit_code']
+    result
   end
   
   def job(command, args = '')
@@ -54,7 +71,9 @@ class HwDaemonClient
     if ok then
       return result
     else
-      RAILS_DEFAULT_LOGGER.error "XML-RPC call error: #{result.faultCode}; #{result.faultString}"
+      error = "XML-RPC call error: #{result.faultCode}; #{result.faultString}"
+      RAILS_DEFAULT_LOGGER.error(error)
+      raise HwDaemonException, error
     end
   end
   

@@ -23,10 +23,10 @@ class HwDaemonApiHandler < XMLRPC::WEBrickServlet
   end
   
   def exec(command, args = '')
-    output = `#{command} #{args}`
+    output = `#{command} #{args} 2>&1`
     exit_code = $?
     $LOG.debug("Exec command: #{command} #{args}; code: #{exit_code}; output:\n#{output}")
-    { 'exit_code' => exit_code.to_i, 'output' => output }
+    { 'exit_code' => exit_code >> 8, 'output' => output }
   end
   
   def job(command, args = '')

@@ -28,4 +28,9 @@ class ApplicationController < ActionController::Base
       end
     end
   
+    def log_error(exception)
+      super
+      EventLog.error("internal_error", { :message => exception.message })
+    end
+  
 end

@@ -12,6 +12,16 @@ Owp.form.errorHandler = function(form, action, params) {
     return
   }
   
+  if ('undefined' == typeof action.result) {
+    Ext.MessageBox.show({
+      msg: 'Internal error occured. See logs for details.',
+      buttons: Ext.MessageBox.OK,
+      icon: Ext.MessageBox.ERROR
+    });
+    
+    return
+  }
+  
   // show overall status message
   if ('undefined' != typeof action.result.message) {
     Ext.MessageBox.show({

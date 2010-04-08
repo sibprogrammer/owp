@@ -94,6 +94,7 @@ ru:
       confirm_password: "Подтверждение пароля"
       bad_current_password: "Неверный текущий пароль."
     events:
+      internal_error: "Внутренная ошибка: {{message}}"
       hardware_server:
         connect: "Физический сервер {{host}} был подключен."
         disconnect: "Физический сервер {{host}} был отключен."
@@ -101,6 +102,7 @@ ru:
       virtual_server:
         created: "Виртуальный сервер {{identity}} был создан."
         removed: "Виртуальный сервер {{identity}} был удален."
+        change_state_failed: "Не удалось изменить состояние виртуального сервера {{identity}}; состояние: {{state}}; код: {{code}}."
     tasks:
       os_templates:
         install: "Установка шаблонов ОС на сервер {{host}}."

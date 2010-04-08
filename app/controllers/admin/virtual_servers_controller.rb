@@ -21,13 +21,15 @@ class Admin::VirtualServersController < Admin::Base
       next if !@current_user.can_control(virtual_server)
       
       case params[:command]  
-        when 'start' then virtual_server.start
-        when 'stop' then virtual_server.stop
-        when 'restart' then virtual_server.restart
+        when 'start' then result = virtual_server.start
+        when 'stop' then result = virtual_server.stop
+        when 'restart' then result = virtual_server.restart
       end
+      
+      render :json => { :success => false } and return if !result
     }
     
-    render :json => { :success => true }  
+    render :json => { :success => true }
   end
   
   def delete

@@ -35,23 +35,19 @@ class VirtualServer < ActiveRecord::Base
   end
 
   def start
-    hardware_server.rpc_client.exec('vzctl', 'start ' + identity.to_s)
-    self.state = 'running'
-    save
+    return true if 'running' == state
+    change_state('start', 'running')
   end
   
   def stop
-    hardware_server.rpc_client.exec('vzctl', 'stop ' + identity.to_s)
-    self.state = 'stopped'
-    save
+    return true if 'stopped' == state
+    change_state('stop', 'stopped')
   end
   
   def restart
-    hardware_server.rpc_client.exec('vzctl', 'restart ' + identity.to_s)
-    self.state = 'running'
-    save
+    change_state('restart', 'running')
   end
-    
+  
   def delete_physically
     stop
     hardware_server.rpc_client.exec('vzctl', 'destroy ' + identity.to_s)
@@ -80,13 +76,19 @@ class VirtualServer < ActiveRecord::Base
       vzctl_set("--applyconfig #{orig_server_template} --save")
     end
     
-    vzctl_set("--hostname #{host_name} --save") if !host_name.empty?
-    vzctl_set("--ipdel all " + ip_address.split.map { |ip| "--ipadd #{ip} " }.join + "--save")
-    vzctl_set("--userpasswd root:#{password}") if !password.empty?
-    vzctl_set("--onboot " + (start_on_boot ? "yes" : "no") + " --save")
-    vzctl_set(nameserver.split.map { |ip| "--nameserver #{ip} " }.join + "--save") if !nameserver.empty?
-    vzctl_set("--searchdomain #{search_domain} --save") if !search_domain.empty?
-    vzctl_set("--diskspace #{diskspace * 1024} --privvmpages #{memory * 1024 / 4} --save")
+    begin
+      vzctl_set("--hostname #{host_name} --save") if !host_name.empty?
+      vzctl_set("--ipdel all " + ip_address.split.map { |ip| "--ipadd #{ip} " }.join + "--save")
+      vzctl_set("--userpasswd root:#{password}") if !password.empty?
+      vzctl_set("--onboot " + (start_on_boot ? "yes" : "no") + " --save")
+      vzctl_set(nameserver.split.map { |ip| "--nameserver #{ip} " }.join + "--save") if !nameserver.empty?
+      vzctl_set("--searchdomain #{search_domain} --save") if !search_domain.empty?
+      vzctl_set("--diskspace #{diskspace * 1024} --privvmpages #{memory * 1024 / 4} --save")
+    rescue HwDaemonExecException => exception
+      delete_physically
+      raise exception
+    end
+    
     start if start_after_creation
   
     result = save
@@ -98,6 +100,20 @@ class VirtualServer < ActiveRecord::Base
 
     def vzctl_set(param)
       hardware_server.rpc_client.exec('vzctl', "set #{identity.to_s} #{param}")
+    end
+    
+    def change_state(state, status)
+      begin
+        hardware_server.rpc_client.exec('vzctl', state + ' ' + identity.to_s)
+      rescue HwDaemonExecException => e
+        EventLog.error("virtual_server.change_state_failed", {
+          :identity => identity, :state => state, :code => e.code.to_s
+        })
+        return false
+      end
+      
+      self.state = status
+      save
     end
   
 end
