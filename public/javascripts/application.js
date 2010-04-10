@@ -22,13 +22,16 @@ Owp.form.errorHandler = function(form, action, params) {
     return
   }
   
+  var params = ('undefined' == typeof params) ? Array() : params;
+  var handler = params['fn'] || function() {};
+  
   // show overall status message
   if ('undefined' != typeof action.result.message) {
     Ext.MessageBox.show({
       msg: action.result.message,
       buttons: Ext.MessageBox.OK,
       icon: Ext.MessageBox.ERROR,
-      fn: params['fn']
+      fn: handler
     });
     
     return

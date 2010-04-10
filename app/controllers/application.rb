@@ -33,4 +33,25 @@ class ApplicationController < ActionController::Base
       EventLog.error("internal_error", { :message => exception.message })
     end
   
+    def rescue_action_locally(exception)
+      if request.xhr?
+        ajax_request_handler(exception)
+      else
+        super
+      end
+    end
+    
+    def rescue_action_in_public(exception)
+      if request.xhr?
+        ajax_request_handler(exception)
+      else
+        super
+      end
+    end
+  
+    def ajax_request_handler(exception)
+      message = t("admin.events.internal_error", { :message => exception.message })
+      render :json => { :success => false, :message => message.gsub(/\n/, '<br />') }
+    end
+  
 end
