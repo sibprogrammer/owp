@@ -156,7 +156,7 @@
           children: [{
             cls: 'menu-item',
             text: '<%= tjs('admin.menu.help.documentation') %>',
-            href: 'http://code.google.com/p/ovz-web-panel/w/list',
+            href: '<%= @current_user.superadmin? ? 'http://code.google.com/p/ovz-web-panel/wiki/AdminGuide' : 'http://code.google.com/p/ovz-web-panel/wiki/UserGuide' %>',
             icon: '/images/help.png',
             leaf: true
           }, {
