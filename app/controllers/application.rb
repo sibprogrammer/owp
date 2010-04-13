@@ -15,7 +15,7 @@ class ApplicationController < ActionController::Base
   # from your application log (in this case, all fields with names like "password"). 
   # filter_parameter_logging :password
     
-  before_filter :set_locale
+  before_filter :set_locale, :set_product_name
     
   protected  
   
@@ -26,6 +26,11 @@ class ApplicationController < ActionController::Base
       elsif cookies['locale'] && I18n.available_locales.include?(cookies['locale'].to_sym)
         I18n.locale = cookies['locale'].to_sym
       end
+    end
+    
+    def set_product_name
+      @product_name = PRODUCT_NAME
+      @product_name += AppConfig.branding.show_version ? (' ' + PRODUCT_VERSION) : ''
     end
   
     def log_error(exception)

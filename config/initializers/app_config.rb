@@ -22,7 +22,10 @@ config_defaults = {
   },
   'tasks' => {
     'max_records' => 3
-  }
+  },
+  'branding' => {
+    'show_version' => true,
+  },
 }
 
 def hashes2ostruct(object)

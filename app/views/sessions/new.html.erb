@@ -70,7 +70,7 @@ Ext.onReady(function() {
   
   var loginWindow = new Owp.form.BasicFormWindow({
     applyTo: 'login-window',
-    title: '<%= tjs('login.window_title', :product => PRODUCT_NAME + ' ' + PRODUCT_VERSION) %>',
+    title: '<%= tjs('login.window_title', :product => @product_name) %>',
     iconCls: 'icon-window-login',
     width: 380,
     height: 190,
