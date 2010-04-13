@@ -128,7 +128,6 @@ ru:
           virtual_servers: "Виртуальные сервера"
           virtual_servers_running: "Виртуальные сервера - запущенные"
           virtual_servers_stopped: "Виртуальные сервера - остановленные"
-          os_templates: "Шаблоны ОС"
     hardware_servers:
       title: "Физические сервера"
       grid:

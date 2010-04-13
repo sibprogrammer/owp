@@ -27,9 +27,6 @@ class Admin::DashboardController < Admin::Base
       ], [
         t('admin.dashboard.stats_grid.parameter.virtual_servers_stopped'),
         VirtualServer.count(:conditions => "state = 'stopped'")
-      ], [
-        t('admin.dashboard.stats_grid.parameter.os_templates'),
-        OsTemplate.count
       ]
     ]
   end

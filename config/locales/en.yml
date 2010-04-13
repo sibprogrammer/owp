@@ -128,7 +128,6 @@ en:
           virtual_servers: "Virtual servers"
           virtual_servers_running: "Virtual servers - running"
           virtual_servers_stopped: "Virtual servers - stopped"
-          os_templates: "OS templates"
     hardware_servers:
       title: "Physical Servers"
       grid:
