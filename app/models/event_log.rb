@@ -28,6 +28,7 @@ class EventLog < ActiveRecord::Base
       limit_record = EventLog.find(:first, :order => "id DESC", :offset => AppConfig.log.max_records)
       EventLog.delete_all(["id <= ?", limit_record.id])
     end
+    true
   end
   
   def t_message(locale = I18n.locale)

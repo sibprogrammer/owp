@@ -10,6 +10,7 @@ class BackgroundJob < ActiveRecord::Base
       limit_record = BackgroundJob.find(:first, :order => "id DESC", :offset => AppConfig.tasks.max_records)
       BackgroundJob.delete_all(["id <= ?", limit_record.id])
     end
+    true
   end
   
   def finish
