@@ -23,6 +23,8 @@ start() {
     ruby $INSTALL_DIR/script/server webrick -e production -d
     [ "$ENVIRONMENT" = "HW-NODE" ] && ruby $INSTALL_DIR/utils/hw-daemon/hw-daemon.rb start
     touch $LOCK_FILE
+    echo "Syncing physical servers state..."
+    ruby $INSTALL_DIR/script/runner -e production "HardwareServer.all.each { |server| server.sync }"
   fi
 }
 
