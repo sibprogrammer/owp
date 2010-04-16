@@ -1,10 +1,28 @@
 #!/bin/sh
-#
-# chkconfig: 35 90 12
-# description: OpenVZ Web Panel
-#
+###
+# OpenVZ Web Panel startup script
+###
 
-INSTALL_DIR=`dirname $0`/../
+###
+# chkconfig: 345 97 87
+# description: OpenVZ Web Panel startup script
+###
+
+### BEGIN INIT INFO
+# Provides: owp
+# required-start: $network
+# required-stop:
+# Default-Start: 3 4 5
+# Default-Stop: 0 1 2 6
+# Short-Description: OpenVZ Web Panel startup script
+# Description: OpenVZ Web Panel startup script
+### END INIT INFO
+
+if [ -f `dirname $0`/../script/owp ]; then
+  INSTALL_DIR=`dirname $0`/../
+else
+  INSTALL_DIR="/opt/ovz-web-panel/"
+fi
 LOCK_FILE="/var/lock/owp"
 
 check_environment() {
