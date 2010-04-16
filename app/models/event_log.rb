@@ -23,6 +23,11 @@ class EventLog < ActiveRecord::Base
     record = self.new(:message => message, :level => level, :params => Marshal.dump(params))
     record.save
     RAILS_DEFAULT_LOGGER.add(level, record.t_message(:en))
+    
+    if EventLog.count > AppConfig.log.max_records
+      limit_record = EventLog.find(:first, :order => "id DESC", :offset => AppConfig.log.max_records)
+      EventLog.delete_all(["id <= ?", limit_record.id])
+    end
   end
   
   def t_message(locale = I18n.locale)

@@ -5,6 +5,11 @@ class BackgroundJob < ActiveRecord::Base
   
   def self.create(description, params = {})
     super(:description => description, :status => RUNNING, :params => Marshal.dump(params))
+    
+    if BackgroundJob.count > AppConfig.tasks.max_records
+      limit_record = BackgroundJob.find(:first, :order => "id DESC", :offset => AppConfig.tasks.max_records)
+      BackgroundJob.delete_all(["id <= ?", limit_record.id])
+    end
   end
   
   def finish

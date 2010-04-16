@@ -21,7 +21,7 @@ config_defaults = {
     'max_records' => 1000
   },
   'tasks' => {
-    'max_records' => 3
+    'max_records' => 100
   },
   'branding' => {
     'show_version' => true,
