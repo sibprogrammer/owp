@@ -214,6 +214,7 @@ en:
             no_owner: "No owner"
             server_template: "Server Template"
             select_server_template: "Select server template"
+            description: "Description"
           fieldset:
             general: "General"
             network: "Network"

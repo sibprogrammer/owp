@@ -133,6 +133,9 @@ Ext.onReady(function() {
                   }
                 }
               }
+            }, {
+              fieldLabel: '<%= tjs('admin.virtual_servers.form.create_server.field.description') %>',
+              name: 'description'
             }]
           }, {
             xtype: 'fieldset',
@@ -374,11 +377,16 @@ Ext.onReady(function() {
       { name: 'os_template_name' },
       { name: 'memory' },
       { name: 'diskspace' },
-      { name: 'owner' }
+      { name: 'owner' },
+      { name: 'description' }
     ]
   });
   
-  var selectionModel = new Ext.grid.CheckboxSelectionModel({ 
+  var selectionModel = new Ext.grid.CheckboxSelectionModel({
+    renderer: function(value, metaData) {
+      metaData.cellAttr = 'rowspan="2"';
+      return Ext.grid.CheckboxSelectionModel.prototype.renderer.apply(this, arguments);
+    },
     listeners: {
       selectionchange: function(selectionModel) {
         if (selectionModel.getCount()) {
@@ -415,7 +423,8 @@ Ext.onReady(function() {
       { 
         id: 'state',
         header: '<%= tjs('admin.virtual_servers.grid.column.state') %>',
-        renderer: function(value) {
+        renderer: function(value, metaData) {
+          metaData.cellAttr = 'rowspan="2"';
           var image = ('running' == value) ? 'run.png' : 'stop.png';
           return '<img src="/images/' + image + '"/>';
         },
@@ -474,6 +483,19 @@ Ext.onReady(function() {
       celldblclick: function(grid, rowIndex, columnIndex, eventObject) {
         var selectedNode = grid.getSelectionModel().getSelected();
         document.location.href = '/admin/virtual-servers/show?id=' + selectedNode.data.id;
+      }
+    },
+    viewConfig: {
+      enableRowBody: true,
+      forceFit: true,
+      getRowClass: function(record, index, rowParams, store) {
+        var description = record.data.description;
+        if (description) {
+          rowParams.body = '<div class="x-grid3-cell-inner">' + record.data.description + '</div>';
+          return 'x-grid3-row-expanded';
+        } else {
+          return 'x-grid3-row-collapsed';
+        }
       }
     },
     tbar: [{

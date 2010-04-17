@@ -81,6 +81,7 @@ class Admin::VirtualServersController < Admin::Base
       :diskspace => virtual_server.diskspace,
       :memory => virtual_server.memory,
       :user_id => virtual_server.user_id,
+      :description => virtual_server.description,
     }}  
   end
   
@@ -176,6 +177,7 @@ class Admin::VirtualServersController < Admin::Base
       :diskspace => virtual_server.diskspace,
       :memory => virtual_server.memory,
       :owner => virtual_server.user ? virtual_server.user.login : '',
+      :description => virtual_server.description,
     }} 
   end
   

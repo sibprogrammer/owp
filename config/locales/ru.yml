@@ -214,6 +214,7 @@ ru:
             no_owner: "Нет владельца"
             server_template: "Шаблон сервера"
             select_server_template: "Выберите шаблон сервера"
+            description: "Описание"
           fieldset:
             general: "Общее"
             network: "Сеть"

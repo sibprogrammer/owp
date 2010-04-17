@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100309143652) do
+ActiveRecord::Schema.define(:version => 20100417091554) do
 
   create_table "background_jobs", :force => true do |t|
     t.string  "description"
@@ -72,6 +72,7 @@ ActiveRecord::Schema.define(:version => 20100309143652) do
     t.string  "orig_os_template"
     t.integer "user_id",                            :default => 0
     t.string  "orig_server_template"
+    t.string  "description"
   end
 
 end
