@@ -15,7 +15,7 @@ td.x-grid3-td-checker, td.x-grid3-td-state { vertical-align: middle; }
 .copyright a { color: #FFFFFF; text-decoration: none; }
 .copyright a:hover { color: #F0F0F0; }
 
-.main-content-center-panel > .x-panel-header { height: 25px; line-height: 25px; font-size: 20px; font-weight: normal; }
+.main-content-center-panel > .x-panel-header { height: 32px; line-height: 26px; font-size: 20px; font-weight: normal; }
 #main-content { padding: 10px; }
 
 .x-tree-node div.menu-title { background: #eee; margin-top: 1px; border-top: 1px solid #ddd; border-bottom: 1px solid #ccc; padding: 2px 0 1px; font-weight: bold; }
@@ -36,9 +36,10 @@ td.x-grid3-td-checker, td.x-grid3-td-state { vertical-align: middle; }
 .icon-button-change-state { background-image: url(/images/control_equalizer_blue.png) !important; }
 .icon-button-start-server { background-image: url(/images/run.png) !important; }
 .icon-button-stop-server { background-image: url(/images/stop.png) !important; }
-.icon-button-restart-server { background-image: url(/images/restart.png) !important; }
+.icon-button-restart-server { background-image: url(/images/refresh.png) !important; }
 
-.icon-inline { height: 16px; padding-right: 5px; vertical-align: middle; }
+.icon-inline { height: 16px; width: 16px; padding-right: 5px; vertical-align: middle; }
+.icon-inline-big { height: 32px; width: 32px; padding-right: 5px; vertical-align: middle; }
 
 .panel-dashboard { margin: 10px; }
 

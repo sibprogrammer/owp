@@ -1,4 +1,5 @@
 <% @page_title = t('admin.hardware_servers.show.title', :name => @hardware_server.host) %>
+<% @page_icon = 'server.png' %>
 
 <% javascript_tag do -%>
 Ext.onReady(function() {
@@ -544,7 +545,7 @@ Ext.onReady(function() {
   
   mainContentCenterPanel.getTopToolbar().insertButton(0, {
     text: '<%= tjs('admin.hardware_servers.top_toolbar.server_templates') %>',
-    icon: '/images/table.png',
+    icon: '/images/package.png',
     handler: function() {
       document.location.href = '/admin/server-templates/list?hardware_server_id=<%= @hardware_server.id %>';
     }
@@ -552,7 +553,7 @@ Ext.onReady(function() {
   
   mainContentCenterPanel.getTopToolbar().insertButton(0, {
     text: '<%= tjs('admin.hardware_servers.top_toolbar.os_templates') %>',
-    icon: '/images/table.png',
+    icon: '/images/tux.png',
     handler: function() {
       document.location.href = '/admin/os-templates/list?hardware_server_id=<%= @hardware_server.id %>';
     }

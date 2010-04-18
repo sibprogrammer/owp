@@ -89,7 +89,7 @@
             cls: 'menu-item',
             text: '<%= tjs('admin.menu.general.dashboard') %>',
             href: '/admin/dashboard',
-            icon: '/images/application.png',
+            icon: '/images/application_view_tile.png',
             leaf: true
           }, <% if @current_user.superadmin? %> {
             cls: 'menu-item',
@@ -127,12 +127,12 @@
             cls: 'menu-item',
             text: '<%= tjs('admin.menu.general.tasks') %>',
             href: '/admin/tasks/list',
-            icon: '/images/time.png'
+            icon: '/images/cog.png'
           }, {
             cls: 'menu-item',
             text: '<%= tjs('admin.menu.general.event_log') %>',
             href: '/admin/event-log/list',
-            icon: '/images/table.png'
+            icon: '/images/book.png'
           }, <% end -%> {
             cls: 'menu-item',
             text: '<%= tjs('admin.menu.general.logout') %>',
@@ -245,7 +245,7 @@
             layout: 'fit',
             contentEl: 'main-content',
             xtype: 'panel',
-            title: '<%= escape_javascript(@page_title) %>',
+            title: '<img class="icon-inline-big" src="/images/big-icons/<%= @page_icon %>"><%= escape_javascript(@page_title) %>',
             cls: 'main-content-center-panel',
             id: 'mainContentCenterPanel',
             bodyStyle: 'background: #FFFFFF url(/images/openvz-big-logo.gif) no-repeat scroll right bottom',

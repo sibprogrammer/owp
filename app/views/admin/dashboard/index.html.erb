@@ -1,4 +1,5 @@
 <% @page_title = t('admin.dashboard.title') %>
+<% @page_icon = 'application_view_tile.png' %>
 
 <% javascript_tag do -%>
 Ext.onReady(function() {
@@ -44,11 +45,11 @@ Ext.onReady(function() {
     var storeData = <%= @stats_data.to_json %> ;
     
     var store = new Ext.data.ArrayStore({
-      fields: [{
-        name: 'parameter'
-      }, {
-        name: 'value'
-      }]
+      fields: [
+        { name: 'icon' },
+        { name: 'parameter' },
+        { name: 'value' }
+      ]
     });
     
     store.loadData(storeData);
@@ -69,7 +70,10 @@ Ext.onReady(function() {
         id: 'parameter',
         header: '<%= tjs('admin.dashboard.stats_grid.column.parameter') %>',
         width: 250,
-        dataIndex: 'parameter'
+        dataIndex: 'parameter',
+        renderer: function(value, metaData, record) {
+          return '<img src="/images/' + record.data.icon + '" class="icon-inline"/>' + value;
+        }
       }, {
         id: 'value',
         header: '<%= tjs('admin.dashboard.stats_grid.column.value') %>',
