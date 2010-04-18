@@ -40,9 +40,13 @@ apt-get install ruby rubygems libsqlite3-ruby
 
 To start the panel run the command:
 sudo /opt/ovz-web-panel/script/owp start
+or
+service owp start
 
 To shutdown application the following command can be used (be careful):
 sudo /opt/ovz-web-panel/script/owp stop
+or
+service owp stop
 
 Then need to place hardware daemon on the server with OpenVZ. There are two
 possible scenarios: panel is installed on hardware node or panel is on separate
