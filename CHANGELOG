@@ -1,3 +1,20 @@
+= OpenVZ Web Panel 1.0 (2010-04-18) =
+
+This version is a major release. The following items were fixed and/or added:
+
+  * Updated and new icons for pages and operations (issue 81).
+  * Hungarian language support (issue 80).
+  * Automatic synchronization of the state on panel startup (issue 78).
+  * Limit number of record at events log and tasks via configuation (issue 77).
+  * Added upstart scripts (issue 73).
+  * OS templates counter was removed from statistics panel at dashboard (issue 72).
+  * Added administrator's and user's guides (issue 71).
+  * Added ability to set description for virtual server (issue 70).
+  * Improved backend errors detection and reporting (issue 67).
+  * Corrected dependencies solver for CentOS 5.4 (issue 66).
+  * Fixed 404 error (page not found) after login (issue 65).
+  * Access OS templates remote list using FTP passive mode (issue 64).
+
 = OpenVZ Web Panel 0.9 (2010-03-29) =
 
 This version is a beta release. The following items were fixed and/or added:
