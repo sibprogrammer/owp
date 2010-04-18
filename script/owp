@@ -10,7 +10,7 @@
 
 ### BEGIN INIT INFO
 # Provides: owp
-# required-start: $network
+# required-start: $network $vz
 # required-stop:
 # Default-Start: 3 4 5
 # Default-Stop: 0 1 2 6
@@ -41,6 +41,7 @@ start() {
     ruby $INSTALL_DIR/script/server webrick -e production -d
     [ "$ENVIRONMENT" = "HW-NODE" ] && ruby $INSTALL_DIR/utils/hw-daemon/hw-daemon.rb start
     touch $LOCK_FILE
+    sleep 1 # wait a little for forked processes
     echo "Syncing physical servers state..."
     ruby $INSTALL_DIR/script/runner -e production "HardwareServer.all.each { |server| server.sync }"
   fi
