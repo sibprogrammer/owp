@@ -105,7 +105,8 @@ Ext.onReady(function() {
           dataIndex: 'soft_limit',
           editor: new Ext.form.NumberField({
             allowBlank: false,
-            allowNegative: false
+            allowNegative: false,
+            maxValue: 2147483647
           })
         }, {
           id: 'hard_limit',
@@ -115,7 +116,8 @@ Ext.onReady(function() {
           dataIndex: 'hard_limit',
           editor: new Ext.form.NumberField({
             allowBlank: false,
-            allowNegative: false
+            allowNegative: false,
+            maxValue: 2147483647
           })
         }]),
         stripeRows: true,

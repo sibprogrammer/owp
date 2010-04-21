@@ -56,9 +56,13 @@ class VirtualServer < ActiveRecord::Base
   end
   
   def save_limits(limits)
+    orig_limits = get_limits
     vzctl_params = ''
     limits.each { |limit|
-      vzctl_params << "--" + limit['name'].downcase + " " + limit['soft_limit'].to_s + ":" + limit['hard_limit'].to_s + " "
+      orig_limit = orig_limits.find { |item| item[:name] == limit['name'] }
+      if orig_limit[:soft_limit] != limit['soft_limit'] || orig_limit[:hard_limit] != limit['hard_limit']
+        vzctl_params << "--" + limit['name'].downcase + " " + limit['soft_limit'].to_s + ":" + limit['hard_limit'].to_s + " "
+      end
     }
     
     vzctl_set("#{vzctl_params} --save")
