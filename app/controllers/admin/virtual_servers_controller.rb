@@ -164,6 +164,19 @@ class Admin::VirtualServersController < Admin::Base
     }}
   end
   
+  def reinstall
+    params[:ids].split(',').each { |id|
+      virtual_server = VirtualServer.find(id) 
+      
+      if !virtual_server.reinstall
+        render :json => { :success => false }
+        return
+      end
+    }
+    
+    render :json => { :success => true }
+  end
+  
   private 
   
   def get_virtual_servers_map(virtual_servers)

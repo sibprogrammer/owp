@@ -96,6 +96,22 @@ class VirtualServer < ActiveRecord::Base
     result
   end
   
+  def reinstall
+    was_running = 'running' == state
+    path = '/etc/vz/conf'
+    tmp_template = "tmp.template"
+    
+    hardware_server.rpc_client.exec("cp #{path}/#{self.identity}.conf #{path}/ve-#{tmp_template}.conf-sample")
+    stop
+    hardware_server.rpc_client.exec('vzctl', 'destroy ' + identity.to_s)
+    hardware_server.rpc_client.exec('vzctl', "create #{identity.to_s} --config #{tmp_template}")
+    change_state('start', 'running') if was_running
+    hardware_server.rpc_client.exec("rm #{path}/ve-#{tmp_template}.conf-sample")
+    
+    EventLog.info("virtual_server.reinstall", { :identity => identity })
+    true
+  end
+  
   private
 
     def vzctl_set(param)

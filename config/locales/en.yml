@@ -184,7 +184,11 @@ en:
           stop: "Stop"
           edit: "Change settings"
           limits: "Limits"
+          reinstall: "Reinstall"
       form:
+        reinstall:
+          sure_to_reinstall: "Are you sure you want to reinstall the server?"
+          failed: "Unable to reinstall the server."
         change_state:
           failed: "Unable to change virtual server state."
         remove_server:

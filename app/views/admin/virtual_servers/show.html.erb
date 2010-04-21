@@ -175,8 +175,35 @@ Ext.onReady(function() {
     
     windowLimitsForm.show();
   }
+  
+  var reinstallAction = function() {
+    Ext.MessageBox.confirm(
+      '<%= tjs('form.confirmation') %>',
+      '<%= tjs('admin.virtual_servers.form.reinstall.sure_to_reinstall') %>',
+      function(button, text) {
+        if ('yes' == button) { 
+          Owp.list.groupAction({
+            gridName: 'virtualServerInfoGrid',
+            url: '/admin/virtual-servers/reinstall?ids=<%= @virtual_server.id %>',
+            waitMsg: '<%= tjs('form.performing_task') %>',
+            failure: {
+              title: '<%= tjs('form.error.title') %>',
+              msg: '<%= tjs('admin.virtual_servers.form.reinstall.failed') %>'
+            }
+          });
+        }
+      }
+    );
+  }
 
   var mainContentCenterPanel = Ext.getCmp('mainContentCenterPanel');
+  
+  mainContentCenterPanel.getTopToolbar().insertButton(0, {
+    text: '<%= tjs('admin.virtual_servers.grid.button.reinstall') %>',
+    iconCls: 'icon-button-reinstall',
+    ref: '../reinstallButton',
+    handler: reinstallAction
+  });
   
   mainContentCenterPanel.getTopToolbar().insertButton(0, {
     text: '<%= tjs('admin.virtual_servers.grid.button.limits') %>',
