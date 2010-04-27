@@ -70,8 +70,9 @@ class VirtualServer < ActiveRecord::Base
   
   def save_physically
     return false if !valid?
+    is_new = new_record?
     
-    if new_record?
+    if is_new
       hardware_server.rpc_client.exec('vzctl', "create #{identity.to_s} --ostemplate #{orig_os_template} --config #{orig_server_template}")
       self.state = 'stopped'
     end
@@ -96,7 +97,7 @@ class VirtualServer < ActiveRecord::Base
     start if start_after_creation
   
     result = save
-    EventLog.info("virtual_server.created", { :identity => identity })
+    EventLog.info("virtual_server." + (is_new ? "created" : "updated"), { :identity => identity })
     result
   end
   

@@ -103,6 +103,7 @@ en:
         created: "Virtual server {{identity}} was created."
         removed: "Virtual server {{identity}} was removed."
         change_state_failed: "Failed to change state for virtual server {{identity}}; state: {{state}}; code: {{code}}."
+        updated: "Settings for virtual server {{identity}} were updated."
     tasks:
       os_templates:
         install: "OS templates installation on the server {{host}}."
