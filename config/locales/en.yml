@@ -188,8 +188,9 @@ en:
           reinstall: "Reinstall"
       form:
         reinstall:
-          sure_to_reinstall: "Are you sure you want to reinstall the server?"
-          failed: "Unable to reinstall the server."
+          title: "Reinstall virtual server"
+        button:
+          reinstall: "Reinstall"
         change_state:
           failed: "Unable to change virtual server state."
         remove_server:

@@ -179,23 +179,72 @@ Ext.onReady(function() {
   }
   
   var reinstallAction = function() {
-    Ext.MessageBox.confirm(
-      '<%= tjs('form.confirmation') %>',
-      '<%= tjs('admin.virtual_servers.form.reinstall.sure_to_reinstall') %>',
-      function(button, text) {
-        if ('yes' == button) { 
-          Owp.list.groupAction({
-            gridName: 'virtualServerInfoGrid',
-            url: '/admin/virtual-servers/reinstall?ids=<%= @virtual_server.id %>',
-            waitMsg: '<%= tjs('form.performing_task') %>',
-            failure: {
-              title: '<%= tjs('form.error.title') %>',
-              msg: '<%= tjs('admin.virtual_servers.form.reinstall.failed') %>'
+    var formReinstall = new Owp.form.BasicForm({
+      labelWidth: 150,
+      waitMsgTarget: true,
+      url: '/admin/virtual-servers/reinstall?id=<%= @virtual_server.id %>',
+      defaults: { width: 200 },
+      keys: [{
+        key: Ext.EventObject.ENTER,
+        fn: function() {
+          windowReinstall.submitButton.handler();
+        }
+      }],
+      items: [{
+        fieldLabel: '<%= tjs('admin.virtual_servers.form.create_server.field.password') %>',
+        name: 'password',
+        inputType: 'password',
+        allowBlank: false
+      }, {
+        fieldLabel: '<%= tjs('admin.virtual_servers.form.create_server.field.confirm_password') %>',
+        name: 'password_confirmation',
+        inputType: 'password',
+        allowBlank: false
+      }]
+    });  
+    
+    var windowReinstall = new Owp.form.BasicFormWindow({
+      title: '<%= tjs('admin.virtual_servers.form.reinstall.title') %>',
+      iconCls: 'icon-window-reinstall',
+      width: 410,
+      autoHeight: true,
+      modal: true,
+      layout: 'fit',
+      plain: true,
+      bodyStyle: 'padding: 5px;',
+      resizable: false,
+      items: formReinstall,
+      
+      buttons: [{
+        text: '<%= tjs('admin.virtual_servers.form.reinstall.button.reinstall') %>',
+        iconCls: 'icon-button-save',
+        ref: '../submitButton',
+        handler: function() {
+          formReinstall.form.submit({
+            waitMsg: '<%= tjs('form.loading') %>',
+            success: function() {
+              windowReinstall.close();
+            },
+            failure: function(form, action) {
+              Owp.form.errorHandler(form, action);
+              windowReinstall.focus();
             }
           });
         }
-      }
-    );
+      }, {
+        text: '<%= tjs('form.button.cancel') %>',
+        iconCls: 'icon-button-cancel',
+        handler: function() {
+          windowReinstall.close();
+        }
+      }]
+    });
+    
+    windowReinstall.on('show', function() {
+      formReinstall.getForm().reset();
+    });
+    
+    windowReinstall.show();
   }
 
   var mainContentCenterPanel = Ext.getCmp('mainContentCenterPanel');

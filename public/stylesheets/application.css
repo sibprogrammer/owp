@@ -29,6 +29,7 @@ td.x-grid3-td-checker, td.x-grid3-td-state { vertical-align: middle; }
 .icon-window-my-profile { background-image: url(/images/vcard.png) !important; }
 .icon-window-add { background-image: url(/images/add.png) !important; }
 .icon-window-edit { background-image: url(/images/wrench.png) !important; }
+.icon-window-reinstall { background-image: url(/images/refresh.png) !important; }
 .icon-button-login { background-image: url(/images/arrow_right.png) !important; }
 .icon-button-save { background-image: url(/images/accept.png) !important; }
 .icon-button-add { background-image: url(/images/add.png) !important; }

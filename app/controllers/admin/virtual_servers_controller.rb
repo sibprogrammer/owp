@@ -165,15 +165,20 @@ class Admin::VirtualServersController < Admin::Base
   end
   
   def reinstall
-    params[:ids].split(',').each { |id|
-      virtual_server = VirtualServer.find(id) 
-      
-      if !virtual_server.reinstall
-        render :json => { :success => false }
-        return
-      end
-    }
+    virtual_server = VirtualServer.find_by_id(params[:id])
+    redirect_to :controller => 'dashboard' and return if !virtual_server or !@current_user.can_control(virtual_server)
     
+    virtual_server.password = params[:password]
+    virtual_server.password_confirmation = params[:password_confirmation]
+    
+    if !virtual_server.valid?
+      render :json => { :success => false, :form_errors => virtual_server.errors } and return
+    end
+    
+    if !virtual_server.reinstall || !virtual_server.save_physically
+      render :json => { :success => false } and return
+    end
+
     render :json => { :success => true }
   end
   
