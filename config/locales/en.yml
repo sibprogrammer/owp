@@ -186,7 +186,10 @@ en:
           edit: "Change settings"
           limits: "Limits"
           reinstall: "Reinstall"
+          change_settings: "Change settings"
       form:
+        change_settings:
+          title: "Change settings of virtual server"
         reinstall:
           title: "Reinstall virtual server"
           button:

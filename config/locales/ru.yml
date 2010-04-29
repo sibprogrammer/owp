@@ -186,7 +186,10 @@ ru:
           edit: "Изменить настройки"
           limits: "Ограничения"
           reinstall: "Переустановка"
+          change_settings: "Изменить настройки"
       form:
+        change_settings:
+          title: "Изменить настройки виртуального сервера"
         reinstall:
           title: "Переустановить виртуальный сервер"
           button:

@@ -1,5 +1,5 @@
 class Admin::VirtualServersController < Admin::Base
-  before_filter :superadmin_required, :only => [:list_data, :delete, :create, :load_data]
+  before_filter :superadmin_required, :only => [:list_data, :delete, :create]
   
   def list
     @up_level = '/admin/dashboard'
@@ -65,9 +65,8 @@ class Admin::VirtualServersController < Admin::Base
   end
   
   def load_data
-    hardware_server = HardwareServer.find_by_id(params[:hardware_server_id])
     virtual_server = VirtualServer.find_by_id(params[:id])
-    redirect_to :controller => 'hardware_servers', :action => 'list' if !hardware_server || !virtual_server
+    redirect_to :controller => 'dashboard' and return if !virtual_server or !@current_user.can_control(virtual_server)
     
     render :json => { :success => true, :data => {
       :identity => virtual_server.identity,
@@ -180,6 +179,25 @@ class Admin::VirtualServersController < Admin::Base
     end
 
     render :json => { :success => true }
+  end
+  
+  def change_settings
+    virtual_server = VirtualServer.find_by_id(params[:id])
+    redirect_to :controller => 'dashboard' and return if !virtual_server or !@current_user.can_control(virtual_server)
+
+    if !params[:password].blank?
+      virtual_server.password = params[:password]
+      virtual_server.password_confirmation = params[:password_confirmation]
+    end
+    virtual_server.host_name = params[:host_name]
+    virtual_server.nameserver = params[:nameserver]
+    virtual_server.search_domain = params[:search_domain]
+    
+    if virtual_server.save_physically
+      render :json => { :success => true }  
+    else
+      render :json => { :success => false, :form_errors => virtual_server.errors }
+    end
   end
   
   private 

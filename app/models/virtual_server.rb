@@ -82,19 +82,23 @@ class VirtualServer < ActiveRecord::Base
     end
     
     begin
-      vzctl_set("--hostname #{host_name} --save") if !host_name.empty?
-      vzctl_set("--ipdel all " + ip_address.split.map { |ip| "--ipadd #{ip} " }.join + "--save")
-      vzctl_set("--userpasswd root:#{password}") if !password.empty?
-      vzctl_set("--onboot " + (start_on_boot ? "yes" : "no") + " --save")
-      vzctl_set(nameserver.split.map { |ip| "--nameserver #{ip} " }.join + "--save") if !nameserver.empty?
-      vzctl_set("--searchdomain #{search_domain} --save") if !search_domain.empty?
-      vzctl_set("--diskspace #{diskspace * 1024} --privvmpages #{memory * 1024 / 4} --save")
+      vzctl_set("--hostname #{host_name} --save") if !host_name.empty? and host_name_changed?
+      vzctl_set("--ipdel all " + ip_address.split.map { |ip| "--ipadd #{ip} " }.join + "--save") if ip_address_changed?
+      vzctl_set("--userpasswd root:#{password}") if password and !password.empty?
+      vzctl_set("--onboot " + (start_on_boot ? "yes" : "no") + " --save") if start_on_boot_changed?
+      vzctl_set(nameserver.split.map { |ip| "--nameserver #{ip} " }.join + "--save") if !nameserver.empty? and nameserver_changed?
+      vzctl_set("--searchdomain #{search_domain} --save") if !search_domain.empty? and search_domain_changed?
+      vzctl_set("--diskspace #{diskspace * 1024} --privvmpages #{memory * 1024 / 4} --save") if diskspace_changed? or memory_changed?
     rescue HwDaemonExecException => exception
       delete_physically
       raise exception
     end
     
-    start if start_after_creation
+    self.host_name = host_name_was if !is_new and host_name.empty?
+    self.nameserver = nameserver_was if !is_new and nameserver.empty?
+    self.search_domain = search_domain_was if !is_new and search_domain.empty?
+    
+    start if start_after_creation and is_new
   
     result = save
     EventLog.info("virtual_server." + (is_new ? "created" : "updated"), { :identity => identity })
