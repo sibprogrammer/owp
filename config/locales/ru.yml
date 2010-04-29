@@ -189,8 +189,8 @@ ru:
       form:
         reinstall:
           title: "Переустановить виртуальный сервер"
-        button:
-          reinstall: "Переустановить"
+          button:
+            reinstall: "Переустановить"
         change_state:
           failed: "Невозможно изменить состояние виртуального сервера."
         remove_server:

@@ -189,8 +189,8 @@ en:
       form:
         reinstall:
           title: "Reinstall virtual server"
-        button:
-          reinstall: "Reinstall"
+          button:
+            reinstall: "Reinstall"
         change_state:
           failed: "Unable to change virtual server state."
         remove_server:
