@@ -1,0 +1,363 @@
+ro:
+  language:
+    title: "Romana"
+  form:
+    loading: "Asteptati..."
+    confirmation: "Confirma"
+    performing_task: "Va rugam sa asteptati. Se efectueaza sarcina..."
+    error:
+      title: "Eroare"
+      fill_form: "Va rugam sa completati formularul."
+    info:
+      title: "Informatie"
+    button:
+      save: "Salveaza"
+      cancel: "Anuleaza"
+      create: "Creaza"
+  activerecord:
+    errors:
+      models:
+        user:
+          attributes:
+            password:
+              confirmation: "Parolele nu sunt identice."
+              too_short: "Parola este prea scurta (minim {{count}} caractere)."
+            password_confirmation:
+              blank: "Confirmarea parolei este necesara."
+            login:
+              taken: "Exista deja un utilizator cu acelasi nume."
+              too_short: "Nume utilizator prea scurt (minim {{count}} caractere)."
+        hardware_server:
+          attributes:
+            host:
+              taken: "Exista deja un server cu acest nume."
+              connection: "Conexiune esuata. Este posibil ca serviciul sa nu ruleze."
+            auth_key:
+              bad_auth: "Autorizare esuata. Este posibil sa fi gresit cheia de autentificare."
+        virtual_server:
+          attributes:
+            ip_address:
+              invalid: "Adresa IP incorecta."
+              taken: "Adresa IP a fost deja alocata unui alt server."
+            identity:
+              taken: "Identitatea aleasa este alocata unui alt server."
+            password:
+              confirmation: "Parolele nu sunt identice."
+            nameserver:
+              invalid: "Adresa serverului DNS este invalida."
+        server_template:
+          attributes:
+            name:
+              taken: "Nume sablon pentru server deja exista."
+  about:
+    copyright: "Drepturi de autor 2008-2010 SoftUnity."
+    right_reserved: "Toate drepturile rezervate."
+    about_program: "Despre program"
+    author: "Developer principal"
+    contributors: "Contribuitori"
+    contributors_list: "lista"
+    web_site: "Site web"
+  login:
+    page_title: "Autentificare"
+    window_title: "Autentificare pe {{product}}"
+    username: "Utilizator"
+    password: "Parola"
+    remember_me: "Tine minte"
+    button_login: "Autentificare"
+    locale: "Limba"
+    bad_login: "Utilizator sau parola invalida."
+  admin:
+    menu:
+      title: "Meniu"
+      general:
+        title: "General"
+        dashboard: "Pagina principala"
+        hardware_servers: "Servere fizice"
+        virtual_servers: "Servere virtuale"
+        my_profile: "Profil"
+        users: "Utilizatori"
+        tasks: "Sarcini"
+        event_log: "Inregistrari evenimente"
+        logout: "Iesire"
+      help:
+        title: "Ajutor"
+        documentation: "Documentatie"
+        support: "Suport"
+    operations:
+      up_level: "Un nivel mai sus"
+    logout: "Sunteti sigur ca doriti sa iesiti?"
+    my_profile:
+      title: "Profil"
+      user_name: "Utilizator"
+      current_password: "Parola curenta"
+      new_password: "Parola noua"
+      confirm_password: "Confirma parola"
+      bad_current_password: "Parola curenta este incorecta."
+    events:
+      internal_error: "Eroare interna: {{message}}"
+      hardware_server:
+        connect: "Serverul fizic {{host}} a fost conectat."
+        disconnect: "Serverul fizic {{host}} a fost deconectat."
+        sync: "Starea serverului {{host}} a fost sincronizata."
+      virtual_server:
+        created: "Serverul virtual  {{identity}} a fost creat."
+        removed: "Serverul virtual  {{identity}} a fost sters."
+        change_state_failed: "Nu s-a putut schimba starea serverului virtual {{identity}}; stare: {{state}}; cod: {{code}}."
+        updated: "Setarile pentru serverul virtual {{identity}} au fost actualizate."
+    tasks:
+      os_templates:
+        install: "OS templates installation on the server {{host}}."
+    dashboard:
+      title: "Pagina principala"
+      intro:
+        title: "Introducere"
+        text: "OWP este un panou de control pentru servere fizice cu platforma OpenVZ activa."
+      profile:
+        title: "Profil"
+        text: "Bine ai venit {{login}}."
+      updates:
+        text: "O veriune nou este disponibila: {{product}}."
+        update_command: "Pentru a actualiza produsul trebuie sa folositi urmatoare comanda: {{command}}"
+      stats_grid:
+        title: "Statistici"
+        column:
+          parameter: "Parametru"
+          value: "Valoare"
+        parameter:
+          panel_users: "Utilizatori panou"
+          hardware_servers: "Servere fizice"
+          virtual_servers: "Servere virtuale"
+          virtual_servers_running: "Servere virtuale pornite"
+          virtual_servers_stopped: "Servere virtuale oprite"
+    hardware_servers:
+      title: "Servere fizice"
+      grid:
+        title: "Lista servere fizice"
+        column:
+          host_name: "Nume gazda"
+          description: "Descriere"
+          virtual_servers: "Servere virtuale"
+        button:
+          connect: "Adauga un server nou"
+          reconnect: "Reconecteaza server"
+          disconnect: "Deconecteaza server"   
+          details: "Detalii" 
+          sync: "Sincronizare"
+          edit: "Schimba setari"
+      form:
+        connect_server:
+          title: "Conecteaza un nou server fizic"
+          edit_title: "Modifica setarile serverului fizic"
+          button_connect: "Conecteaza"
+          field:
+            host_name: "Nume gazda"
+            auth_key: "Cheie autentificare"
+            description: "Descriere"
+        disconnect_server:
+          sure_to_disconnect: "Sunteti sigur ca doriti sa deconectati serverele selectate?"
+          deletion_failed: "Cererea de deconectare a serverelor a esuat."
+        sync:
+          sync_failed: "Nu s-a putut sincroniza informatia pe cateva servere fizice."
+      show:
+        title: "Server fizic {{name}}"
+      top_toolbar:
+        os_templates: "Sablon SO"
+        server_templates: "Sabloane server"
+    virtual_servers:
+      title: "Servere virtuale"
+      grid:
+        title: "Lista servere virtuale"
+        column:
+          state: "Stare"
+          identity: "VEID"
+          ip_address: "Adresa IP"
+          host_name: "Nume gazda"
+          os_template: "Sablon SO"
+          memory: "Memorie, Mb"
+          diskspace: "Spatiu disc, Mb"
+          owner: "Proprietar"
+        button:
+          create: "Creaza server virtual"
+          destroy: "Sterge server virtual"
+          change_state: "Schimba stare"
+          start: "Pornire"
+          restart: "Repornire"
+          stop: "Oprire"
+          edit: "Schimba setari"
+          limits: "Limite"
+          reinstall: "Reinstalare"
+      form:
+        reinstall:
+          title: "Reinstaleaza server virtual"
+          button:
+            reinstall: "Reinstaleaza"
+        change_state:
+          failed: "Nu s-a putut schimba starea serverului virtual."
+        remove_server:
+          sure_to_remove: "Sunteti sigur ca doriti sa stergeti serverele virtuale selectate?"
+          deletion_failed: "Nu s-au putut sterge cateva servere virtuale."
+        create_server:
+          title: "Creaza server virtual nou"
+          edit_title: "Modifica setarile serverului virtual"
+          button_create: "Creaza"
+          field:
+            identity: "ID server (VEID)"
+            os_template: "Sablon SO"
+            select_os_template: "Selecteaza sablon SO"
+            ip_address: "Adresa IP"
+            host_name: "Nume gazda"
+            password: "Parola root"
+            confirm_password: "Confirma parola"
+            start_on_boot: "Pornire automata"
+            start_after_creation: "Porneste dupa creare"
+            nameserver: "Server DNS"
+            searchdomain: "Cauta domeniu"
+            diskspace: "Spatiu disc, Mb"
+            memory: "Memorie RAM, Mb"
+            status: "Stare"
+            owner: "Proprietar"
+            select_owner: "Selecteaza proprietar"
+            no_owner: "Fara proprietar"
+            server_template: "Sablon server"
+            select_server_template: "Selecteaza sablon server"
+            description: "Descriere"
+          fieldset:
+            general: "General"
+            network: "Retea"
+            system_access: "Acces sistem"
+            start_options: "Optiuni pornire"
+            dns_settings: "Setari DNS"
+            limits: "Limite"
+            panel_access: "Acces panou"
+          tab:
+            main_settings: "Setari principale"
+            additional_settings: "Setari aditionale"
+        limits:
+          title: "Limits"
+          grid:
+            column:
+              name: "Nume"
+              soft_limit: "Bariera"
+              hard_limit: "Limita"
+      show:
+        title: "Server virtual {{name}}"
+        grid:
+          title: "Informatii server virtual"
+          column:
+            parameter: "Parametreu"
+            value: "Valoare"
+    os_templates:
+      title: "Sabloane SO pe serverul fizic {{name}}"
+      grid:
+        title: "Sabloane SO instalate"
+        column:
+          name: "Nume"
+          size: "Marime, Mb"
+        button:
+          install_new_template: "Adauga un sablon nou SO"
+          remove: "Sterge sablon"
+      form:
+        install:
+          title: "Adaugare sablon nou SO"
+          tab:
+            official: "Oficial"
+            contributed: "Contribuit"
+          button_install: "Adauga"
+          load_failed: "Nu s-a putut incarca lista cu SO."
+          failed: "Nu s-au putut adauga sabloane SO."
+          scheduled: "Instalarea sabloanelor SO a fost programata. Noile sabloane vor aparea in scurt timp."
+        remove_template:
+          sure_to_remove: "Sunteti sigur ca doriti sa stergeti sabloanele SO selectate?"
+          deletion_failed: "Nu s-au putut sterge toate sabloanele SO."
+    event_log:
+      title: "Jurnal evenimente"
+      grid:
+        title: "Latest events"
+        column:
+          level: "Stare"
+          created_at: "Data"
+          message: "Mesaj"
+          id: "ID"
+        button:
+          clear: "Sterge mesaje"
+      form:
+        clear:
+          sure_to_clear: "Sunteti sigur ca doriti sa stergeti toate inregistrarile?"
+          clear_failed: "Nu s-a putut curata jurnalul."
+    users:
+      role:
+        infrastructure_admin: "Administrator infrastructura"
+        virtual_server_owner: "Proprietar server virtual"
+      title: "Utilizatori"
+      grid:
+        title: "Lista utilizatori"
+        column:
+          login: "Utilizator"
+          created_at: "Data creare"
+          role: "Drepturi"
+        button:
+          add: "Adauga utilizator"
+          remove: "Sterge utilizator"
+          edit: "Modifica utilizator"
+      form:
+        remove_user:
+          sure_to_remove: "Sunteti sigur ca doriti sa stergeti utilizatorii selectati?"
+          deletion_failed: "Nu s-au putut sterge toti utilizatorii."
+        create:
+          title: "Creaza utilizator nou"
+          edit_title: "Modifica utilizator"
+          button_create: "Creaza"
+          field:
+            login: "Utilizator"
+            password: "Parola"
+            confirm_password: "Confirma parola"
+            role: "Permisiuni"
+            select_role: "Selecteaza permisiuni"
+    task:
+      title: "Sarcini"
+      grid:
+        title: "Lista sarcini"
+        column:
+          status: "Status"
+          id: "ID"
+          description: "Descriere"
+    server_templates:
+      title: "Sabloane server pe serverul fizic {{name}}"
+      grid:
+        title: "Sabloane server disponibile"
+        column:
+          name: "Nume"
+          template_default: "implicit"
+        button:
+          add: "Adauga sablon"
+          remove: "Sterge sablon"
+          edit: "Schimba sablon"
+      form:
+        remove_template:
+          sure_to_remove: "Sunteti sigur ca doriti sa stergeti sabloanele selectate?"
+          deletion_failed: "Nu s-au putut sterge cateva sabloane."
+        create_server:
+          title: "Creaza sablon nou server"
+          edit_title: "Modifica sablon server"
+          button_create: "Creaza"
+          tab:
+            main_settings: "Setari"
+            advanced_settings: "Setari avansate"
+          fieldset:
+            general: "General"
+            limits: "Limite"
+            dns_settings: "Setari DNS"
+            start_options: "Start Options"
+          field:
+            name: "Nume"
+            diskspace: "Spatiu disc, Mb"
+            memory: "Memorie, Mb"
+            start_on_boot: "Pornire automata"
+            nameserver: "Server DNS"
+            searchdomain: "Search Domain"
+            cpu_units: "Unitati CPU"
+          grid:
+            column:
+              name: "Nume"
+              soft_limit: "Bariera"
+              hard_limit: "Limita"
