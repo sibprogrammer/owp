@@ -79,8 +79,15 @@ Ext.onReady(function() {
             }, {
               fieldLabel: '<%= tjs('admin.server_templates.form.create_server.field.cpu_units') %>',
               id: 'fieldCpuUnits',
-              allowBlank: false,
               name: 'cpu_units'
+            }, {
+              fieldLabel: '<%= tjs('admin.server_templates.form.create_server.field.cpus') %>',
+              id: 'fieldCpus',
+              name: 'cpus'
+            }, {
+              fieldLabel: '<%= tjs('admin.server_templates.form.create_server.field.cpu_limit') %>',
+              id: 'fieldCpuLimit',
+              name: 'cpu_limit'
             }]
           }, {
             xtype: 'fieldset',
@@ -208,6 +215,8 @@ Ext.onReady(function() {
       if ('add' == mode) {
         formEditServerTemplate.getForm().reset();
         Ext.getCmp('fieldCpuUnits').setValue(1000);
+        Ext.getCmp('fieldCpus').setValue(1);
+        Ext.getCmp('fieldCpuLimit').setValue(50);
         windowEditServerTemplate.focus();
       } else {
         var selectedNode = Ext.getCmp('serverTemplatesGrid').getSelectionModel().getSelected();

@@ -1,9 +1,9 @@
 class ServerTemplate < ActiveRecord::Base
   belongs_to :hardware_server
   attr_accessible :name, :start_on_boot, :nameserver, :search_domain, 
-    :diskspace, :memory, :cpu_units, :raw_limits
+    :diskspace, :memory, :cpu_units, :cpus, :cpu_limit, :raw_limits
   attr_accessor :start_on_boot, :nameserver, :search_domain, :diskspace,
-    :memory, :cpu_units, :raw_limits
+    :memory, :cpu_units, :cpus, :cpu_limit, :raw_limits
   validates_uniqueness_of :name, :scope => :hardware_server_id
   
   def delete_physically
@@ -41,9 +41,11 @@ class ServerTemplate < ActiveRecord::Base
     
     content = ""
     content << 'ONBOOT="' + (start_on_boot ? "yes" : "no") + '"' + "\n"
-    content << "NAMESERVER=\"#{nameserver}\"\n"
-    content << "SEARCHDOMAIN=\"#{search_domain}\"\n"
-    content << "CPUUNITS=\"#{cpu_units}\"\n"
+    content << "NAMESERVER=\"#{nameserver}\"\n" unless nameserver.blank?
+    content << "SEARCHDOMAIN=\"#{search_domain}\"\n" unless search_domain.blank?
+    content << "CPUUNITS=\"#{cpu_units}\"\n" unless cpu_units.blank?
+    content << "CPUS=\"#{cpus}\"\n" unless cpus.blank?
+    content << "CPULIMIT=\"#{cpu_limit}\"\n" unless cpu_limit.blank?
     
     privvmpages = memory.to_i * 1024 / 4
     content << "PRIVVMPAGES=\"#{privvmpages}:#{privvmpages}\"\n"
@@ -90,6 +92,16 @@ class ServerTemplate < ActiveRecord::Base
   def get_cpu_units
     load_config
     @config.get("CPUUNITS")
+  end
+  
+  def get_cpus
+    load_config
+    @config.get("CPUS")
+  end
+  
+  def get_cpu_limit
+    load_config
+    @config.get("CPULIMIT")
   end
   
   private

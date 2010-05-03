@@ -62,6 +62,8 @@ class Admin::ServerTemplatesController < Admin::Base
       :diskspace => server_template.get_diskspace,
       :memory => server_template.get_memory,
       :cpu_units => server_template.get_cpu_units,
+      :cpus => server_template.get_cpus,
+      :cpu_limit => server_template.get_cpu_limit,
       :raw_limits => server_template.get_advanced_limits.to_json,
     }}
   end

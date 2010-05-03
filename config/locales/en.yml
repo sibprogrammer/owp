@@ -359,6 +359,8 @@ en:
             nameserver: "DNS Server"
             searchdomain: "Search Domain"
             cpu_units: "CPU Units"
+            cpus: "Number of CPUs"
+            cpu_limit: "CPU Limit, %"
           grid:
             column:
               name: "Name"

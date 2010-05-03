@@ -359,6 +359,8 @@ ru:
             nameserver: "DNS сервер"
             searchdomain: "Домен для поиска"
             cpu_units: "CPU единиц"
+            cpus: "Количество CPU"
+            cpu_limit: "CPU лимит, %"
           grid:
             column:
               name: "Имя"
