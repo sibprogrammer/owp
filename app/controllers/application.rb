@@ -15,7 +15,7 @@ class ApplicationController < ActionController::Base
   # from your application log (in this case, all fields with names like "password"). 
   # filter_parameter_logging :password
     
-  before_filter :set_locale, :set_product_name
+  before_filter :set_locale, :set_product_name, :set_response_format
     
   protected  
   
@@ -57,6 +57,40 @@ class ApplicationController < ActionController::Base
     def ajax_request_handler(exception)
       message = t("admin.events.internal_error", { :message => exception.message })
       render :json => { :success => false, :message => message.gsub(/\n/, '<br />') }
+    end
+  
+    def iphone?
+      request.env["HTTP_USER_AGENT"] && request.env["HTTP_USER_AGENT"][/(Mobile\/.+Safari)/]
+    end
+    
+    def set_response_format
+      request.format = 'iphone'.to_sym if iphone?
+    end
+  
+    def get_stats
+      [
+        [
+          'user.png',
+          t('admin.dashboard.stats_grid.parameter.panel_users'),
+          User.count
+        ], [
+          'server.png',
+          t('admin.dashboard.stats_grid.parameter.hardware_servers'),
+          HardwareServer.count
+        ], [
+          'server.png',
+          t('admin.dashboard.stats_grid.parameter.virtual_servers'),
+          VirtualServer.count
+        ], [
+          'run.png',
+          t('admin.dashboard.stats_grid.parameter.virtual_servers_running'),
+          VirtualServer.count(:conditions => "state = 'running'")
+        ], [
+          'stop.png',
+          t('admin.dashboard.stats_grid.parameter.virtual_servers_stopped'),
+          VirtualServer.count(:conditions => "state = 'stopped'")
+        ]
+      ]
     end
   
 end

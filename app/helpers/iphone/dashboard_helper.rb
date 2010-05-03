@@ -1,0 +1,2 @@
+module Iphone::DashboardHelper
+end

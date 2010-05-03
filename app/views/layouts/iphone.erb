@@ -1,0 +1,26 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title><%= @product_name %></title>
+  <meta name="viewport" content="width=devicewidth; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;"/>
+  <link rel="apple-touch-icon" href="/images/logo-touch-icon.png" />
+  <meta name="apple-touch-fullscreen" content="yes" />
+  <%= javascript_include_tag '/iui/iui.js' %>
+  <%= stylesheet_link_tag '/iui/iui.css' %>
+  <%= stylesheet_link_tag 'iphone' %>
+</head>
+
+<body>
+  <div class="toolbar">
+    <h1 id="pageTitle"></h1>
+    <% if @show_back %>
+      <a id="backButton" class="button" href="#"></a>
+    <% end %>
+    <% if @show_logout %>
+      <a class="button" href="/logout" target="_self"><%= h(t('admin.menu.general.logout')) %></a>
+    <% end %>
+  </div>
+  
+  <%= yield %>
+</body>
+</html>

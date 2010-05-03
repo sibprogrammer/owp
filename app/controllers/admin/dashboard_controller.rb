@@ -10,32 +10,6 @@ class Admin::DashboardController < Admin::Base
   
   private
   
-  def get_stats
-    [
-      [
-        'user.png',
-        t('admin.dashboard.stats_grid.parameter.panel_users'),
-        User.count
-      ], [
-        'server.png',
-        t('admin.dashboard.stats_grid.parameter.hardware_servers'),
-        HardwareServer.count
-      ], [
-        'server.png',
-        t('admin.dashboard.stats_grid.parameter.virtual_servers'),
-        VirtualServer.count
-      ], [
-        'run.png',
-        t('admin.dashboard.stats_grid.parameter.virtual_servers_running'),
-        VirtualServer.count(:conditions => "state = 'running'")
-      ], [
-        'stop.png',
-        t('admin.dashboard.stats_grid.parameter.virtual_servers_stopped'),
-        VirtualServer.count(:conditions => "state = 'stopped'")
-      ]
-    ]
-  end
-  
   def get_updates
     return if AppConfig.updates.disabled 
     

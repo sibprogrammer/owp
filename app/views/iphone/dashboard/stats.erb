@@ -1,0 +1,10 @@
+<div id="page_stats" title="<%= h(t('admin.dashboard.stats_grid.title')) %>" class="panel" selected="true">
+  <fieldset>
+    <% @stats.each do |item| %>
+      <div class="row">
+        <label><%= h(item[1]) %></label>
+        <span><%= h(item[2]) %></span>
+      </div>
+    <% end %>
+  </fieldset>
+</div>

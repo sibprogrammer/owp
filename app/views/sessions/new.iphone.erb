@@ -1,0 +1,28 @@
+<form id="page_login" title="<%= h(t('login.page_title')) %>" class="panel" action="/sessions/new" method="post" selected="true" redirect="true">
+  <%= content_tag :p, flash[:error], :class => 'error' if flash[:error] %>
+  
+  <h2><%= h(t('login.window_title', :product => @product_name)) %></h2>
+  <fieldset>
+    <div class="row">
+      <label for="login"><%= h(t('login.username')) %></label>
+      <input type="text" id="login" name="login" value=""/>
+    </div>
+    <div class="row">
+      <label for="password"><%= h(t('login.password')) %></label>
+      <input type="password" id="password" name="password" value=""/>
+    </div>
+    <div class="row">
+      <label for="locale"><%= h(t('login.locale')) %></label>
+      <select id="locale" name="locale">
+        <% @available_locales.each do |locale| %>
+          <option value="<%= locale[0] %>" <%= "selected='selected'" if (I18n.locale.to_s == locale[0]) %>><%= locale[1] %></option>
+        <% end %>
+      </select>
+    </div>
+    <div class="row">
+      <label for="remember_me"><%= h(t('login.remember_me')) %></label>
+      <input type="checkbox" id="remember_me" name="remember_me" checked="true"/>
+    </div>
+  </fieldset>
+  <a class="whiteButton" type="submit" href="#" target="_self"><%= h(t('login.button_login')) %></a>
+</form>
