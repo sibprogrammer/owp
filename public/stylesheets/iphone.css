@@ -16,4 +16,16 @@ select {
   padding: 6px 6px 6px 64px; 
   font-size: 16px; 
   font-weight: normal;
+  width: 50%;
+}
+
+li.subitem {
+  padding-left: 30px;
+}
+.row > label {
+  overflow-x: hidden;
+}
+
+.row > input:not(input[type|=radio]):not(input[type|=checkbox]) {
+  padding-left: 50%;
 }

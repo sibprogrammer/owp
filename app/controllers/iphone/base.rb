@@ -1,5 +1,5 @@
 class Iphone::Base < ApplicationController
-  before_filter :login_required
+  before_filter :login_required, :servers_list
   
   protected
   

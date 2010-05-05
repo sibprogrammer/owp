@@ -1,8 +1,20 @@
 <ul id="home" title="<%= h(t('admin.dashboard.title')) %>" selected="true">
-  <li><%= link_to t('admin.dashboard.stats_grid.title'), :controller => "dashboard", :action => "stats" %></li>
-  <li><a href="/statistics">Physical servers</a></li>
-  <li><a href="/statistics">My Profile</a></li>
-  <li><a href="/statistics">Users</a></li>
-  <li><a href="/statistics">Tasks</a></li>
-  <li><a href="/statistics">Events log</a></li>
+  <% if @current_user.superadmin? %>
+    <li><%= link_to t('admin.dashboard.stats_grid.title'), :controller => "dashboard", :action => "stats" %></li>
+    <li><%= t('admin.menu.general.hardware_servers') %></li>
+    <% @servers_list.each do |server| %>
+      <li class="subitem"><%= link_to server[:text], :controller => "hardware_servers", :action => "show", :id => server[:server_id] %></li>
+    <% end %>
+  <% else %>
+    <li><%= t('admin.menu.general.virtual_servers') %></li>
+    <% @servers_list.each do |server| %>
+      <li class="subitem"><%= link_to server[:text], :controller => "virtual_servers", :action => "show", :id => server[:server_id] %></li>
+    <% end %>
+  <% end %>
+  <li><%= link_to t('admin.menu.general.my_profile'), :controller => "users", :action => "profile" %></li>
+  <% if @current_user.superadmin? %>
+    <li><%= link_to t('admin.menu.general.users'), :controller => "users", :action => "list" %></li>
+    <li><%= link_to t('admin.menu.general.tasks'), :controller => "tasks", :action => "list" %></li>
+    <li><%= link_to t('admin.menu.general.event_log'), :controller => "event_log", :action => "list" %></li>
+  <% end %>
 </ul>
