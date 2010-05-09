@@ -6,6 +6,8 @@
 
 <% javascript_tag do -%>
 Ext.onReady(function() {
+  
+  <%= render :partial => 'edit_form' %>
 
   var store = new Ext.data.JsonStore({
     url: '/admin/virtual-servers/get_properties?id=<%= @virtual_server.id %>',
@@ -345,6 +347,10 @@ Ext.onReady(function() {
     
     windowChangeSettings.show();
   }
+  
+  var editVirtualServer = function() {
+    showVirtualServerEditForm('edit', virtualServerInfoGrid);
+  }
 
   var mainContentCenterPanel = Ext.getCmp('mainContentCenterPanel');
   
@@ -362,12 +368,21 @@ Ext.onReady(function() {
     handler: limitsAction
   });
   
-  mainContentCenterPanel.getTopToolbar().insertButton(0, {
-    text: '<%= tjs('admin.virtual_servers.grid.button.change_settings') %>',
-    iconCls: 'icon-button-change-setting',
-    ref: '../changeSettingsButton',
-    handler: changeSettingsAction
-  });
+  <% if @current_user.superadmin? %>
+    mainContentCenterPanel.getTopToolbar().insertButton(0, {
+      text: '<%= tjs('admin.virtual_servers.grid.button.change_settings') %>',
+      iconCls: 'icon-button-change-setting',
+      ref: '../changeSettingsButton',
+      handler: editVirtualServer
+    });
+  <% else %>
+    mainContentCenterPanel.getTopToolbar().insertButton(0, {
+      text: '<%= tjs('admin.virtual_servers.grid.button.change_settings') %>',
+      iconCls: 'icon-button-change-setting',
+      ref: '../changeSettingsButton',
+      handler: changeSettingsAction
+    });
+  <% end %>
   
   mainContentCenterPanel.getTopToolbar().insertButton(0, {
     text: '<%= tjs('admin.virtual_servers.grid.button.change_state') %>',

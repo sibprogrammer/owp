@@ -45,23 +45,7 @@ class Admin::HardwareServersController < Admin::Base
   def show
     @hardware_server = HardwareServer.find_by_id(params[:id])
     redirect_to :action => 'list' if !@hardware_server
-    
-    @os_templates = @hardware_server.os_templates.map { |item| {
-      :id => item.id,
-      :name => item.name,
-    }}
-    
-    @server_templates = @hardware_server.server_templates.map { |item| {
-      :id => item.id,
-      :name => item.name,
-    }}
-    
-    @virtual_servers_owners = User.get_virtual_servers_owners.map { |user| {
-      :id => user.id,
-      :login => user.login,
-    }}
-    @virtual_servers_owners << { :id => 0, :login => t('admin.virtual_servers.form.create_server.field.no_owner') }
-    
+
     @up_level = '/admin/hardware-servers/list'
   end
   
