@@ -1,8 +1,7 @@
 class Iphone::DashboardController < Iphone::Base
   
   def index
-    @show_back = true
-    @show_logout = true
+    @page_title = t('admin.dashboard.title')
     render :layout => 'iphone'
   end
   

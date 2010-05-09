@@ -5,22 +5,22 @@
   <meta name="viewport" content="width=devicewidth; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;"/>
   <link rel="apple-touch-icon" href="/images/logo-touch-icon.png" />
   <meta name="apple-touch-fullscreen" content="yes" />
-  <%= javascript_include_tag '/iui/iui.js' %>
-  <%= stylesheet_link_tag '/iui/iui.css' %>
-  <%= stylesheet_link_tag 'iphone' %>
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <%= stylesheet_link_tag '/iwebkit/css/style.css' %>
+  <%= javascript_include_tag '/iwebkit/javascript/functions.js' %>
 </head>
 
 <body>
-  <div class="toolbar">
-    <h1 id="pageTitle"></h1>
-    <% if @show_back %>
-      <a id="backButton" class="button" href="#"></a>
-    <% end %>
-    <% if @show_logout %>
-      <a class="button" href="/logout" target="_self"><%= h(t('admin.menu.general.logout')) %></a>
-    <% end %>
+  <div id="topbar">
+    <div id="title"><%= @page_title %></div>
   </div>
   
-  <%= yield %>
+  <div id="content">
+    <% if flash[:error] %>
+      <ul class="pageitem"><li class="textbox"><%= h(flash[:error]) %></li></ul>
+    <% end %>
+    
+    <%= yield %>
+  </div>
 </body>
 </html>

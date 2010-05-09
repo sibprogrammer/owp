@@ -29,11 +29,11 @@ class SessionsController < ApplicationController
         format.html { redirect_to :controller => 'admin/dashboard' if logged_in? }
         format.iphone do
           redirect_to :controller => 'iphone/dashboard' if logged_in?
-          @show_back = false
-          @show_logout = false
         end
       end
     end
+    
+    @page_title = t('login.page_title') if iphone?
   end
 
   def destroy
