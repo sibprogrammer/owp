@@ -5,7 +5,7 @@ Table of contents:
 1. Requirements
 2. Installation the build
 3. Installation from SVN repository
-4. Known problems
+4. Uninstallation
 
 
 1. Requirements
@@ -75,3 +75,10 @@ svn checkout http://ovz-web-panel.googlecode.com/svn/trunk/ owp
 
 File http://code.google.com/p/ovz-web-panel/source/browse/trunk/build/build.sh
 contains information on how to prepare working copy.
+
+
+4. Uninstallation
+---
+
+To uninstall the product need to run the command:
+wget -O - http://ovz-web-panel.googlecode.com/svn/installer/ai.sh | sh -s UNINSTALL=1
