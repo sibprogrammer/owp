@@ -103,7 +103,7 @@ class HardwareServer < ActiveRecord::Base
       virtual_server.diskspace = parser.get('DISKSPACE').split(":").last.to_i / 1024
       virtual_server.memory = parser.get('PRIVVMPAGES').split(":").last.to_i * 4 / 1024
       virtual_server.hardware_server = self
-      virtual_server.save
+      virtual_server.save(false)
     }
   end
   
