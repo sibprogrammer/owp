@@ -1,0 +1,14 @@
+# installation directory
+INSTALL_DIR=/opt/ovz-web-panel/
+
+# web server port
+PORT=3000
+
+# binding IP address, 0.0.0.0 - listen on all interfaces
+IP=0.0.0.0
+
+# SSL support, on - enable, off - disable
+SSL=off
+
+# web server lock file
+LOCK_FILE=/var/lock/owp
