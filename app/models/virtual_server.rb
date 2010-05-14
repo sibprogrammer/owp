@@ -28,7 +28,7 @@ class VirtualServer < ActiveRecord::Base
     
     limits.each { |limit|
       limit_values = parser.get(limit).split(":")
-      result.push({ :name => limit, :soft_limit => limit_values[0].to_i, :hard_limit => limit_values[1].to_i })
+      result.push({ :name => limit, :soft_limit => limit_values[0], :hard_limit => limit_values[1] })
     }
     
     result
