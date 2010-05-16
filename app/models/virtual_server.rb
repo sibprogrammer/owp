@@ -87,10 +87,10 @@ class VirtualServer < ActiveRecord::Base
       vzctl_set("--userpasswd root:#{password}") if password and !password.empty?
       vzctl_set("--onboot " + (start_on_boot ? "yes" : "no") + " --save") if start_on_boot_changed?
       vzctl_set(nameserver.split.map { |ip| "--nameserver #{ip} " }.join + "--save") if !nameserver.empty? and nameserver_changed?
-      vzctl_set("--searchdomain #{search_domain} --save") if !search_domain.empty? and search_domain_changed?
+      vzctl_set("--searchdomain '#{search_domain}' --save") if !search_domain.empty? and search_domain_changed?
       vzctl_set("--diskspace #{diskspace * 1024} --privvmpages #{memory * 1024 / 4} --save") if diskspace_changed? or memory_changed?
     rescue HwDaemonExecException => exception
-      delete_physically
+      delete_physically if is_new
       raise exception
     end
     
