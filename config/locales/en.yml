@@ -256,6 +256,7 @@ en:
         column:
           name: "Name"
           size: "Size, Mb"
+          virtual_servers: "Servers"
         button:
           install_new_template: "Install New OS Template"
           remove: "Remove Template"
@@ -331,6 +332,7 @@ en:
         column:
           name: "Name"
           template_default: "default"
+          virtual_servers: "Servers"
         button:
           add: "Add Template"
           remove: "Remove Template"

@@ -256,6 +256,7 @@ ru:
         column:
           name: "Имя"
           size: "Размер, Мб"
+          virtual_servers: "Серверы"
         button:
           install_new_template: "Установить новый шаблон ОС"
           remove: "Удалить шаблон ОС"
@@ -331,6 +332,7 @@ ru:
         column:
           name: "Имя"
           template_default: "по-умолчанию"
+          virtual_servers: "Серверы"
         button:
           add: "Добавить шаблон"
           remove: "Удалить шаблон"

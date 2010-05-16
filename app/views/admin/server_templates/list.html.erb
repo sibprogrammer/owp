@@ -274,7 +274,8 @@ Ext.onReady(function() {
     fields: [
       { name: 'id' },
       { name: 'name' },
-      { name: 'is_default' }
+      { name: 'is_default' },
+      { name: 'virtual_servers' }
     ]
   });
   
@@ -321,6 +322,11 @@ Ext.onReady(function() {
             return name;
           }
         }
+      }, {
+        id: 'virtual_servers',
+        header: '<%= tjs('admin.server_templates.grid.column.virtual_servers') %>',
+        sortable: true,
+        dataIndex: 'virtual_servers'
       }
     ]),
     sm: selectionModel,

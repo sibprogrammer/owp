@@ -12,6 +12,7 @@ class Admin::OsTemplatesController < Admin::Base
     os_templates.map! { |item| {
       :id => item.id,
       :name => item.name,
+      :virtual_servers => VirtualServer.count(:conditions => ["hardware_server_id = ? AND orig_os_template = ?", hardware_server.id, item.name]),
     }}
     render :json => { :data => os_templates }  
   end
