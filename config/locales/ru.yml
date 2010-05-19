@@ -45,6 +45,10 @@ ru:
               confirmation: "Пароль и его подтверждение не совпадают."
             nameserver:
               invalid: "Неверный IP-адрес DNS-сервера."
+            host_name:
+              invalid: "Неверное имя хоста."
+            search_domain:
+              invalid: "Неверные домены для поиска."
         server_template:
           attributes:
             name:

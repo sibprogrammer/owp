@@ -45,6 +45,10 @@ en:
               confirmation: "Password and confirmation are not equal."
             nameserver:
               invalid: "DNS server IP address is invalid."
+            host_name:
+              invalid: "Hostname is invalid."
+            search_domain:
+              invalid: "Search domains are invalid."
         server_template:
           attributes:
             name:
