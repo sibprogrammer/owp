@@ -1,0 +1,10 @@
+<ul class="pageitem">
+  <% @users.each do |user| %>
+    <li class="textbox">
+      <span class="header">
+        <%= h(user[:login]) %>
+      </span>
+      <%= h(user[:role_type]) %>
+    </li>
+  <% end %>
+</ul>

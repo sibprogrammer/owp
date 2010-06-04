@@ -44,7 +44,7 @@ class Admin::HardwareServersController < Admin::Base
   
   def show
     @hardware_server = HardwareServer.find_by_id(params[:id])
-    redirect_to :action => 'list' if !@hardware_server
+    redirect_to :action => 'list' if !@hardware_server and return
 
     @up_level = '/admin/hardware-servers/list'
   end

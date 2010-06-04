@@ -1,5 +1,6 @@
 class Iphone::Base < ApplicationController
-  before_filter :login_required, :servers_list
+  before_filter :login_required, :servers_list, :prepare_navigation
+  layout 'iphone'
   
   protected
   
@@ -14,6 +15,10 @@ class Iphone::Base < ApplicationController
           redirect_to '/session/new'
         end
       end
+    end
+  
+    def prepare_navigation
+      @show_home_button = true
     end
   
 end

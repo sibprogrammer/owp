@@ -1,0 +1,15 @@
+<ul class="pageitem">
+  <% @tasks.each do |task| %>
+    <li class="textbox">
+      <span class="header">
+        <%
+          icon = 'accept.png'
+          icon = 'spinner.gif' if 1 == task[:status]
+        %>
+        <%= '<img class="inline" src="/images/' + icon + '"/>' %>
+        #<%= h(task[:id]) %>
+      </span>
+      <%= h(task[:description]) %>
+    </li>
+  <% end %>
+</ul>

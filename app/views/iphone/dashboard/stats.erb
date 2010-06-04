@@ -1,10 +1,8 @@
-<div id="page_stats" title="<%= h(t('admin.dashboard.stats_grid.title')) %>" class="panel" selected="true">
-  <fieldset>
-    <% @stats.each do |item| %>
-      <div class="row">
-        <label><%= h(item[1]) %></label>
-        <span><%= h(item[2]) %></span>
-      </div>
-    <% end %>
-  </fieldset>
-</div>
+<ul class="pageitem">
+  <% @stats.each do |item| %>
+    <li class="smallfield textfield">
+      <span class="name"><%= h(item[1]) %></span>
+      <span class="value"><%= h(item[2]) %></span>
+    </li>
+  <% end %>
+</ul>

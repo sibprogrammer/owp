@@ -8,16 +8,37 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <%= stylesheet_link_tag '/iwebkit/css/style.css' %>
   <%= javascript_include_tag '/iwebkit/javascript/functions.js' %>
+  <%= stylesheet_link_tag '/stylesheets/iphone.css' %>
 </head>
 
 <body>
   <div id="topbar">
     <div id="title"><%= @page_title %></div>
+    <% if @current_user %>
+      <div id="rightbutton">
+        <%= link_to(t('admin.menu.general.logout'), { :controller => '/sessions', :action => 'destroy' }, { :class => 'noeffect' }) %>
+      </div>
+    <% end %>
+    <% if @show_home_button %>
+      <div id="leftnav"> 
+        <% link_to(:controller => 'dashboard') do %>
+          <img alt="home" src="/iwebkit/images/home.png" />
+        <% end %>
+      </div>
+    <% end %>
   </div>
   
   <div id="content">
     <% if flash[:error] %>
-      <ul class="pageitem"><li class="textbox"><%= h(flash[:error]) %></li></ul>
+      <% if flash[:error].is_a?(String) %>
+        <ul class="error pageitem"><li class="textbox"><%= h(flash[:error]) %></li></ul>
+      <% else %>
+        <ul class="error pageitem">
+          <% flash[:error].each do |field, error| %>
+            <li class="textbox"><%= h(error) %></li>
+          <% end %>
+        </ul>
+      <% end %>
     <% end %>
     
     <%= yield %>

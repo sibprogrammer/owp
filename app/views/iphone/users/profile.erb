@@ -1,23 +1,25 @@
-<form id="page_profile" title="<%= h(t('admin.my_profile.title')) %>" class="panel" action="/iphone/users/profile" method="post" selected="true" redirect="true">
-  <%= content_tag :p, flash[:error], :class => 'error' if flash[:error] %>
-  
+<form action="/iphone/users/profile" method="post">
   <fieldset>
-    <div class="row">
-      <label><%= h(t('admin.my_profile.user_name')) %></label>
-      <span><%= h(@current_user.login) %></span>
-    </div>
-    <div class="row">
-      <label for="current_password"><%= h(t('admin.my_profile.current_password')) %></label>
-      <input type="password" id="current_password" name="current_password" value=""/>
-    </div>
-    <div class="row">
-      <label for="password"><%= h(t('admin.my_profile.new_password')) %></label>
-      <input type="password" id="password" name="password" value=""/>
-    </div>
-    <div class="row">
-      <label for="password_confirmation"><%= h(t('admin.my_profile.confirm_password')) %></label>
-      <input type="password" id="password_confirmation" name="password_confirmation" value=""/>
-    </div>
+    <ul class="pageitem">
+      <li class="smallfield textfield">
+        <span class="name"><%= h(t('admin.my_profile.user_name')) %></span>
+        <span class="value"><%= h(@current_user.login) %></span>
+      </li>
+      <li class="smallfield">
+        <span class="name"><%= h(t('admin.my_profile.current_password')) %></span>
+        <input name="current_password" type="password" />
+      </li>
+      <li class="smallfield">
+        <span class="name"><%= h(t('admin.my_profile.new_password')) %></span>
+        <input name="password" type="password" />
+      </li>
+      <li class="smallfield">
+        <span class="name"><%= h(t('admin.my_profile.confirm_password')) %></span>
+        <input name="password_confirmation" type="password" />
+      </li>
+      <li class="button">
+        <input name="submit" type="submit" value="<%= h(t('form.button.save')) %>" />
+      </li>
+    </ul>
   </fieldset>
-  <a class="whiteButton" type="submit" href="#" target="_self"><%= h(t('form.button.save')) %></a>
 </form>

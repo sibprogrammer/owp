@@ -1,31 +1,18 @@
-.error {
-  font-weight: bold;
-  color: #8a1f11;
-  margin-left: 14px;
+ul.error {
+  color: #fff;
+  background: #8a1f11 url(/images/cancel.png) 8px 6px no-repeat;
+  padding-left: 18px;
 }
 
-.row > span {
-  position: relative;
-  color: gray;
+.smallfield .value {
   float: right;
+  padding: 10px 5px 0 0;
 }
 
-select { 
-  -webkit-border-radius: 10px; 
-  margin: 8px; 
-  padding: 6px 6px 6px 64px; 
-  font-size: 16px; 
-  font-weight: normal;
-  width: 50%;
+.textfield .name {
+  width: 80%
 }
 
-li.subitem {
-  padding-left: 30px;
-}
-.row > label {
-  overflow-x: hidden;
-}
-
-.row > input:not(input[type|=radio]):not(input[type|=checkbox]) {
-  padding-left: 50%;
+img.inline {
+  vertical-align: middle;
 }

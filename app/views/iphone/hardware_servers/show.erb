@@ -1,0 +1,18 @@
+<ul class="pageitem">
+  <%= imenu_link_to(t('admin.hardware_servers.top_toolbar.server_templates'), { :controller => "server_templates", :action => "list" }) %>
+  <%= imenu_link_to(t('admin.hardware_servers.top_toolbar.os_templates'), { :controller => "os_templates", :action => "list" }) %>
+</ul>
+
+<ul class="pageitem">
+  <li class="button">
+    <input name="submit" type="submit" value="<%= h(t('admin.hardware_servers.grid.button.sync')) %>" />
+  </li>
+</ul>
+
+<span class="graytitle"><%= h(t('admin.virtual_servers.grid.title')) %></span>
+<ul class="pageitem">
+  <% @virtual_servers.each do |virtual_server| %>
+    <%= imenu_link_to(['#' + virtual_server[:identity].to_s, virtual_server[:host_name], virtual_server[:ip_address]].reject(&:blank?).join(' - '), { :controller => "virtual_servers", :action => "show", :id => virtual_server[:id] }) %>
+  <% end %>
+</ul> 
+

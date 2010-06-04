@@ -101,7 +101,8 @@ class ApplicationController < ActionController::Base
           :text => server.host,
           :href => '/admin/hardware-servers/show?id=' + server.id.to_s,
           :icon => '/images/server.png',
-          :leaf => true
+          :leaf => true,
+          :server_id => server.id.to_s,
         }}
       else
         @servers_list = @current_user.virtual_servers

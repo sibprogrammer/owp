@@ -11,7 +11,7 @@ class Admin::TasksController < Admin::Base
   end
   
   def list_data
-    @tasks = BackgroundJob.all
+    @tasks = BackgroundJob.all(:limit => 100, :order => 'id DESC')
     @tasks.map! { |item| {
       :id => item.id,
       :status => item.status,

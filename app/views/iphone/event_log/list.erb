@@ -1,0 +1,16 @@
+<ul class="pageitem">
+  <% @events.each do |event| %>
+    <li class="textbox">
+      <span class="header">
+        <%
+          icon = 'exclamation.png'
+          icon = 'bug.png' if 0 == event[:level]
+          icon = 'information.png' if 1 == event[:level]
+        %>
+        <%= '<img class="inline" src="/images/' + icon + '"/>' %>
+        #<%= h(event[:id]) %> - <%= h(event[:created_at]) %>
+      </span>
+      <%= h(event[:message]).gsub(/\n/, '<br />') %>
+    </li>
+  <% end %>
+</ul>
