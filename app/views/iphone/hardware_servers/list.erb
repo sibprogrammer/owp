@@ -1,5 +1,5 @@
 <ul class="pageitem">
   <% @servers_list.each do |server| %>
-    <%= imenu_link_to(server[:text], { :controller => "hardware_servers", :action => "show", :id => server[:server_id] }) %>
+    <%= imenu_link_to(server[:text], { :controller => "hardware_servers", :action => "show", :id => server[:server_id] }, '/images/big-icons/server.png') %>
   <% end %>
 </ul> 

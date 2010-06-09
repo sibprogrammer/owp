@@ -1,0 +1,11 @@
+<ul class="pageitem">
+  <% @server_templates.each do |server_template| %>
+    <li class="textbox">
+      <span class="header">
+        <%= h(server_template[:name]) %>
+        <%= '*' if server_template[:is_default] %>
+      </span>
+      <%= t('admin.server_templates.grid.column.virtual_servers') + ': ' + h(server_template[:virtual_servers]) %>
+    </li>
+  <% end %>
+</ul>

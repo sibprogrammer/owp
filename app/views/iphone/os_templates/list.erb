@@ -1,0 +1,10 @@
+<ul class="pageitem">
+  <% @os_templates.each do |os_template| %>
+    <li class="textbox">
+      <span class="header">
+        <%= h(os_template[:name]) %>
+      </span>
+      <%= t('admin.os_templates.grid.column.virtual_servers') + ': ' + h(os_template[:virtual_servers]) %>
+    </li>
+  <% end %>
+</ul>

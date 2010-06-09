@@ -10,8 +10,9 @@ module ApplicationHelper
     escape_javascript t(key, options)
   end
   
-  def imenu_link_to(title, options = {})
-    title = '<span class="name">' + h(title) + '</span><span class="arrow"></span>'
+  def imenu_link_to(title, options = {}, icon = '')
+    icon = '<img alt="" src="' + icon + ' " />' if !icon.empty?
+    title = icon + '<span class="name">' + h(title) + '</span><span class="arrow"></span>'
     '<li class="menu">' + link_to(title, options) + '</li>'
   end
   

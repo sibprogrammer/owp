@@ -1,12 +1,6 @@
 <ul class="pageitem">
-  <%= imenu_link_to(t('admin.hardware_servers.top_toolbar.server_templates'), { :controller => "server_templates", :action => "list" }) %>
-  <%= imenu_link_to(t('admin.hardware_servers.top_toolbar.os_templates'), { :controller => "os_templates", :action => "list" }) %>
-</ul>
-
-<ul class="pageitem">
-  <li class="button">
-    <input name="submit" type="submit" value="<%= h(t('admin.hardware_servers.grid.button.sync')) %>" />
-  </li>
+  <%= imenu_link_to(t('admin.hardware_servers.top_toolbar.os_templates'), { :controller => "os_templates", :action => "list", :hardware_server_id => @hardware_server.id }, '/images/big-icons/tux.png') %>
+  <%= imenu_link_to(t('admin.hardware_servers.top_toolbar.server_templates'), { :controller => "server_templates", :action => "list", :hardware_server_id => @hardware_server.id }, '/images/big-icons/package.png') %>
 </ul>
 
 <span class="graytitle"><%= h(t('admin.virtual_servers.grid.title')) %></span>

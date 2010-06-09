@@ -1,20 +1,20 @@
 <ul class="pageitem">
   <% if @current_user.superadmin? %>
-    <%= imenu_link_to(t('admin.dashboard.stats_grid.title'), { :controller => "dashboard", :action => "stats" }) %>
-    <%= imenu_link_to(t('admin.menu.general.hardware_servers'), { :controller => "hardware_servers", :action => "list" }) %>
+    <%= imenu_link_to(t('admin.dashboard.stats_grid.title'), { :controller => "dashboard", :action => "stats" }, '/images/big-icons/application_view_list.png') %>
+    <%= imenu_link_to(t('admin.menu.general.hardware_servers'), { :controller => "hardware_servers", :action => "list" }, '/images/big-icons/server.png') %>
     <% @servers_list.each do |server| %>
-      <%= imenu_link_to(server[:text], { :controller => "hardware_servers", :action => "show", :id => server[:server_id] }) %>
+      <%= imenu_link_to(server[:text], { :controller => "hardware_servers", :action => "show", :id => server[:server_id] }, '/images/big-icons/server.png') %>
     <% end %>
   <% else %>
-    <%= imenu_link_to(t('admin.menu.general.virtual_servers'), { :controller => "virtual_servers", :action => "list" }) %>
+    <%= imenu_link_to(t('admin.menu.general.virtual_servers'), { :controller => "virtual_servers", :action => "list" }, '/images/big-icons/server.png') %>
     <% @servers_list.each do |server| %>
-      <%= imenu_link_to(server[:text], { :controller => "virtual_servers", :action => "show", :id => server[:server_id] }) %>
+      <%= imenu_link_to(server[:text], { :controller => "virtual_servers", :action => "show", :id => server[:server_id] }, '/images/big-icons/server.png') %>
     <% end %>
   <% end %>
-  <%= imenu_link_to(t('admin.menu.general.my_profile'), { :controller => "users", :action => "profile" }) %>
+  <%= imenu_link_to(t('admin.menu.general.my_profile'), { :controller => "users", :action => "profile" }, '/images/big-icons/vcard.png') %>
   <% if @current_user.superadmin? %>
-    <%= imenu_link_to(t('admin.menu.general.users'), { :controller => "users", :action => "list" }) %>
-    <%= imenu_link_to(t('admin.menu.general.tasks'), { :controller => "tasks", :action => "list" }) %>
-    <%= imenu_link_to(t('admin.menu.general.event_log'), { :controller => "event_log", :action => "list" }) %>
+    <%= imenu_link_to(t('admin.menu.general.users'), { :controller => "users", :action => "list" }, '/images/big-icons/user.png') %>
+    <%= imenu_link_to(t('admin.menu.general.tasks'), { :controller => "tasks", :action => "list" }, '/images/big-icons/cog.png') %>
+    <%= imenu_link_to(t('admin.menu.general.event_log'), { :controller => "event_log", :action => "list" }, '/images/big-icons/book.png') %>
   <% end %>
 </ul> 
