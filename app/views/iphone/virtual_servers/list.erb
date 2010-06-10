@@ -1,0 +1,5 @@
+<ul class="pageitem">
+  <% @virtual_servers.each do |virtual_server| %>
+    <%= imenu_link_to(['#' + virtual_server[:identity].to_s, virtual_server[:host_name], virtual_server[:ip_address]].reject(&:blank?).join(' - '), { :controller => "virtual_servers", :action => "show", :id => virtual_server[:id] }) %>
+  <% end %>
+</ul>
