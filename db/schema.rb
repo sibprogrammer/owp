@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100417091554) do
+ActiveRecord::Schema.define(:version => 20100611133426) do
 
   create_table "background_jobs", :force => true do |t|
     t.string  "description"
@@ -31,6 +31,7 @@ ActiveRecord::Schema.define(:version => 20100417091554) do
     t.string "default_os_template"
     t.string "templates_dir"
     t.string "default_server_template"
+    t.string "vzctl_version"
   end
 
   add_index "hardware_servers", ["host"], :name => "index_hardware_servers_on_host", :unique => true

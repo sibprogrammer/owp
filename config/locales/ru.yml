@@ -180,6 +180,7 @@ ru:
           memory: "Память, Мб"
           diskspace: "Диск, Мб"
           owner: "Владелец"
+          description: "Описание"
         button:
           create: "Создать вирутальный сервер"
           destroy: "Удалить вирутальный сервер"

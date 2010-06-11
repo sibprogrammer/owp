@@ -26,6 +26,9 @@ config_defaults = {
   'branding' => {
     'show_version' => true,
   },
+  'vzctl' => {
+    'save_descriptions' => false,
+  }
 }
 
 def hashes2ostruct(object)

@@ -180,6 +180,7 @@ en:
           memory: "Memory, Mb"
           diskspace: "Diskspace, Mb"
           owner: "Owner"
+          description: "Description"
         button:
           create: "Create virtual server"
           destroy: "Remove virtual server"

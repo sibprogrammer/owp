@@ -91,6 +91,7 @@ class VirtualServer < ActiveRecord::Base
       vzctl_set(nameserver.split.map { |ip| "--nameserver #{ip} " }.join + "--save") if !nameserver.blank? and nameserver_changed?
       vzctl_set("--searchdomain '#{search_domain}' --save") if !search_domain.blank? and search_domain_changed?
       vzctl_set("--diskspace #{diskspace * 1024} --privvmpages #{memory * 1024 / 4} --save") if diskspace_changed? or memory_changed?
+      vzctl_set("--description '#{description}' --save") if hardware_server.ve_descriptions_supported? and !description.empty? and description_changed?
     rescue HwDaemonExecException => exception
       delete_physically if is_new
       raise exception

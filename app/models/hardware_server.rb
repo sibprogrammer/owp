@@ -102,6 +102,7 @@ class HardwareServer < ActiveRecord::Base
       virtual_server.search_domain = parser.get('SEARCHDOMAIN')
       virtual_server.diskspace = parser.get('DISKSPACE').split(":").last.to_i / 1024
       virtual_server.memory = parser.get('PRIVVMPAGES').split(":").last.to_i * 4 / 1024
+      virtual_server.description = parser.get('DESCRIPTION') if ve_descriptions_supported?
       virtual_server.hardware_server = self
       virtual_server.save(false)
     }
@@ -115,12 +116,22 @@ class HardwareServer < ActiveRecord::Base
     save
   end
   
-  def sync
+  def sync_server_info
+    self.vzctl_version = rpc_client.exec('vzctl --version')['output'].split[2]
     sync_config
+    save
+  end
+  
+  def sync
+    sync_server_info
     sync_os_templates
     sync_server_templates
     sync_virtual_servers
     EventLog.info("hardware_server.sync", { :host => self.host })
+  end
+  
+  def ve_descriptions_supported?
+    AppConfig.vzctl.save_descriptions and ((vzctl_version.split('.').map(&:to_i) <=> "3.0.23".split('.').map(&:to_i)) >= 0)
   end
     
 end

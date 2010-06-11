@@ -99,7 +99,7 @@ class Admin::VirtualServersController < Admin::Base
     virtual_server = VirtualServer.find_by_id(params[:id])
     redirect_to :controller => 'dashboard' and return if !virtual_server or !@current_user.can_control(virtual_server)
 
-    render :json => { :success => true, :data => [
+    properties = [
       {
         :parameter => t('admin.virtual_servers.form.create_server.field.identity'),
         :value => virtual_server.identity,
@@ -131,7 +131,16 @@ class Admin::VirtualServersController < Admin::Base
         :parameter => t('admin.virtual_servers.form.create_server.field.searchdomain'),
         :value => virtual_server.search_domain,
       }
-    ]}
+    ]
+    
+    if @current_user.superadmin?
+      properties << {
+        :parameter => t('admin.virtual_servers.form.create_server.field.description'),
+        :value => virtual_server.description,
+      }
+    end
+    
+    render :json => { :success => true, :data => properties }
   end
   
   def get_limits
@@ -213,7 +222,7 @@ class Admin::VirtualServersController < Admin::Base
       :diskspace => virtual_server.diskspace,
       :memory => virtual_server.memory,
       :owner => virtual_server.user ? virtual_server.user.login : '',
-      :description => virtual_server.description,
+      :description => virtual_server.description.to_s,
     }} 
   end
   

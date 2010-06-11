@@ -102,61 +102,77 @@ Ext.onReady(function() {
         virtualServersGrid.getStore().reload();
       }
     }],
-    cm: new Ext.grid.ColumnModel([
-      selectionModel, 
-      { 
-        id: 'state',
-        header: '<%= tjs('admin.virtual_servers.grid.column.state') %>',
-        renderer: function(value, metaData) {
-          metaData.cellAttr = 'rowspan="2"';
-          var image = ('running' == value) ? 'run.png' : 'stop.png';
-          return '<img src="/images/' + image + '"/>';
-        },
-        width: 60,
-        align: 'center',
-        sortable: true,
-        dataIndex: 'state'
-      }, { 
-        id: 'identity',
-        header: '<%= tjs('admin.virtual_servers.grid.column.identity') %>',
-        width: 60,
-        sortable: true,
-        dataIndex: 'identity',
-        renderer: function(identity, metadata, record) {
-          return "<a href='/admin/virtual-servers/show?id=" + record.data.id + "'>" + identity + "</a>";
+    cm: new Ext.grid.ColumnModel({
+      listeners: {
+        hiddenchange: function(cm, colIndex, hidden) {
+          if ('description' == cm.getColumnId(colIndex)) {
+            virtualServersGrid.getView().refresh();
+          }
         }
-      }, {
-        id: 'ip_address',
-        header: '<%= tjs('admin.virtual_servers.grid.column.ip_address') %>',
-        sortable: true,
-        dataIndex: 'ip_address'
-      }, {
-        id: 'host_name',
-        header: '<%= tjs('admin.virtual_servers.grid.column.host_name') %>',
-        sortable: true,
-        dataIndex: 'host_name'
-      }, {
-        id: 'memory',
-        header: '<%= tjs('admin.virtual_servers.grid.column.memory') %>',
-        sortable: true,
-        dataIndex: 'memory'
-      }, {
-        id: 'diskspace',
-        header: '<%= tjs('admin.virtual_servers.grid.column.diskspace') %>',
-        sortable: true,
-        dataIndex: 'diskspace'
-      }, {
-        id: 'os_template_name',
-        header: '<%= tjs('admin.virtual_servers.grid.column.os_template') %>',
-        sortable: true,
-        dataIndex: 'os_template_name'
-      }, {
-        id: 'owner',
-        header: '<%= tjs('admin.virtual_servers.grid.column.owner') %>',
-        sortable: true,
-        dataIndex: 'owner'
-      }
-    ]),
+      },
+      columns: [
+        selectionModel, 
+        { 
+          id: 'state',
+          header: '<%= tjs('admin.virtual_servers.grid.column.state') %>',
+          renderer: function(value, metaData) {
+            metaData.cellAttr = 'rowspan="2"';
+            var image = ('running' == value) ? 'run.png' : 'stop.png';
+            return '<img src="/images/' + image + '"/>';
+          },
+          width: 60,
+          align: 'center',
+          sortable: true,
+          dataIndex: 'state'
+        }, { 
+          id: 'identity',
+          header: '<%= tjs('admin.virtual_servers.grid.column.identity') %>',
+          width: 60,
+          sortable: true,
+          dataIndex: 'identity',
+          renderer: function(identity, metadata, record) {
+            return "<a href='/admin/virtual-servers/show?id=" + record.data.id + "'>" + identity + "</a>";
+          }
+        }, {
+          id: 'ip_address',
+          header: '<%= tjs('admin.virtual_servers.grid.column.ip_address') %>',
+          sortable: true,
+          dataIndex: 'ip_address'
+        }, {
+          id: 'host_name',
+          header: '<%= tjs('admin.virtual_servers.grid.column.host_name') %>',
+          sortable: true,
+          dataIndex: 'host_name'
+        }, {
+          id: 'memory',
+          header: '<%= tjs('admin.virtual_servers.grid.column.memory') %>',
+          sortable: true,
+          dataIndex: 'memory'
+        }, {
+          id: 'diskspace',
+          header: '<%= tjs('admin.virtual_servers.grid.column.diskspace') %>',
+          sortable: true,
+          dataIndex: 'diskspace'
+        }, {
+          id: 'os_template_name',
+          header: '<%= tjs('admin.virtual_servers.grid.column.os_template') %>',
+          sortable: true,
+          dataIndex: 'os_template_name'
+        }, {
+          id: 'owner',
+          header: '<%= tjs('admin.virtual_servers.grid.column.owner') %>',
+          sortable: true,
+          dataIndex: 'owner'
+        }, {
+          id: 'description',
+          header: '<%= tjs('admin.virtual_servers.grid.column.description') %>',
+          sortable: true,
+          hidden: true,
+          width: 120,
+          dataIndex: 'description'
+        }
+      ]
+    }),
     sm: selectionModel,
     stripeRows: true,
     autoExpandColumn: 'os_template_name',
@@ -173,6 +189,9 @@ Ext.onReady(function() {
       enableRowBody: true,
       forceFit: true,
       getRowClass: function(record, index, rowParams, store) {
+        if (!virtualServersGrid.getColumnModel().getColumnById('description').hidden) {
+          return 'x-grid3-row-collapsed';
+        }
         var description = record.data.description;
         if (description) {
           rowParams.body = '<div class="x-grid3-cell-inner">' + record.data.description + '</div>';
