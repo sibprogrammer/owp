@@ -49,6 +49,8 @@ ru:
               invalid: "Неверное имя хоста."
             search_domain:
               invalid: "Неверные домены для поиска."
+            description:
+              invalid: "Описание содержит недопустимые символы."
         server_template:
           attributes:
             name:

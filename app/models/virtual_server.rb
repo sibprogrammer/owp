@@ -14,6 +14,7 @@ class VirtualServer < ActiveRecord::Base
   validates_format_of :nameserver, :with => /^((\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})|\s)*$/
   validates_format_of :search_domain, :with => /^([a-z0-9\-\.]+\s*)*$/i
   validates_format_of :host_name, :with => /^[a-z0-9\-\.]*$/i
+  validates_format_of :description, :with => /^[a-z0-9\-\.\s]*$/i if AppConfig.vzctl.save_descriptions
 
   def get_limits
     parser = IniParser.new(hardware_server.rpc_client.exec('cat', "/etc/vz/conf/#{identity.to_s}.conf")['output'])

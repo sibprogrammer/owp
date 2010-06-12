@@ -49,6 +49,8 @@ en:
               invalid: "Hostname is invalid."
             search_domain:
               invalid: "Search domains are invalid."
+            description:
+              invalid: "Description contains invalid characters."
         server_template:
           attributes:
             name:
