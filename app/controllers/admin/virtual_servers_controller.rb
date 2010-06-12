@@ -130,15 +130,11 @@ class Admin::VirtualServersController < Admin::Base
       }, {
         :parameter => t('admin.virtual_servers.form.create_server.field.searchdomain'),
         :value => virtual_server.search_domain,
-      }
-    ]
-    
-    if @current_user.superadmin?
-      properties << {
+      }, {
         :parameter => t('admin.virtual_servers.form.create_server.field.description'),
         :value => virtual_server.description,
       }
-    end
+    ]
     
     render :json => { :success => true, :data => properties }
   end
