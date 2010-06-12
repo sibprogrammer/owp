@@ -34,6 +34,10 @@ ru:
               connection: "Не удалось подключиться. Возможно демон не запущен."
             auth_key:
               bad_auth: "Невозможно выполнить авторизацию. Возможно неверный ключ авторизации."
+            daemon_port:
+              not_a_number: "Неверный номер порта."
+              greater_than: "Номер порта должен быть больше {{count}}."
+              less_than: "Номер порта должен быть меньше {{count}}."
         virtual_server:
           attributes:
             ip_address:
@@ -159,6 +163,7 @@ ru:
             host_name: "Имя хоста"
             auth_key: "Ключ авторизации"
             description: "Описание"
+            daemon_port: "Порт сервиса"
         disconnect_server:
           sure_to_disconnect: "Вы действительно хотите отключить выбранные сервера?"
           deletion_failed: "Во время отключения произошла ошибка."

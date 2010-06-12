@@ -7,6 +7,7 @@ Ext.onReady(function() {
   function showHwServerEditForm(mode) {
     var formEditServer = new Owp.form.BasicForm({
       labelWidth: 150,
+      autoHeight: true,
       waitMsgTarget: true,
       url: '/admin/hardware-servers/save',
       defaults: { width: 200 },
@@ -28,6 +29,10 @@ Ext.onReady(function() {
         name: 'auth_key',
         allowBlank: ('edit' == mode)
       }, {
+        fieldLabel: '<%= tjs('admin.hardware_servers.form.connect_server.field.daemon_port') %>',
+        name: 'daemon_port',
+        allowBlank: false
+      }, {
         fieldLabel: '<%= tjs('admin.hardware_servers.form.connect_server.field.description') %>',
         name: 'description'
       }]
@@ -39,7 +44,6 @@ Ext.onReady(function() {
         : '<%= tjs('admin.hardware_servers.form.connect_server.edit_title') %>',
       iconCls: ('add' == mode) ? 'icon-window-add' : 'icon-window-edit',
       width: 400,
-      height: 160,
       modal: true,
       layout: 'fit',
       plain: true,
@@ -77,6 +81,10 @@ Ext.onReady(function() {
     windowEditServer.on('show', function() {
       if ('add' == mode) {
         formEditServer.getForm().reset();
+        
+        var daemonPortField = formEditServer.getForm().findField('daemon_port');
+        daemonPortField.setValue(<%= AppConfig.hw_daemon.port %>);
+        
         windowEditServer.focus();
       } else {
         var selectedNode = Ext.getCmp('hwServersGrid').getSelectionModel().getSelected();

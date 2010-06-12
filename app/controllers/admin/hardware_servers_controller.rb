@@ -67,7 +67,8 @@ class Admin::HardwareServersController < Admin::Base
     redirect_to :action => 'list' if !hardware_server
     render :json => { :success => true, :data => {
       :host => hardware_server.host,
-      :description => hardware_server.description
+      :description => hardware_server.description,
+      :daemon_port => hardware_server.daemon_port,
     }}  
   end
   

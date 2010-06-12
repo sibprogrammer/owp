@@ -1,6 +1,7 @@
 class HardwareServer < ActiveRecord::Base
-  attr_accessible :host, :auth_key, :description  
+  attr_accessible :host, :auth_key, :description, :daemon_port
   validates_uniqueness_of :host
+  validates_numericality_of :daemon_port, :only_integer => true, :greater_than => 1023, :less_than => 49152
   has_many :os_templates, :dependent => :destroy
   has_many :server_templates, :dependent => :destroy
   has_many :virtual_servers, :dependent => :destroy
@@ -28,7 +29,7 @@ class HardwareServer < ActiveRecord::Base
   end
   
   def rpc_client
-    HwDaemonClient.new(self.host, self.auth_key)
+    HwDaemonClient.new(host, auth_key, daemon_port)
   end
       
   def sync_os_templates

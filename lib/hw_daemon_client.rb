@@ -17,13 +17,14 @@ end
 
 class HwDaemonClient
   
-  def initialize(host, auth_key)
+  def initialize(host, auth_key, port)
     @host = host
     @auth_key = auth_key
+    @port = port
     @rpc_client = XMLRPC::Client.new3({
       :host => @host,
       :path => "/xmlrpc",
-      :port => AppConfig.hw_daemon.port,
+      :port => @port,
       :user => 'admin', 
       :password => @auth_key,
       :timeout => 5 * 60

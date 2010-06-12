@@ -34,6 +34,10 @@ en:
               connection: "Connection failed. Maybe daemon is not running."
             auth_key:
               bad_auth: "Unable to authorize. Probably incorrect auth key."
+            daemon_port:
+              not_a_number: "Invalid port number."
+              greater_than: "Port number should be greater than {{count}}."
+              less_than: "Port number should be less than {{count}}."
         virtual_server:
           attributes:
             ip_address:
@@ -159,6 +163,7 @@ en:
             host_name: "Host name"
             auth_key: "Auth key"
             description: "Description"
+            daemon_port: "Service port"
         disconnect_server:
           sure_to_disconnect: "Are you sure you want to disconnect selected servers?"
           deletion_failed: "Servers disconnection request failed."
