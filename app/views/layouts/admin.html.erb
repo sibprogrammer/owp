@@ -156,13 +156,13 @@
           children: [{
             cls: 'menu-item',
             text: '<%= tjs('admin.menu.help.documentation') %>',
-            href: '<%= @current_user.superadmin? ? 'http://code.google.com/p/ovz-web-panel/wiki/AdminGuide' : 'http://code.google.com/p/ovz-web-panel/wiki/UserGuide' %>',
+            href: '<%= escape_javascript(@current_user.superadmin? ? AppConfig.help.admin_doc_url : AppConfig.help.user_doc_url) %>',
             icon: '/images/help.png',
             leaf: true
           }, {
             cls: 'menu-item',
             text: '<%= tjs('admin.menu.help.support') %>',
-            href: 'http://code.google.com/p/ovz-web-panel/issues/list',
+            href: '<%= escape_javascript(AppConfig.help.support_url) %>',
             icon: '/images/bug.png',
             leaf: true
           }]

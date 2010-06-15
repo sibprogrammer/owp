@@ -28,6 +28,11 @@ config_defaults = {
   },
   'vzctl' => {
     'save_descriptions' => false,
+  },
+  'help' => {
+    'admin_doc_url' => 'http://code.google.com/p/ovz-web-panel/wiki/AdminGuide',
+    'user_doc_url' => 'http://code.google.com/p/ovz-web-panel/wiki/UserGuide',
+    'support_url' => 'http://code.google.com/p/ovz-web-panel/issues/list',
   }
 }
 
@@ -49,4 +54,4 @@ end
 
 config_file_name = "#{Rails.root}/config/config.yml"
 config = File.exist?(config_file_name) ? (YAML.load_file(config_file_name) || {}) : {}
-AppConfig = hashes2ostruct(config_defaults.merge(config))
+AppConfig = hashes2ostruct(config_defaults.deep_merge(config))
