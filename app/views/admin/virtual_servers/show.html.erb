@@ -349,8 +349,85 @@ Ext.onReady(function() {
   var editVirtualServer = function() {
     showVirtualServerEditForm('edit', virtualServerInfoGrid);
   }
+  
+  var consoleAction = function() {
+    var formConsole = new Owp.form.BasicForm({
+      labelWidth: 100,
+      waitMsgTarget: true,
+      url: '/admin/virtual-servers/run_command?id=<%= @virtual_server.id %>',
+      keys: [{
+        key: Ext.EventObject.ENTER,
+        fn: function() {
+          windowConsole.submitButton.handler();
+        }
+      }],
+      items: [{
+        fieldLabel: '<%= tjs('admin.virtual_servers.form.console.field.command') %>',
+        xtype: 'textfield',
+        name: 'command',
+        allowBlank: false,
+        cls: 'monospace-field',
+        anchor: '-20'
+      }, {
+        hideLabel: true,
+        xtype: 'textarea',
+        name: 'result',
+        readOnly: true,
+        cls: 'monospace-field',
+        anchor: '100% -30'
+      }]
+    });  
+    
+    var windowConsole = new Owp.form.BasicFormWindow({
+      title: '<%= tjs('admin.virtual_servers.form.console.title') %>',
+      iconCls: 'icon-window-console',
+      width: 600,
+      height: 300,
+      modal: true,
+      layout: 'fit',
+      plain: true,
+      bodyStyle: 'padding: 5px;',
+      resizable: true,
+      items: formConsole,
+      
+      buttons: [{
+        text: '<%= tjs('admin.virtual_servers.form.console.button.run') %>',
+        iconCls: 'icon-button-run',
+        ref: '../submitButton',
+        handler: function() {
+          formConsole.form.submit({
+            waitMsg: '<%= tjs('form.loading') %>',
+            success: function(form, action) {
+              var result = Ext.util.JSON.decode(action.response.responseText);
+              var resultField = formConsole.getForm().findField('result');
+              resultField.setValue(result.output);
+            },
+            failure: function(form, action) {
+              Owp.form.errorHandler(form, action);
+              windowConsole.focus();
+            }
+          });
+        }
+      }, {
+        text: '<%= tjs('form.button.cancel') %>',
+        iconCls: 'icon-button-cancel',
+        handler: function() {
+          windowConsole.close();
+        }
+      }]
+    });
+    
+    windowConsole.show();
+  }
 
   var mainContentCenterPanel = Ext.getCmp('mainContentCenterPanel');
+  
+  mainContentCenterPanel.getTopToolbar().insertButton(0, {
+    text: '<%= tjs('admin.virtual_servers.grid.button.console') %>',
+    iconCls: 'icon-button-console',
+    ref: '../consoleButton',
+    handler: consoleAction
+  });
   
   mainContentCenterPanel.getTopToolbar().insertButton(0, {
     text: '<%= tjs('admin.virtual_servers.grid.button.reinstall') %>',

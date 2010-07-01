@@ -6,6 +6,8 @@ a { color: #000 }
 .x-panel-body p { margin: 10px; }
 td.x-grid3-td-checker, td.x-grid3-td-state { vertical-align: middle; }
 
+.monospace-field { font-family: monospace; }
+
 .logo { float: left; text-align: center; top: 50%; display: table; height: 48px; padding-left: 20px; }
 .logo div { display: table-cell; padding-top: 5px; font-size: 20px; font-weight: bold; }
 .logo img { vertical-align: middle; }
@@ -30,6 +32,7 @@ td.x-grid3-td-checker, td.x-grid3-td-state { vertical-align: middle; }
 .icon-window-add { background-image: url(/images/add.png) !important; }
 .icon-window-edit { background-image: url(/images/wrench.png) !important; }
 .icon-window-reinstall { background-image: url(/images/refresh.png) !important; }
+.icon-window-console { background-image: url(/images/monitor.png) !important; }
 .icon-button-login { background-image: url(/images/arrow_right.png) !important; }
 .icon-button-save { background-image: url(/images/accept.png) !important; }
 .icon-button-add { background-image: url(/images/add.png) !important; }
@@ -40,6 +43,8 @@ td.x-grid3-td-checker, td.x-grid3-td-state { vertical-align: middle; }
 .icon-button-restart-server { background-image: url(/images/refresh.png) !important; }
 .icon-button-reinstall { background-image: url(/images/refresh.png) !important; }
 .icon-button-change-setting { background-image: url(/images/wrench.png) !important; }
+.icon-button-console { background-image: url(/images/monitor.png) !important; }
+.icon-button-run { background-image: url(/images/run.png) !important; }
 
 .icon-inline { height: 16px; width: 16px; padding-right: 5px; vertical-align: middle; }
 .icon-inline-big { height: 32px; width: 32px; padding-right: 5px; vertical-align: middle; }

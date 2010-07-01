@@ -199,6 +199,7 @@ ru:
           limits: "Ограничения"
           reinstall: "Переустановка"
           change_settings: "Изменить настройки"
+          console: "Консоль"
       form:
         change_settings:
           title: "Изменить настройки виртуального сервера"
@@ -254,6 +255,15 @@ ru:
               name: "Имя"
               soft_limit: "Барьер"
               hard_limit: "Лимит"
+        console:
+          title: "Консоль"
+          error:
+            code: "Код возврата:"
+            output: "Вывод:"
+          field:
+            command: "Команда"
+          button:
+            run: "Выполнить"
       show:
         title: "Виртуальный сервер {{name}}"
         grid:

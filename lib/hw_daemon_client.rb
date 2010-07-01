@@ -4,14 +4,19 @@ class HwDaemonException < Exception
 end
 
 class HwDaemonExecException < HwDaemonException
-  def initialize(message, code)
+  def initialize(message, code, output = '')
     super(message)
     @message = message
     @code = code
+    @output = output
   end
   
   def code
     @code
+  end
+  
+  def output
+    @output
   end
 end
 
@@ -34,7 +39,7 @@ class HwDaemonClient
   def exec(command, args = '')
     RAILS_DEFAULT_LOGGER.info "Executing command: #{command} #{args}"
     result = rpc_call('hwDaemon.exec', command, args)
-    raise HwDaemonExecException.new("Command '#{command} #{args}' execution failed with code #{result['exit_code']}\nOutput: #{result['output']}", result['exit_code']) if 0 != result['exit_code']
+    raise HwDaemonExecException.new("Command '#{command} #{args}' execution failed with code #{result['exit_code']}\nOutput: #{result['output']}", result['exit_code'], result['output']) if 0 != result['exit_code']
     result
   end
   

@@ -205,6 +205,13 @@ class Admin::VirtualServersController < Admin::Base
     end
   end
   
+  def run_command
+    virtual_server = VirtualServer.find_by_id(params[:id])
+    redirect_to :controller => 'dashboard' and return if !virtual_server or !@current_user.can_control(virtual_server)
+    output = virtual_server.run_command(params[:command])
+    render :json => { :success => true, :output => output }
+  end
+  
   private 
   
   def get_virtual_servers_map(virtual_servers)

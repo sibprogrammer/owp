@@ -199,6 +199,7 @@ en:
           limits: "Limits"
           reinstall: "Reinstall"
           change_settings: "Change settings"
+          console: "Console"
       form:
         change_settings:
           title: "Change settings of virtual server"
@@ -254,6 +255,15 @@ en:
               name: "Name"
               soft_limit: "Barrier"
               hard_limit: "Limit"
+        console:
+          title: "Console"
+          error:
+            code: "Return code:"
+            output: "Output:"
+          field:
+            command: "Command"
+          button:
+            run: "Run"
       show:
         title: "Virtual server {{name}}"
         grid:

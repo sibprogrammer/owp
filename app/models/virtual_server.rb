@@ -125,6 +125,23 @@ class VirtualServer < ActiveRecord::Base
     true
   end
   
+  def run_command(command)
+    filename = "/tmp/vecmd_" + generate_id.to_s
+    content = "#!/bin/sh\n#{command}"
+    hardware_server.rpc_client.write_file(filename, content)
+    
+    begin
+      result = hardware_server.rpc_client.exec('vzctl', "runscript #{identity.to_s} #{filename} ")
+      output = result['output']
+    rescue HwDaemonExecException => e
+      output =  I18n.t('admin.virtual_servers.form.console.error.code') + ' ' + e.code.to_s + "\n" +
+        I18n.t('admin.virtual_servers.form.console.error.output') + "\n" + e.output
+    end
+      
+    hardware_server.rpc_client.exec("rm #{filename}")
+    output
+  end
+  
   private
 
     def vzctl_set(param)
@@ -143,6 +160,11 @@ class VirtualServer < ActiveRecord::Base
       
       self.state = status
       save
+    end
+  
+    def generate_id
+      symbols = [('0'..'9'),('a'..'f')].map{ |i| i.to_a }.flatten
+      (1..32).map{ symbols[rand(symbols.length)] }.join
     end
   
 end
