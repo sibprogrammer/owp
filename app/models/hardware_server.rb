@@ -29,7 +29,7 @@ class HardwareServer < ActiveRecord::Base
   end
   
   def rpc_client
-    HwDaemonClient.new(host, auth_key, daemon_port)
+    HwDaemonClient.new(host, auth_key, daemon_port, AppConfig.hw_daemon.timeout)
   end
       
   def sync_os_templates

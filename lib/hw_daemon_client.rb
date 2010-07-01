@@ -17,7 +17,7 @@ end
 
 class HwDaemonClient
   
-  def initialize(host, auth_key, port)
+  def initialize(host, auth_key, port, timeout)
     @host = host
     @auth_key = auth_key
     @port = port
@@ -27,7 +27,7 @@ class HwDaemonClient
       :port => @port,
       :user => 'admin', 
       :password => @auth_key,
-      :timeout => 5 * 60
+      :timeout => timeout
     })
   end
   

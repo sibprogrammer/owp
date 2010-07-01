@@ -3,7 +3,8 @@ require 'ostruct'
 
 config_defaults = {
   'hw_daemon' => {
-    'port' => 7767
+    'port' => 7767,
+    'timeout' => 15 * 60, # 15 minutes
   },
   'os_templates' => {
     'mirror' => {
