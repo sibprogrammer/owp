@@ -5,10 +5,10 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <title><%= @page_title + ' - ' + @product_name %></title>
     <link rel="shortcut icon" href="/favicon.ico"/>
-    <%= stylesheet_link_tag '/ext/resources/css/ext-all.css' %>
+    <%= stylesheet_link_tag @extjs_base_url + '/resources/css/ext-all.css' %>
     <%= stylesheet_link_tag 'application' %>
-    <%= javascript_include_tag '/ext/adapter/ext/ext-base.js' %>
-    <%= javascript_include_tag '/ext/ext-all.js' %>
+    <%= javascript_include_tag @extjs_base_url + '/adapter/ext/ext-base.js' %>
+    <%= javascript_include_tag @extjs_base_url + '/ext-all.js' %>
     <%= javascript_include_tag 'application' %>
     <%= javascript_include_tag '/ext/locale/ext-lang-' + I18n.locale.to_s + '.js' %>
   </head>

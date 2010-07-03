@@ -15,7 +15,7 @@ class ApplicationController < ActionController::Base
   # from your application log (in this case, all fields with names like "password"). 
   # filter_parameter_logging :password
     
-  before_filter :set_locale, :set_product_name, :set_response_format
+  before_filter :set_locale, :set_product_name, :set_response_format, :set_extjs_base
     
   protected  
   
@@ -31,6 +31,10 @@ class ApplicationController < ActionController::Base
     def set_product_name
       @product_name = PRODUCT_NAME
       @product_name += AppConfig.branding.show_version ? (' ' + PRODUCT_VERSION) : ''
+    end
+    
+    def set_extjs_base
+      @extjs_base_url = AppConfig.extjs.cdn.enabled ? AppConfig.extjs.cdn.base_url : '/ext'
     end
   
     def log_error(exception)

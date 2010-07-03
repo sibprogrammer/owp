@@ -34,7 +34,13 @@ config_defaults = {
     'admin_doc_url' => 'http://code.google.com/p/ovz-web-panel/wiki/AdminGuide',
     'user_doc_url' => 'http://code.google.com/p/ovz-web-panel/wiki/UserGuide',
     'support_url' => 'http://code.google.com/p/ovz-web-panel/issues/list',
-  }
+  },
+  'extjs' => {
+    'cdn' => {
+      'enabled' => false,
+      'base_url' => 'http://extjs.cachefly.net/ext-3.1.0',
+    }
+  },
 }
 
 def hashes2ostruct(object)
