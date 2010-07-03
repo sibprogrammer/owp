@@ -1,5 +1,5 @@
 class Admin::UsersController < Admin::Base
-  before_filter :superadmin_required
+  before_filter :superadmin_required, :except => :save_profile
   
   def save_profile    
     user = User.authenticate(@current_user.login, params[:current_password])
