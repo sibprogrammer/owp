@@ -32,6 +32,18 @@
     <span class="value"><%= h(@virtual_server.memory) %></span>
   </li>
   <li class="smallfield textfield">
+    <span class="name"><%= t('admin.virtual_servers.form.create_server.field.cpu_units') %></span>
+    <span class="value"><%= h(@virtual_server.cpu_units) %></span>
+  </li>
+  <li class="smallfield textfield">
+    <span class="name"><%= t('admin.virtual_servers.form.create_server.field.cpus') %></span>
+    <span class="value"><%= h(@virtual_server.cpus) %></span>
+  </li>
+  <li class="smallfield textfield">
+    <span class="name"><%= t('admin.virtual_servers.form.create_server.field.cpu_limit') %></span>
+    <span class="value"><%= h(@virtual_server.cpu_limit) %></span>
+  </li>
+  <li class="smallfield textfield">
     <span class="name"><%= t('admin.virtual_servers.form.create_server.field.nameserver') %></span>
     <span class="value"><%= h(@virtual_server.nameserver) %></span>
   </li>

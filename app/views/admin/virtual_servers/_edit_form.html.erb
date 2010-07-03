@@ -184,6 +184,18 @@ var showVirtualServerEditForm = function(mode, grid) {
             id: 'fieldMemory',
             allowBlank: false,
             name: 'memory'
+          }, {
+            fieldLabel: '<%= tjs('admin.virtual_servers.form.create_server.field.cpu_units') %>',
+            id: 'fieldCpuUnits',
+            name: 'cpu_units'
+          }, {
+            fieldLabel: '<%= tjs('admin.virtual_servers.form.create_server.field.cpus') %>',
+            id: 'fieldCpus',
+            name: 'cpus'
+          }, {
+            fieldLabel: '<%= tjs('admin.virtual_servers.form.create_server.field.cpu_limit') %>',
+            id: 'fieldCpuLimit',
+            name: 'cpu_limit'
           }]
         }, {
           xtype: 'fieldset',

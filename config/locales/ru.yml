@@ -237,6 +237,9 @@ ru:
             server_template: "Шаблон сервера"
             select_server_template: "Выберите шаблон сервера"
             description: "Описание"
+            cpu_units: "CPU единиц"
+            cpus: "Количество CPU"
+            cpu_limit: "CPU лимит, %"
           fieldset:
             general: "Общее"
             network: "Сеть"

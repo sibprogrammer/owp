@@ -79,6 +79,9 @@ class Admin::VirtualServersController < Admin::Base
       :search_domain => virtual_server.search_domain,
       :diskspace => virtual_server.diskspace,
       :memory => virtual_server.memory,
+      :cpu_units => virtual_server.cpu_units,
+      :cpus => virtual_server.cpus,
+      :cpu_limit => virtual_server.cpu_limit,
       :user_id => virtual_server.user_id,
       :description => virtual_server.description,
     }}  
@@ -125,6 +128,15 @@ class Admin::VirtualServersController < Admin::Base
         :parameter => t('admin.virtual_servers.form.create_server.field.memory'),
         :value => virtual_server.memory,
       }, {
+        :parameter => t('admin.virtual_servers.form.create_server.field.cpu_units'),
+        :value => virtual_server.cpu_units,
+      }, {
+        :parameter => t('admin.virtual_servers.form.create_server.field.cpus'),
+        :value => virtual_server.cpus,
+      }, {
+        :parameter => t('admin.virtual_servers.form.create_server.field.cpu_limit'),
+        :value => virtual_server.cpu_limit,
+      }, {
         :parameter => t('admin.virtual_servers.form.create_server.field.nameserver'),
         :value => virtual_server.nameserver,
       }, {
@@ -164,6 +176,9 @@ class Admin::VirtualServersController < Admin::Base
       :nameserver => server_template.get_nameserver,
       :search_domain => server_template.get_search_domain,
       :diskspace => server_template.get_diskspace,
+      :cpu_units => server_template.get_cpu_units,
+      :cpus => server_template.get_cpus,
+      :cpu_limit => server_template.get_cpu_limit,
       :memory => server_template.get_memory,
     }}
   end

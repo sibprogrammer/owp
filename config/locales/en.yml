@@ -237,6 +237,9 @@ en:
             server_template: "Server Template"
             select_server_template: "Select server template"
             description: "Description"
+            cpu_units: "CPU Units"
+            cpus: "Number of CPUs"
+            cpu_limit: "CPU Limit, %"
           fieldset:
             general: "General"
             network: "Network"

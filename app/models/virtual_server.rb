@@ -2,7 +2,7 @@ class VirtualServer < ActiveRecord::Base
   attr_accessible :identity, :ip_address, :host_name, :hardware_server_id, 
     :orig_os_template, :password, :start_on_boot, :start_after_creation, :state,
     :nameserver, :search_domain, :diskspace, :memory, :password_confirmation,
-    :user_id, :orig_server_template, :description
+    :user_id, :orig_server_template, :description, :cpu_units, :cpus, :cpu_limit
   attr_accessor :password, :password_confirmation, :start_after_creation
   belongs_to :hardware_server
   belongs_to :user
@@ -92,6 +92,9 @@ class VirtualServer < ActiveRecord::Base
       vzctl_set(nameserver.split.map { |ip| "--nameserver #{ip} " }.join + "--save") if !nameserver.blank? and nameserver_changed?
       vzctl_set("--searchdomain '#{search_domain}' --save") if !search_domain.blank? and search_domain_changed?
       vzctl_set("--diskspace #{diskspace * 1024} --privvmpages #{memory * 1024 / 4} --save") if diskspace_changed? or memory_changed?
+      vzctl_set("--cpuunits #{cpu_units} --save") if !cpu_units.blank? and cpu_units_changed?
+      vzctl_set("--cpus #{cpus} --save") if !cpus.blank? and cpus_changed?
+      vzctl_set("--cpulimit #{cpu_limit} --save") if !cpu_limit.blank? and cpu_limit_changed?
       vzctl_set("--description '#{description}' --save") if hardware_server.ve_descriptions_supported? and !description.empty? and description_changed?
     rescue HwDaemonExecException => exception
       delete_physically if is_new
