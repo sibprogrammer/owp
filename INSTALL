@@ -76,6 +76,10 @@ svn checkout http://ovz-web-panel.googlecode.com/svn/trunk/ owp
 File http://code.google.com/p/ovz-web-panel/source/browse/trunk/build/build.sh
 contains information on how to prepare working copy.
 
+One of key steps is to create/upgrade database after code update:
+cd /opt/ovz-web-panel/
+rake db:migrate RAILS_ENV="production"
+
 
 4. Uninstallation
 ---
