@@ -137,5 +137,10 @@ class HardwareServer < ActiveRecord::Base
   def ve_descriptions_supported?
     AppConfig.vzctl.save_descriptions and ((vzctl_version.split('.').map(&:to_i) <=> "3.0.23".split('.').map(&:to_i)) >= 0)
   end
+  
+  def reboot
+    EventLog.info("hardware_server.reboot", { :host => self.host })
+    rpc_client.exec('reboot &')
+  end
     
 end

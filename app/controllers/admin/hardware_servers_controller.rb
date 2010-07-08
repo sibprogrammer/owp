@@ -62,6 +62,19 @@ class Admin::HardwareServersController < Admin::Base
     render :json => { :success => true }  
   end
   
+  def reboot
+    params[:ids].split(',').each { |id|
+      hardware_server = HardwareServer.find(id)
+      
+      if !hardware_server.reboot
+        render :json => { :success => false }  
+        return
+      end
+    }
+    
+    render :json => { :success => true }  
+  end
+  
   def load_data
     hardware_server = HardwareServer.find_by_id(params[:id])
     redirect_to :action => 'list' if !hardware_server

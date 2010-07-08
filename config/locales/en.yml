@@ -109,6 +109,7 @@ en:
         connect: "Physical server {{host}} was connected."
         disconnect: "Physical server {{host}} was disconnected."
         sync: "Server's {{host}} state was synchronized."
+        reboot: "Start rebooting of the server {{host}}."
       virtual_server:
         created: "Virtual server {{identity}} was created."
         removed: "Virtual server {{identity}} was removed."
@@ -154,6 +155,7 @@ en:
           details: "Details" 
           sync: "Synchronization"
           edit: "Change settings"
+          reboot: "Reboot"
       form:
         connect_server:
           title: "Connect new physical server"
@@ -169,6 +171,9 @@ en:
           deletion_failed: "Servers disconnection request failed."
         sync:
           sync_failed: "Unable to synchronize information on some physical servers."
+        reboot_server:
+          sure_to_reboot: "Selected servers will be unavailable during reboot. Are you sure you want to reboot them?"
+          reboot_failed: "Unable to start reboot on some servers."
       show:
         title: "Physical Server {{name}}"
       top_toolbar:

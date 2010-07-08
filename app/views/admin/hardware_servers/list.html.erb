@@ -149,6 +149,26 @@ Ext.onReady(function() {
       }
     });
   }
+  
+  function rebootHwServer() {
+    Ext.MessageBox.confirm(
+      '<%= tjs('form.confirmation') %>',
+      '<%= tjs('admin.hardware_servers.form.reboot_server.sure_to_reboot') %>',
+      function(button, text) {
+        if ('yes' == button) { 
+          Owp.list.groupAction({
+            gridName: 'hwServersGrid',
+            url: '/admin/hardware-servers/reboot',
+            waitMsg: '<%= tjs('form.performing_task') %>',
+            failure: {
+              title: '<%= tjs('form.error.title') %>',
+              msg: '<%= tjs('admin.hardware_servers.form.reboot_server.reboot_failed') %>'
+            }
+          });
+        }
+      }
+    );
+  }
 
   var store = new Ext.data.JsonStore({
     url: '/admin/hardware-servers/list_data',
@@ -169,9 +189,11 @@ Ext.onReady(function() {
         if (selectionModel.getCount()) {
           hwServersGrid.removeButton.enable();
           hwServersGrid.syncButton.enable();
+          hwServersGrid.rebootButton.enable();
         } else {
           hwServersGrid.removeButton.disable();
           hwServersGrid.syncButton.disable();
+          hwServersGrid.rebootButton.disable();
         }
         
         if (1 == selectionModel.getCount()) {
@@ -251,19 +273,26 @@ Ext.onReady(function() {
       icon: '/images/arrow_refresh.png',
       ref: '../syncButton',
       disabled: true
-    }, '-', {
+    }, {
       text: '<%= tjs('admin.hardware_servers.grid.button.edit') %>',
       handler: editHwServer,
       cls: 'x-btn-text-icon',
       icon: '/images/wrench.png',
       ref: '../editButton',
       disabled: true
-    }, '-', {
+    }, {
       text: '<%= tjs('admin.hardware_servers.grid.button.details') %>',
       handler: seeDetails,
       cls: 'x-btn-text-icon',
       icon: '/images/table_go.png',
       ref: '../detailsButton',
+      disabled: true
+    }, '-', {
+      text: '<%= tjs('admin.hardware_servers.grid.button.reboot') %>',
+      handler: rebootHwServer,
+      cls: 'x-btn-text-icon',
+      icon: '/images/arrow_rotate_clockwise.png',
+      ref: '../rebootButton',
       disabled: true
     }]
   });
