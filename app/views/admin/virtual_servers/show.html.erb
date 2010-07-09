@@ -84,7 +84,24 @@ Ext.onReady(function() {
     }, {
       id: 'value',
       header: '<%= tjs('admin.virtual_servers.show.grid.column.value') %>',
-      dataIndex: 'value'
+      dataIndex: 'value',
+      renderer: function(value) {
+        if ('string' == typeof value) {
+          return value;
+        } else {
+          var progressBarId = Ext.id();
+          (function() {
+            new Ext.ProgressBar({
+              renderTo: progressBarId,
+              value: value['percent'],
+              width: 100,
+              height: 14
+            });
+          }).defer(25);
+          
+          return '<div><div style="float: left; padding-right: 10px;" id="' + progressBarId + '"></div> <div>' + value['text'] + '</div></div>';
+        }
+      }
     }])
   });
   

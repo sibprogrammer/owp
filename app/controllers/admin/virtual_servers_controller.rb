@@ -170,13 +170,16 @@ class Admin::VirtualServersController < Admin::Base
     
     stats << {
       :parameter => t('admin.virtual_servers.stats.field.disk_usage'),
-      :value => t(
-        'admin.virtual_servers.stats.value.disk_usage',
-        :percent => disk_usage['usage_percent'].to_s,
-        :free =>  helper.number_to_human_size(disk_usage['free_bytes'], :locale => :en),
-        :used => helper.number_to_human_size(disk_usage['used_bytes'], :locale => :en),
-        :total => helper.number_to_human_size(disk_usage['total_bytes'], :locale => :en)
-      )
+      :value => {
+        'text' => t(
+          'admin.virtual_servers.stats.value.disk_usage',
+          :percent => disk_usage['usage_percent'].to_s,
+          :free =>  helper.number_to_human_size(disk_usage['free_bytes'], :locale => :en),
+          :used => helper.number_to_human_size(disk_usage['used_bytes'], :locale => :en),
+          :total => helper.number_to_human_size(disk_usage['total_bytes'], :locale => :en)
+        ),
+        'percent' => disk_usage['usage_percent'].to_f / 100
+      }
     }
     
     if 'running' == virtual_server.state
@@ -184,13 +187,16 @@ class Admin::VirtualServersController < Admin::Base
       
       stats << {
         :parameter => t('admin.virtual_servers.stats.field.memory_usage'),
-        :value => t(
-          'admin.virtual_servers.stats.value.memory_usage',
-          :percent => memory_usage['usage_percent'].to_s,
-          :free =>  helper.number_to_human_size(memory_usage['free_bytes'], :locale => :en),
-          :used => helper.number_to_human_size(memory_usage['used_bytes'], :locale => :en),
-          :total => helper.number_to_human_size(memory_usage['total_bytes'], :locale => :en)
-        )
+        :value => { 
+          'text' => t(
+            'admin.virtual_servers.stats.value.memory_usage',
+            :percent => memory_usage['usage_percent'].to_s,
+            :free =>  helper.number_to_human_size(memory_usage['free_bytes'], :locale => :en),
+            :used => helper.number_to_human_size(memory_usage['used_bytes'], :locale => :en),
+            :total => helper.number_to_human_size(memory_usage['total_bytes'], :locale => :en)
+          ),
+          'percent' => memory_usage['usage_percent'].to_f / 100
+        }
       }
     end
 
