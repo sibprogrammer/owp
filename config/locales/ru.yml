@@ -279,6 +279,15 @@ ru:
           column:
             parameter: "Параметр"
             value: "Значение"
+      stats:
+        title: "Статистика виртуального сервера"
+        field:
+          cpu_load_average: "Средняя загрузка CPU"
+          disk_usage: "Использование диска"
+          memory_usage: "Использование памяти"
+        value:
+          disk_usage: "{{percent}}%, {{used}} из {{total}} / {{free}} свободно"
+          memory_usage: "{{percent}}%, {{used}} из {{total}} / {{free}} свободно"
     os_templates:
       title: "Шаблоны ОС на физическом сервере {{name}}"
       grid:

@@ -151,6 +151,52 @@ class Admin::VirtualServersController < Admin::Base
     render :json => { :success => true, :data => properties }
   end
   
+  def get_stats
+    virtual_server = VirtualServer.find_by_id(params[:id])
+    redirect_to :controller => 'dashboard' and return if !virtual_server or !@current_user.can_control(virtual_server)
+
+    stats = []
+    
+    if 'running' == virtual_server.state
+      stats << {
+        :parameter => t('admin.virtual_servers.stats.field.cpu_load_average'),
+        :value => virtual_server.cpu_load_average.join(', '),
+      }
+    end
+    
+    helper = Object.new.extend(ActionView::Helpers::NumberHelper)
+    
+    disk_usage = virtual_server.disk_usage
+    
+    stats << {
+      :parameter => t('admin.virtual_servers.stats.field.disk_usage'),
+      :value => t(
+        'admin.virtual_servers.stats.value.disk_usage',
+        :percent => disk_usage['usage_percent'].to_s,
+        :free =>  helper.number_to_human_size(disk_usage['free_bytes'], :locale => :en),
+        :used => helper.number_to_human_size(disk_usage['used_bytes'], :locale => :en),
+        :total => helper.number_to_human_size(disk_usage['total_bytes'], :locale => :en)
+      )
+    }
+    
+    if 'running' == virtual_server.state
+      memory_usage = virtual_server.memory_usage
+      
+      stats << {
+        :parameter => t('admin.virtual_servers.stats.field.memory_usage'),
+        :value => t(
+          'admin.virtual_servers.stats.value.memory_usage',
+          :percent => memory_usage['usage_percent'].to_s,
+          :free =>  helper.number_to_human_size(memory_usage['free_bytes'], :locale => :en),
+          :used => helper.number_to_human_size(memory_usage['used_bytes'], :locale => :en),
+          :total => helper.number_to_human_size(memory_usage['total_bytes'], :locale => :en)
+        )
+      }
+    end
+
+    render :json => { :success => true, :data => stats }
+  end
+  
   def get_limits
     virtual_server = VirtualServer.find_by_id(params[:id])
     redirect_to :controller => 'dashboard' and return if !virtual_server or !@current_user.can_control(virtual_server)
@@ -223,7 +269,13 @@ class Admin::VirtualServersController < Admin::Base
   def run_command
     virtual_server = VirtualServer.find_by_id(params[:id])
     redirect_to :controller => 'dashboard' and return if !virtual_server or !@current_user.can_control(virtual_server)
-    output = virtual_server.run_command(params[:command])
+    result = virtual_server.run_command(params[:command])
+    if result.key?('error')
+      output =  I18n.t('admin.virtual_servers.form.console.error.code') + ' ' + result['error'].code.to_s + "\n" +
+        I18n.t('admin.virtual_servers.form.console.error.output') + "\n" + result['error'].output
+    else
+      output = result['output']
+    end
     render :json => { :success => true, :output => output }
   end
   

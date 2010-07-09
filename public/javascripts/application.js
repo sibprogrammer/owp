@@ -157,7 +157,8 @@ Owp.list.groupAction = function(config) {
     failure: {
       title: '',
       msg: ''
-    }
+    },
+    onSuccess: null
   }, config);
 
   var progressBar = Ext.Msg.wait(config.waitMsg);
@@ -180,6 +181,10 @@ Owp.list.groupAction = function(config) {
         var grid = Ext.getCmp(config.gridName);
         grid.store.reload();
         grid.getSelectionModel().clearSelections();
+        
+        if (config.onSuccess) {
+          config.onSuccess();
+        }
       }      
     },
     failure: function() {

@@ -4,7 +4,7 @@
 <% @virtual_servers_owners = User.get_virtual_servers_owners.map { |user| { :id => user.id, :login => user.login, }} %>
 <% @virtual_servers_owners << { :id => 0, :login => t('admin.virtual_servers.form.create_server.field.no_owner') } %>
 
-var showVirtualServerEditForm = function(mode, grid) {
+var showVirtualServerEditForm = function(mode, grid, statsGrid) {
   var osTemplatesStore = new Ext.data.JsonStore({
     sortInfo: { field: 'name', direction: 'ASC' },
     fields: [
@@ -281,6 +281,9 @@ var showVirtualServerEditForm = function(mode, grid) {
             grid.store.reload();
             windowEditVirtualServer.close();
             grid.getSelectionModel().clearSelections();
+            if (statsGrid) {
+              statsGrid.store.reload();
+            }
           },
           failure: function(form, action) {
             Owp.form.errorHandler(form, action);

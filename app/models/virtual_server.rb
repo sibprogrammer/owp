@@ -135,14 +135,37 @@ class VirtualServer < ActiveRecord::Base
     
     begin
       result = hardware_server.rpc_client.exec('vzctl', "runscript #{identity.to_s} #{filename} ")
-      output = result['output']
     rescue HwDaemonExecException => e
-      output =  I18n.t('admin.virtual_servers.form.console.error.code') + ' ' + e.code.to_s + "\n" +
-        I18n.t('admin.virtual_servers.form.console.error.output') + "\n" + e.output
+      result = { 'error' => e }
     end
       
     hardware_server.rpc_client.exec("rm #{filename}")
-    output
+    result
+  end
+  
+  def cpu_load_average
+    run_command('cat /proc/loadavg')['output'].split[0..2]
+  end
+  
+  def disk_usage
+    raw_info = run_command('stat -c "%s %b %a" -f /')['output'].split
+    info = {}
+    info['block_size'] = raw_info[0].to_i
+    info['total_bytes'] = info['block_size'] * raw_info[1].to_i
+    info['free_bytes'] = info['block_size'] * raw_info[2].to_i
+    info['used_bytes'] = info['total_bytes'] - info['free_bytes']
+    info['usage_percent'] = (info['used_bytes'].to_f / info['total_bytes'].to_f * 100).to_i
+    info
+  end
+  
+  def memory_usage
+    raw_info = run_command('free  -bo')['output'].split("\n")[1].split
+    info = {}
+    info['total_bytes'] = raw_info[1].to_i
+    info['used_bytes'] = raw_info[2].to_i
+    info['free_bytes'] = raw_info[3].to_i
+    info['usage_percent'] = (info['used_bytes'].to_f / info['total_bytes'].to_f * 100).to_i
+    info
   end
   
   private

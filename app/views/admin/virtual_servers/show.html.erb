@@ -22,6 +22,7 @@ Ext.onReady(function() {
   var virtualServerInfoGrid = new Ext.grid.GridPanel({
     id: 'virtualServerInfoGrid',
     title: '<%= tjs('admin.virtual_servers.show.grid.title') %>',
+    region: 'center',
     loadMask: true,
     tools: [{ 
       id: 'refresh',
@@ -46,8 +47,55 @@ Ext.onReady(function() {
       dataIndex: 'value'
     }])
   });
+
+  var statsStore = new Ext.data.JsonStore({
+    url: '/admin/virtual-servers/get_stats?id=<%= @virtual_server.id %>',
+    root: 'data',
+    autoLoad: true,
+    fields: [
+      { name: 'parameter' },
+      { name: 'value' }
+    ]
+  });
   
-  Owp.layout.addToCenter(virtualServerInfoGrid);
+  var virtualServerStatsGrid = new Ext.grid.GridPanel({
+    id: 'virtualServerStatsGrid',
+    title: '<%= tjs('admin.virtual_servers.stats.title') %>',
+    region: 'north',
+    loadMask: true,
+    collapsible: true,
+    autoWidth: true,
+    height: 130,
+    autoExpandColumn: 'value',
+    stateId: 'virtualServerStatsGrid',
+    iconCls: 'icon-items-list',
+    store: statsStore,
+    tools: [{ 
+      id: 'refresh',
+      handler: function() {
+        virtualServerStatsGrid.getStore().reload();
+      }
+    }],
+    cm: new Ext.grid.ColumnModel([{
+      id: 'parameter',
+      header: '<%= tjs('admin.virtual_servers.show.grid.column.parameter') %>',
+      width: 250,
+      dataIndex: 'parameter'
+    }, {
+      id: 'value',
+      header: '<%= tjs('admin.virtual_servers.show.grid.column.value') %>',
+      dataIndex: 'value'
+    }])
+  });
+  
+
+  var panelsWrapper = new Ext.Panel({
+    layout: 'border',
+    border: false,
+    items: [ virtualServerStatsGrid, virtualServerInfoGrid ]
+  });
+
+  Owp.layout.addToCenter(panelsWrapper);
 
   var changeStateAction = function(action) {
     Owp.list.groupAction({
@@ -58,6 +106,9 @@ Ext.onReady(function() {
       failure: {
         title: '<%= tjs('form.error.title') %>',
         msg: '<%= tjs('admin.virtual_servers.form.change_state.failed') %>'
+      },
+      onSuccess: function() {
+        virtualServerStatsGrid.store.reload();
       }
     });
   }
@@ -225,6 +276,7 @@ Ext.onReady(function() {
             waitMsg: '<%= tjs('form.loading') %>',
             success: function() {
               windowReinstall.close();
+              virtualServerStatsGrid.store.reload();
             },
             failure: function(form, action) {
               Owp.form.errorHandler(form, action);
@@ -316,6 +368,7 @@ Ext.onReady(function() {
             waitMsg: '<%= tjs('form.loading') %>',
             success: function() {
               virtualServerInfoGrid.store.reload();
+              virtualServerStatsGrid.store.reload();
               windowChangeSettings.close();
             },
             failure: function(form, action) {
@@ -347,7 +400,7 @@ Ext.onReady(function() {
   }
   
   var editVirtualServer = function() {
-    showVirtualServerEditForm('edit', virtualServerInfoGrid);
+    showVirtualServerEditForm('edit', virtualServerInfoGrid, virtualServerStatsGrid);
   }
   
   var consoleAction = function() {

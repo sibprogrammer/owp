@@ -279,6 +279,15 @@ en:
           column:
             parameter: "Parameter"
             value: "Value"
+      stats:
+        title: "Virtual server statistics"
+        field:
+          cpu_load_average: "CPU load average"
+          disk_usage: "Disk usage"
+          memory_usage: "Memory usage"
+        value:
+          disk_usage: "{{percent}}%, {{used}} of {{total}} / {{free}} free"
+          memory_usage: "{{percent}}%, {{used}} of {{total}} / {{free}} free"
     os_templates:
       title: "OS Templates on Physical Server {{name}}"
       grid:
