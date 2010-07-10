@@ -77,12 +77,65 @@ class Admin::HardwareServersController < Admin::Base
   
   def load_data
     hardware_server = HardwareServer.find_by_id(params[:id])
-    redirect_to :action => 'list' if !hardware_server
+    redirect_to :action => 'list' if !hardware_server and return
     render :json => { :success => true, :data => {
       :host => hardware_server.host,
       :description => hardware_server.description,
       :daemon_port => hardware_server.daemon_port,
     }}  
+  end
+  
+  def get_stats
+    hardware_server = HardwareServer.find_by_id(params[:id])
+    redirect_to :action => 'list' if !hardware_server and return
+    
+    stats = []
+    
+    stats << {
+      :parameter => t('admin.hardware_servers.stats.field.os_version'),
+      :value => hardware_server.os_version,
+    }
+    
+    stats << {
+      :parameter => t('admin.hardware_servers.stats.field.cpu_load_average'),
+      :value => hardware_server.cpu_load_average.join(', '),
+    }
+    
+    helper = Object.new.extend(ActionView::Helpers::NumberHelper)
+    
+    hardware_server.disk_usage.each { |partition|
+      stats << {
+        :parameter => t('admin.hardware_servers.stats.field.disk_usage', :partition => partition['mount_point']),
+        :value => { 
+          'text' => t(
+            'admin.hardware_servers.stats.value.disk_usage',
+            :percent => partition['usage_percent'].to_s,
+            :free =>  helper.number_to_human_size(partition['free_bytes'], :locale => :en),
+            :used => helper.number_to_human_size(partition['used_bytes'], :locale => :en),
+            :total => helper.number_to_human_size(partition['total_bytes'], :locale => :en)
+          ),
+          'percent' => partition['usage_percent'].to_f / 100
+        }
+      }
+    }
+    
+    memory_usage = hardware_server.memory_usage
+      
+    stats << {
+      :parameter => t('admin.hardware_servers.stats.field.memory_usage'),
+      :value => { 
+        'text' => t(
+          'admin.hardware_servers.stats.value.memory_usage',
+          :percent => memory_usage['usage_percent'].to_s,
+          :free =>  helper.number_to_human_size(memory_usage['free_bytes'], :locale => :en),
+          :used => helper.number_to_human_size(memory_usage['used_bytes'], :locale => :en),
+          :total => helper.number_to_human_size(memory_usage['total_bytes'], :locale => :en)
+        ),
+        'percent' => memory_usage['usage_percent'].to_f / 100
+      }
+    }
+    
+    render :json => { :success => true, :data => stats }
   end
   
 end

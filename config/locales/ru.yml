@@ -179,6 +179,19 @@ ru:
       top_toolbar:
         os_templates: "Шаблоны ОС"
         server_templates: "Шаблоны серверов"
+      stats:
+        title: "Статистика физического сервера"
+        column:
+          parameter: "Параметр"
+          value: "Значение"
+        field:
+          os_version: "Версия ОС"
+          cpu_load_average: "Средняя загрузка CPU"
+          disk_usage: "Использование диска, раздел {{partition}}"
+          memory_usage: "Использование памяти"
+        value:
+          disk_usage: "{{percent}}%, {{used}} из {{total}} / {{free}} свободно"
+          memory_usage: "{{percent}}%, {{used}} из {{total}} / {{free}} свободно"
     virtual_servers:
       title: "Виртуальные сервера"
       grid:

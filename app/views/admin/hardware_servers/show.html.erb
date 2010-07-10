@@ -96,6 +96,7 @@ Ext.onReady(function() {
     iconCls: 'icon-items-list',
     store: store,
     loadMask: true,
+    region: 'center',
     tools: [{ 
       id: 'refresh',
       handler: function() {
@@ -241,7 +242,71 @@ Ext.onReady(function() {
     }]
   });
 
-  Owp.layout.addToCenter(virtualServersGrid);
+  var statsStore = new Ext.data.JsonStore({
+    url: '/admin/hardware-servers/get_stats?id=<%= @hardware_server.id %>',
+    root: 'data',
+    autoLoad: true,
+    fields: [
+      { name: 'parameter' },
+      { name: 'value' }
+    ]
+  });
+
+  var hwServerStatsGrid = new Ext.grid.GridPanel({
+    id: 'hwServerStatsGrid',
+    title: '<%= tjs('admin.hardware_servers.stats.title') %>',
+    region: 'north',
+    loadMask: true,
+    collapsible: true,
+    autoWidth: true,
+    height: 150,
+    autoExpandColumn: 'value',
+    stateId: 'hwServerStatsGrid',
+    iconCls: 'icon-items-list',
+    split: true,
+    store: statsStore,
+    tools: [{ 
+      id: 'refresh',
+      handler: function() {
+        hwServerStatsGrid.getStore().reload();
+      }
+    }],
+    cm: new Ext.grid.ColumnModel([{
+      id: 'parameter',
+      header: '<%= tjs('admin.hardware_servers.stats.column.parameter') %>',
+      width: 250,
+      dataIndex: 'parameter'
+    }, {
+      id: 'value',
+      header: '<%= tjs('admin.hardware_servers.stats.column.value') %>',
+      dataIndex: 'value',
+      renderer: function(value) {
+        if ('string' == typeof value) {
+          return value;
+        } else {
+          var progressBarId = Ext.id();
+          (function() {
+            new Ext.ProgressBar({
+              renderTo: progressBarId,
+              value: value['percent'],
+              width: 100,
+              height: 14
+            });
+          }).defer(25);
+          
+          return '<div><div style="float: left; padding-right: 10px;" id="' + progressBarId + '"></div> <div>' + value['text'] + '</div></div>';
+        }
+      }
+    }])
+  });
+  
+  var panelsWrapper = new Ext.Panel({
+    layout: 'border',
+    border: false,
+    items: [ hwServerStatsGrid, virtualServersGrid ]
+  });
+
+  Owp.layout.addToCenter(panelsWrapper);
   
   var mainContentCenterPanel = Ext.getCmp('mainContentCenterPanel');
   

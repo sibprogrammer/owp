@@ -179,6 +179,19 @@ en:
       top_toolbar:
         os_templates: "OS Templates"
         server_templates: "Server Templates"
+      stats:
+        title: "Physical server statistics"
+        column:
+          parameter: "Parameter"
+          value: "Value"
+        field:
+          os_version: "OS version"
+          cpu_load_average: "CPU load average"
+          disk_usage: "Disk usage, partition {{partition}}"
+          memory_usage: "Memory usage"
+        value:
+          disk_usage: "{{percent}}%, {{used}} of {{total}} / {{free}} free"
+          memory_usage: "{{percent}}%, {{used}} of {{total}} / {{free}} free"
     virtual_servers:
       title: "Virtual Servers"
       grid:

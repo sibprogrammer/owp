@@ -142,5 +142,38 @@ class HardwareServer < ActiveRecord::Base
     EventLog.info("hardware_server.reboot", { :host => self.host })
     rpc_client.exec('reboot &')
   end
+  
+  def disk_usage
+    raw_info = rpc_client.exec('df', '-lP -k')['output']
+    raw_info.split("\n").find_all{ |item| item =~ /^\// }.map{ |item|
+      item = item.split
+      {
+        'partition' => item[0],
+        'total_bytes' => item[1].to_i * 1024,
+        'used_bytes' => item[2].to_i * 1024,
+        'free_bytes' => item[3].to_i * 1024,
+        'usage_percent' => item[4].to_i,
+        'mount_point' => item[5],
+      }
+    }
+  end
+  
+  def cpu_load_average
+    rpc_client.exec('cat', '/proc/loadavg')['output'].split[0..2]
+  end
+  
+  def memory_usage
+    raw_info = rpc_client.exec('free', '-bo')['output'].split("\n")[1].split
+    info = {}
+    info['total_bytes'] = raw_info[1].to_i
+    info['used_bytes'] = raw_info[2].to_i
+    info['free_bytes'] = raw_info[3].to_i
+    info['usage_percent'] = (info['used_bytes'].to_f / info['total_bytes'].to_f * 100).to_i
+    info
+  end
+  
+  def os_version
+    rpc_client.exec('uname', '-srm')['output']
+  end
     
 end
