@@ -118,6 +118,9 @@ en:
     tasks:
       os_templates:
         install: "OS templates installation on the server {{host}}."
+      backups:
+        create: "Backing up of virtual server #{{identity}} on physical server {{host}}."
+        restore: "Restoring of virtual server #{{identity}} on physical server {{host}}."
     dashboard:
       title: "Dashboard"
       intro:
@@ -218,6 +221,7 @@ en:
           reinstall: "Reinstall"
           change_settings: "Change settings"
           console: "Console"
+          backup: "Backup"
       form:
         change_settings:
           title: "Change settings of virtual server"
@@ -420,3 +424,30 @@ en:
               name: "Name"
               soft_limit: "Barrier"
               hard_limit: "Limit"
+    backups:
+      title: "Backups for virtual server #{{identity}}"
+      grid:
+        title: "Backups"
+        button:
+          create: "Backup"
+          restore: "Restore"
+          destroy: "Delete"
+        column:
+          archive_date: "Date"
+          description: "Description"
+          size: "Size, Mb"
+      form:
+        remove_backup:
+          sure_to_remove: "Are you sure you want to remove selected backups?"
+          deletion_failed: "Unable to delete some backups."
+        create:
+          title: "Create new backup"
+          hint: "Note: virtual server will be stopped during backup."
+          scheduled: "Backup procedure was started and will take some time."
+          field:
+            description: "Description"
+          button_create: "Create"
+        restore:
+          sure_to_restore: "Are you sure you want to restore selected backup? Server will be unavailable during restore."
+          failed: "Restore procedure failed."
+          scheduled: "Restore procedure was started and will take some time."

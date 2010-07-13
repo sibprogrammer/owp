@@ -488,6 +488,10 @@ Ext.onReady(function() {
     
     windowConsole.show();
   }
+  
+  var backupAction = function() {
+    document.location.href = '/admin/backups/list?virtual_server_id=<%= @virtual_server.id %>';
+  }
 
   var mainContentCenterPanel = Ext.getCmp('mainContentCenterPanel');
   
@@ -498,12 +502,25 @@ Ext.onReady(function() {
     handler: consoleAction
   });
   
+  mainContentCenterPanel.getTopToolbar().insertButton(0, '-');
+  
+  <% if AppConfig.backups.allow_for_users %>
+    mainContentCenterPanel.getTopToolbar().insertButton(0, {
+      text: '<%= tjs('admin.virtual_servers.grid.button.backup') %>',
+      iconCls: 'icon-button-backup',
+      ref: '../backupButton',
+      handler: backupAction
+    });
+  <% end -%>
+  
   mainContentCenterPanel.getTopToolbar().insertButton(0, {
     text: '<%= tjs('admin.virtual_servers.grid.button.reinstall') %>',
     iconCls: 'icon-button-reinstall',
     ref: '../reinstallButton',
     handler: reinstallAction
   });
+  
+  mainContentCenterPanel.getTopToolbar().insertButton(0, '-');
   
   mainContentCenterPanel.getTopToolbar().insertButton(0, {
     text: '<%= tjs('admin.virtual_servers.grid.button.limits') %>',

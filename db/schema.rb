@@ -9,12 +9,19 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100612160739) do
+ActiveRecord::Schema.define(:version => 20100713154625) do
 
   create_table "background_jobs", :force => true do |t|
     t.string  "description"
     t.string  "params"
     t.integer "status"
+  end
+
+  create_table "backups", :force => true do |t|
+    t.string  "name"
+    t.string  "description"
+    t.integer "size"
+    t.integer "virtual_server_id"
   end
 
   create_table "event_logs", :force => true do |t|
@@ -33,6 +40,8 @@ ActiveRecord::Schema.define(:version => 20100612160739) do
     t.string  "default_server_template"
     t.string  "vzctl_version"
     t.integer "daemon_port",             :default => 7767
+    t.string  "backups_dir"
+    t.string  "ve_private"
   end
 
   add_index "hardware_servers", ["host"], :name => "index_hardware_servers_on_host", :unique => true
@@ -75,6 +84,9 @@ ActiveRecord::Schema.define(:version => 20100612160739) do
     t.integer "user_id",                            :default => 0
     t.string  "orig_server_template"
     t.string  "description"
+    t.integer "cpu_units"
+    t.integer "cpu_limit"
+    t.integer "cpus"
   end
 
 end

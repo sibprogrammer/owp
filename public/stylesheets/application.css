@@ -45,6 +45,7 @@ td.x-grid3-td-checker, td.x-grid3-td-state { vertical-align: middle; }
 .icon-button-change-setting { background-image: url(/images/wrench.png) !important; }
 .icon-button-console { background-image: url(/images/monitor.png) !important; }
 .icon-button-run { background-image: url(/images/run.png) !important; }
+.icon-button-backup { background-image: url(/images/disk_multiple.png) !important; }
 
 .icon-inline { height: 16px; width: 16px; padding-right: 5px; vertical-align: middle; }
 .icon-inline-big { height: 32px; width: 32px; padding-right: 5px; vertical-align: middle; }

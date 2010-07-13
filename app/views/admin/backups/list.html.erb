@@ -1,0 +1,248 @@
+<% @page_title = t('admin.backups.title', :identity => @virtual_server.identity.to_s) %>
+<% @page_icon = 'disk_multiple.png' %>
+
+<% javascript_tag do -%>
+Ext.onReady(function() {
+
+  function createBackup() {
+    var formBackup = new Owp.form.BasicForm({
+      labelWidth: 150,
+      waitMsgTarget: true,
+      url: '/admin/backups/create?virtual_server_id=<%= @virtual_server.id %>',
+      autoHeight: true,
+      defaults: { width: 200 },
+      keys: [{
+        key: Ext.EventObject.ENTER,
+        fn: function() {
+          windowBackup.submitButton.handler();
+        }
+      }],
+      items: [{
+        xtype: 'displayfield',
+        hideLabel: true,
+        anchor: '100%',
+        value: '<%= tjs('admin.backups.form.create.hint') %>'
+      }, {
+        fieldLabel: '<%= tjs('admin.backups.form.create.field.description') %>',
+        name: 'description',
+        xtype: 'textfield',
+        allowBlank: true
+      }]
+    });
+    
+    var windowBackup = new Owp.form.BasicFormWindow({
+      title: '<%= tjs('admin.backups.form.create.title') %>',
+      iconCls: 'icon-window-add',
+      width: 410,
+      autoHeight: true,
+      modal: true,
+      layout: 'fit',
+      plain: true,
+      bodyStyle: 'padding: 5px;',
+      resizable: false,
+      items: formBackup,
+      buttons: [{
+        text: '<%= tjs('admin.backups.form.create.button_create') %>',
+        iconCls: 'icon-button-add',
+        ref: '../submitButton',
+        handler: function() {
+          formBackup.form.submit({
+            waitMsg: '<%= tjs('form.loading') %>',
+            success: function() {
+              windowBackup.close();
+              Ext.MessageBox.show({
+                title: '<%= tjs('form.info.title') %>',
+                msg: '<%= tjs('admin.backups.form.create.scheduled') %>',
+                buttons: Ext.Msg.OK,
+                icon: Ext.MessageBox.INFO
+              });
+              Owp.statusUpdater.start();
+            },
+            failure: function(form, action) {
+              Owp.form.errorHandler(form, action);
+            }
+          });
+        }
+      }, {
+        text: '<%= tjs('form.button.cancel') %>',
+        iconCls: 'icon-button-cancel',
+        handler: function() {
+          windowBackup.close();
+        }
+      }]
+    });
+    
+    windowBackup.show();
+  }
+  
+  function restoreServer() {
+    var selectedBackupId = Ext.getCmp('backupsGrid').getSelectionModel().getSelected().id;
+    
+    Ext.MessageBox.confirm(
+      '<%= tjs('form.confirmation') %>',
+      '<%= tjs('admin.backups.form.restore.sure_to_restore') %>',
+      function(button, text) {
+        if ('yes' == button) { 
+          var progressBar = Ext.Msg.wait('<%= tjs('form.performing_task') %>');
+          
+          Ext.Ajax.request({
+            url: '/admin/backups/restore',
+            success: function(response) {
+              progressBar.hide();
+              var result = Ext.util.JSON.decode(response.responseText);
+              
+              if (!result.success) {
+                Ext.MessageBox.show({
+                  title: '<%= tjs('form.error.title') %>',
+                  msg: '<%= tjs('admin.backups.form.restore.failed') %>',
+                  buttons: Ext.Msg.OK,
+                  icon: Ext.MessageBox.ERROR
+                });
+              } else {
+                Ext.getCmp('backupsGrid').getSelectionModel().clearSelections();
+                Owp.statusUpdater.start();
+              
+                Ext.MessageBox.show({
+                  title: '<%= tjs('form.info.title') %>',
+                  msg: '<%= tjs('admin.backups.form.restore.scheduled') %>',
+                  buttons: Ext.Msg.OK,
+                  icon: Ext.MessageBox.INFO
+                });
+              }
+            },
+            failure: function() {
+              Ext.MessageBox.show({
+                title: '<%= tjs('form.error.title') %>',
+                msg: 'Internal error occured. See logs for details.',
+                buttons: Ext.Msg.OK,
+                icon: Ext.MessageBox.ERROR
+              });
+            },
+            params: { 
+              id: selectedBackupId
+            },
+            scope: this
+          });
+        }
+      }
+    );
+  }
+  
+  function removeBackup() {
+    Ext.MessageBox.confirm(
+      '<%= tjs('form.confirmation') %>',
+      '<%= tjs('admin.backups.form.remove_backup.sure_to_remove') %>',
+      function(button, text) {
+        if ('yes' == button) { 
+          Owp.list.groupAction({
+            gridName: 'backupsGrid',
+            url: '/admin/backups/delete',
+            waitMsg: '<%= tjs('form.performing_task') %>',
+            failure: {
+              title: '<%= tjs('form.error.title') %>',
+              msg: '<%= tjs('admin.backups.form.remove_backup.deletion_failed') %>'
+            }
+          });
+        }
+      }
+    );
+  }
+
+  var store = new Ext.data.JsonStore({
+    url: '/admin/backups/list_data?virtual_server_id=<%= @virtual_server.id %>',
+    root: 'data',
+    autoLoad: true,
+    sortInfo: { field: 'archive_date', direction: 'ASC' },
+    fields: [
+      { name: 'id' },
+      { name: 'name' },
+      { name: 'description' },
+      { name: 'size' },
+      { name: 'archive_date' }
+    ]
+  });
+  
+  var selectionModel = new Ext.grid.CheckboxSelectionModel({
+    listeners: {
+      selectionchange: function(selectionModel) {
+        if (selectionModel.getCount()) {
+          backupsGrid.removeButton.enable();
+        } else {
+          backupsGrid.removeButton.disable();
+        }
+        
+        if (1 == selectionModel.getCount()) {
+          backupsGrid.restoreButton.enable();
+        } else {
+          backupsGrid.restoreButton.disable();
+        }
+      }
+    }
+  });
+
+  var backupsGrid = new Ext.grid.GridPanel({
+    id: 'backupsGrid',
+    title: '<%= tjs('admin.backups.grid.title') %>',
+    iconCls: 'icon-items-list',
+    store: store,
+    loadMask: true,
+    tools: [{ 
+      id: 'refresh',
+      handler: function() {
+        backupsGrid.getStore().reload();
+      }
+    }],
+    cm: new Ext.grid.ColumnModel({
+      columns: [
+        selectionModel, 
+        { 
+          id: 'archiveDate',
+          header: '<%= tjs('admin.backups.grid.column.archive_date') %>',
+          sortable: true,
+          width: 160,
+          dataIndex: 'archive_date'
+        }, { 
+          id: 'size',
+          header: '<%= tjs('admin.backups.grid.column.size') %>',
+          sortable: true,
+          width: 100,
+          dataIndex: 'size'
+        }, { 
+          id: 'description',
+          header: '<%= tjs('admin.backups.grid.column.description') %>',
+          sortable: true,
+          dataIndex: 'description'
+        }
+      ]
+    }),
+    sm: selectionModel,
+    stripeRows: true,
+    autoExpandColumn: 'description',
+    autoWidth: true,
+    frame: true,
+    tbar: [{
+      text: '<%= tjs('admin.backups.grid.button.create') %>',
+      cls: 'x-btn-text-icon',
+      icon: '/images/add.png',
+      handler: createBackup
+    }, {
+      text: '<%= tjs('admin.backups.grid.button.restore') %>',
+      cls: 'x-btn-text-icon',
+      icon: '/images/disk.png',
+      handler: restoreServer,
+      ref: '../restoreButton',
+      disabled: true
+    }, {
+      text: '<%= tjs('admin.backups.grid.button.destroy') %>', 
+      cls: 'x-btn-text-icon',
+      icon: '/images/delete.png',
+      handler: removeBackup,
+      ref: '../removeButton',
+      disabled: true
+    }]
+  });
+  
+  Owp.layout.addToCenter(backupsGrid);
+
+});
+<% end -%>

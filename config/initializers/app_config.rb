@@ -13,6 +13,9 @@ config_defaults = {
       'path' => '/template/',
     }
   },
+  'backups' => {
+    'allow_for_users' => true,
+  },
   'updates' => {
     'disabled' => false,
     'period' => 3 * 24 * 60 * 60, # 3 days

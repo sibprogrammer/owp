@@ -6,6 +6,7 @@ class VirtualServer < ActiveRecord::Base
   attr_accessor :password, :password_confirmation, :start_after_creation
   belongs_to :hardware_server
   belongs_to :user
+  has_many :backups, :dependent => :destroy
   
   validates_format_of :ip_address, :with => /^((\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})|\s)*$/
   validates_uniqueness_of :ip_address
@@ -166,6 +167,14 @@ class VirtualServer < ActiveRecord::Base
     info['free_bytes'] = raw_info[3].to_i
     info['usage_percent'] = (info['used_bytes'].to_f / info['total_bytes'].to_f * 100).to_i
     info
+  end
+  
+  def backup
+    Backup.backup(self)
+  end
+  
+  def private_dir
+    hardware_server.ve_private.sub('$VEID', identity.to_s)
   end
   
   private

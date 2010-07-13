@@ -112,11 +112,39 @@ class HardwareServer < ActiveRecord::Base
     }
   end
   
+  def sync_backups
+    backups_list = rpc_client.exec('ls', "--block-size=M -s #{backups_dir}")['output']
+    backups_list = backups_list.split("\n")
+    # remove totals line
+    backups_list.shift
+    
+    backups_list.each { |backup_record|
+      size, filename = backup_record.split
+      next unless match = filename.match(/^ve-dump\.(\d+)\.\d+.tar$/)
+      
+      ve_id = match[1]
+      virtual_server = VirtualServer.find_by_identity(ve_id.to_i)
+      next unless virtual_server
+      
+      backup = Backup.find_by_name(filename)
+      if backup
+        backup.size = size.to_i
+        backup.save
+        next
+      end
+      
+      backup = Backup.new(:name => filename, :size => size.to_i, :virtual_server_id => virtual_server.id)
+      backup.save
+    }
+  end
+  
   def sync_config
     parser = IniParser.new(rpc_client.exec('cat', "/etc/vz/vz.conf")['output'])
     self.default_os_template = parser.get('DEF_OSTEMPLATE')
     self.default_server_template = parser.get('CONFIGFILE')
     self.templates_dir = parser.get('TEMPLATE')
+    self.backups_dir = parser.get('DUMPDIR')
+    self.ve_private = parser.get('VE_PRIVATE')
     save
   end
   
@@ -131,6 +159,7 @@ class HardwareServer < ActiveRecord::Base
     sync_os_templates
     sync_server_templates
     sync_virtual_servers
+    sync_backups
     EventLog.info("hardware_server.sync", { :host => self.host })
   end
   
