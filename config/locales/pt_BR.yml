@@ -1,0 +1,366 @@
+pt_BR:
+  language:
+    title: "Portugues do Brasil"
+  form:
+    loading: "Aguarde um instante..."
+    confirmation: "Confirme"
+    performing_task: "Aguarde um instante. Executando tarefa..."
+    error:
+      title: "Erro"
+      fill_form: "Por favor, preencha o formulário."
+    info:
+      title: "Informações"
+    button:
+      save: "Salvar"
+      cancel: "Cancelar"
+      create: "Criar"
+  activerecord:
+    errors:
+      models:
+        user:
+          attributes:
+            password:
+              confirmation: "As senhas digitadas não são iguais..."
+              too_short: "Senha muito curta (minimum symbols: {{count}})."
+            password_confirmation:
+              blank: "É necessário a confirmação da senha."
+            login:
+              taken: "Nome de usuário já existe."
+              too_short: "Nome de usuário (login) muito curto (minimum symbols: {{count}})."
+        hardware_server:
+          attributes:
+            host:
+              taken: "Servidor com esse nome já existe."
+              connection: "Conexão falhou. Talvez este serviço não esteja rodando."
+            auth_key:
+              bad_auth: "Não autorizado. Provavelmente a chave de autenticação está incorreta."
+        virtual_server:
+          attributes:
+            ip_address:
+              invalid: "Endereço IP incorreto."
+              taken: "Endereço IP já foi designado para outro servidor"
+            identity:
+              taken: "Esta identificação (id) já foi designada para outro servidor."
+            password:
+              confirmation: "A senha e a confirmação não são iguais"
+            nameserver:
+              invalid: "Endereço IP do DNS é inválido."
+        server_template:
+          attributes:
+            name:
+              taken: "O nome atraibuido para este template já existe."
+  about:
+    copyright: "Copyright 2008-2010 SoftUnity."
+    right_reserved: "Todos os direitos reservados."
+    about_program: "Sobre o programa"
+    author: "Desenvolvedores"
+    contributors: "Colaboradores"
+    contributors_list: "lista"
+    web_site: "Página Web"
+  login:
+    page_title: "Login"
+    window_title: "Entrar utilizando o {{product}}"
+    username: "Usuário"
+    password: "Senha"
+    remember_me: "Lembre-me"
+    button_login: "Acessar"
+    locale: "Idioma"
+    bad_login: "Usuário ou senha inválido."
+  admin:
+    menu:
+      title: "Menu"
+      general:
+        title: "Principal"
+        dashboard: "Painel"
+        hardware_servers: "Servidores Físicos"
+        virtual_servers: "Servidores Virtuais"
+        my_profile: "Meu perfil"
+        users: "Usuários"
+        tasks: "Tarefas"
+        event_log: "Log de eventos"
+        logout: "Sair"
+      help:
+        title: "Ajuda"
+        documentation: "Documentação"
+        support: "Suporte"
+    operations:
+      up_level: "Nível acima"
+    logout: "Tem certeza que deseja sair do sistema?"
+    my_profile:
+      title: "Meu perfil"
+      user_name: "Usuário"
+      current_password: "Senha atual"
+      new_password: "Nova senha"
+      confirm_password: "Confirme a nova senha"
+      bad_current_password: "Senha atual inválida."
+    events:
+      internal_error: "Erro interno: {{message}}"
+      hardware_server:
+        connect: "Servidor físico {{host}} foi conectado."
+        disconnect: "Servidor físico {{host}} foi desconectado."
+        sync: "Servidores {{host}} estão sinconizados."
+      virtual_server:
+        created: "Servidor virtual {{identity}} foi criado."
+        removed: "Servidor virtual {{identity}} foi removido."
+        change_state_failed: "Falha ao tentar mudar o stado do servidor virtual {{identity}}; stado: {{state}}; code: {{code}}."
+        updated: "Condigurações do servidor virtual {{identity}} foram atualizadas."
+    tasks:
+      os_templates:
+        install: "Instalação de template no servidor {{host}}."
+    dashboard:
+      title: "Painel"
+      intro:
+        title: "Introdução"
+        text: "OpenVZ Web Panel é um interface WEB desenvolvida para controlar servidores físicos que utilizam a tecnologia/software de virtualização OpenVZ."
+      profile:
+        title: "Perfil"
+        text: "Você está logado como {{login}}."
+      updates:
+        text: "Está disponível uma nova versão: {{product}}."
+        update_command: "Para realizar a atualização, é necessário executar os seguintes comandos: {{command}}"
+      stats_grid:
+        title: "Estatísticas"
+        column:
+          parameter: "Parâmetros"
+          value: "Valor"
+        parameter:
+          panel_users: "Painel de usuários"
+          hardware_servers: "Servidores físicos"
+          virtual_servers: "Servidores virtuais"
+          virtual_servers_running: "Servidores virtuais - rodando"
+          virtual_servers_stopped: "Servidores virtuais - parados"
+    hardware_servers:
+      title: "Servidores físicos"
+      grid:
+        title: "Lista de servidores físicos"
+        column:
+          host_name: "Nome do host"
+          description: "Descrição"
+          virtual_servers: "Servidores virtuais"
+        button:
+          connect: "Conectar a um novo servidor"
+          reconnect: "Reconectar ao servidor"
+          disconnect: "Desconectar do servidor"   
+          details: "Detalhes" 
+          sync: "Sincronização"
+          edit: "Alterar configurações"
+      form:
+        connect_server:
+          title: "Conectar a um novo servidor físico"
+          edit_title: "Alterar configurações do servidor físico"
+          button_connect: "Conectar"
+          field:
+            host_name: "Nome do host"
+            auth_key: "Chave de autorização"
+            description: "Descrição"
+        disconnect_server:
+          sure_to_disconnect: "Tem certeza que deseja desconectar do servidor selecionado?"
+          deletion_failed: "Falha ao desconectar do servidor."
+        sync:
+          sync_failed: "Não foi possível sincronizar as informações de alguns servidores físicos."
+      show:
+        title: "Servidor físico {{name}}"
+      top_toolbar:
+        os_templates: "Template de sistema operacional"
+        server_templates: "Template de servidor"
+    virtual_servers:
+      title: "Servidores virtuais"
+      grid:
+        title: "Lista de servidores virtuais"
+        column:
+          state: "Estado"
+          identity: "VEID"
+          ip_address: "Endereço IP"
+          host_name: "Nome do host"
+          os_template: "Template do SO"
+          memory: "Memória, Mb"
+          diskspace: "Espaço em disco, Mb"
+          owner: "Responsável"
+        button:
+          create: "Criar novo servidor virtual"
+          destroy: "Remover servidor virtual"
+          change_state: "Alterar estado"
+          start: "Ligar"
+          restart: "Reiniciar"
+          stop: "Parar"
+          edit: "Editar configurações"
+          limits: "Limites"
+          reinstall: "Re-instalar"
+          change_settings: "Alterar configurações"
+      form:
+        change_settings:
+          title: "Alterar configurações do servidor virtual"
+        reinstall:
+          title: "Re-instalar servidor virtual"
+          button:
+            reinstall: "Re-instalar"
+        change_state:
+          failed: "Não foi possível alterar o estado do servidor virtual"
+        remove_server:
+          sure_to_remove: "Você tem certeza que deseja remover o servidor virtual selecionado?"
+          deletion_failed: "Não foi possível remover alguns servidores virtuais."
+        create_server:
+          title: "Criar novo servidor virtual"
+          edit_title: "Alterar configurações do servidor virtual"
+          button_create: "Criar"
+          field:
+            identity: "ID do servidor (VEID)"
+            os_template: "Template do SO"
+            select_os_template: "Selecione o template do SO"
+            ip_address: "Endereço IP"
+            host_name: "Nome do host"
+            password: "Senha de Root"
+            confirm_password: "Confirme a senha"
+            start_on_boot: "Iniciar no boot"
+            start_after_creation: "Iniciar após a criação"
+            nameserver: "Servidor DNS"
+            searchdomain: "Domínio de pesquisa"
+            diskspace: "Espaço em disco, Mb"
+            memory: "Memória RAM, Mb"
+            status: "Status"
+            owner: "Responsável"
+            select_owner: "Selecione o responsável"
+            no_owner: "Sem responsável"
+            server_template: "Template do servidor"
+            select_server_template: "Selecione o template do servidor"
+            description: "Descrição"
+          fieldset:
+            general: "Principal"
+            network: "Rede"
+            system_access: "Acesso ao sistema"
+            start_options: "Opções de inicialização"
+            dns_settings: "Configurações de DNS"
+            limits: "Limites"
+            panel_access: "Acesso ao painel"
+          tab:
+            main_settings: "Principais configurações"
+            additional_settings: "Configurações adicionais"
+        limits:
+          title: "Limites"
+          grid:
+            column:
+              name: "Nome"
+              soft_limit: "Barreira"
+              hard_limit: "Limite"
+      show:
+        title: "Servidor virtual {{name}}"
+        grid:
+          title: "Informações do servidor virtual"
+          column:
+            parameter: "Parâmetros"
+            value: "valor"
+    os_templates:
+      title: "Template de SO {{name}}"
+      grid:
+        title: "Templates de SO disponíveis"
+        column:
+          name: "Nome"
+          size: "Tamanho, Mb"
+        button:
+          install_new_template: "Instalar novo template de SO"
+          remove: "Remover template"
+      form:
+        install:
+          title: "Instalação de novo template de SO"
+          tab:
+            official: "Oficial"
+            contributed: "Contribuição"
+          button_install: "Instalar"
+          load_failed: "Falha ao listar os templates de SO disponíveis."
+          failed: "Falha ao instalar o template de SO."
+          scheduled: "Instalação do template de SO foi agendada. Novos templates poderão surgir durante este tempo."
+        remove_template:
+          sure_to_remove: "Você tem certeza que deseja remover este template de SO?"
+          deletion_failed: "Não foi possível remover este template"
+    event_log:
+      title: "Log de eventos"
+      grid:
+        title: "Últimos eventos"
+        column:
+          level: "Status"
+          created_at: "Data"
+          message: "Mensagem"
+          id: "ID"
+        button:
+          clear: "Limpar LOG"
+      form:
+        clear:
+          sure_to_clear: "Você tem certeza que deseja remover todos os registros?"
+          clear_failed: "Não foi possível remover os logs"
+    users:
+      role:
+        infrastructure_admin: "Administrador de infra-estrutura"
+        virtual_server_owner: "Responsável por servidores virtuais"
+      title: "Usuários"
+      grid:
+        title: "Lista de usuários"
+        column:
+          login: "Login"
+          created_at: "Data de criação"
+          role: "Permissão"
+        button:
+          add: "Adicionar usuário"
+          remove: "Remover usuário"
+          edit: "Editar usuário"
+      form:
+        remove_user:
+          sure_to_remove: "Você tem certeza que deseja remover os usuários selecionados?"
+          deletion_failed: "Não foi possível remover alguns usuários."
+        create:
+          title: "Criar novo usuário"
+          edit_title: "Editar usuário"
+          button_create: "Criar"
+          field:
+            login: "Login"
+            password: "Senha"
+            confirm_password: "Confirme a senha"
+            role: "Permissão"
+            select_role: "Selecione a permissão"
+    task:
+      title: "Tarefas"
+      grid:
+        title: "Lista de tarefas"
+        column:
+          status: "Status"
+          id: "ID"
+          description: "Descrição"
+    server_templates:
+      title: "Templates no Servidor físico {{name}}"
+      grid:
+        title: "Templates disponíveis no servidor"
+        column:
+          name: "Nome"
+          template_default: "Padrão"
+        button:
+          add: "Adicionar template"
+          remove: "Remover template"
+          edit: "Alterar tempalte"
+      form:
+        remove_template:
+          sure_to_remove: "Você tem certeza que deseja remover os templates selecionados?"
+          deletion_failed: "Não foi possível remover alguns templates"
+        create_server:
+          title: "Criar um novo template de servidor"
+          edit_title: "Editar o template de servidor"
+          button_create: "Criar"
+          tab:
+            main_settings: "Principais configurações"
+            advanced_settings: "Configurações avançadas"
+          fieldset:
+            general: "Principais"
+            limits: "Limites"
+            dns_settings: "Servidor DNS"
+            start_options: "Opções de início"
+          field:
+            name: "Nome"
+            diskspace: "Espaço em disco, Mb"
+            memory: "Memória, Mb"
+            start_on_boot: "Iníciar no boot"
+            nameserver: "Servidor DNS"
+            searchdomain: "Domínio de pesquisa"
+            cpu_units: "Quantidade de CPUs"
+          grid:
+            column:
+              name: "Nome"
+              soft_limit: "Barreira"
+              hard_limit: "Limite"
