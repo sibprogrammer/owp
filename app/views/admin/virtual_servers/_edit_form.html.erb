@@ -1,7 +1,7 @@
 <% @hardware_server = @virtual_server.hardware_server if @virtual_server %>
 <% @os_templates = @hardware_server.os_templates.map { |item| { :id => item.id, :name => item.name, }} %>
 <% @server_templates = @hardware_server.server_templates.map { |item| { :id => item.id, :name => item.name, }} %>
-<% @virtual_servers_owners = User.get_virtual_servers_owners.map { |user| { :id => user.id, :login => user.login, }} %>
+<% @virtual_servers_owners = User.all.map { |user| { :id => user.id, :login => user.login, }} %>
 <% @virtual_servers_owners << { :id => 0, :login => t('admin.virtual_servers.form.create_server.field.no_owner') } %>
 
 var showVirtualServerEditForm = function(mode, grid, statsGrid) {
