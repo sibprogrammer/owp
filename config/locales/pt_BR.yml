@@ -34,6 +34,10 @@ pt_BR:
               connection: "Conexão falhou. Talvez este serviço não esteja rodando."
             auth_key:
               bad_auth: "Não autorizado. Provavelmente a chave de autenticação está incorreta."
+            daemon_port:
+              not_a_number: "Porta inválida."
+              greater_than: "O número da porta deverá ser superior a {{count}}."
+              less_than: "O número da porta não poderá ser inferior a {{count}}."
         virtual_server:
           attributes:
             ip_address:
@@ -45,6 +49,12 @@ pt_BR:
               confirmation: "A senha e a confirmação não são iguais"
             nameserver:
               invalid: "Endereço IP do DNS é inválido."
+            host_name:
+              invalid: "Nome do host inválido."
+            search_domain:
+              invalid: "Domínio de busca inválido."
+            description:
+              invalid: "Descrição contém caracteres inválidos."
         server_template:
           attributes:
             name:
@@ -99,6 +109,7 @@ pt_BR:
         connect: "Servidor físico {{host}} foi conectado."
         disconnect: "Servidor físico {{host}} foi desconectado."
         sync: "Servidores {{host}} estão sinconizados."
+        reboot: "Reinicializando o servidor {{host}}."
       virtual_server:
         created: "Servidor virtual {{identity}} foi criado."
         removed: "Servidor virtual {{identity}} foi removido."
@@ -122,9 +133,9 @@ pt_BR:
         title: "Estatísticas"
         column:
           parameter: "Parâmetros"
-          value: "Valor"
+          value: "Quantidade"
         parameter:
-          panel_users: "Painel de usuários"
+          panel_users: "Usuários"
           hardware_servers: "Servidores físicos"
           virtual_servers: "Servidores virtuais"
           virtual_servers_running: "Servidores virtuais - rodando"
@@ -144,6 +155,7 @@ pt_BR:
           details: "Detalhes" 
           sync: "Sincronização"
           edit: "Alterar configurações"
+          reboot: "Reiniciar"
       form:
         connect_server:
           title: "Conectar a um novo servidor físico"
@@ -153,16 +165,33 @@ pt_BR:
             host_name: "Nome do host"
             auth_key: "Chave de autorização"
             description: "Descrição"
+            daemon_port: "Porta de conexão"
         disconnect_server:
           sure_to_disconnect: "Tem certeza que deseja desconectar do servidor selecionado?"
           deletion_failed: "Falha ao desconectar do servidor."
         sync:
           sync_failed: "Não foi possível sincronizar as informações de alguns servidores físicos."
+        reboot_server:
+          sure_to_reboot: "Os servidores selecionados estarão indisponíveis durante a reinicialização. Tem certeza que deseja reiniciar?"
+          reboot_failed: "Não foi possível iniciar/reiniciar alguns servidores."
       show:
         title: "Servidor físico {{name}}"
       top_toolbar:
         os_templates: "Template de sistema operacional"
         server_templates: "Template de servidor"
+      stats:
+        title: "Estatísticas do servidor físico"
+        column:
+          parameter: "Parâmetro"
+          value: "Descrição"
+        field:
+          os_version: "Versão do SO"
+          cpu_load_average: "Uso do CPU"
+          disk_usage: "Uso do disco, partição {{partition}}"
+          memory_usage: "Uso da memória"
+        value:
+          disk_usage: "{{percent}}%, {{used}} de {{total}} / {{free}} Livre"
+          memory_usage: "{{percent}}%, {{used}} de {{total}} / {{free}} Livre"
     virtual_servers:
       title: "Servidores virtuais"
       grid:
@@ -176,6 +205,7 @@ pt_BR:
           memory: "Memória, Mb"
           diskspace: "Espaço em disco, Mb"
           owner: "Responsável"
+          description: "Descrição"
         button:
           create: "Criar novo servidor virtual"
           destroy: "Remover servidor virtual"
@@ -187,6 +217,7 @@ pt_BR:
           limits: "Limites"
           reinstall: "Re-instalar"
           change_settings: "Alterar configurações"
+          console: "Terminal"
       form:
         change_settings:
           title: "Alterar configurações do servidor virtual"
@@ -224,6 +255,9 @@ pt_BR:
             server_template: "Template do servidor"
             select_server_template: "Selecione o template do servidor"
             description: "Descrição"
+            cpu_units: "Unidades de CPU"
+            cpus: "Quantidade de processadores"
+            cpu_limit: "Uso da CPU, %"
           fieldset:
             general: "Principal"
             network: "Rede"
@@ -233,7 +267,7 @@ pt_BR:
             limits: "Limites"
             panel_access: "Acesso ao painel"
           tab:
-            main_settings: "Principais configurações"
+            main_settings: "Configurações básicas"
             additional_settings: "Configurações adicionais"
         limits:
           title: "Limites"
@@ -242,6 +276,15 @@ pt_BR:
               name: "Nome"
               soft_limit: "Barreira"
               hard_limit: "Limite"
+        console:
+          title: "Terminal"
+          error:
+            code: "Código retornado:"
+            output: "Saída:"
+          field:
+            command: "Comando"
+          button:
+            run: "Executar"
       show:
         title: "Servidor virtual {{name}}"
         grid:
@@ -249,6 +292,15 @@ pt_BR:
           column:
             parameter: "Parâmetros"
             value: "valor"
+      stats:
+        title: "Estatísticas do servidor virtual"
+        field:
+          cpu_load_average: "Uso do CPU"
+          disk_usage: "Uso do disco"
+          memory_usage: "Uso da memória"
+        value:
+          disk_usage: "{{percent}}%, {{used}} de {{total}} / {{free}} livre"
+          memory_usage: "{{percent}}%, {{used}} de {{total}} / {{free}} livre"
     os_templates:
       title: "Template de SO {{name}}"
       grid:
@@ -256,6 +308,7 @@ pt_BR:
         column:
           name: "Nome"
           size: "Tamanho, Mb"
+          virtual_servers: "Seridores"
         button:
           install_new_template: "Instalar novo template de SO"
           remove: "Remover template"
@@ -331,6 +384,7 @@ pt_BR:
         column:
           name: "Nome"
           template_default: "Padrão"
+          virtual_servers: "Servidores"
         button:
           add: "Adicionar template"
           remove: "Remover template"
@@ -359,6 +413,8 @@ pt_BR:
             nameserver: "Servidor DNS"
             searchdomain: "Domínio de pesquisa"
             cpu_units: "Quantidade de CPUs"
+            cpus: "Quantidade de Processadores"
+            cpu_limit: "Uso da CPU, %"
           grid:
             column:
               name: "Nome"
