@@ -73,6 +73,8 @@ class HardwareServer < ActiveRecord::Base
   
   def sync_virtual_servers
     ves_on_server = rpc_client.exec('vzlist', '-a -H -o veid,hostname,ip,status')['output'].split("\n")
+    # skip error lines
+    ves_on_server = ves_on_server.find_all { |item| item =~ /^\s+\d+/ }
     
     ves_ids_on_server = ves_on_server.map { |vzlist_entry|
       vzlist_entry = vzlist_entry.split.first
