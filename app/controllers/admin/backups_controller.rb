@@ -6,22 +6,14 @@ class Admin::BackupsController < Admin::Base
     redirect_to :controller => 'dashboard' and return if !@virtual_server or !@current_user.can_control(@virtual_server)
     
     @up_level = '/admin/virtual-servers/show?id=' + @virtual_server.id.to_s
+    @backups_list = backups_list(@virtual_server)
   end
   
   def list_data
     virtual_server = VirtualServer.find_by_id(params[:virtual_server_id])
     redirect_to :controller => 'dashboard' and return if !virtual_server or !@current_user.can_control(virtual_server)
     
-    backups = virtual_server.backups
-    
-    backups.map! { |backup| {
-      :id => backup.id,
-      :name => backup.name,
-      :description => backup.description,
-      :size => backup.size,
-      :archive_date => backup.date.strftime("%Y.%m.%d %H:%M:%S"),
-    }}
-    render :json => { :data => backups }  
+    render :json => { :data => backups_list(virtual_server) }  
   end
   
   def delete
@@ -100,6 +92,17 @@ class Admin::BackupsController < Admin::Base
   
     def is_allowed
       redirect_to :controller => 'admin/dashboard' unless @current_user.superadmin? || AppConfig.backups.allow_for_users
+    end
+  
+    def backups_list(virtual_server)
+      backups = virtual_server.backups
+      backups.map! { |backup| {
+        :id => backup.id,
+        :name => backup.name,
+        :description => backup.description,
+        :size => backup.size,
+        :archive_date => backup.date.strftime("%Y.%m.%d %H:%M:%S"),
+      }}
     end
    
 end

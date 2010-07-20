@@ -153,6 +153,7 @@ Ext.onReady(function() {
   var store = new Ext.data.JsonStore({
     url: '/admin/users/list_data',
     root: 'data',
+    data: <%= { :data => @users_list }.to_json %>,
     autoLoad: true,
     sortInfo: { field: 'login', direction: 'ASC' },
     fields: [

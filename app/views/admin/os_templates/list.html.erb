@@ -254,6 +254,7 @@ Ext.onReady(function() {
     url: '/admin/os-templates/list_data?hardware_server_id=' + <%= @hardware_server.id %>,
     root: 'data',
     autoLoad: true,
+    data: <%= { :data => @os_templates_list }.to_json %>,
     sortInfo: { field: 'name', direction: 'ASC' },
     fields: [
       { name: 'id' },

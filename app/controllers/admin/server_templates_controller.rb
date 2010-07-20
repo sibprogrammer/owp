@@ -8,18 +8,12 @@ class Admin::ServerTemplatesController < Admin::Base
     
     server_template = ServerTemplate.find_by_name(@hardware_server.default_server_template)
     @advanced_limits = server_template.get_advanced_limits
+    @server_templates_list = server_templates_list(@hardware_server)
   end
   
   def list_data
     hardware_server = HardwareServer.find_by_id(params[:hardware_server_id])
-    server_templates = hardware_server.server_templates
-    server_templates.map! { |item| {
-      :id => item.id,
-      :name => item.name,
-      :is_default => item.name == hardware_server.default_server_template,
-      :virtual_servers => VirtualServer.count(:conditions => ["hardware_server_id = ? AND orig_server_template = ?", hardware_server.id, item.name]),
-    }}
-    render :json => { :data => server_templates }
+    render :json => { :data => server_templates_list(hardware_server) }
   end
   
   def delete
@@ -68,5 +62,17 @@ class Admin::ServerTemplatesController < Admin::Base
       :raw_limits => server_template.get_advanced_limits.to_json,
     }}
   end
+  
+  private
+  
+    def server_templates_list(hardware_server)
+      server_templates = hardware_server.server_templates
+      server_templates.map! { |item| {
+        :id => item.id,
+        :name => item.name,
+        :is_default => item.name == hardware_server.default_server_template,
+        :virtual_servers => VirtualServer.count(:conditions => ["hardware_server_id = ? AND orig_server_template = ?", hardware_server.id, item.name]),
+      }}
+    end
   
 end

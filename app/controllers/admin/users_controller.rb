@@ -20,17 +20,11 @@ class Admin::UsersController < Admin::Base
   
   def list
     @up_level = '/admin/dashboard'
+    @users_list = users_list
   end
   
   def list_data
-    users = User.all
-    users.map! { |user| {
-      :id => user.id,
-      :login => user.login,
-      :role_type => t('admin.users.role.' + (1 == user.role_type ? 'infrastructure_admin' : 'virtual_server_owner')),
-      :created_at => user.created_at.strftime("%Y.%m.%d %H:%M:%S"),
-    }}
-    render :json => { :data => users }  
+    render :json => { :data => users_list }
   end
   
   def delete
@@ -66,5 +60,17 @@ class Admin::UsersController < Admin::Base
       :role_type => user.role_type,
     }}
   end
+  
+  private
+  
+    def users_list
+      users = User.all
+      users.map! { |user| {
+        :id => user.id,
+        :login => user.login,
+        :role_type => t('admin.users.role.' + (1 == user.role_type ? 'infrastructure_admin' : 'virtual_server_owner')),
+        :created_at => user.created_at.strftime("%Y.%m.%d %H:%M:%S"),
+      }}
+    end
   
 end

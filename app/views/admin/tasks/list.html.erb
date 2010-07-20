@@ -8,6 +8,7 @@ Ext.onReady(function() {
     url: '/admin/tasks/list_data',
     root: 'data',
     autoLoad: true,
+    data: <%= { :data => @tasks_list }.to_json %>,
     sortInfo: { field: 'id', direction: 'DESC' },
     fields: [
       { name: 'id' },

@@ -8,16 +8,22 @@ class Admin::TasksController < Admin::Base
   
   def list
     @up_level = '/admin/dashboard'
+    @tasks_list = tasks_list
   end
   
   def list_data
-    @tasks = BackgroundJob.all(:limit => 100, :order => 'id DESC')
-    @tasks.map! { |item| {
-      :id => item.id,
-      :status => item.status,
-      :description => item.t_description
-    }}
-    render :json => { :data => @tasks }  
+    render :json => { :data => tasks_list }  
   end
+  
+  private
+  
+    def tasks_list
+      tasks = BackgroundJob.all(:limit => 100, :order => 'id DESC')
+      tasks.map! { |item| {
+        :id => item.id,
+        :status => item.status,
+        :description => item.t_description
+      }}
+    end
   
 end

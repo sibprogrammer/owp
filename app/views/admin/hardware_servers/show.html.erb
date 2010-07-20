@@ -51,6 +51,7 @@ Ext.onReady(function() {
     url: '/admin/virtual-servers/list_data?hardware_server_id=<%= @hardware_server.id %>',
     root: 'data',
     autoLoad: true,
+    data: <%= { :data => @virtual_servers_list }.to_json %>,
     sortInfo: { field: 'identity', direction: 'ASC' },
     fields: [
       { name: 'id' },

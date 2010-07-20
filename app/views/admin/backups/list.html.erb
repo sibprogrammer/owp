@@ -152,6 +152,7 @@ Ext.onReady(function() {
     url: '/admin/backups/list_data?virtual_server_id=<%= @virtual_server.id %>',
     root: 'data',
     autoLoad: true,
+    data: <%= { :data => @backups_list }.to_json %>,
     sortInfo: { field: 'archive_date', direction: 'ASC' },
     fields: [
       { name: 'id' },

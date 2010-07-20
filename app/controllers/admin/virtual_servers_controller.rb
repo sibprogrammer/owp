@@ -3,6 +3,7 @@ class Admin::VirtualServersController < Admin::Base
   
   def list
     @up_level = '/admin/dashboard'
+    @virtual_servers_list = get_virtual_servers_map(@current_user.virtual_servers)
   end
   
   def owner_list_data
@@ -11,8 +12,7 @@ class Admin::VirtualServersController < Admin::Base
   
   def list_data
     hardware_server = HardwareServer.find_by_id(params[:hardware_server_id])
-    virtual_servers = hardware_server.virtual_servers
-    render :json => { :data => get_virtual_servers_map(virtual_servers) }
+    render :json => { :data => get_virtual_servers_map(hardware_server.virtual_servers) }
   end
   
   def change_state
@@ -96,59 +96,15 @@ class Admin::VirtualServersController < Admin::Base
     else
       @up_level = '/admin/virtual-servers/list'
     end
+    
+    @virtual_server_properties = virtual_server_properties(@virtual_server)
   end
   
   def get_properties
     virtual_server = VirtualServer.find_by_id(params[:id])
     redirect_to :controller => 'dashboard' and return if !virtual_server or !@current_user.can_control(virtual_server)
 
-    properties = [
-      {
-        :parameter => t('admin.virtual_servers.form.create_server.field.identity'),
-        :value => virtual_server.identity,
-      }, {
-        :parameter => t('admin.virtual_servers.form.create_server.field.status'),
-        :value => '<img src="/images/' + (('running' == virtual_server.state) ? 'run' : 'stop') + '.png"/>',
-      }, {
-        :parameter => t('admin.virtual_servers.form.create_server.field.os_template'),
-        :value => virtual_server.orig_os_template,
-      }, {
-        :parameter => t('admin.virtual_servers.form.create_server.field.server_template'),
-        :value => virtual_server.orig_server_template,
-      }, {
-        :parameter => t('admin.virtual_servers.form.create_server.field.ip_address'),
-        :value => virtual_server.ip_address,
-      }, {
-        :parameter => t('admin.virtual_servers.form.create_server.field.host_name'),
-        :value => virtual_server.host_name,
-      }, {
-        :parameter => t('admin.virtual_servers.form.create_server.field.diskspace'),
-        :value => virtual_server.diskspace,
-      }, {
-        :parameter => t('admin.virtual_servers.form.create_server.field.memory'),
-        :value => virtual_server.memory,
-      }, {
-        :parameter => t('admin.virtual_servers.form.create_server.field.cpu_units'),
-        :value => virtual_server.cpu_units,
-      }, {
-        :parameter => t('admin.virtual_servers.form.create_server.field.cpus'),
-        :value => virtual_server.cpus,
-      }, {
-        :parameter => t('admin.virtual_servers.form.create_server.field.cpu_limit'),
-        :value => virtual_server.cpu_limit,
-      }, {
-        :parameter => t('admin.virtual_servers.form.create_server.field.nameserver'),
-        :value => virtual_server.nameserver,
-      }, {
-        :parameter => t('admin.virtual_servers.form.create_server.field.searchdomain'),
-        :value => virtual_server.search_domain,
-      }, {
-        :parameter => t('admin.virtual_servers.form.create_server.field.description'),
-        :value => virtual_server.description,
-      }
-    ]
-    
-    render :json => { :success => true, :data => properties }
+    render :json => { :success => true, :data => virtual_server_properties(virtual_server) }
   end
   
   def get_stats
@@ -285,21 +241,54 @@ class Admin::VirtualServersController < Admin::Base
     render :json => { :success => true, :output => output }
   end
   
-  private 
+  private
   
-  def get_virtual_servers_map(virtual_servers)
-    virtual_servers = virtual_servers.map { |virtual_server| {
-      :id => virtual_server.id,
-      :identity => virtual_server.identity,
-      :ip_address => virtual_server.ip_address.blank? ? '' : virtual_server.ip_address.split.join(', '),
-      :host_name => virtual_server.host_name,
-      :state => virtual_server.state,
-      :os_template_name => virtual_server.orig_os_template,
-      :diskspace => virtual_server.diskspace,
-      :memory => virtual_server.memory,
-      :owner => virtual_server.user ? virtual_server.user.login : '',
-      :description => virtual_server.description.to_s,
-    }} 
-  end
+    def virtual_server_properties(virtual_server)
+      [
+        {
+          :parameter => t('admin.virtual_servers.form.create_server.field.identity'),
+          :value => virtual_server.identity,
+        }, {
+          :parameter => t('admin.virtual_servers.form.create_server.field.status'),
+          :value => '<img src="/images/' + (('running' == virtual_server.state) ? 'run' : 'stop') + '.png"/>',
+        }, {
+          :parameter => t('admin.virtual_servers.form.create_server.field.os_template'),
+          :value => virtual_server.orig_os_template,
+        }, {
+          :parameter => t('admin.virtual_servers.form.create_server.field.server_template'),
+          :value => virtual_server.orig_server_template,
+        }, {
+          :parameter => t('admin.virtual_servers.form.create_server.field.ip_address'),
+          :value => virtual_server.ip_address,
+        }, {
+          :parameter => t('admin.virtual_servers.form.create_server.field.host_name'),
+          :value => virtual_server.host_name,
+        }, {
+          :parameter => t('admin.virtual_servers.form.create_server.field.diskspace'),
+          :value => virtual_server.diskspace,
+        }, {
+          :parameter => t('admin.virtual_servers.form.create_server.field.memory'),
+          :value => virtual_server.memory,
+        }, {
+          :parameter => t('admin.virtual_servers.form.create_server.field.cpu_units'),
+          :value => virtual_server.cpu_units,
+        }, {
+          :parameter => t('admin.virtual_servers.form.create_server.field.cpus'),
+          :value => virtual_server.cpus,
+        }, {
+          :parameter => t('admin.virtual_servers.form.create_server.field.cpu_limit'),
+          :value => virtual_server.cpu_limit,
+        }, {
+          :parameter => t('admin.virtual_servers.form.create_server.field.nameserver'),
+          :value => virtual_server.nameserver,
+        }, {
+          :parameter => t('admin.virtual_servers.form.create_server.field.searchdomain'),
+          :value => virtual_server.search_domain,
+        }, {
+          :parameter => t('admin.virtual_servers.form.create_server.field.description'),
+          :value => virtual_server.description,
+        }
+      ]
+    end
   
 end

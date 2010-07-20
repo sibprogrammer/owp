@@ -3,17 +3,11 @@ class Admin::HardwareServersController < Admin::Base
   
   def list
     @up_level = '/admin/dashboard'
+    @hardware_servers_list = hardware_servers_list
   end
   
   def list_data
-    @hardware_servers = HardwareServer.all
-    @hardware_servers.map! { |item| {
-      :id => item.id,
-      :host => item.host,
-      :virtual_servers => item.virtual_servers.count,
-      :description => item.description
-    }}
-    render :json => { :data => @hardware_servers }  
+    render :json => { :data => hardware_servers_list }
   end
   
   def save
@@ -47,6 +41,7 @@ class Admin::HardwareServersController < Admin::Base
     redirect_to :action => 'list' if !@hardware_server and return
 
     @up_level = '/admin/hardware-servers/list'
+    @virtual_servers_list = get_virtual_servers_map(@hardware_server.virtual_servers)
   end
   
   def sync
@@ -137,5 +132,17 @@ class Admin::HardwareServersController < Admin::Base
     
     render :json => { :success => true, :data => stats }
   end
+  
+  private
+  
+    def hardware_servers_list
+      hardware_servers = HardwareServer.all
+      hardware_servers.map! { |item| {
+        :id => item.id,
+        :host => item.host,
+        :virtual_servers => item.virtual_servers.count,
+        :description => item.description
+      }}
+    end
   
 end

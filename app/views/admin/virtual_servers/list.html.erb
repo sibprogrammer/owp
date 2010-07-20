@@ -21,6 +21,7 @@ Ext.onReady(function() {
     url: '/admin/virtual-servers/owner_list_data',
     root: 'data',
     autoLoad: true,
+    data: <%= { :data => @virtual_servers_list }.to_json %>,
     sortInfo: { field: 'identity', direction: 'ASC' },
     fields: [
       { name: 'id' },

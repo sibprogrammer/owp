@@ -13,6 +13,7 @@ Ext.onReady(function() {
     url: '/admin/virtual-servers/get_properties?id=<%= @virtual_server.id %>',
     root: 'data',
     autoLoad: true,
+    data: <%= { :data => @virtual_server_properties }.to_json %>,
     fields: [
       { name: 'parameter' },
       { name: 'value' }

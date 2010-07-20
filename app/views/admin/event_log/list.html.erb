@@ -28,6 +28,7 @@ Ext.onReady(function() {
     url: '/admin/event-log/list_data',
     root: 'data',
     autoLoad: true,
+    data: <%= { :data => @events_list }.to_json %>,
     sortInfo: { field: 'id', direction: 'DESC' },
     fields: [
       { name: 'id' },
