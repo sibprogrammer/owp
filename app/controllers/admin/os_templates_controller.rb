@@ -42,6 +42,8 @@ class Admin::OsTemplatesController < Admin::Base
     params[:selected_contributed_templates].split(',').each { |name|
       jobs_ids.push(OsTemplate.install_contributed(hardware_server, name)['job_id'])
     }
+    
+    jobs_ids.push(OsTemplate.install_from_url(hardware_server, params[:template_url])['job_id']) unless params[:template_url].blank?
       
     spawn do
       job = BackgroundJob.create('os_templates.install', { :host => hardware_server.host })

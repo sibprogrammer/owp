@@ -322,10 +322,14 @@ en:
           tab:
             official: "Official"
             contributed: "Contributed"
+            url: "URL"
           button_install: "Install"
           load_failed: "Failed to load OS templates list."
           failed: "Failed to start installation of OS templates."
           scheduled: "OS templates installation was scheduled. New templates appeared after some time."
+          field:
+            url: "Template URL"
+          invalid_url: "Enter valid URL for OS template archive."
         remove_template:
           sure_to_remove: "Are you sure you want to remove selected OS templates?"
           deletion_failed: "Unable to delete some OS templates."

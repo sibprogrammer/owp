@@ -4,23 +4,23 @@
 <% javascript_tag do -%>
 Ext.onReady(function() {
 
-  function onGridSelectionChange() {
-    selectedOfficialTemplates = windowInstallNewTemplate.officialTemplatesGrid
+  function onFormChange() {
+    var selectedOfficialTemplates = windowInstallNewTemplate.officialTemplatesGrid
       ? windowInstallNewTemplate.officialTemplatesGrid.getSelectionModel().getCount()
       : 0;
-    selectedContributedTemplates = windowInstallNewTemplate.contributedTemplatesGrid
+    var selectedContributedTemplates = windowInstallNewTemplate.contributedTemplatesGrid
       ? windowInstallNewTemplate.contributedTemplatesGrid.getSelectionModel().getCount()
       : 0;
+    var templateUrl = windowInstallNewTemplate.templateUrlPanel.find('name', 'template_url')[0].getValue();
     
-    if (selectedOfficialTemplates || selectedContributedTemplates) {
+    if (selectedOfficialTemplates || selectedContributedTemplates || templateUrl) {
       windowInstallNewTemplate.installButton.enable();
     } else {
       windowInstallNewTemplate.installButton.disable();
     }
   }
   
-  function clearGridsSelections() {
-    // TODO: remove try-catch after detailed investigation
+  function clearInstallForm() {
     try {
       if ('undefined' != typeof windowInstallNewTemplate.officialTemplatesGrid) {
         windowInstallNewTemplate.officialTemplatesGrid.getSelectionModel().clearSelections();
@@ -30,6 +30,8 @@ Ext.onReady(function() {
         windowInstallNewTemplate.contributedTemplatesGrid.getSelectionModel().clearSelections();
       }
     } catch(e) { }
+    
+    windowInstallNewTemplate.templateUrlPanel.find('name', 'template_url')[0].setRawValue('');
   }
 
   function installTemplates() {
@@ -53,6 +55,8 @@ Ext.onReady(function() {
       });
     }
     
+    var templateUrl = windowInstallNewTemplate.templateUrlPanel.find('name', 'template_url')[0].getValue();
+    
     var progressBar = Ext.Msg.wait('<%= tjs('form.performing_task') %>');
   
     Ext.Ajax.request({
@@ -71,7 +75,7 @@ Ext.onReady(function() {
           });
         } else {
           windowInstallNewTemplate.hide();
-          clearGridsSelections();
+          clearInstallForm();
         
           Ext.MessageBox.show({
             title: '<%= tjs('form.info.title') %>',
@@ -93,7 +97,8 @@ Ext.onReady(function() {
       },
       params: { 
         selected_official_templates: [selectedOfficialTemplates],
-        selected_contributed_templates: [selectedContributedTemplates]
+        selected_contributed_templates: [selectedContributedTemplates],
+        template_url: templateUrl
       },
       scope: this
     });
@@ -123,10 +128,10 @@ Ext.onReady(function() {
   
   function installNewTemplate() {
     var selectionModelOfficial = new Ext.grid.CheckboxSelectionModel({
-      listeners: { selectionchange: onGridSelectionChange }
+      listeners: { selectionchange: onFormChange }
     });
     var selectionModelContributed = new Ext.grid.CheckboxSelectionModel({
-      listeners: { selectionchange: onGridSelectionChange }
+      listeners: { selectionchange: onFormChange }
     });
   
     if (!windowInstallNewTemplate) {
@@ -166,19 +171,27 @@ Ext.onReady(function() {
         title: '<%= tjs('admin.os_templates.form.install.title') %>',
         iconCls: 'icon-window-add',
         width: 400,
-        height: 400,
         modal: true,
         layout: 'fit',
         plain: true,
         bodyStyle: 'padding:5px;',
         resizable: false,
+        autoHeight: true,
         items: [{
           xtype: 'tabpanel',
           activeTab: 0,
           layoutOnTabChange : true,
+          autoHeight: true,
+          listeners: {
+            tabchange: function(tabPanel, activePanel) {
+              //windowInstallNewTemplate.setHeight(100);
+              windowInstallNewTemplate.syncSize();
+            }
+          },
           items: [{
             title: '<%= tjs('admin.os_templates.form.install.tab.official') %>',
             xtype: 'grid',
+            height: 300,
             layout: 'fit',
             loadMask: true,
             ref: '../officialTemplatesGrid',
@@ -205,6 +218,7 @@ Ext.onReady(function() {
           }, {
             title: '<%= tjs('admin.os_templates.form.install.tab.contributed') %>',
             xtype: 'grid',
+            height: 300,
             layout: 'fit',
             ref: '../contributedTemplatesGrid',
             store: storeContributedTemplates,
@@ -227,6 +241,29 @@ Ext.onReady(function() {
             stripeRows: true,
             frame: true,
             iconCls: 'icon-items-list'
+          }, {
+            title: '<%= tjs('admin.os_templates.form.install.tab.url') %>',
+            xtype: 'panel',
+            layout: 'form',
+            autoHeight: true,
+            labelWidth: 150,
+            bodyStyle: 'padding: 10px; background-color: #CCD9E8;',
+            ref: '../templateUrlPanel',
+            items: [{
+              fieldLabel: '<%= tjs('admin.os_templates.form.install.field.url') %>',
+              width: 180,
+              name: 'template_url',
+              xtype: 'textfield',
+              validator: function(value) {
+                if (!value || /^(https?|ftp):\/\/.*\.tar\.gz/.test(value)) {
+                  return true;
+                } else {
+                  return '<%= tjs('admin.os_templates.form.install.invalid_url') %>';
+                }
+              },
+              enableKeyEvents: true,
+              listeners: { keyup: onFormChange }
+            }]
           }]
         }],
         closeAction: 'hide',        
@@ -246,7 +283,7 @@ Ext.onReady(function() {
       });
     }
     
-    clearGridsSelections();    
+    clearInstallForm();
     windowInstallNewTemplate.show();
   }
 

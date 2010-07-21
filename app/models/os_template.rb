@@ -18,6 +18,10 @@ class OsTemplate < ActiveRecord::Base
   def self.install_contributed(hardware_server, name)
     self.download(hardware_server, AppConfig.os_templates.mirror.path + '/precreated/contrib/', name)
   end
+  
+  def self.install_from_url(hardware_server, url)
+    hardware_server.rpc_client.job('wget', "-P #{hardware_server.templates_dir}/cache/ #{url}")
+  end
 
   def delete_physically
     hardware_server.rpc_client.exec("rm #{hardware_server.templates_dir}/cache/#{self.name}.tar.gz")
