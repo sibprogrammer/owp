@@ -95,7 +95,15 @@ en:
         support: "Support"
     operations:
       up_level: "Up Level"
+      search: "Search"
     logout: "Are you sure you want to log out?"
+    search:
+      form:
+        title: "Search"
+        field:
+          query: "Query"
+        button:
+          search: "Search"
     my_profile:
       title: "My profile"
       user_name: "User Name"

@@ -169,12 +169,23 @@
         }]
       });
       
+      <%= render :partial => 'layouts/search' if @current_user.superadmin? %>
+
       function getTopBar() {
         var upLevelLink = '<%= @up_level %>';
       
         var topBar = [{ 
           xtype: 'tbfill'
-        }, {
+        }, <% if @current_user.superadmin? %> {
+          text: '<%= tjs('admin.operations.search') %>',
+          handler: function() {
+            formSearch.find('name', 'query')[0].setRawValue('');
+            storeSearch.removeAll();
+            windowSearch.show();
+          },
+          cls: 'x-btn-text-icon',
+          icon: '/images/zoom.png'
+        }, <% end -%> {
           text: '<%= tjs('admin.operations.up_level') %>',
           handler: function() {
             document.location.href = upLevelLink;

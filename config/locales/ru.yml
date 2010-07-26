@@ -95,7 +95,15 @@ ru:
         support: "Тех. поддержка"
     operations:
       up_level: "Вверх"
+      search: "Поиск"
     logout: "Вы действительно хотите выйти?"
+    search:
+      form:
+        title: "Поиск"
+        field:
+          query: "Запрос"
+        button:
+          search: "Искать"
     my_profile:
       title: "Мой профиль"
       user_name: "Логин"

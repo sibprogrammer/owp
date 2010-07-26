@@ -1,0 +1,81 @@
+var storeSearch = new Ext.data.JsonStore({
+  url: '/admin/search',
+  root: 'data',
+  fields: [
+    { name: 'item' }
+  ]
+});
+
+var searchGrid = new Ext.grid.GridPanel({
+  id: 'searchGrid',
+  loadMask: true,
+  hideHeaders: true,
+  store: storeSearch,
+  autoWidth: true,
+  stripeRows: true,
+  autoExpandColumn: 'item',
+  anchor: '100% -30',
+  sm: new Ext.grid.RowSelectionModel({
+    singleSelect: true
+  }),
+  cm: new Ext.grid.ColumnModel([{
+    id: 'item',
+    header: '<%= tjs('admin.virtual_servers.show.grid.column.parameter') %>',
+    dataIndex: 'item'
+  }])
+});
+
+var formSearch = new Owp.form.BasicForm({
+  labelWidth: 100,
+  waitMsgTarget: true,
+  keys: [{
+    key: Ext.EventObject.ENTER,
+    fn: function() {
+      windowSearch.submitButton.handler();
+    }
+  }],
+  items: [
+    {
+      fieldLabel: '<%= tjs('admin.search.form.field.query') %>',
+      xtype: 'textfield',
+      name: 'query',
+      allowBlank: false,
+      anchor: '-20'
+    },
+    searchGrid
+  ]
+});  
+
+var windowSearch = new Owp.form.BasicFormWindow({
+  title: '<%= tjs('admin.search.form.title') %>',
+  iconCls: 'icon-window-search',
+  width: 600,
+  height: 300,
+  modal: true,
+  layout: 'fit',
+  plain: true,
+  bodyStyle: 'padding: 5px;',
+  resizable: true,
+  items: formSearch,
+  closeAction: 'hide',
+  buttons: [{
+    text: '<%= tjs('admin.search.form.button.search') %>',
+    iconCls: 'icon-button-run',
+    ref: '../submitButton',
+    handler: function() {
+      var queryString = formSearch.find('name', 'query')[0].getValue();
+      
+      if (queryString) {
+        storeSearch.load({
+          params: { query: queryString }
+        });
+      }
+    }
+  }, {
+    text: '<%= tjs('form.button.cancel') %>',
+    iconCls: 'icon-button-cancel',
+    handler: function() {
+      windowSearch.hide();
+    }
+  }]
+});

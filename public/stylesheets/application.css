@@ -33,6 +33,7 @@ td.x-grid3-td-checker, td.x-grid3-td-state { vertical-align: middle; }
 .icon-window-edit { background-image: url(/images/wrench.png) !important; }
 .icon-window-reinstall { background-image: url(/images/refresh.png) !important; }
 .icon-window-console { background-image: url(/images/monitor.png) !important; }
+.icon-window-search { background-image: url(/images/zoom.png) !important; }
 .icon-button-login { background-image: url(/images/arrow_right.png) !important; }
 .icon-button-save { background-image: url(/images/accept.png) !important; }
 .icon-button-add { background-image: url(/images/add.png) !important; }
