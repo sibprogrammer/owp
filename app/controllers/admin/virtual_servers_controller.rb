@@ -197,6 +197,7 @@ class Admin::VirtualServersController < Admin::Base
     
     virtual_server.password = params[:password]
     virtual_server.password_confirmation = params[:password_confirmation]
+    virtual_server.orig_os_template = params[:orig_os_template] if @current_user.superadmin?
     
     if !virtual_server.valid?
       render :json => { :success => false, :form_errors => virtual_server.errors } and return

@@ -119,10 +119,16 @@ class VirtualServer < ActiveRecord::Base
     path = '/etc/vz/conf'
     tmp_template = "tmp.template"
     
+    new_os_template = ""
+    if orig_os_template_changed?
+      new_os_template = " --ostemplate #{orig_os_template} "
+      save
+    end
+    
     hardware_server.rpc_client.exec("cp #{path}/#{self.identity}.conf #{path}/ve-#{tmp_template}.conf-sample")
     stop
     hardware_server.rpc_client.exec('vzctl', 'destroy ' + identity.to_s)
-    hardware_server.rpc_client.exec('vzctl', "create #{identity.to_s} --config #{tmp_template}")
+    hardware_server.rpc_client.exec('vzctl', "create #{identity.to_s} #{new_os_template} --config #{tmp_template}")
     change_state('start', 'running') if was_running
     hardware_server.rpc_client.exec("rm #{path}/ve-#{tmp_template}.conf-sample")
     

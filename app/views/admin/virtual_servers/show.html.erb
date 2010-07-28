@@ -247,6 +247,17 @@ Ext.onReady(function() {
   }
   
   var reinstallAction = function() {
+    <% if @current_user.superadmin? %>
+      var osTemplatesStore = new Ext.data.JsonStore({
+        sortInfo: { field: 'name', direction: 'ASC' },
+        fields: [
+          { name: 'id' },
+          { name: 'name' }
+        ],
+        data: <%= @virtual_server.hardware_server.os_templates.map { |item| { :id => item.id, :name => item.name, }}.to_json %>
+      });
+    <% end -%>
+  
     var formReinstall = new Owp.form.BasicForm({
       labelWidth: 150,
       waitMsgTarget: true,
@@ -269,7 +280,22 @@ Ext.onReady(function() {
         name: 'password_confirmation',
         inputType: 'password',
         allowBlank: false
-      }]
+      } <% if @current_user.superadmin? %>, {
+        fieldLabel: '<%= tjs('admin.virtual_servers.form.create_server.field.os_template') %>',
+        xtype: 'combo',
+        hiddenName: 'orig_os_template',
+        valueField: 'name',
+        displayField: 'name',
+        name: 'orig_os_template',
+        forceSelection: true,
+        triggerAction: 'all',
+        emptyText: '<%= tjs('admin.virtual_servers.form.create_server.field.select_os_template') %>',
+        mode: 'local',
+        allowBlank: false,
+        editable: false,
+        store: osTemplatesStore,
+        value: '<%= @virtual_server.orig_os_template %>'
+      }<% end -%>]
     });  
     
     var windowReinstall = new Owp.form.BasicFormWindow({
@@ -293,6 +319,7 @@ Ext.onReady(function() {
             waitMsg: '<%= tjs('form.loading') %>',
             success: function() {
               windowReinstall.close();
+              virtualServerInfoGrid.store.reload();
               virtualServerStatsGrid.store.reload();
             },
             failure: function(form, action) {
