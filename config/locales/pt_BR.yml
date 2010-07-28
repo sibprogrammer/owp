@@ -95,7 +95,15 @@ pt_BR:
         support: "Suporte"
     operations:
       up_level: "Nível acima"
+      search: "Pesquisar"
     logout: "Tem certeza que deseja sair do sistema?"
+    search:
+      form:
+        title: "Pesquisa"
+        field:
+          query: "Query"
+        button:
+          search: "Pesquisar"
     my_profile:
       title: "Meu perfil"
       user_name: "Usuário"
@@ -118,6 +126,9 @@ pt_BR:
     tasks:
       os_templates:
         install: "Instalação de template no servidor {{host}}."
+      backups:
+        create: "Backup do servidor virtual #{{identity}} no servidor físico {{host}}."
+        restore: "Restaurar servidor virtual #{{identity}} no servidor físico {{host}}."
     dashboard:
       title: "Painel"
       intro:
@@ -218,6 +229,7 @@ pt_BR:
           reinstall: "Re-instalar"
           change_settings: "Alterar configurações"
           console: "Terminal"
+          backup: "Backup"
       form:
         change_settings:
           title: "Alterar configurações do servidor virtual"
@@ -318,10 +330,14 @@ pt_BR:
           tab:
             official: "Oficial"
             contributed: "Contribuição"
+            url: "URL"
           button_install: "Instalar"
           load_failed: "Falha ao listar os templates de SO disponíveis."
           failed: "Falha ao instalar o template de SO."
           scheduled: "Instalação do template de SO foi agendada. Novos templates poderão surgir durante este tempo."
+          field:
+            url: "Template URL"
+          invalid_url: "Enter valid URL for OS template archive."
         remove_template:
           sure_to_remove: "Você tem certeza que deseja remover este template de SO?"
           deletion_failed: "Não foi possível remover este template"
@@ -420,3 +436,30 @@ pt_BR:
               name: "Nome"
               soft_limit: "Barreira"
               hard_limit: "Limite"
+    backups:
+      title: "Backups do servidor virtual #{{identity}}"
+      grid:
+        title: "Backups"
+        button:
+          create: "Backup"
+          restore: "Restaurar"
+          destroy: "Apagar"
+        column:
+          archive_date: "Data"
+          description: "Descrição"
+          size: "Tamanho, Mb"
+      form:
+        remove_backup:
+          sure_to_remove: "Tem certeza que deseja remover os backups selecionados?"
+          deletion_failed: "Não foi possível remover alguns backups."
+        create:
+          title: "Criar novo backup"
+          hint: "Nota: servidor virtual poderá ser parado durante o backup."
+          scheduled: "Procedimento do backup iniciado e poderá levar alguns minutos para finalizar."
+          field:
+            description: "Descrição"
+          button_create: "Criar"
+        restore:
+          sure_to_restore: "Tem certeza que deseja restaurar o backup selecionado? O servidor poderá ficar indisponível durante a restauração."
+          failed: "Procedimento de restauração falhou."
+          scheduled: "Procedimento de restauração iniciado e poderá levar alguns minutos para finalizar."
