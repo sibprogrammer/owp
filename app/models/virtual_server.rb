@@ -133,7 +133,6 @@ class VirtualServer < ActiveRecord::Base
     change_state('start', 'running') if was_running
     hardware_server.rpc_client.exec("rm #{path}/ve-#{tmp_template}.conf-sample")
     
-    EventLog.info("virtual_server.reinstall", { :identity => identity })
     true
   end
   
