@@ -56,6 +56,7 @@ class VirtualServer < ActiveRecord::Base
   def delete_physically
     stop
     hardware_server.rpc_client.exec('vzctl', 'destroy ' + identity.to_s)
+    backups.each { |backup| backup.delete_physically }
     destroy
     EventLog.info("virtual_server.removed", { :identity => identity })
   end
