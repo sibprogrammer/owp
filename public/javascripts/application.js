@@ -5,6 +5,39 @@ Ext.form.Field.prototype.msgTarget = 'side';
 Ext.Ajax.timeout = 5 * 60 * 1000;
 Ext.form.BasicForm.prototype.timeout = 5 * 60;
 
+// workaround for proper Ext.ProgressBar rendering under IE
+Ext.override(Ext.Element, {
+  alignMiddle: function(parent) {
+    if (Ext.isString(parent)) {
+      parent = Ext.get(parent) || this.up(parent);
+    }
+    this.setStyle({
+      'margin-top': (parent.getHeight() / 2 - this.getHeight() / 2) + 'px'
+    });
+  }
+});
+
+Ext.override(Ext.ProgressBar, {
+  setSize: Ext.ProgressBar.superclass.setSize,
+  onResize: function(w, h) {
+    var inner = Ext.get(this.el.child('.x-progress-inner')),
+      bar = inner.child('.x-progress-bar'),
+      pt = inner.child('.x-progress-text'),
+      ptInner = pt.child('*'),
+      ptb = inner.child('.x-progress-text-back'),
+      ptbInner = ptb.child('*');
+    Ext.ProgressBar.superclass.onResize.apply(this, arguments);
+    inner.setHeight(h);
+    bar.setHeight(h);
+    this.textEl.setHeight('auto');
+    pt.setHeight('auto');
+    ptb.setHeight('auto');
+    ptInner.alignMiddle(bar);
+    ptbInner.alignMiddle(bar);
+    this.syncProgressBar();
+  }
+});
+
 Ext.ns('Owp.form');
 
 Owp.form.errorHandler = function(form, action, params) {
