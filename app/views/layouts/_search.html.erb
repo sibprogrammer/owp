@@ -8,13 +8,15 @@ var storeSearch = new Ext.data.JsonStore({
 
 var searchGrid = new Ext.grid.GridPanel({
   id: 'searchGrid',
+  hidden: true,
+  hideMode: 'offsets',
   loadMask: true,
   hideHeaders: true,
   store: storeSearch,
   autoWidth: true,
   stripeRows: true,
   autoExpandColumn: 'item',
-  anchor: '100% -30',
+  height: 200,
   sm: new Ext.grid.RowSelectionModel({
     singleSelect: true
   }),
@@ -28,6 +30,7 @@ var searchGrid = new Ext.grid.GridPanel({
 var formSearch = new Owp.form.BasicForm({
   labelWidth: 100,
   waitMsgTarget: true,
+  autoHeight: true,
   keys: [{
     key: Ext.EventObject.ENTER,
     fn: function() {
@@ -50,7 +53,7 @@ var windowSearch = new Owp.form.BasicFormWindow({
   title: '<%= tjs('admin.search.form.title') %>',
   iconCls: 'icon-window-search',
   width: 600,
-  height: 300,
+  autoHeight: true,
   modal: true,
   layout: 'fit',
   plain: true,
@@ -58,6 +61,12 @@ var windowSearch = new Owp.form.BasicFormWindow({
   resizable: true,
   items: formSearch,
   closeAction: 'hide',
+  listeners: {
+    hide: function() {
+      searchGrid.hide();
+      windowSearch.syncSize();
+    }
+  },
   buttons: [{
     text: '<%= tjs('admin.search.form.button.search') %>',
     iconCls: 'icon-button-run',
@@ -66,6 +75,8 @@ var windowSearch = new Owp.form.BasicFormWindow({
       var queryString = formSearch.find('name', 'query')[0].getValue();
       
       if (queryString) {
+        searchGrid.show();
+        windowSearch.syncSize();
         storeSearch.load({
           params: { query: queryString }
         });
