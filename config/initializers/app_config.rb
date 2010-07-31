@@ -36,7 +36,7 @@ config_defaults = {
   'help' => {
     'admin_doc_url' => 'http://code.google.com/p/ovz-web-panel/wiki/AdminGuide',
     'user_doc_url' => 'http://code.google.com/p/ovz-web-panel/wiki/UserGuide',
-    'support_url' => 'http://code.google.com/p/ovz-web-panel/issues/list',
+    'support_url' => 'http://code.google.com/p/ovz-web-panel/wiki/Support',
   },
   'extjs' => {
     'cdn' => {
