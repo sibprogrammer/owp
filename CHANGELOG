@@ -1,3 +1,50 @@
+= OpenVZ Web Panel 1.5 (2010-07-31) =
+
+This version is a major release. The following items were fixed and/or added:
+
+  * Ability to backup/restore virtual server (issue 38). 
+  * Limited iPhone support (issue 69).
+  * CPU, HDD and RAM usage information for virtual server (issue 118).
+  * CPU, HDD and RAM usage information for physical server (issue 131).
+  * Fixed incorrect handling of othersockbuf limit (issue 142).
+  * Improved detection of supported Ruby version during installation
+    (issue 138).
+  * Improved the speed of loading the pages with lists (issue 136).
+  * IPv6 compatibility (issue 135).
+  * Portuguese (Brazilian) language support (issue 133).
+  * Fixed problem with vzctl/vzlist utilities search path (issue 130).
+  * Improved stability of import existing containers procedure (issue 129).
+  * Fixed problem with password change by user (issue 126).
+  * Ability to set CPU and CPULIMIT settings for virtual server (issue 123).
+  * Increased default timeout to allow installation of servers on big templates
+    (issue 122).
+  * Ability to set admin as virtual server owner (issue 121)
+  * Native support for virtul server descriptions (issue 117).
+  * Fixed problem with OS reinstallation and empty properties (issue 114).
+  * Search for virtual server (issue 109).
+  * Ability to install template from URL (issue 108).
+  * Ability to select OS template on reinstall (issue 105).
+  * Simple shell for virtual server (issue 97).
+  * Ability to reboot physical server (issue 95).
+  * Ability to customize support link (issue 75).
+  * Ability to use ExtJS libs available at CacheFly (issue 26).
+  * Ability to set HW daemon port during connecting new HW node (issue 21).
+
+= OpenVZ Web Panel 1.1 (2010-05-23) =
+
+This version is a maintenance release. The following items were fixed and/or
+added:
+
+  * Proper handling of maximum limits numbers (issue 111).
+  * Fixed deletion of VPS if imposible to update some parameter (issue 112).
+  * Allowed to sync virtual servers with same IPs or without them (issue 110).
+  * Added "Change settings" dialog to virtual server overview page (issue 104).
+  * Ability to uninstall the panel (issue 102).
+  * Romanian language support (issue 94).
+  * Ability to set hostname and root password by virtual server owner (issue 92).
+  * Proper message about virtual server update in event log (issue 86).
+  * Ability to reinstall virtual server (issue 45).
+
 = OpenVZ Web Panel 1.0 (2010-04-18) =
 
 This version is a major release. The following items were fixed and/or added:
