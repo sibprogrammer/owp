@@ -44,7 +44,7 @@ Ext.onReady(function() {
       inputType: 'password',
       validationEvent: false,
       allowBlank: false
-    }, {
+    }, <% if !AppConfig.locale.single %> {
       fieldLabel: '<%= tjs('login.locale') %>',
       name: 'locale',
       xtype: 'combo',
@@ -60,7 +60,7 @@ Ext.onReady(function() {
         fields: ['locale', 'languageTitle'],
         data: <%= @available_locales.to_json %>
       })
-    }, {
+    }, <% end -%> {
       fieldLabel: '<%= tjs('login.remember_me') %>',
       name: 'remember_me',
       xtype: 'checkbox',
@@ -73,7 +73,7 @@ Ext.onReady(function() {
     title: '<%= tjs('login.window_title', :product => @product_name) %>',
     iconCls: 'icon-window-login',
     width: 380,
-    height: 190,
+    autoHeight: true,
     y: 150,
     closable: false,
     resizable: false,

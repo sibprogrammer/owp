@@ -44,6 +44,10 @@ config_defaults = {
       'base_url' => 'http://extjs.cachefly.net/ext-3.1.0',
     }
   },
+  'locale' => {
+    'default' => 'en',
+    'single' => false,
+  }
 }
 
 def hashes2ostruct(object)

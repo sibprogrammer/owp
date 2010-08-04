@@ -20,7 +20,9 @@ class ApplicationController < ActionController::Base
   protected  
   
     def set_locale
-      if params[:locale] && I18n.available_locales.include?(params[:locale].to_sym)
+      if AppConfig.locale.single
+        I18n.locale = I18n.default_locale
+      elsif params[:locale] && I18n.available_locales.include?(params[:locale].to_sym)
         cookies['locale'] = { :value => params[:locale], :expires => 1.year.from_now }
         I18n.locale = params[:locale].to_sym
       elsif cookies['locale'] && I18n.available_locales.include?(cookies['locale'].to_sym)

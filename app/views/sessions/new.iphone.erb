@@ -10,14 +10,16 @@
         <span class="name"><%= h(t('login.password')) %></span>
         <input name="password" type="password" />
       </li>
-      <li class="select">
-        <select name="locale">
-          <% @available_locales.each do |locale| %>
-            <option value="<%= locale[0] %>" <%= "selected='selected'" if (I18n.locale.to_s == locale[0]) %>><%= locale[1] %></option>
-          <% end %>
-        </select>
-        <span class="arrow"></span>
-      </li>
+      <% if !AppConfig.locale.single %>
+        <li class="select">
+          <select name="locale">
+            <% @available_locales.each do |locale| %>
+              <option value="<%= locale[0] %>" <%= "selected='selected'" if (I18n.locale.to_s == locale[0]) %>><%= locale[1] %></option>
+            <% end %>
+          </select>
+          <span class="arrow"></span>
+        </li>
+      <% end %>
       <li class="checkbox">
         <span class="name"><%= h(t('login.remember_me')) %></span>
         <input name="remember_me" type="checkbox" checked="true" />

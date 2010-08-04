@@ -28,4 +28,5 @@ module I18n
   
 end
 
+I18n.default_locale = AppConfig.locale.default
 I18n.exception_handler = :fallback
