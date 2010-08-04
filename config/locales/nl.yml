@@ -34,6 +34,10 @@ nl:
               connection: "Connectie mislukt. Daemon draait mogelijk niet."
             auth_key:
               bad_auth: "Kan niet authenticeren. Mogelijk onjuiste autorisatie sleutel."
+            daemon_port:
+              not_a_number: "Onjuist port nummer."
+              greater_than: "Port nummer moet groter zijn dan {{count}}."
+              less_than: "Port nummer mnoet kleiner zijn dan {{count}}."
         virtual_server:
           attributes:
             ip_address:
@@ -45,6 +49,12 @@ nl:
               confirmation: "Wachtwoord en bevestiging zijn niet gelijk."
             nameserver:
               invalid: "DNS server IP adres is onjuist."
+            host_name:
+              invalid: "Hostnaam is onjuist."
+            search_domain:
+              invalid: "Search domains is onjuist."
+            description:
+              invalid: "Omschrijving bevat ongeldige characters."
         server_template:
           attributes:
             name:
@@ -85,7 +95,15 @@ nl:
         support: "Support"
     operations:
       up_level: "Niveau omhoog"
+      search: "Zoeken"
     logout: "Weet je het zeker dat je wilt uitloggen?"
+    search:
+      form:
+        title: "Zoeken"
+        field:
+          query: "Query"
+        button:
+          search: "Zoeken"
     my_profile:
       title: "Mijn profiel"
       user_name: "Gebruikersnaam"
@@ -99,6 +117,7 @@ nl:
         connect: "Fysieke server {{host}} verbonden."
         disconnect: "Fysieke server {{host}} is niet verbonden."
         sync: "Server's {{host}} status is gesynchroniseerd."
+        reboot: "Herstarten van de server {{host}}."
       virtual_server:
         created: "Virtuele server {{identity}} is aangemaakt."
         removed: "Virtuele server {{identity}} is verwijderd."
@@ -107,6 +126,9 @@ nl:
     tasks:
       os_templates:
         install: "OS templates installatie op de server {{host}}."
+      backups:
+        create: "Backup van de virtuele server #{{identity}} op fysieke server {{host}}."
+        restore: "Herstel van de virtuele server #{{identity}} op fysieke server {{host}}."
     dashboard:
       title: "Dashboard"
       intro:
@@ -144,6 +166,7 @@ nl:
           details: "Details" 
           sync: "Synchronisatie"
           edit: "Verander instellingen"
+          reboot: "Herstart"
       form:
         connect_server:
           title: "Verbind nieuw fysieke server"
@@ -153,16 +176,33 @@ nl:
             host_name: "Hostnaam"
             auth_key: "Autorisatie sleutel"
             description: "Omschrijving"
+            daemon_port: "Service port"
         disconnect_server:
           sure_to_disconnect: "Weet u zeker dat u de verbinding wilt stoppen voor de geselecteerde servers?"
           deletion_failed: "Verzoek om verbinding te stoppen is mislukt."
         sync:
           sync_failed: "Het is niet mogelijk informatie te synchroniseren op sommige fysieke servers."
+        reboot_server:
+          sure_to_reboot: "De geselecteerde servers zijn niet bereikbaar tijdens het herstarten. Weet u het zeker ?"
+          reboot_failed: "Het was niet mogelijk alle servers te herstarten."
       show:
         title: "Fysieke server {{name}}"
       top_toolbar:
         os_templates: "OS templates"
         server_templates: "Server templates"
+      stats:
+        title: "Fysieke server statistieken"
+        column:
+          parameter: "Parameter"
+          value: "Waarde"
+        field:
+          os_version: "OS versie"
+          cpu_load_average: "CPU load gemiddelde"
+          disk_usage: "Disk gebruik, partitie {{partition}}"
+          memory_usage: "Geheugen gebruik"
+        value:
+          disk_usage: "{{percent}}%, {{used}} van {{total}} / {{free}} vrij"
+          memory_usage: "{{percent}}%, {{used}} van {{total}} / {{free}} vrij"
     virtual_servers:
       title: "Virtuele servers"
       grid:
@@ -188,6 +228,8 @@ nl:
           limits: "Limieten"
           reinstall: "Herinstalleer"
           change_settings: "Verander instellingen"
+          console: "Console"
+          backup: "Backup"
       form:
         change_settings:
           title: "Verander instellingen van virtuele server"
@@ -225,6 +267,9 @@ nl:
             server_template: "Server template"
             select_server_template: "Selecteer server template"
             description: "Omschrijving"
+            cpu_units: "CPU Eenheden"
+            cpus: "Aantal CPUs"
+            cpu_limit: "CPU Limiet, %"
           fieldset:
             general: "Generiek"
             network: "Netwerk"
@@ -243,6 +288,15 @@ nl:
               name: "Naam"
               soft_limit: "Barri&egrave;re"
               hard_limit: "Limiet"
+        console:
+          title: "Console"
+          error:
+            code: "Return code:"
+            output: "Output:"
+          field:
+            command: "Commando"
+          button:
+            run: "Run"
       show:
         title: "Virtuele server {{name}}"
         grid:
@@ -250,6 +304,15 @@ nl:
           column:
             parameter: "Parameter"
             value: "Waarde"
+      stats:
+        title: "Virtuele server statistieken"
+        field:
+          cpu_load_average: "CPU load gemiddelde"
+          disk_usage: "Disk gebruik"
+          memory_usage: "Geheugen gebruik"
+        value:
+          disk_usage: "{{percent}}%, {{used}} van {{total}} / {{free}} vrij"
+          memory_usage: "{{percent}}%, {{used}} van {{total}} / {{free}} vrij"
     os_templates:
       title: "OS Templates op fysieke server {{name}}"
       grid:
@@ -257,6 +320,7 @@ nl:
         column:
           name: "Naam"
           size: "Grootte, Mb"
+          virtual_servers: "Servers"
         button:
           install_new_template: "Installeer nieuw OS template"
           remove: "Verwijder template"
@@ -266,10 +330,14 @@ nl:
           tab:
             official: "Officieel"
             contributed: "Bijgedragen"
+            url: "URL"
           button_install: "Installeer"
           load_failed: "Laden van OS template lijst mislukt."
           failed: "Starten installatie van OS templates mislukt."
           scheduled: "OS templates installatie is gepland. Nieuwe template verschijnen na een tijdje."
+          field:
+            url: "Template URL"
+          invalid_url: "Vul een valide url in voor een OS template archief."
         remove_template:
           sure_to_remove: "Weet u zeker dat u de geselecteerd OS templates wilt verwijderen?"
           deletion_failed: "Verwijderen van sommige OS templates is mislukt."
@@ -332,6 +400,7 @@ nl:
         column:
           name: "Naam"
           template_default: "default"
+          virtual_servers: "Servers"
         button:
           add: "Template toevoegen"
           remove: "Template verwijderen"
@@ -360,8 +429,37 @@ nl:
             nameserver: "DNS server"
             searchdomain: "Zoek domein"
             cpu_units: "CPU eenheden"
+            cpus: "Aantal CPUs"
+            cpu_limit: "CPU Limiet, %"
           grid:
             column:
               name: "Naam"
               soft_limit: "Barri&euml;re"
               hard_limit: "Limiet"
+    backups:
+      title: "Backups voor virtuele server #{{identity}}"
+      grid:
+        title: "Backups"
+        button:
+          create: "Backup"
+          restore: "Herstel"
+          destroy: "Verwijder"
+        column:
+          archive_date: "Datum"
+          description: "Omschrijving"
+          size: "Grootte, Mb"
+      form:
+        remove_backup:
+          sure_to_remove: "Weet u zeker dat u de geselecteerde backups wilt verwijderen?"
+          deletion_failed: "Het was niet mogelijk sommige backups te verwijderen."
+        create:
+          title: "Cre&euml;er een nieuwe backup"
+          hint: "Note: virtuele server wordt gestopt tijden de backup."
+          scheduled: "Backup procedure is gestart en duurt even."
+          field:
+            description: "Omschrijving"
+          button_create: "Cre&euml;er"
+        restore:
+          sure_to_restore: "Weet u zeker dat u de geselecteerde backup wilt herstellen? De Sserver is onbereikbaar tijdens het herstellen."
+          failed: "Herstel procedure is mislulkt."
+          scheduled: "Herstel procedure is gestart en duurt even."
