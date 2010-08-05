@@ -11,7 +11,8 @@ config_defaults = {
       'protocol' => 'ftp',
       'host' => 'download.openvz.org',
       'path' => '/template/',
-    }
+    },
+    'passive_ftp' => true, 
   },
   'backups' => {
     'allow_for_users' => true,

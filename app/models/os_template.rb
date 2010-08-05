@@ -33,7 +33,7 @@ class OsTemplate < ActiveRecord::Base
   def self.get_available(dir)
     ftp = Net::FTP.new(AppConfig.os_templates.mirror.host)
     ftp.login('anonymous', 'anonymous')
-    ftp.passive
+    ftp.passive = true if AppConfig.os_templates.passive_ftp
     ftp.chdir(dir)
     ftp.list('-a').map{ |file| 
       { 'name' => file.split.last, 'size' => file.split[4] } if file =~ /tar.gz$/ 
