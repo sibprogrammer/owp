@@ -1,0 +1,465 @@
+fr:
+  language:
+    title: "Français"
+  form:
+    loading: "Merci d'attendre..."
+    confirmation: "Confirmer"
+    performing_task: "Merci d'attendre. Tâche en cours..."
+    error:
+      title: "Erreur"
+      fill_form: "Merci de remplir le formulaire."
+    info:
+      title: "Information"
+    button:
+      save: "Enregistrer"
+      cancel: "Annuler"
+      create: "Créer"
+  activerecord:
+    errors:
+      models:
+        user:
+          attributes:
+            password:
+              confirmation: "Le mot de passe et la confirmation ne sont pas identiques."
+              too_short: "Mot de passe trop court (caractères minimum: {{count}})."
+            password_confirmation:
+              blank: "Confirmation du mot de passe requise."
+            login:
+              taken: "Un utilisateur existe déjà avec ce nom d'utilisateur."
+              too_short: "Nom d'utilisateur trop court (caractères minimum: {{count}})."
+        hardware_server:
+          attributes:
+            host:
+              taken: "Un serveur est déjà présent avec ce nom."
+              connection: "Connexion échouée. Le démon n'est peut-être pas démarré."
+            auth_key:
+              bad_auth: "Authorisation impossible. Clé probablement incorrecte."
+            daemon_port:
+              not_a_number: "Numéro de port invalide."
+              greater_than: "Le numéro de port devrait être plus grand que {{count}}."
+              less_than: "Le numéro de port devrait être inférieur à {{count}}."
+        virtual_server:
+          attributes:
+            ip_address:
+              invalid: "Adresse IP incorrecte."
+              taken: "L'adresse IP a déjà été attribuée à un autre serveur."
+            identity:
+              taken: "Cette identité appartient à un autre serveur."
+            password:
+              confirmation: "Le mot de passe et la confirmation ne sont pas identiques."
+            nameserver:
+              invalid: "L'adresse IP du serveur DNS est invalide."
+            host_name:
+              invalid: "Le nom d'hôte est invalide."
+            search_domain:
+              invalid: "Les domaines de recherche sont invalides."
+            description:
+              invalid: "La description contient des caractères invalides."
+        server_template:
+          attributes:
+            name:
+              taken: "Un gabarit de serveur avec ce nom existe déjà."
+  about:
+    copyright: "Copyright 2008-2010 SoftUnity."
+    right_reserved: "Tous droits réservés."
+    about_program: "À propos du programme"
+    author: "Développeurs principaux"
+    contributors: "Contributeurs"
+    contributors_list: "Liste"
+    web_site: "Site Web"
+  login:
+    page_title: "Connexion"
+    window_title: "Connectez-vous à {{product}}"
+    username: "Nom d'utilisateur"
+    password: "Mot de passe"
+    remember_me: "Se souvenir de moi"
+    button_login: "Connexion"
+    locale: "Langage"
+    bad_login: "Nom d'utilisateur ou mot de passe invalide."
+  admin:
+    menu:
+      title: "Menu"
+      general:
+        title: "Général"
+        dashboard: "Tableau de bord"
+        hardware_servers: "Serveurs physiques"
+        virtual_servers: "Serveurs virtuels"
+        my_profile: "Mon profil"
+        users: "Utilisateurs"
+        tasks: "Tâches"
+        event_log: "Journal des évènements"
+        logout: "Déconnexion"
+      help:
+        title: "Aide"
+        documentation: "Documentation"
+        support: "Support"
+    operations:
+      up_level: "Remonter"
+      search: "Recherche"
+    logout: "Êtes-vous sûr de vouloir vous déconnecter"
+    search:
+      form:
+        title: "Recherche"
+        field:
+          query: "Requête"
+        button:
+          search: "Recherche"
+    my_profile:
+      title: "Mon profil"
+      user_name: "Nom d'utilisateur"
+      current_password: "Mot de passe actuel"
+      new_password: "Nouveau mot de passe"
+      confirm_password: "Confirmation"
+      bad_current_password: "Mot de passe actuel invalide."
+    events:
+      internal_error: "Erreur interne: {{message}}"
+      hardware_server:
+        connect: "Le serveur physique {{host}} a été connecté."
+        disconnect: "Le serveur physique {{host}} a été déconnecté."
+        sync: "L'état du serveur {{host}} a été synchronisé."
+        reboot: "Début du redémarrage du serveur {{host}}."
+      virtual_server:
+        created: "Le serveur virtuel {{identity}} a été créé."
+        removed: "Le serveur virtuel {{identity}} a été effacé."
+        change_state_failed: "Échec du changement d'état du serveur virtuel {{identity}}; état: {{state}}; code: {{code}}."
+        updated: "Les options du serveur virtuel {{identity}} ont été mises à jour."
+    tasks:
+      os_templates:
+        install: "Installation des gabarits d'OS sur le serveur {{host}}."
+      backups:
+        create: "Sauvegarde du serveur virtuel #{{identity}} sur le serveur physique {{host}}."
+        restore: "Restauration du serveur virtuel #{{identity}} sur le serveur physique {{host}}."
+    dashboard:
+      title: "Tableau de bord"
+      intro:
+        title: "Intro"
+        text: "OpenVZ Web Panel est une interface graphique basé sur les technologies Web pour contrôler des serveurs physiques grâce à la technologie de virtualisation OpenVZ."
+      profile:
+        title: "Profil"
+        text: "Vous êtes connecté comme {{login}}."
+      updates:
+        text: "Une nouvelle version est disponible: {{product}}."
+        update_command: "La commande suivante doit être lancée pour la mise à jour: {{command}}"
+      stats_grid:
+        title: "Statistiques"
+        column:
+          parameter: "Paramètre"
+          value: "Valeur"
+        parameter:
+          panel_users: "Utilisateurs"
+          hardware_servers: "Serveurs physiques"
+          virtual_servers: "Serveurs virtuels"
+          virtual_servers_running: "Serveurs virtuels - en fonctionnement"
+          virtual_servers_stopped: "Serveurs virtuels - arrêtés"
+    hardware_servers:
+      title: "Serveurs physiques"
+      grid:
+        title: "Liste des serveurs physiques"
+        column:
+          host_name: "Nom d'hôte"
+          description: "Description"
+          virtual_servers: "Serveurs virtuels"
+        button:
+          connect: "Connecter un nouveau serveur"
+          reconnect: "Reconnecter le serveur"
+          disconnect: "Déconnecter le serveur"   
+          details: "Détails" 
+          sync: "Synchronisation"
+          edit: "Modifier les options"
+          reboot: "Redémarrer"
+      form:
+        connect_server:
+          title: "Connecter un nouveau serveur physique"
+          edit_title: "Modifier les options du serveur physique"
+          button_connect: "Connecter"
+          field:
+            host_name: "Nom d'hôte"
+            auth_key: "Clé d'authentification"
+            description: "Description"
+            daemon_port: "Port du service"
+        disconnect_server:
+          sure_to_disconnect: "Êtes-vous sûr de vouloir déconnecter les serveurs sélectionnés ?"
+          deletion_failed: "La requête de déconnexion des serveurs a échouée."
+        sync:
+          sync_failed: "Impossible de synchroniser les informations sur certains serveurs physiques."
+        reboot_server:
+          sure_to_reboot: "Les serveurs sélectionnés seront indisponibles pendant le redémarrage. Êtes-vous sûr de vouloir les redémarrer ?"
+          reboot_failed: "Impossible de commencer le redémarrage sur certains serveurs."
+      show:
+        title: "Serveur physique {{name}}"
+      top_toolbar:
+        os_templates: "Gabarits d'OS"
+        server_templates: "Gabarits de serveurs"
+      stats:
+        title: "Statistiques du serveur physique"
+        column:
+          parameter: "Paramètre"
+          value: "Valeur"
+        field:
+          os_version: "Version de l'OS"
+          cpu_load_average: "Charge moyenne du CPU"
+          disk_usage: "Utilisation des disques, partitions {{partition}}"
+          memory_usage: "Utilisation mémoire"
+        value:
+          disk_usage: "{{percent}}%, {{used}} de {{total}} / {{free}} libres"
+          memory_usage: "{{percent}}%, {{used}} de {{total}} / {{free}} libres"
+    virtual_servers:
+      title: "Serveurs virtuels"
+      grid:
+        title: "Liste des serveurs virtuels"
+        column:
+          state: "État"
+          identity: "VEID"
+          ip_address: "Adresse IP"
+          host_name: "Nom d'hôte"
+          os_template: "Gabarit d'OS"
+          memory: "Mémoire, Mb"
+          diskspace: "Espace disque, Mb"
+          owner: "Propriétaire"
+          description: "Description"
+        button:
+          create: "Créer un serveur virtuel"
+          destroy: "Supprimer les serveurs virtuels"
+          change_state: "Changer d'état"
+          start: "Démarrer"
+          restart: "Redémarrer"
+          stop: "Arrêter"
+          edit: "Éditer"
+          limits: "Limites"
+          reinstall: "Réinstaller"
+          change_settings: "Modifier les options"
+          console: "Console"
+          backup: "Sauvegarde"
+      form:
+        change_settings:
+          title: "Modifier les options du serveur virtuel"
+        reinstall:
+          title: "Réinstaller le serveur virtuel"
+          button:
+            reinstall: "Réinstaller"
+        change_state:
+          failed: "Échec du changement d'état du serveur virtuel."
+        remove_server:
+          sure_to_remove: "Êtes-vous sûr de vouloir supprimer les serveurs virtuels sélectionnés ?"
+          deletion_failed: "Impossible de supprimer certains serveurs virtuels."
+        create_server:
+          title: "Créer un nouveau serveur virtuel"
+          edit_title: "Modifier les options du serveur virtuel"
+          button_create: "Créer"
+          field:
+            identity: "ID du serveur (VEID)"
+            os_template: "Gabarit d'OS"
+            select_os_template: "Sélectionner un gabarit d'OS"
+            ip_address: "Adresse IP"
+            host_name: "Nom d'hôte"
+            password: "Mot de passe Root"
+            confirm_password: "Confirmer le mot de passe"
+            start_on_boot: "Démarrage au Boot"
+            start_after_creation: "Démarrer après la création"
+            nameserver: "Serveur DNS"
+            searchdomain: "Domaine de recherche"
+            diskspace: "Espace disque, Mb"
+            memory: "Mémoire RAM, Mb"
+            status: "Statut"
+            owner: "Propriétaire"
+            select_owner: "Sélectionner un propriétaire"
+            no_owner: "Pas de propriétaire"
+            server_template: "Gabarit de serveur"
+            select_server_template: "Sélectionner un gabarit de serveur"
+            description: "Description"
+            cpu_units: "Unités CPU"
+            cpus: "Nombre de CPUs"
+            cpu_limit: "Limite CPU, %"
+          fieldset:
+            general: "Général"
+            network: "Réseau"
+            system_access: "Accès système"
+            start_options: "Options de démarrage"
+            dns_settings: "Options DNS"
+            limits: "Limites"
+            panel_access: "Panneau accès"
+          tab:
+            main_settings: "Options Principales"
+            additional_settings: "Options Supplémentaires"
+        limits:
+          title: "Limites"
+          grid:
+            column:
+              name: "Nom"
+              soft_limit: "Barrière"
+              hard_limit: "Limite"
+        console:
+          title: "Console"
+          error:
+            code: "Code de retour:"
+            output: "Sortie:"
+          field:
+            command: "Commande"
+          button:
+            run: "Exécuter"
+      show:
+        title: "Serveur virtuel {{name}}"
+        grid:
+          title: "Information du serveur virtuel"
+          column:
+            parameter: "Paramètre"
+            value: "Valeur"
+      stats:
+        title: "Statistiques du serveur virtuel"
+        field:
+          cpu_load_average: "Charge moyenne du CPU"
+          disk_usage: "Utilisation des disques"
+          memory_usage: "Utilisation mémoire"
+        value:
+          disk_usage: "{{percent}}%, {{used}} de {{total}} / {{free}} libres"
+          memory_usage: "{{percent}}%, {{used}} de {{total}} / {{free}} libres"
+    os_templates:
+      title: "Gabarits d'OS sur le serveur physique {{name}}"
+      grid:
+        title: "Gabarits d'OS installés"
+        column:
+          name: "Nom"
+          size: "Taille, Mb"
+          virtual_servers: "Serveurs"
+        button:
+          install_new_template: "Installer un nouveau gabarit"
+          remove: "Supprimer des gabarits"
+      form:
+        install:
+          title: "Installation de nouveaux gabarits d'OS"
+          tab:
+            official: "Officiels"
+            contributed: "Contribués"
+            url: "URL"
+          button_install: "Installer"
+          load_failed: "Échec du chargement de la liste des gabarits d'OS."
+          failed: "Le démarrage de l'installation des gabarits d'OS a échoué."
+          scheduled: "L'installation des gabarits d'OS a été planifiée. Les nouveaux gabarits apparaitront dans quelques temps."
+          field:
+            url: "URL du gabarit"
+          invalid_url: "Entrer un URL valide pour l'archive du gabarit d'OS."
+        remove_template:
+          sure_to_remove: "Êtes-vous sûr de vouloir supprimer les gabarits sélectionnés ?"
+          deletion_failed: "Impossible de supprimer certains gabarits d'OS."
+    event_log:
+      title: "Journal des évènements"
+      grid:
+        title: "Derniers évènements"
+        column:
+          level: "Statut"
+          created_at: "Date"
+          message: "Message"
+          id: "ID"
+        button:
+          clear: "Effacer le journal"
+      form:
+        clear:
+          sure_to_clear: "Êtes-vous sûr de vouloir supprimer tous les enregistrements ?"
+          clear_failed: "Impossible d'effacer le journal."
+    users:
+      role:
+        infrastructure_admin: "Administrateur infrastructure"
+        virtual_server_owner: "Propriétaire de serveurs virtuels"
+      title: "Utilisateurs"
+      grid:
+        title: "Liste des utilisateurs"
+        column:
+          login: "Connexion"
+          created_at: "Date de création"
+          role: "Rôle"
+        button:
+          add: "Ajouter un utilisateur"
+          remove: "Supprimer des utilisateurs"
+          edit: "Modifier un utilisateur"
+      form:
+        remove_user:
+          sure_to_remove: "Êtes-vous sûr de vouloir supprimer les utilisateurs sélectionnés ?"
+          deletion_failed: "Impossible de supprimer certains utilisateurs."
+        create:
+          title: "Créer un nouvel utilisateur"
+          edit_title: "Modifier l'utilisateur"
+          button_create: "Créer"
+          field:
+            login: "Nom d'utilisateur"
+            password: "Mot de passe"
+            confirm_password: "Confirmer le mot de passe"
+            role: "Rôle"
+            select_role: "Sélectionner un rôle"
+    task:
+      title: "Tâches"
+      grid:
+        title: "Liste des tâches"
+        column:
+          status: "Statut"
+          id: "ID"
+          description: "Description"
+    server_templates:
+      title: "Gabarits de serveur sur le serveur virtuel {{name}}"
+      grid:
+        title: "Gabarits de serveur disponibles"
+        column:
+          name: "Nom"
+          template_default: "Par défaut"
+          virtual_servers: "Serveurs"
+        button:
+          add: "Ajouter un gabarit"
+          remove: "Supprimer des gabarits"
+          edit: "Modifier un gabarit"
+      form:
+        remove_template:
+          sure_to_remove: "Êtes-vous sûr de vouloir supprimer les gabarits de serveurs sélectionnés ?"
+          deletion_failed: "Impossible de supprimer certains gabarits de serveurs."
+        create_server:
+          title: "Créer un nouveau gabarit de serveur"
+          edit_title: "Modifier un gabarit de serveur"
+          button_create: "Créer"
+          tab:
+            main_settings: "Options principales"
+            advanced_settings: "Options avancées"
+          fieldset:
+            general: "Général"
+            limits: "Limites"
+            dns_settings: "Options DNS"
+            start_options: "Options de démarrage"
+          field:
+            name: "Nom"
+            diskspace: "Espace disque, Mb"
+            memory: "Mémoire, Mb"
+            start_on_boot: "Démarrage au Boot"
+            nameserver: "Serveur DNS"
+            searchdomain: "Domaine de recherche"
+            cpu_units: "Unités CPU"
+            cpus: "Nombre de CPUs"
+            cpu_limit: "Limite CPU, %"
+          grid:
+            column:
+              name: "Nom"
+              soft_limit: "Barrière"
+              hard_limit: "Limite"
+    backups:
+      title: "Sauvegardes du serveur virtuel #{{identity}}"
+      grid:
+        title: "Sauvegardes"
+        button:
+          create: "Sauvegarder"
+          restore: "Restaurer"
+          destroy: "Supprimer"
+        column:
+          archive_date: "Date"
+          description: "Description"
+          size: "Taille, Mb"
+      form:
+        remove_backup:
+          sure_to_remove: "Êtes-vous sûr de vouloir supprimer les sauvegardes sélectionnées ?"
+          deletion_failed: "Impossible de supprimer certaines sauvegardes."
+        create:
+          title: "Créer une nouvelle sauvegarde"
+          hint: "Remarque: Le serveur virtuel sera arrêté pendant la sauvegarde."
+          scheduled: "Une procédure de sauvegarde a été démarrée et prendra quelques temps."
+          field:
+            description: "Description"
+          button_create: "Créer"
+        restore:
+          sure_to_restore: "Êtes-vous sûr de vouloir restaurer la sauvegarde sélectionnée ? Le serveur sera indisponible pendant la restauration."
+          failed: "La procédure de restauration a échoué."
+          scheduled: "Une procédure de restauration a été démarrée et prendra quelques temps."
