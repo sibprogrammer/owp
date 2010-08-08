@@ -32,12 +32,18 @@ en:
             host:
               taken: "Server with such name is already present."
               connection: "Connection failed. Maybe daemon is not running."
+              ssh_connection: "Unable to establish SSH connection."
+              openvz_not_found: "OpenVZ virtualization was not found on the server."
+              ruby_not_found: "Ruby interpertator was not found on the server."
             auth_key:
               bad_auth: "Unable to authorize. Probably incorrect auth key."
             daemon_port:
               not_a_number: "Invalid port number."
               greater_than: "Port number should be greater than {{count}}."
               less_than: "Port number should be less than {{count}}."
+            root_password:
+              ssh_bad_auth: "SSH authorization failed."
+              empty: "This field is required."
         virtual_server:
           attributes:
             ip_address:
@@ -177,6 +183,9 @@ en:
             auth_key: "Auth key"
             description: "Description"
             daemon_port: "Service port"
+            root_password: "Root password"
+          fieldset:
+            additional_settings: "Additional settings"
         disconnect_server:
           sure_to_disconnect: "Are you sure you want to disconnect selected servers?"
           deletion_failed: "Servers disconnection request failed."

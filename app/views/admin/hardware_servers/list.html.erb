@@ -5,6 +5,47 @@
 Ext.onReady(function() {
 
   function showHwServerEditForm(mode) {
+    var fields = [];
+    
+    fields.push({
+      name: 'id',
+      xtype: 'hidden'
+    }, {
+      fieldLabel: '<%= tjs('admin.hardware_servers.form.connect_server.field.host_name') %>',
+      name: 'host',
+      allowBlank: false
+    });
+    
+    if ('add' == mode) {
+      fields.push({
+        fieldLabel: '<%= tjs('admin.hardware_servers.form.connect_server.field.root_password') %>',
+        name: 'root_password',
+        inputType: 'password'
+      });
+    }
+    
+    fields.push({
+      fieldLabel: '<%= tjs('admin.hardware_servers.form.connect_server.field.description') %>',
+      name: 'description'
+    }, {
+      xtype: 'fieldset',
+      title: '<%= tjs('admin.hardware_servers.form.connect_server.fieldset.additional_settings') %>',
+      collapsible: true,
+      collapsed: true,
+      autoWidth: true,
+      autoHeight: true,
+      defaultType: 'textfield',
+      defaults: { width: 180 },
+      items: [{
+        fieldLabel: '<%= tjs('admin.hardware_servers.form.connect_server.field.auth_key') %>',
+        name: 'auth_key'
+      }, {
+        fieldLabel: '<%= tjs('admin.hardware_servers.form.connect_server.field.daemon_port') %>',
+        name: 'daemon_port',
+        allowBlank: false
+      }]
+    });
+  
     var formEditServer = new Owp.form.BasicForm({
       labelWidth: 150,
       autoHeight: true,
@@ -17,25 +58,7 @@ Ext.onReady(function() {
           windowEditServer.submitButton.handler();
         }
       }],
-      items: [{
-        name: 'id',
-        xtype: 'hidden'
-      }, {
-        fieldLabel: '<%= tjs('admin.hardware_servers.form.connect_server.field.host_name') %>',
-        name: 'host',
-        allowBlank: false
-      }, {
-        fieldLabel: '<%= tjs('admin.hardware_servers.form.connect_server.field.auth_key') %>',
-        name: 'auth_key',
-        allowBlank: ('edit' == mode)
-      }, {
-        fieldLabel: '<%= tjs('admin.hardware_servers.form.connect_server.field.daemon_port') %>',
-        name: 'daemon_port',
-        allowBlank: false
-      }, {
-        fieldLabel: '<%= tjs('admin.hardware_servers.form.connect_server.field.description') %>',
-        name: 'description'
-      }]
+      items: fields
     });
     
     var windowEditServer = new Owp.form.BasicFormWindow({

@@ -32,12 +32,18 @@ ru:
             host:
               taken: "Сервер с таким именем уже присутствует."
               connection: "Не удалось подключиться. Возможно демон не запущен."
+              ssh_connection: "Не удалось установить SSH соединение."
+              openvz_not_found: "OpenVZ виртуализация не найдена на сервере."
+              ruby_not_found: "Ruby интерпретатор не найден на сервере."
             auth_key:
               bad_auth: "Невозможно выполнить авторизацию. Возможно неверный ключ авторизации."
             daemon_port:
               not_a_number: "Неверный номер порта."
               greater_than: "Номер порта должен быть больше {{count}}."
               less_than: "Номер порта должен быть меньше {{count}}."
+            root_password:
+              ssh_bad_auth: "Не удалось выполнить SSH авторизацию."
+              empty: "Это поле обязательно для заполнения."
         virtual_server:
           attributes:
             ip_address:
@@ -177,6 +183,9 @@ ru:
             auth_key: "Ключ авторизации"
             description: "Описание"
             daemon_port: "Порт сервиса"
+            root_password: "Пароль root'а"
+          fieldset:
+            additional_settings: "Дополнительные настройки"
         disconnect_server:
           sure_to_disconnect: "Вы действительно хотите отключить выбранные сервера?"
           deletion_failed: "Во время отключения произошла ошибка."

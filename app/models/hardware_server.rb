@@ -6,21 +6,67 @@ class HardwareServer < ActiveRecord::Base
   has_many :server_templates, :dependent => :destroy
   has_many :virtual_servers, :dependent => :destroy
   
-  def connect    
-    begin
-      if !rpc_client.ping
-        self.errors.add :auth_key, :bad_auth
+  def connect(root_password)
+    if !auth_key.blank?
+      begin
+        if !rpc_client.ping
+          self.errors.add :auth_key, :bad_auth
+          return false
+        end
+      rescue SocketError
+        self.errors.add :host, :connection
         return false
       end
-    rescue SocketError => socket_error
-      self.errors.add :host, :connection
-      return false
+    else
+      self.auth_key = generate_id
+      return false if !install_daemon(root_password)
     end
     
-    result = save    
+    result = save
     sync if result
     EventLog.info("hardware_server.connect", { :host => self.host })
     result
+  end
+  
+  def install_daemon(root_password)
+    if root_password.blank?
+      self.errors.add :root_password, :empty
+      return false
+    end
+    
+    require 'net/ssh'
+    require 'net/sftp'
+    
+    begin
+      Net::SSH.start(host, 'root', :password => root_password) do |ssh|
+        ssh.sftp.connect do |sftp|
+          if !sftp_file_readable(sftp, '/proc/vz/version')
+            self.errors.add :host, :openvz_not_found
+            return false
+          end
+          
+          if !sftp_file_readable(sftp, '/usr/bin/ruby')
+            self.errors.add :host, :ruby_not_found
+            return false
+          end
+          
+          daemon_dir = '/opt/ovz-web-panel/utils/hw-daemon'
+          
+          sftp_mkdir_recursive(sftp, daemon_dir)
+          sftp.upload!(Rails.root + '/utils/hw-daemon/hw-daemon.rb', daemon_dir + '/hw-daemon.rb')
+          prepare_daemon_config(sftp, daemon_dir + '/hw-daemon.ini')
+          ssh.exec!("ruby #{daemon_dir}/hw-daemon.rb restart")
+        end
+      end
+    rescue Net::SSH::AuthenticationFailed
+      self.errors.add :root_password, :ssh_bad_auth
+      return false
+    rescue SocketError
+      self.errors.add :host, :ssh_connection
+      return false
+    end
+    
+    true
   end
   
   def disconnect
@@ -206,5 +252,52 @@ class HardwareServer < ActiveRecord::Base
   def os_version
     rpc_client.exec('uname', '-srm')['output']
   end
+  
+  private
+  
+    def generate_id
+      symbols = [('0'..'9'),('a'..'f')].map{ |i| i.to_a }.flatten
+      (1..32).map{ symbols[rand(symbols.length)] }.join
+    end
+  
+    def sftp_file_readable(sftp, file)
+      sftp.stat!(file) do |response|
+        return response.ok?
+      end
+    end
+  
+    def sftp_mkdir_recursive(sftp, directory)
+      parts = directory.split('/')
+      parts.shift
+      current_dir = ''
+      
+      parts.each do |part|
+        current_dir += "/" + part
+        sftp.mkdir!(current_dir) unless sftp_file_readable(sftp, current_dir)
+      end
+    end
+  
+    def prepare_daemon_config(sftp, config_file)
+      if !sftp_file_readable(sftp, config_file)
+        sftp.file.open(config_file, "w") do |file|
+          file.puts "address = 0.0.0.0"
+          file.puts "port = #{daemon_port.to_s}"
+          file.puts "key = #{auth_key}"
+        end
+      else
+        sftp.file.open(config_file, "r") do |file|
+          while (line = file.gets)
+            key, value = line.split('=', 2).each { |v| v.strip! }
+            
+            case key
+              when 'port'
+                self.daemon_port = value.to_i
+              when 'key'
+                self.auth_key = value
+            end
+          end
+        end
+      end
+    end
     
 end
