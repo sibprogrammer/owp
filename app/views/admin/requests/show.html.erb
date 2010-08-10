@@ -1,0 +1,142 @@
+<% @page_title = t('admin.requests.comments.title', :id => @request.id ) + ' - ' + h(@request.subject) %>
+<% @page_icon = 'comment_edit.png' %>
+
+<% javascript_tag do -%>
+Ext.onReady(function() {
+
+  function addComment() {
+    var formAddComment = new Owp.form.BasicForm({
+      labelWidth: 100,
+      autoHeight: true,
+      waitMsgTarget: true,
+      url: '/admin/requests/add_comment?request_id=<%= @request.id %>',
+      defaults: { width: 300 },
+      items: [{
+        fieldLabel: '<%= tjs('admin.requests.comments.form.add.field.content') %>',
+        name: 'content',
+        xtype: 'textarea',
+        height: 150,
+        allowBlank: false
+      }]
+    });
+    
+    var windowAddComment = new Owp.form.BasicFormWindow({
+      title: '<%= tjs('admin.requests.comments.form.add.title') %>',
+      iconCls: 'icon-window-add',
+      width: 450,
+      modal: true,
+      layout: 'fit',
+      plain: true,
+      bodyStyle: 'padding:5px;',
+      resizable: false,
+      items: formAddComment,
+      buttons: [{
+        text: '<%= tjs('admin.requests.comments.form.add.button_add') %>',
+        iconCls: 'icon-button-add',
+        ref: '../submitButton',
+        handler: function() {
+          formAddComment.form.submit({
+            waitMsg: '<%= tjs('form.loading') %>',
+            success: function() {
+              commentsGrid.store.reload();
+              windowAddComment.hide();
+            },
+            failure: function(form, action) {
+              Owp.form.errorHandler(form, action);
+            }
+          });
+        }
+      }, {
+        text: '<%= tjs('form.button.cancel') %>',
+        iconCls: 'icon-button-cancel',
+        handler: function() {
+          windowAddComment.hide();
+        }
+      }]
+    });
+    
+    windowAddComment.show();
+  }
+
+  var store = new Ext.data.JsonStore({
+    url: '/admin/requests/comments_list_data?id=<%= @request.id %>',
+    root: 'data',
+    autoLoad: true,
+    data: <%= { :data => @comments }.to_json %>,
+    sortInfo: { field: 'created_at', direction: 'ASC' },
+    fields: [
+      { name: 'id' },
+      { name: 'content' },
+      { name: 'author' },
+      { name: 'created_at' }
+    ]
+  });
+
+  var selectionModel = new Ext.grid.RowSelectionModel();
+
+  var commentsGrid = new Ext.grid.GridPanel({
+    id: 'commentsGrid',
+    store: store,
+    title: '<%= tjs('admin.requests.comments.grid.title') %>',
+    loadMask: true,
+    tools: [{ 
+      id: 'refresh',
+      handler: function() {
+        commentsGrid.getStore().reload();
+      }
+    }],
+    cm: new Ext.grid.ColumnModel([
+      {
+        id: 'created_at',
+        header: '<%= tjs('admin.requests.comments.grid.column.created_at') %>',
+        width: 130,
+        sortable: true,
+        dataIndex: 'created_at'
+      }, {
+        id: 'author',
+        header: '<%= tjs('admin.requests.comments.grid.column.author') %>',
+        width: 130,
+        sortable: true,
+        dataIndex: 'author'
+      }, { 
+        id: 'content',
+        header: '<%= tjs('admin.requests.comments.grid.column.content') %>',
+        sortable: true,
+        dataIndex: 'content',
+        renderer: function(value) {
+          return '<div style="white-space:normal !important;">'+ value +'</div>';
+        }
+      }
+    ]),
+    sm: selectionModel,
+    stripeRows: true,
+    autoExpandColumn: 'content',
+    autoWidth: true,
+    stripeRows: true,
+    frame: true,
+    iconCls: 'icon-items-list',
+    tbar: [{
+      text: '<%= tjs('admin.requests.comments.grid.button.add') %>',
+      handler: addComment,
+      cls: 'x-btn-text-icon',
+      icon: '/images/add.png'
+    }]
+  });
+  
+  Owp.layout.addToCenter(commentsGrid);
+  
+  var mainContentCenterPanel = Ext.getCmp('mainContentCenterPanel');
+  
+  <% if @current_user.superadmin? || !@request.opened %>
+    mainContentCenterPanel.getTopToolbar().insertButton(0, {
+      text: '<%= tjs('admin.requests.grid.button.' + (@request.opened ? 'solve' : 'reopen')) %>',
+      iconCls: 'icon-button-<%= @request.opened ? 'solve' : 'reopen' %>',
+      handler: function() {
+        document.location.href = '/admin/requests/toggle?request_id=<%= @request.id %>';
+      }
+    });
+  <% end -%>
+  
+  mainContentCenterPanel.doLayout();
+});
+<% end -%>

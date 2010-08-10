@@ -92,6 +92,7 @@ ru:
         virtual_servers: "Виртуальные сервера"
         my_profile: "Мой профиль"
         users: "Пользователи"
+        requests: "Запросы"
         tasks: "Задачи"
         event_log: "Журнал событий"
         logout: "Выход" 
@@ -472,3 +473,45 @@ ru:
           sure_to_restore: "Вы действительно хотите восстановить выбранную резернуб копию? Сервер будет не доступен во время восстановления."
           failed: "Не удалось выполнить восстановление из резервной копии."
           scheduled: "Процедура восстановления началась и займет некоторое время."
+    requests:
+      title: "Запросы"
+      grid:
+        title: "Список запросов"
+        column:
+          opened: "Статус"
+          id: "ID"
+          subject: "Тема"
+          author: "Автор"
+          updated_at: "Дата обновления"
+        button:
+          add: "Создать запрос"
+          remove: "Удалить запрос"
+          details: "Детали"
+          solve: "Закрыть запрос"
+          reopen: "Переоткрыть запрос"
+      form:
+        remove_request:
+          sure_to_remove: "Вы действительно хотите удалить выбранные запросы?"
+          deletion_failed: "Не удалось удалить некоторые запросы."
+        create:
+          title: "Создать запрос"
+          button_create: "Создать"
+          field:
+            subject: "Тема"
+            content: "Сообщение"
+      comments:
+        title: "Запрос #{{id}}"
+        grid:
+          title: "Комментарии"
+          column:
+            created_at: "Дата"
+            author: "Автор"
+            content: "Сообщение"
+          button:
+            add: "Добавить комментарий"
+        form:
+          add:
+            title: "Добавить комментарий"
+            button_add: "Добавить"
+            field:
+              content: "Сообщение"

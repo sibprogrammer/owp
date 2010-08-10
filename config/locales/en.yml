@@ -92,6 +92,7 @@ en:
         virtual_servers: "Virtual servers"
         my_profile: "My profile"
         users: "Users"
+        requests: "Requests"
         tasks: "Tasks"
         event_log: "Events log"
         logout: "Logout"
@@ -472,3 +473,45 @@ en:
           sure_to_restore: "Are you sure you want to restore selected backup? Server will be unavailable during restore."
           failed: "Restore procedure failed."
           scheduled: "Restore procedure was started and will take some time."
+    requests:
+      title: "Requests"
+      grid:
+        title: "Requests list"
+        column:
+          opened: "State"
+          id: "ID"
+          subject: "Subject"
+          author: "Author"
+          updated_at: "Update date"
+        button:
+          add: "Create request"
+          remove: "Delete request"
+          details: "Details"
+          solve: "Close request"
+          reopen: "Reopen request"
+      form:
+        remove_request:
+          sure_to_remove: "Are you sure you want to remove selected requests?"
+          deletion_failed: "Unable to delete some requests."
+        create:
+          title: "Create request"
+          button_create: "Create"
+          field:
+            subject: "Subject"
+            content: "Message"
+      comments:
+        title: "Request #{{id}}"
+        grid:
+          title: "Comments"
+          column:
+            created_at: "Date"
+            author: "Author"
+            content: "Message"
+          button:
+            add: "Add comment"
+        form:
+          add:
+            title: "Add comment"
+            button_add: "Add"
+            field:
+              content: "Message"

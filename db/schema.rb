@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100713154625) do
+ActiveRecord::Schema.define(:version => 20100810004228) do
 
   create_table "background_jobs", :force => true do |t|
     t.string  "description"
@@ -22,6 +22,13 @@ ActiveRecord::Schema.define(:version => 20100713154625) do
     t.string  "description"
     t.integer "size"
     t.integer "virtual_server_id"
+  end
+
+  create_table "comments", :force => true do |t|
+    t.text     "content"
+    t.datetime "created_at"
+    t.integer  "request_id"
+    t.integer  "user_id"
   end
 
   create_table "event_logs", :force => true do |t|

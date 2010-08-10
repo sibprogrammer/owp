@@ -1,0 +1,227 @@
+<% @page_title = t('admin.requests.title') %>
+<% @page_icon = 'comment_edit.png' %>
+
+<% javascript_tag do -%>
+Ext.onReady(function() {
+
+  function createRequest() {
+    var formCreateRequest = new Owp.form.BasicForm({
+      labelWidth: 100,
+      autoHeight: true,
+      waitMsgTarget: true,
+      url: '/admin/requests/create',
+      defaults: { width: 300 },
+      items: [{
+        fieldLabel: '<%= tjs('admin.requests.form.create.field.subject') %>',
+        name: 'subject',
+        allowBlank: false
+      }, {
+        fieldLabel: '<%= tjs('admin.requests.form.create.field.content') %>',
+        name: 'content',
+        xtype: 'textarea',
+        height: 150,
+        allowBlank: false
+      }]
+    });
+    
+    var windowCreateRequest = new Owp.form.BasicFormWindow({
+      title: '<%= tjs('admin.requests.form.create.title') %>',
+      iconCls: 'icon-window-add',
+      width: 450,
+      modal: true,
+      layout: 'fit',
+      plain: true,
+      bodyStyle: 'padding:5px;',
+      resizable: false,
+      items: formCreateRequest,
+      buttons: [{
+        text: '<%= tjs('admin.requests.form.create.button_create') %>',
+        iconCls: 'icon-button-add',
+        ref: '../submitButton',
+        handler: function() {
+          formCreateRequest.form.submit({
+            waitMsg: '<%= tjs('form.loading') %>',
+            success: function() {
+              requestsGrid.store.reload();
+              windowCreateRequest.hide();
+              requestsGrid.getSelectionModel().clearSelections();
+            },
+            failure: function(form, action) {
+              Owp.form.errorHandler(form, action);
+            }
+          });
+        }
+      }, {
+        text: '<%= tjs('form.button.cancel') %>',
+        iconCls: 'icon-button-cancel',
+        handler: function() {
+          windowCreateRequest.hide();
+        }
+      }]
+    });
+    
+    windowCreateRequest.show();
+  }
+
+  function removeRequest() {
+    Ext.MessageBox.confirm(
+      '<%= tjs('form.confirmation') %>',
+      '<%= tjs('admin.requests.form.remove_request.sure_to_remove') %>',
+      function(button, text) {
+        if ('yes' == button) { 
+          Owp.list.groupAction({
+            gridName: 'requestsGrid',
+            url: '/admin/requests/delete',
+            waitMsg: '<%= tjs('form.performing_task') %>',
+            failure: {
+              title: '<%= tjs('form.error.title') %>',
+              msg: '<%= tjs('admin.requests.form.remove_request.deletion_failed') %>'
+            }
+          });
+        }
+      }
+    );
+  }
+  
+  function seeDetails() {
+    var selectedNode = Ext.getCmp('requestsGrid').getSelectionModel().getSelected();
+    document.location.href = '/admin/requests/show?id=' + selectedNode.id;
+  }
+
+  var store = new Ext.data.JsonStore({
+    url: '/admin/requests/list_data',
+    root: 'data',
+    autoLoad: true,
+    data: <%= { :data => @requests_list }.to_json %>,
+    sortInfo: { field: 'id', direction: 'DESC' },
+    fields: [
+      { name: 'id' },
+      { name: 'opened' },
+      { name: 'subject' },
+      { name: 'author' },
+      { name: 'updated_at' }
+    ]
+  });
+
+  var selectionModel = new Ext.grid.CheckboxSelectionModel({
+    listeners: {
+      selectionchange: function(selectionModel) {
+        if (selectionModel.getCount()) {
+          requestsGrid.removeButton.enable();
+        } else {
+          requestsGrid.removeButton.disable();
+        }
+        
+        if (1 == selectionModel.getCount()) {
+          requestsGrid.detailsButton.enable();
+        } else {
+          requestsGrid.detailsButton.disable();
+        }
+      }
+    }
+  });
+  
+  <% if !@current_user.superadmin? %>
+    selectionModel = new Ext.grid.RowSelectionModel({
+      listeners: {
+        selectionchange: function(selectionModel) {
+          if (1 == selectionModel.getCount()) {
+            requestsGrid.detailsButton.enable();
+          } else {
+            requestsGrid.detailsButton.disable();
+          }
+        }
+      }
+    });
+  <% end -%>
+
+  var requestsGrid = new Ext.grid.GridPanel({
+    id: 'requestsGrid',
+    store: store,
+    title: '<%= tjs('admin.requests.grid.title') %>',
+    loadMask: true,
+    tools: [{ 
+      id: 'refresh',
+      handler: function() {
+        requestsGrid.getStore().reload();
+      }
+    }],
+    cm: new Ext.grid.ColumnModel([
+      <% if @current_user.superadmin? %> selectionModel, <% end -%>
+      { 
+        id: 'opened',
+        header: '<%= tjs('admin.requests.grid.column.opened') %>',
+        renderer: function(value) {
+          var image = 1 == value ? 'help.png' : 'accept.png';
+          return '<img src="/images/' + image + '"/>';
+        },
+        width: 60,
+        align: 'center',
+        sortable: true,
+        dataIndex: 'opened'
+      }, { 
+        id: 'id',
+        header: '<%= tjs('admin.requests.grid.column.id') %>',
+        width: 50,
+        sortable: true,
+        dataIndex: 'id',
+        renderer: function(identity, metadata, record) {
+          return "<a href='/admin/requests/show?id=" + identity + "'>" + identity + "</a>";
+        }
+      }, { 
+        id: 'subject',
+        header: '<%= tjs('admin.requests.grid.column.subject') %>',
+        sortable: true,
+        dataIndex: 'subject'
+      }, {
+        id: 'author',
+        header: '<%= tjs('admin.requests.grid.column.author') %>',
+        width: 130,
+        sortable: true,
+        dataIndex: 'author'
+      }, {
+        id: 'created_at',
+        header: '<%= tjs('admin.requests.grid.column.updated_at') %>',
+        width: 130,
+        sortable: true,
+        dataIndex: 'updated_at'
+      }
+    ]),
+    sm: selectionModel,
+    stripeRows: true,
+    autoExpandColumn: 'subject',
+    autoWidth: true,
+    stripeRows: true,
+    frame: true,
+    iconCls: 'icon-items-list',
+    listeners: {
+      celldblclick: function(grid, rowIndex, columnIndex, eventObject) {
+        var selectedNode = grid.getSelectionModel().getSelected();
+        document.location.href = '/admin/requests/show?id=' + selectedNode.data.id;
+      }
+    },
+    tbar: [{
+      text: '<%= tjs('admin.requests.grid.button.add') %>',
+      handler: createRequest,
+      cls: 'x-btn-text-icon',
+      icon: '/images/add.png'
+    }, <% if @current_user.superadmin? %> {
+      text: '<%= tjs('admin.requests.grid.button.remove') %>',
+      handler: removeRequest,
+      cls: 'x-btn-text-icon',
+      icon: '/images/delete.png',
+      ref: '../removeButton',
+      disabled: true
+    }, <% end -%> '-', {
+      text: '<%= tjs('admin.requests.grid.button.details') %>',
+      handler: seeDetails,
+      cls: 'x-btn-text-icon',
+      icon: '/images/table_go.png',
+      ref: '../detailsButton',
+      disabled: true
+    }]
+  });
+  
+  Owp.layout.addToCenter(requestsGrid);
+});
+<% end -%>
