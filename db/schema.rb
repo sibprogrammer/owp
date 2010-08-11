@@ -58,6 +58,15 @@ ActiveRecord::Schema.define(:version => 20100810004228) do
     t.integer "hardware_server_id"
   end
 
+  create_table "requests", :force => true do |t|
+    t.string   "subject"
+    t.text     "content"
+    t.boolean  "opened",     :default => true
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "user_id"
+  end
+
   create_table "server_templates", :force => true do |t|
     t.string  "name"
     t.integer "hardware_server_id"
