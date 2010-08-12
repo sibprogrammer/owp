@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100810004228) do
+ActiveRecord::Schema.define(:version => 20100812153257) do
 
   create_table "background_jobs", :force => true do |t|
     t.string  "description"
@@ -103,6 +103,7 @@ ActiveRecord::Schema.define(:version => 20100810004228) do
     t.integer "cpu_units"
     t.integer "cpu_limit"
     t.integer "cpus"
+    t.date    "expiration_date"
   end
 
 end

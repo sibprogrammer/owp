@@ -95,6 +95,10 @@ class ApplicationController < ActionController::Base
           'stop.png',
           t('admin.dashboard.stats_grid.parameter.virtual_servers_stopped'),
           VirtualServer.count(:conditions => "state = 'stopped'")
+        ], [
+          'clock_red.png',
+          t('admin.dashboard.stats_grid.parameter.virtual_servers_expired'),
+          VirtualServer.count(:conditions => ["expiration_date < ?", Date.today ])
         ]
       ]
     end

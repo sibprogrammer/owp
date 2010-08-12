@@ -48,7 +48,15 @@
     <span class="value"><%= h(@virtual_server.nameserver) %></span>
   </li>
   <li class="smallfield textfield">
-    <span class="name"><%= t('admin.virtual_servers.form.create_server.field.searchdomain') %></span>
+    <span class="name"><%= t('admin.virtual_servers.form.create_server.field.search_domain') %></span>
     <span class="value"><%= h(@virtual_server.search_domain) %></span>
+  </li>
+  <li class="smallfield textfield">
+    <span class="name"><%= t('admin.virtual_servers.form.create_server.field.description') %></span>
+    <span class="value"><%= h(@virtual_server.description) %></span>
+  </li>
+  <li class="smallfield textfield">
+    <span class="name"><%= t('admin.virtual_servers.form.create_server.field.expiration_date') %></span>
+    <span class="value"><%= h(@virtual_server.expiration_date.strftime("%Y.%m.%d")) %></span>
   </li>
 </ul>

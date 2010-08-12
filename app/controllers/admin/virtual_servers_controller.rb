@@ -82,6 +82,7 @@ class Admin::VirtualServersController < Admin::Base
       :cpu_units => virtual_server.cpu_units,
       :cpus => virtual_server.cpus,
       :cpu_limit => virtual_server.cpu_limit,
+      :expiration_date => virtual_server.expiration_date.blank? ? '' : virtual_server.expiration_date.strftime("%Y.%m.%d"),
       :user_id => virtual_server.user_id,
       :description => virtual_server.description,
     }}  
@@ -245,7 +246,7 @@ class Admin::VirtualServersController < Admin::Base
   private
   
     def virtual_server_properties(virtual_server)
-      [
+      params = [
         {
           :parameter => t('admin.virtual_servers.form.create_server.field.identity'),
           :value => virtual_server.identity,
@@ -258,38 +259,31 @@ class Admin::VirtualServersController < Admin::Base
         }, {
           :parameter => t('admin.virtual_servers.form.create_server.field.server_template'),
           :value => virtual_server.orig_server_template,
-        }, {
-          :parameter => t('admin.virtual_servers.form.create_server.field.ip_address'),
-          :value => virtual_server.ip_address,
-        }, {
-          :parameter => t('admin.virtual_servers.form.create_server.field.host_name'),
-          :value => virtual_server.host_name,
-        }, {
-          :parameter => t('admin.virtual_servers.form.create_server.field.diskspace'),
-          :value => virtual_server.diskspace,
-        }, {
-          :parameter => t('admin.virtual_servers.form.create_server.field.memory'),
-          :value => virtual_server.memory,
-        }, {
-          :parameter => t('admin.virtual_servers.form.create_server.field.cpu_units'),
-          :value => virtual_server.cpu_units,
-        }, {
-          :parameter => t('admin.virtual_servers.form.create_server.field.cpus'),
-          :value => virtual_server.cpus,
-        }, {
-          :parameter => t('admin.virtual_servers.form.create_server.field.cpu_limit'),
-          :value => virtual_server.cpu_limit,
-        }, {
-          :parameter => t('admin.virtual_servers.form.create_server.field.nameserver'),
-          :value => virtual_server.nameserver,
-        }, {
-          :parameter => t('admin.virtual_servers.form.create_server.field.searchdomain'),
-          :value => virtual_server.search_domain,
-        }, {
-          :parameter => t('admin.virtual_servers.form.create_server.field.description'),
-          :value => virtual_server.description,
         }
       ]
+      
+      limits = %w{ ip_address host_name diskspace memory cpu_units cpus cpu_limit nameserver search_domain description }
+      
+      limits.each do |limit|
+        if !virtual_server.send(limit).blank?
+          params << {
+            :parameter => t("admin.virtual_servers.form.create_server.field.#{limit}"),
+            :value => virtual_server.send(limit),
+          }
+        end
+      end
+      
+      if !virtual_server.expiration_date.blank?
+        is_expired = Date.today > virtual_server.expiration_date
+        expiration_date = virtual_server.expiration_date.strftime("%Y.%m.%d")
+        
+        params << {
+          :parameter => t('admin.virtual_servers.form.create_server.field.expiration_date'),
+          :value => is_expired ? "<span class='error-text'>#{expiration_date}</span>" : expiration_date,
+        }
+      end
+      
+      params
     end
   
 end

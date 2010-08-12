@@ -31,7 +31,9 @@ Ext.onReady(function() {
       { name: 'state' },
       { name: 'os_template_name' },
       { name: 'memory' },
-      { name: 'diskspace' }
+      { name: 'diskspace' },
+      { name: 'expiration_date' },
+      { name: 'is_expired' }
     ]
   });
   
@@ -101,6 +103,16 @@ Ext.onReady(function() {
         header: '<%= tjs('admin.virtual_servers.grid.column.diskspace') %>',
         sortable: true,
         dataIndex: 'diskspace'
+      }, {
+        id: 'expiration_date',
+        header: '<%= tjs('admin.virtual_servers.grid.column.expiration_date') %>',
+        sortable: true,
+        dataIndex: 'expiration_date',
+        renderer: function(value, metaData, record) {
+          return record.data.is_expired
+            ? "<span class='error-text'>" + value + "</span>"
+            : value;
+        }
       }, {
         id: 'os_template_name',
         header: '<%= tjs('admin.virtual_servers.grid.column.os_template') %>',

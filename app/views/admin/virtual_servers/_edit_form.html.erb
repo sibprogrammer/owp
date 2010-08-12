@@ -155,6 +155,19 @@ var showVirtualServerEditForm = function(mode, grid, statsGrid) {
             name: 'password_confirmation',
             inputType: 'password',
             allowBlank: ('edit' == mode)
+          }, {
+            fieldLabel: '<%= tjs('admin.virtual_servers.form.create_server.field.owner') %>',
+            xtype: 'combo',
+            mode: 'local',
+            editable: false,
+            forceSelection: true,
+            triggerAction: 'all',
+            hiddenName: 'user_id',
+            valueField: 'id',
+            displayField: 'login',
+            name: 'user_id',
+            emptyText: '<%= tjs('admin.virtual_servers.form.create_server.field.select_owner') %>',
+            store: ownersStore
           }]
         }]
       }, {
@@ -196,6 +209,12 @@ var showVirtualServerEditForm = function(mode, grid, statsGrid) {
             fieldLabel: '<%= tjs('admin.virtual_servers.form.create_server.field.cpu_limit') %>',
             id: 'fieldCpuLimit',
             name: 'cpu_limit'
+          }, {
+            fieldLabel: '<%= tjs('admin.virtual_servers.form.create_server.field.expiration_date') %>',
+            id: 'fieldExpirationDate',
+            xtype: 'datefield',
+            format: 'Y.m.d',
+            name: 'expiration_date'
           }]
         }, {
           xtype: 'fieldset',
@@ -207,7 +226,7 @@ var showVirtualServerEditForm = function(mode, grid, statsGrid) {
             fieldLabel: '<%= tjs('admin.virtual_servers.form.create_server.field.nameserver') %>',
             name: 'nameserver'
           }, {
-            fieldLabel: '<%= tjs('admin.virtual_servers.form.create_server.field.searchdomain') %>',
+            fieldLabel: '<%= tjs('admin.virtual_servers.form.create_server.field.search_domain') %>',
             name: 'search_domain'
           }]
         }, {
@@ -228,26 +247,6 @@ var showVirtualServerEditForm = function(mode, grid, statsGrid) {
             checked: true,
             name: 'start_after_creation',
             id: 'checkboxStartAfterCreation'
-          }]
-        }, {
-          xtype: 'fieldset',
-          title: '<%= tjs('admin.virtual_servers.form.create_server.fieldset.panel_access') %>',
-          autoHeight: true,
-          defaultType: 'checkbox',
-          labelWidth: 180,
-          items: [{
-            fieldLabel: '<%= tjs('admin.virtual_servers.form.create_server.field.owner') %>',
-            xtype: 'combo',
-            mode: 'local',
-            editable: false,
-            forceSelection: true,
-            triggerAction: 'all',
-            hiddenName: 'user_id',
-            valueField: 'id',
-            displayField: 'login',
-            name: 'user_id',
-            emptyText: '<%= tjs('admin.virtual_servers.form.create_server.field.select_owner') %>',
-            store: ownersStore
           }]
         }]
       }]

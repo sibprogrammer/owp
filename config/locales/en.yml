@@ -156,8 +156,9 @@ en:
           panel_users: "Panel users"
           hardware_servers: "Physical servers"
           virtual_servers: "Virtual servers"
-          virtual_servers_running: "Virtual servers - running"
-          virtual_servers_stopped: "Virtual servers - stopped"
+          virtual_servers_running: "Running virtual servers"
+          virtual_servers_stopped: "Stopped virtual servers"
+          virtual_servers_expired: "Expired virtual servers"
     hardware_servers:
       title: "Physical Servers"
       grid:
@@ -225,6 +226,7 @@ en:
           os_template: "OS Template"
           memory: "Memory, Mb"
           diskspace: "Diskspace, Mb"
+          expiration_date: "Expiration Date"
           owner: "Owner"
           description: "Description"
         button:
@@ -267,7 +269,7 @@ en:
             start_on_boot: "Start on Boot"
             start_after_creation: "Start after Creation"
             nameserver: "DNS Server"
-            searchdomain: "Search Domain"
+            search_domain: "Search Domain"
             diskspace: "Disk Space, Mb"
             memory: "RAM Memory, Mb"
             status: "Status"
@@ -280,6 +282,7 @@ en:
             cpu_units: "CPU Units"
             cpus: "Number of CPUs"
             cpu_limit: "CPU Limit, %"
+            expiration_date: "Expiration date"
           fieldset:
             general: "General"
             network: "Network"
@@ -287,7 +290,6 @@ en:
             start_options: "Start Options"
             dns_settings: "DNS Settings"
             limits: "Limits"
-            panel_access: "Panel access"
           tab:
             main_settings: "Main Settings"
             additional_settings: "Additional Settings"
@@ -437,7 +439,7 @@ en:
             memory: "Memory, Mb"
             start_on_boot: "Start on Boot"
             nameserver: "DNS Server"
-            searchdomain: "Search Domain"
+            search_domain: "Search Domain"
             cpu_units: "CPU Units"
             cpus: "Number of CPUs"
             cpu_limit: "CPU Limit, %"

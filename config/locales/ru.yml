@@ -156,8 +156,9 @@ ru:
           panel_users: "Пользователи панели"
           hardware_servers: "Физические сервера"
           virtual_servers: "Виртуальные сервера"
-          virtual_servers_running: "Виртуальные сервера - запущенные"
-          virtual_servers_stopped: "Виртуальные сервера - остановленные"
+          virtual_servers_running: "Запущенные виртуальные сервера"
+          virtual_servers_stopped: "Остановленные виртуальные сервера"
+          virtual_servers_expired: "Виртуальные сервера на отключение"
     hardware_servers:
       title: "Физические сервера"
       grid:
@@ -225,6 +226,7 @@ ru:
           os_template: "Шаблон ОС"
           memory: "Память, Мб"
           diskspace: "Диск, Мб"
+          expiration_date: "Дата отключения"
           owner: "Владелец"
           description: "Описание"
         button:
@@ -267,7 +269,7 @@ ru:
             start_on_boot: "Запуск после загрузки"
             start_after_creation: "Запуск после создания"
             nameserver: "DNS сервер"
-            searchdomain: "Домен для поиска"
+            search_domain: "Домен для поиска"
             diskspace: "Размер диска, Mb"
             memory: "RAM память, Mb"
             status: "Статус"
@@ -280,6 +282,7 @@ ru:
             cpu_units: "CPU единиц"
             cpus: "Количество CPU"
             cpu_limit: "CPU лимит, %"
+            expiration_date: "Дата отключения"
           fieldset:
             general: "Общее"
             network: "Сеть"
@@ -287,7 +290,6 @@ ru:
             start_options: "Опции запуска"
             dns_settings: "DNS настройки"
             limits: "Ограничения"
-            panel_access: "Доступ к панели"
           tab:
             main_settings: "Основные настройки"
             additional_settings: "Дополнительные настройки"
@@ -437,7 +439,7 @@ ru:
             memory: "RAM память, Mb"
             start_on_boot: "Запуск после загрузки"
             nameserver: "DNS сервер"
-            searchdomain: "Домен для поиска"
+            search_domain: "Домен для поиска"
             cpu_units: "CPU единиц"
             cpus: "Количество CPU"
             cpu_limit: "CPU лимит, %"

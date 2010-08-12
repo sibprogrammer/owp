@@ -7,6 +7,7 @@ a { color: #000 }
 td.x-grid3-td-checker, td.x-grid3-td-state { vertical-align: middle; }
 
 .monospace-field { font-family: monospace; }
+.error-text { color: #CC0000; font-weight: bold; }
 
 .logo { float: left; text-align: center; top: 50%; display: table; height: 48px; padding-left: 20px; }
 .logo div { display: table-cell; padding-top: 5px; font-size: 20px; font-weight: bold; }
