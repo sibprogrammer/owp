@@ -6,7 +6,8 @@ class Admin::ServerTemplatesController < Admin::Base
     redirect_to(:controller => 'hardware_servers', :action => 'list') and return if !@hardware_server
     @up_level = "/admin/hardware-servers/show?id=#{@hardware_server.id}"
     
-    server_template = ServerTemplate.find_by_name(@hardware_server.default_server_template)
+    server_template = @hardware_server.server_templates.find_by_name(@hardware_server.default_server_template)
+    server_template ||= @hardware_server.server_templates.first
     @advanced_limits = server_template.get_advanced_limits
     @server_templates_list = server_templates_list(@hardware_server)
   end
