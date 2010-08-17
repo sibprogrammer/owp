@@ -159,6 +159,7 @@ ru:
           virtual_servers_running: "Запущенные виртуальные сервера"
           virtual_servers_stopped: "Остановленные виртуальные сервера"
           virtual_servers_expired: "Виртуальные сервера на отключение"
+          opened_requests: "Открытых запросов"
     hardware_servers:
       title: "Физические сервера"
       grid:

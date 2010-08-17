@@ -159,6 +159,7 @@ en:
           virtual_servers_running: "Running virtual servers"
           virtual_servers_stopped: "Stopped virtual servers"
           virtual_servers_expired: "Expired virtual servers"
+          opened_requests: "Opened requests"
     hardware_servers:
       title: "Physical Servers"
       grid:

@@ -98,7 +98,11 @@ class ApplicationController < ActionController::Base
         ], [
           'clock_red.png',
           t('admin.dashboard.stats_grid.parameter.virtual_servers_expired'),
-          VirtualServer.count(:conditions => ["expiration_date < ?", Date.today ])
+          VirtualServer.count(:conditions => ["expiration_date < ?", Date.today])
+        ], [
+          'help.png',
+          t('admin.dashboard.stats_grid.parameter.opened_requests'),
+          Request.count(:conditions => ["opened = ?", true])
         ]
       ]
     end
