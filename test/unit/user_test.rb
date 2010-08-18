@@ -41,7 +41,7 @@ class UserTest < ActiveSupport::TestCase
   
   test "Logins are always in lowercase" do
     user = User.new({ :login => 'CAPS', :password => 'password', :password_confirmation => 'password' })
-    assert_equal user.login, "caps"
+    assert_equal "caps", user.login
   end
   
   test "User can control virtual server" do
