@@ -1,8 +1,12 @@
 require 'test_helper'
 
 class HardwareServerTest < ActiveSupport::TestCase
-  # Replace this with your real tests.
-  test "the truth" do
-    assert true
+  
+  test "Disconnect physical server" do
+    assert_not_nil HardwareServer.find_by_host('rock.lan')
+    server = hardware_servers(:rock)
+    server.disconnect
+    assert_nil HardwareServer.find_by_host('rock.lan')
   end
+  
 end

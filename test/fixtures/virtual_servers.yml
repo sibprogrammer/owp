@@ -3,3 +3,9 @@ server_101:
   identity: 101
   ip_address: 192.168.100.101
   hardware_server_id: 1
+  
+server_102:
+  id: 2
+  identity: 102
+  ip_address: 192.168.100.102
+  hardware_server_id: 1
