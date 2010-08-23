@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100812153257) do
+ActiveRecord::Schema.define(:version => 20100823142120) do
 
   create_table "background_jobs", :force => true do |t|
     t.string  "description"
@@ -81,6 +81,7 @@ ActiveRecord::Schema.define(:version => 20100812153257) do
     t.string   "remember_token",            :limit => 40
     t.datetime "remember_token_expires_at"
     t.integer  "role_type",                               :default => 1
+    t.string   "email"
   end
 
   add_index "users", ["login"], :name => "index_users_on_login", :unique => true

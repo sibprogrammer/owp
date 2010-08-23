@@ -118,6 +118,7 @@ en:
       new_password: "New Password"
       confirm_password: "Confirm Password"
       bad_current_password: "Invalid current password."
+      email: "E-mail"
     events:
       internal_error: "Internal error: {{message}}"
       hardware_server:
@@ -380,6 +381,7 @@ en:
           login: "Login"
           created_at: "Creation Date"
           role: "Role"
+          email: "E-mail"
         button:
           add: "Add User"
           remove: "Delete User"
@@ -398,6 +400,7 @@ en:
             confirm_password: "Confirm Password"
             role: "Role"
             select_role: "Select a role"
+            email: "E-mail"
     task:
       title: "Tasks"
       grid:

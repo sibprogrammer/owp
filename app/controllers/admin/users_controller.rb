@@ -1,20 +1,22 @@
 class Admin::UsersController < Admin::Base
   before_filter :superadmin_required, :except => :save_profile
   
-  def save_profile    
-    user = User.authenticate(@current_user.login, params[:current_password])
-    
-    if !user
-      render :json => { :success => false, :form_errors => [['current_password', t('admin.my_profile.bad_current_password')]] }
-      return
+  def save_profile
+    if !params[:password].blank?
+      if !User.authenticate(@current_user.login, params[:current_password])
+        @current_user.errors.add(:current_password, t('admin.my_profile.bad_current_password'))
+      end
+    else
+      params.delete(:password)
+      params.delete(:password_confirmation)
     end
     
-    user.attributes = params
+    @current_user.attributes = params
     
-    if user.save
+    if @current_user.errors.empty? && @current_user.save
       render :json => { :success => true }  
     else
-      render :json => { :success => false, :form_errors => user.errors }
+      render :json => { :success => false, :form_errors => @current_user.errors }
     end
   end
   
@@ -58,6 +60,7 @@ class Admin::UsersController < Admin::Base
     render :json => { :success => true, :data => {
       :login => user.login,
       :role_type => user.role_type,
+      :email => user.email,
     }}
   end
   
@@ -70,6 +73,7 @@ class Admin::UsersController < Admin::Base
         :login => user.login,
         :role_type => t('admin.users.role.' + (1 == user.role_type ? 'infrastructure_admin' : 'virtual_server_owner')),
         :created_at => user.created_at.strftime("%Y.%m.%d %H:%M:%S"),
+        :email => user.email,
       }}
     end
   

@@ -9,10 +9,11 @@ class User < ActiveRecord::Base
   validates_length_of :login, :within => 2..40
   validates_uniqueness_of :login
   validates_format_of :login, :with => Authentication.login_regex, :message => Authentication.bad_login_message
+  validates_format_of :email, :with => /^.+@.+$/, :if => :email?
 
-  attr_accessible :login, :password, :password_confirmation, :role_type
+  attr_accessible :login, :password, :password_confirmation, :role_type, :email
   
-  attr_accessor :password, :password_confirmation
+  attr_accessor :password, :password_confirmation, :current_password
   
   has_many :virtual_servers
   has_many :requests

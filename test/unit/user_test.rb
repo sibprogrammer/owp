@@ -63,4 +63,14 @@ class UserTest < ActiveSupport::TestCase
     assert admin.can_control(server_101)
   end
   
+  test "User can have email" do
+    user = User.new({ :login => 'test', :email => 'root@localhost' })
+    assert_equal "root@localhost", user.email
+  end
+  
+  test "Email address should be valid" do
+    user = User.new({ :login => 'test', :password => 'password', :password_confirmation => 'password', :email => 'not-email' })
+    assert !user.valid?
+  end
+  
 end

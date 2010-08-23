@@ -6,6 +6,7 @@
         labelWidth: 150,
         waitMsgTarget: true,
         url: '/admin/users/save_profile',
+        autoHeight: true,
         defaults: { width: 200 },
         keys: [{
           key: Ext.EventObject.ENTER,
@@ -20,18 +21,21 @@
         }, {
           fieldLabel: '<%= tjs('admin.my_profile.current_password') %>',
           name: 'current_password',
-          inputType: 'password',
-          allowBlank: false
+          inputType: 'password'
         }, {
           fieldLabel: '<%= tjs('admin.my_profile.new_password') %>',
           name: 'password',
-          inputType: 'password',
-          allowBlank: false
+          inputType: 'password'
         }, {
           fieldLabel: '<%= tjs('admin.my_profile.confirm_password') %>',
           name: 'password_confirmation',
-          inputType: 'password',
-          allowBlank: false
+          inputType: 'password'
+        }, {
+          fieldLabel: '<%= tjs('admin.my_profile.email') %>',
+          name: 'email',
+          inputType: 'textfield',
+          value: '<%= escape_javascript @current_user.email %>',
+          vtype: 'email'
         }]
       });  
       
@@ -39,7 +43,7 @@
         title: '<%= tjs('admin.my_profile.title') %>',
         iconCls: 'icon-window-my-profile',
         width: 410,
-        height: 185,
+        autoHeight: true,
         modal: true,
         layout: 'fit',
         plain: true,
@@ -56,7 +60,7 @@
             formMyProfile.form.submit({
               waitMsg: '<%= tjs('form.loading') %>',
               success: function() {
-                windowMyProfile.hide();
+                window.location.reload();
               },
               failure: function(form, action) {
                 Owp.form.errorHandler(form, action);
