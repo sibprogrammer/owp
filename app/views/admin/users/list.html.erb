@@ -222,7 +222,12 @@ Ext.onReady(function() {
         header: '<%= tjs('admin.users.grid.column.email') %>',
         sortable: true,
         width: 180,
-        dataIndex: 'email'
+        dataIndex: 'email',
+        renderer: function(value, metaData, record) {
+          return value
+            ? '<a href="mailto:' + value + '">' + value + '</a>'
+            : '';
+        }
       }, {
         id: 'role_type',
         header: '<%= tjs('admin.users.grid.column.role') %>',
