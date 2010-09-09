@@ -487,6 +487,7 @@ ru:
           opened: "Статус"
           id: "ID"
           subject: "Тема"
+          replies: "Ответы"
           author: "Автор"
           updated_at: "Дата обновления"
         button:

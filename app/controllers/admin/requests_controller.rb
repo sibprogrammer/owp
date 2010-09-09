@@ -86,6 +86,7 @@ class Admin::RequestsController < Admin::Base
         :id => request.id,
         :opened => request.opened,
         :subject => CGI.escapeHTML(request.subject),
+        :replies => request.comments.count,
         :author => request.user ? request.user.login : '',
         :updated_at => request.updated_at.strftime("%Y.%m.%d %H:%M:%S"),
       }}

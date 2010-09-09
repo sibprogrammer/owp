@@ -487,6 +487,7 @@ en:
           opened: "State"
           id: "ID"
           subject: "Subject"
+          replies: "Replies"
           author: "Author"
           updated_at: "Update date"
         button:

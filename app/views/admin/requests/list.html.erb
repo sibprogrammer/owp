@@ -98,6 +98,7 @@ Ext.onReady(function() {
       { name: 'id' },
       { name: 'opened' },
       { name: 'subject' },
+      { name: 'replies' },
       { name: 'author' },
       { name: 'updated_at' }
     ]
@@ -173,6 +174,12 @@ Ext.onReady(function() {
         header: '<%= tjs('admin.requests.grid.column.subject') %>',
         sortable: true,
         dataIndex: 'subject'
+      }, {
+        id: 'replies',
+        header: '<%= tjs('admin.requests.grid.column.replies') %>',
+        width: 100,
+        sortable: true,
+        dataIndex: 'replies'
       }, {
         id: 'author',
         header: '<%= tjs('admin.requests.grid.column.author') %>',
