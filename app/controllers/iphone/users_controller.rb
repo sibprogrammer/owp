@@ -4,32 +4,28 @@ class Iphone::UsersController < Iphone::Base
     @page_title = t('admin.my_profile.title')
     
     if request.post?
-      user = User.authenticate(@current_user.login, params[:current_password])
-      
-      if !user
-        flash.now[:error] = t('admin.my_profile.bad_current_password')
-        return
+      if !params[:password].blank?
+        if !User.authenticate(@current_user.login, params[:current_password])
+          @current_user.errors.add(:current_password, t('admin.my_profile.bad_current_password'))
+        end
+      else
+        params.delete(:password)
+        params.delete(:password_confirmation)
       end
       
-      user.attributes = params
+      @current_user.attributes = params
       
-      if user.save
+      if @current_user.errors.empty? && @current_user.save
         redirect_to :controller => 'iphone/dashboard'
       else
-        flash.now[:error] = user.errors
+        flash.now[:error] = @current_user.errors
       end
     end
   end
   
   def list
     @page_title = t('admin.users.title')
-    
     @users = User.all(:order => 'login')
-    @users.map! { |user| {
-      :id => user.id,
-      :login => user.login,
-      :role_type => t('admin.users.role.' + (1 == user.role_type ? 'infrastructure_admin' : 'virtual_server_owner')),
-    }}
   end
   
 end

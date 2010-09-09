@@ -17,6 +17,10 @@
         <span class="name"><%= h(t('admin.my_profile.confirm_password')) %></span>
         <input name="password_confirmation" type="password" />
       </li>
+      <li class="smallfield">
+        <span class="name"><%= h(t('admin.my_profile.email')) %></span>
+        <input name="email" type="text" value="<%= h(@current_user.email) %>"/>
+      </li>
       <li class="button">
         <input name="submit" type="submit" value="<%= h(t('form.button.save')) %>" />
       </li>
