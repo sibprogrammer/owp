@@ -55,8 +55,10 @@
     <span class="name"><%= t('admin.virtual_servers.form.create_server.field.description') %></span>
     <span class="value"><%= h(@virtual_server.description) %></span>
   </li>
-  <li class="smallfield textfield">
-    <span class="name"><%= t('admin.virtual_servers.form.create_server.field.expiration_date') %></span>
-    <span class="value"><%= h(@virtual_server.expiration_date.strftime("%Y.%m.%d")) %></span>
-  </li>
+  <% if !@virtual_server.expiration_date.blank? %>
+    <li class="smallfield textfield">
+      <span class="name"><%= t('admin.virtual_servers.form.create_server.field.expiration_date') %></span>
+      <span class="value"><%= h(@virtual_server.expiration_date.strftime("%Y.%m.%d")) %></span>
+    </li>
+  <% end %>
 </ul>
