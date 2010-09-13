@@ -36,7 +36,7 @@ Ext.onReady(function() {
     collapsible: true,
     stateId: 'profilePanel',
     cls: 'panel-dashboard',
-    html: '<p>' + '<%= tjs('admin.dashboard.profile.text', :login => '<b>' + @current_user.login + '</b>') %>' + '</p>'
+    html: '<p>' + '<%= tjs('admin.dashboard.profile.text', :login => '<b>' + @current_user.full_name + '</b>') %>' + '</p>'
   });
   
   container.add(profilePanel);

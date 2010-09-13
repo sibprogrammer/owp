@@ -118,6 +118,7 @@ ru:
       new_password: "Новый пароль"
       confirm_password: "Подтверждение пароля"
       bad_current_password: "Неверный текущий пароль."
+      contact_name: "Контактное имя"
       email: "E-mail"
     events:
       internal_error: "Внутренная ошибка: {{message}}"
@@ -381,6 +382,7 @@ ru:
           login: "Логин"
           created_at: "Дата создания"
           role: "Роль"
+          contact_name: "Контактное имя"
           email: "E-mail"
         button:
           add: "Добавить пользователя"
@@ -400,6 +402,7 @@ ru:
             confirm_password: "Подтверждение пароля"
             role: "Роль"
             select_role: "Выберите роль"
+            contact_name: "Контактное имя"
             email: "E-mail"
     task:
       title: "Задачи"

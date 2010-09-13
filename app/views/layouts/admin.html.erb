@@ -31,6 +31,11 @@
           name: 'password_confirmation',
           inputType: 'password'
         }, {
+          fieldLabel: '<%= tjs('admin.my_profile.contact_name') %>',
+          name: 'contact_name',
+          inputType: 'textfield',
+          value: '<%= escape_javascript @current_user.contact_name %>'
+        }, {
           fieldLabel: '<%= tjs('admin.my_profile.email') %>',
           name: 'email',
           inputType: 'textfield',

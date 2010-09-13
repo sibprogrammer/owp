@@ -36,6 +36,10 @@ Ext.onReady(function() {
         inputType: 'password',
         allowBlank: ('edit' == mode)
       }, {
+        fieldLabel: '<%= tjs('admin.users.form.create.field.contact_name') %>',
+        name: 'contact_name',
+        inputType: 'textfield',
+      }, {
         fieldLabel: '<%= tjs('admin.users.form.create.field.email') %>',
         name: 'email',
         inputType: 'textfield',
@@ -166,6 +170,7 @@ Ext.onReady(function() {
       { name: 'login' },
       { name: 'role_type' },
       { name: 'created_at' },
+      { name: 'contact_name' },
       { name: 'email' }
     ]
   });
@@ -217,6 +222,12 @@ Ext.onReady(function() {
         header: '<%= tjs('admin.users.grid.column.login') %>',
         sortable: true,
         dataIndex: 'login'
+      }, {
+        id: 'contact_name',
+        header: '<%= tjs('admin.users.grid.column.contact_name') %>',
+        sortable: true,
+        width: 180,
+        dataIndex: 'contact_name'
       }, {
         id: 'email',
         header: '<%= tjs('admin.users.grid.column.email') %>',

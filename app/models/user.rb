@@ -11,7 +11,7 @@ class User < ActiveRecord::Base
   validates_format_of :login, :with => Authentication.login_regex, :message => Authentication.bad_login_message
   validates_format_of :email, :with => /^.+@.+$/, :if => :email?
 
-  attr_accessible :login, :password, :password_confirmation, :role_type, :email
+  attr_accessible :login, :password, :password_confirmation, :role_type, :email, :contact_name
   
   attr_accessor :password, :password_confirmation, :current_password
   
@@ -35,6 +35,10 @@ class User < ActiveRecord::Base
   
   def can_control(server)
     superadmin? or (server.user and (server.user.id == self.id))
+  end
+  
+  def full_name
+    contact_name.blank? ? login : "#{contact_name} (#{login})"
   end
 
   protected

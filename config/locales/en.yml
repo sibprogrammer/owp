@@ -118,6 +118,7 @@ en:
       new_password: "New Password"
       confirm_password: "Confirm Password"
       bad_current_password: "Invalid current password."
+      contact_name: "Contact Name"
       email: "E-mail"
     events:
       internal_error: "Internal error: {{message}}"
@@ -381,6 +382,7 @@ en:
           login: "Login"
           created_at: "Creation Date"
           role: "Role"
+          contact_name: "Contact Name"
           email: "E-mail"
         button:
           add: "Add User"
@@ -400,6 +402,7 @@ en:
             confirm_password: "Confirm Password"
             role: "Role"
             select_role: "Select a role"
+            contact_name: "Contact Name"
             email: "E-mail"
     task:
       title: "Tasks"

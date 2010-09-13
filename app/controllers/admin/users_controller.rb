@@ -60,6 +60,7 @@ class Admin::UsersController < Admin::Base
     render :json => { :success => true, :data => {
       :login => user.login,
       :role_type => user.role_type,
+      :contact_name => user.contact_name,
       :email => user.email,
     }}
   end
@@ -73,6 +74,7 @@ class Admin::UsersController < Admin::Base
         :login => user.login,
         :role_type => t('admin.users.role.' + (1 == user.role_type ? 'infrastructure_admin' : 'virtual_server_owner')),
         :created_at => user.created_at.strftime("%Y.%m.%d %H:%M:%S"),
+        :contact_name => user.contact_name,
         :email => user.email,
       }}
     end
