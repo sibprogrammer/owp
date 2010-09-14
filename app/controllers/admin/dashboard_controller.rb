@@ -1,5 +1,6 @@
 require 'net/http'
 require 'rexml/document'
+require 'timeout'
 
 class Admin::DashboardController < Admin::Base
   
@@ -17,7 +18,10 @@ class Admin::DashboardController < Admin::Base
     
     begin
       latest_update = Rails.cache.fetch('updates', :force => (Time.now - check_date > AppConfig.updates.period)) do
-        xml = Hash.from_xml(Net::HTTP.get_response(URI.parse(AppConfig.updates.url)).body)
+        xml = nil
+        Timeout::timeout(3) do
+          xml = Hash.from_xml(Net::HTTP.get_response(URI.parse(AppConfig.updates.url)).body)
+        end
         logger.info "Updates information was obtained."
         Rails.cache.write('updates_date', Time.now)
         xml['updates']['latest']
