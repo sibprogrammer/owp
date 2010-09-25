@@ -266,9 +266,14 @@ class Admin::VirtualServersController < Admin::Base
       
       limits.each do |limit|
         if !virtual_server.send(limit).blank?
+          case limit
+            when 'diskspace' then value = virtual_server.human_diskspace
+            when 'memory' then value = virtual_server.human_memory
+            else value = virtual_server.send(limit)
+          end
           params << {
             :parameter => t("admin.virtual_servers.form.create_server.field.#{limit}"),
-            :value => virtual_server.send(limit),
+            :value => value,
           }
         end
       end

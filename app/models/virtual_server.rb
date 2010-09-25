@@ -33,7 +33,12 @@ class VirtualServer < ActiveRecord::Base
     result = []
     
     limits.each { |limit|
-      limit_values = parser.get(limit).split(":")
+      raw_limit = parser.get(limit)
+      raw_limit = 'unlimited' if raw_limit.blank?
+      raw_limit = "#{raw_limit}:#{raw_limit}" if !raw_limit.include?(':')
+      limit_values = raw_limit.split(":")
+      limit_values[0] = -1 if 'unlimited' == limit_values[0]
+      limit_values[1] = -1 if 'unlimited' == limit_values[1]
       result.push({ :name => limit, :soft_limit => limit_values[0], :hard_limit => limit_values[1] })
     }
     
@@ -68,6 +73,8 @@ class VirtualServer < ActiveRecord::Base
     limits.each { |limit|
       orig_limit = orig_limits.find { |item| item[:name] == limit['name'] }
       if orig_limit[:soft_limit] != limit['soft_limit'] || orig_limit[:hard_limit] != limit['hard_limit']
+        limit['soft_limit'] = 'unlimited' if -1 == limit['soft_limit']
+        limit['hard_limit'] = 'unlimited' if -1 == limit['hard_limit']
         vzctl_params << "--" + limit['name'].downcase + " " + limit['soft_limit'].to_s + ":" + limit['hard_limit'].to_s + " "
       end
     }
@@ -183,6 +190,14 @@ class VirtualServer < ActiveRecord::Base
   
   def private_dir
     hardware_server.ve_private.sub('$VEID', identity.to_s)
+  end
+  
+  def human_diskspace
+    -1 != self.diskspace ? self.diskspace : I18n.translate('activerecord.models.virtual_server.limit.unlimited')
+  end
+  
+  def human_memory
+    -1 != self.memory ? self.memory : I18n.translate('activerecord.models.virtual_server.limit.unlimited')
   end
   
   private

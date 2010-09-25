@@ -15,6 +15,10 @@ en:
       cancel: "Cancel"
       create: "Create"
   activerecord:
+    models:
+      virtual_server:
+        limit:
+          unlimited: "unlimited"
     errors:
       models:
         user:

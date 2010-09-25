@@ -149,13 +149,26 @@ class HardwareServer < ActiveRecord::Base
       virtual_server.ip_address = parser.get('IP_ADDRESS')
       virtual_server.nameserver = parser.get('NAMESERVER')
       virtual_server.search_domain = parser.get('SEARCHDOMAIN')
-      virtual_server.diskspace = parser.get('DISKSPACE').split(":").last.to_i / 1024
-      virtual_server.memory = parser.get('PRIVVMPAGES').split(":").last.to_i * 4 / 1024
       virtual_server.description = parser.get('DESCRIPTION') if ve_descriptions_supported?
       virtual_server.cpu_units = parser.get('CPUUNITS')
       virtual_server.cpus = parser.get('CPUS')
       virtual_server.cpu_limit = parser.get('CPULIMIT')
       virtual_server.hardware_server = self
+      
+      diskspace = parser.get('DISKSPACE')
+      if diskspace.blank? || 'unlimited' == diskspace || 'unlimited' == diskspace.split(":").last
+        virtual_server.diskspace = -1
+      else
+        virtual_server.diskspace = diskspace.split(":").last.to_i / 1024
+      end
+      
+      memory = parser.get('PRIVVMPAGES')
+      if memory.blank? || 'unlimited' == memory || 'unlimited' == memory.split(":").last
+        virtual_server.memory = -1
+      else
+        virtual_server.memory = memory.split(":").last.to_i * 4 / 1024
+      end
+      
       virtual_server.save(false)
     }
   end

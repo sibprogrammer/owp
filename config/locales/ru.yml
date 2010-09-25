@@ -15,6 +15,10 @@ ru:
       cancel: "Отмена"
       create: "Создать"
   activerecord:
+    models:
+      virtual_server:
+        limit:
+          unlimited: "неограничено"
     errors:
       models:
         user:

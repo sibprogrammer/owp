@@ -29,7 +29,7 @@ class ServerTemplate < ActiveRecord::Base
     result = []
     
     limits.each { |limit|
-      limit_values = @config.get(limit).split(":")
+      limit_values = get_parsed_limit(@config.get(limit))
       result.push({ :name => limit, :soft_limit => limit_values[0], :hard_limit => limit_values[1] })
     }
     
@@ -47,16 +47,22 @@ class ServerTemplate < ActiveRecord::Base
     content << "CPUS=\"#{cpus}\"\n" unless cpus.blank?
     content << "CPULIMIT=\"#{cpu_limit}\"\n" unless cpu_limit.blank?
     
-    privvmpages = memory.to_i * 1024 / 4
+    privvmpages = -1 == memory.to_i ? 'unlimited' : memory.to_i * 1024 / 4
     content << "PRIVVMPAGES=\"#{privvmpages}:#{privvmpages}\"\n"
-    disk = diskspace.to_i * 1024
+    disk = -1 == diskspace.to_i ? 'unlimited' : diskspace.to_i * 1024
     content << "DISKSPACE=\"#{disk}:#{disk}\"\n"
     
     # some hard-coded values
     content << "QUOTATIME=\"0\"\n"
     
     raw_limits.each { |limit|
-      content << limit['name'] + "=\"" + limit['soft_limit'].to_s + ":" + limit['hard_limit'].to_s + "\"\n"
+      limit['soft_limit'] = 'unlimited' if -1 == limit['soft_limit']
+      limit['hard_limit'] = 'unlimited' if -1 == limit['hard_limit']
+      if limit['soft_limit'] == limit['hard_limit']
+        content << limit['name'] + "=\"" + limit['hard_limit'].to_s + "\"\n"
+      else
+        content << limit['name'] + "=\"" + limit['soft_limit'].to_s + ":" + limit['hard_limit'].to_s + "\"\n"
+      end
     }
     
     hardware_server.rpc_client.write_file("/etc/vz/conf/ve-#{self.name}.conf-sample", content)
@@ -81,12 +87,14 @@ class ServerTemplate < ActiveRecord::Base
   
   def get_diskspace
     load_config
-    @config.get("DISKSPACE").split(":")[1].to_i / 1024
+    diskspace_limit = get_parsed_limit(@config.get("DISKSPACE"))
+    -1 == diskspace_limit.last.to_i ? -1 : (diskspace_limit.last.to_i / 1024)
   end
   
   def get_memory
     load_config
-    @config.get("PRIVVMPAGES").split(":")[1].to_i / 1024 * 4
+    memory_limit = get_parsed_limit(@config.get("PRIVVMPAGES"))
+    -1 == memory_limit.last.to_i ? -1 : (memory_limit.last.to_i / 1024 * 4)
   end
   
   def get_cpu_units
@@ -113,6 +121,15 @@ class ServerTemplate < ActiveRecord::Base
       end
         
       @config
+    end
+  
+    def get_parsed_limit(limit)
+      limit = 'unlimited' if limit.blank?
+      limit = "#{limit}:#{limit}" if !limit.include?(':')
+      limit_values = limit.split(":")
+      limit_values[0] = -1 if 'unlimited' == limit_values[0]
+      limit_values[1] = -1 if 'unlimited' == limit_values[1]
+      limit_values
     end
   
 end
