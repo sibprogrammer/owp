@@ -173,8 +173,10 @@ Ext.onReady(function() {
           width: 100,
           sortable: true,
           dataIndex: 'soft_limit',
+          renderer: function(value) {
+            return '' == value ? '<%= tjs('activerecord.models.virtual_server.limit.unlimited') %>' : value;
+          },
           editor: new Ext.form.TextField({
-            allowBlank: false,
             maskRe: /\d+/
           })
         }, {
@@ -183,8 +185,10 @@ Ext.onReady(function() {
           width: 100,
           sortable: true,
           dataIndex: 'hard_limit',
+          renderer: function(value) {
+            return '' == value ? '<%= tjs('activerecord.models.virtual_server.limit.unlimited') %>' : value;
+          },
           editor: new Ext.form.TextField({
-            allowBlank: false,
             maskRe: /\d+/
           })
         }]),

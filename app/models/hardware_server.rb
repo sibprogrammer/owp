@@ -156,15 +156,15 @@ class HardwareServer < ActiveRecord::Base
       virtual_server.hardware_server = self
       
       diskspace = parser.get('DISKSPACE')
-      if diskspace.blank? || 'unlimited' == diskspace || 'unlimited' == diskspace.split(":").last
-        virtual_server.diskspace = -1
+      if unlimited_limit?(diskspace)
+        virtual_server.diskspace = 0
       else
         virtual_server.diskspace = diskspace.split(":").last.to_i / 1024
       end
       
       memory = parser.get('PRIVVMPAGES')
-      if memory.blank? || 'unlimited' == memory || 'unlimited' == memory.split(":").last
-        virtual_server.memory = -1
+      if unlimited_limit?(memory)
+        virtual_server.memory = 0
       else
         virtual_server.memory = memory.split(":").last.to_i * 4 / 1024
       end
@@ -311,6 +311,12 @@ class HardwareServer < ActiveRecord::Base
           end
         end
       end
+    end
+  
+    def unlimited_limit?(limit)
+      return true if limit.blank? || 'unlimited' == limit
+      limit = limit.include?(':') ? limit.split(":").last : limit
+      return ('unlimited' == limit || (2 ** 31 - 1) == limit.to_i || (2 ** 63 - 1) == limit.to_i)
     end
     
 end

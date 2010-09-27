@@ -189,12 +189,12 @@ var showVirtualServerEditForm = function(mode, grid, statsGrid) {
           items: [{
             fieldLabel: '<%= tjs('admin.virtual_servers.form.create_server.field.diskspace') %>',
             id: 'fieldDiskspace',
-            allowBlank: false,
+            emptyText: '<%= tjs('activerecord.models.virtual_server.limit.unlimited') %>',
             name: 'diskspace'
           }, {
             fieldLabel: '<%= tjs('admin.virtual_servers.form.create_server.field.memory') %>',
             id: 'fieldMemory',
-            allowBlank: false,
+            emptyText: '<%= tjs('activerecord.models.virtual_server.limit.unlimited') %>',
             name: 'memory'
           }, {
             fieldLabel: '<%= tjs('admin.virtual_servers.form.create_server.field.cpu_units') %>',

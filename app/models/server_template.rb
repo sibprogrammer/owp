@@ -47,17 +47,17 @@ class ServerTemplate < ActiveRecord::Base
     content << "CPUS=\"#{cpus}\"\n" unless cpus.blank?
     content << "CPULIMIT=\"#{cpu_limit}\"\n" unless cpu_limit.blank?
     
-    privvmpages = -1 == memory.to_i ? 'unlimited' : memory.to_i * 1024 / 4
+    privvmpages = 0 == memory.to_i ? 'unlimited' : memory.to_i * 1024 / 4
     content << "PRIVVMPAGES=\"#{privvmpages}:#{privvmpages}\"\n"
-    disk = -1 == diskspace.to_i ? 'unlimited' : diskspace.to_i * 1024
+    disk = 0 == diskspace.to_i ? 'unlimited' : diskspace.to_i * 1024
     content << "DISKSPACE=\"#{disk}:#{disk}\"\n"
     
     # some hard-coded values
     content << "QUOTATIME=\"0\"\n"
     
     raw_limits.each { |limit|
-      limit['soft_limit'] = 'unlimited' if -1 == limit['soft_limit']
-      limit['hard_limit'] = 'unlimited' if -1 == limit['hard_limit']
+      limit['soft_limit'] = 'unlimited' if '' == limit['soft_limit']
+      limit['hard_limit'] = 'unlimited' if '' == limit['hard_limit']
       if limit['soft_limit'] == limit['hard_limit']
         content << limit['name'] + "=\"" + limit['hard_limit'].to_s + "\"\n"
       else
@@ -88,13 +88,13 @@ class ServerTemplate < ActiveRecord::Base
   def get_diskspace
     load_config
     diskspace_limit = get_parsed_limit(@config.get("DISKSPACE"))
-    -1 == diskspace_limit.last.to_i ? -1 : (diskspace_limit.last.to_i / 1024)
+    0 == diskspace_limit.last.to_i ? '' : (diskspace_limit.last.to_i / 1024)
   end
   
   def get_memory
     load_config
     memory_limit = get_parsed_limit(@config.get("PRIVVMPAGES"))
-    -1 == memory_limit.last.to_i ? -1 : (memory_limit.last.to_i / 1024 * 4)
+    0 == memory_limit.last.to_i ? '' : (memory_limit.last.to_i / 1024 * 4)
   end
   
   def get_cpu_units
@@ -127,8 +127,8 @@ class ServerTemplate < ActiveRecord::Base
       limit = 'unlimited' if limit.blank?
       limit = "#{limit}:#{limit}" if !limit.include?(':')
       limit_values = limit.split(":")
-      limit_values[0] = -1 if 'unlimited' == limit_values[0]
-      limit_values[1] = -1 if 'unlimited' == limit_values[1]
+      limit_values[0] = '' if 'unlimited' == limit_values[0]
+      limit_values[1] = '' if 'unlimited' == limit_values[1]
       limit_values
     end
   

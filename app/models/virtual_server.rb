@@ -37,8 +37,8 @@ class VirtualServer < ActiveRecord::Base
       raw_limit = 'unlimited' if raw_limit.blank?
       raw_limit = "#{raw_limit}:#{raw_limit}" if !raw_limit.include?(':')
       limit_values = raw_limit.split(":")
-      limit_values[0] = -1 if 'unlimited' == limit_values[0]
-      limit_values[1] = -1 if 'unlimited' == limit_values[1]
+      limit_values[0] = '' if 'unlimited' == limit_values[0]
+      limit_values[1] = '' if 'unlimited' == limit_values[1]
       result.push({ :name => limit, :soft_limit => limit_values[0], :hard_limit => limit_values[1] })
     }
     
@@ -73,8 +73,8 @@ class VirtualServer < ActiveRecord::Base
     limits.each { |limit|
       orig_limit = orig_limits.find { |item| item[:name] == limit['name'] }
       if orig_limit[:soft_limit] != limit['soft_limit'] || orig_limit[:hard_limit] != limit['hard_limit']
-        limit['soft_limit'] = 'unlimited' if -1 == limit['soft_limit']
-        limit['hard_limit'] = 'unlimited' if -1 == limit['hard_limit']
+        limit['soft_limit'] = 'unlimited' if '' == limit['soft_limit']
+        limit['hard_limit'] = 'unlimited' if '' == limit['hard_limit']
         vzctl_params << "--" + limit['name'].downcase + " " + limit['soft_limit'].to_s + ":" + limit['hard_limit'].to_s + " "
       end
     }
@@ -102,11 +102,15 @@ class VirtualServer < ActiveRecord::Base
       vzctl_set("--onboot " + (start_on_boot ? "yes" : "no") + " --save") if start_on_boot_changed?
       vzctl_set(nameserver.split.map { |ip| "--nameserver #{ip} " }.join + "--save") if !nameserver.blank? and nameserver_changed?
       vzctl_set("--searchdomain '#{search_domain}' --save") if !search_domain.blank? and search_domain_changed?
-      vzctl_set("--diskspace #{diskspace * 1024} --privvmpages #{memory * 1024 / 4} --save") if diskspace_changed? or memory_changed?
       vzctl_set("--cpuunits #{cpu_units} --save") if !cpu_units.blank? and cpu_units_changed?
       vzctl_set("--cpus #{cpus} --save") if !cpus.blank? and cpus_changed?
       vzctl_set("--cpulimit #{cpu_limit} --save") if !cpu_limit.blank? and cpu_limit_changed?
       vzctl_set("--description '#{description}' --save") if hardware_server.ve_descriptions_supported? and !description.empty? and description_changed?
+      
+      privvmpages = 0 == memory.to_i ? 'unlimited' : memory.to_i * 1024 / 4
+      vzctl_set("--privvmpages #{privvmpages} --save") if memory_changed?
+      disk = 0 == diskspace.to_i ? 'unlimited' : diskspace.to_i * 1024
+      vzctl_set("--diskspace #{disk} --save") if diskspace_changed?
     rescue HwDaemonExecException => exception
       delete_physically if is_new
       raise exception
@@ -193,11 +197,11 @@ class VirtualServer < ActiveRecord::Base
   end
   
   def human_diskspace
-    -1 != self.diskspace ? self.diskspace : I18n.translate('activerecord.models.virtual_server.limit.unlimited')
+    0 != self.diskspace ? self.diskspace : I18n.translate('activerecord.models.virtual_server.limit.unlimited')
   end
   
   def human_memory
-    -1 != self.memory ? self.memory : I18n.translate('activerecord.models.virtual_server.limit.unlimited')
+    0 != self.memory ? self.memory : I18n.translate('activerecord.models.virtual_server.limit.unlimited')
   end
   
   private
