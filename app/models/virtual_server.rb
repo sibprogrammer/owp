@@ -97,7 +97,6 @@ class VirtualServer < ActiveRecord::Base
     
     begin
       vzctl_set("--hostname #{host_name} --save") if !host_name.blank? and host_name_changed?
-      vzctl_set("--ipdel all " + ip_address.split.map { |ip| "--ipadd #{ip} " }.join + "--save") if ip_address_changed?
       vzctl_set("--userpasswd root:#{password}") if password and !password.blank?
       vzctl_set("--onboot " + (start_on_boot ? "yes" : "no") + " --save") if start_on_boot_changed?
       vzctl_set(nameserver.split.map { |ip| "--nameserver #{ip} " }.join + "--save") if !nameserver.blank? and nameserver_changed?
@@ -106,6 +105,9 @@ class VirtualServer < ActiveRecord::Base
       vzctl_set("--cpus #{cpus} --save") if !cpus.blank? and cpus_changed?
       vzctl_set("--cpulimit #{cpu_limit} --save") if !cpu_limit.blank? and cpu_limit_changed?
       vzctl_set("--description '#{description}' --save") if hardware_server.ve_descriptions_supported? and !description.empty? and description_changed?
+      
+      vzctl_set("--ipdel all --save") if !ip_address_was.blank?
+      vzctl_set(ip_address.split.map { |ip| "--ipadd #{ip} " }.join + "--save") if !ip_address.blank? and ip_address_changed?
       
       privvmpages = 0 == memory.to_i ? 'unlimited' : memory.to_i * 1024 / 4
       vzctl_set("--privvmpages #{privvmpages} --save") if memory_changed?
