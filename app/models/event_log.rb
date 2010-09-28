@@ -40,7 +40,7 @@ class EventLog < ActiveRecord::Base
   def html_message
     params = self.params.blank? ? {} : Marshal.load(self.params)
     params.each { |key,item|
-      item = CGI.escapeHTML(item)
+      item = CGI.escapeHTML(item.to_s)
       item = "<b>#{item}</b>" if item !~ /\s/
       params[key] = item
     }
