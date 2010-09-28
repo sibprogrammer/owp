@@ -10,7 +10,7 @@
         <%= '<img class="inline" src="/images/' + icon + '"/>' %>
         #<%= h(event[:id]) %> - <%= h(event[:created_at]) %>
       </span>
-      <%= h(event[:message]).gsub(/\n/, '<br />') %>
+      <%= event[:message] %>
     </li>
   <% end %>
 </ul>
