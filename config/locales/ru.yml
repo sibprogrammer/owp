@@ -15,10 +15,6 @@ ru:
       cancel: "Отмена"
       create: "Создать"
   activerecord:
-    models:
-      virtual_server:
-        limit:
-          unlimited: "неограничено"
     errors:
       models:
         user:
@@ -223,6 +219,8 @@ ru:
           memory_usage: "{{percent}}%, {{used}} из {{total}} / {{free}} свободно"
     virtual_servers:
       title: "Виртуальные сервера"
+      limits:
+        unlimited: "неограничено"
       grid:
         title: "Список виртуальных серверов"
         column:

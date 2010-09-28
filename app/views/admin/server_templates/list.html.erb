@@ -69,12 +69,12 @@ Ext.onReady(function() {
             items: [{
               fieldLabel: '<%= tjs('admin.server_templates.form.create_server.field.diskspace') %>',
               id: 'fieldDiskspace',
-              emptyText: '<%= tjs('activerecord.models.virtual_server.limit.unlimited') %>',
+              emptyText: '<%= tjs('admin.virtual_servers.limits.unlimited') %>',
               name: 'diskspace'
             }, {
               fieldLabel: '<%= tjs('admin.server_templates.form.create_server.field.memory') %>',
               id: 'fieldMemory',
-              emptyText: '<%= tjs('activerecord.models.virtual_server.limit.unlimited') %>',
+              emptyText: '<%= tjs('admin.virtual_servers.limits.unlimited') %>',
               name: 'memory'
             }, {
               fieldLabel: '<%= tjs('admin.server_templates.form.create_server.field.cpu_units') %>',
@@ -138,7 +138,7 @@ Ext.onReady(function() {
               sortable: true,
               dataIndex: 'soft_limit',
               renderer: function(value) {
-                return '' == value ? '<%= tjs('activerecord.models.virtual_server.limit.unlimited') %>' : value;
+                return '' == value ? '<%= tjs('admin.virtual_servers.limits.unlimited') %>' : value;
               },
               editor: new Ext.form.TextField({
                 maskRe: /\d+/
@@ -150,7 +150,7 @@ Ext.onReady(function() {
               sortable: true,
               dataIndex: 'hard_limit',
               renderer: function(value) {
-                return '' == value ? '<%= tjs('activerecord.models.virtual_server.limit.unlimited') %>' : value;
+                return '' == value ? '<%= tjs('admin.virtual_servers.limits.unlimited') %>' : value;
               },
               editor: new Ext.form.TextField({
                 maskRe: /\d+/

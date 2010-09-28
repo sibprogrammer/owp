@@ -174,7 +174,7 @@ Ext.onReady(function() {
           sortable: true,
           dataIndex: 'soft_limit',
           renderer: function(value) {
-            return '' == value ? '<%= tjs('activerecord.models.virtual_server.limit.unlimited') %>' : value;
+            return '' == value ? '<%= tjs('admin.virtual_servers.limits.unlimited') %>' : value;
           },
           editor: new Ext.form.TextField({
             maskRe: /\d+/
@@ -186,7 +186,7 @@ Ext.onReady(function() {
           sortable: true,
           dataIndex: 'hard_limit',
           renderer: function(value) {
-            return '' == value ? '<%= tjs('activerecord.models.virtual_server.limit.unlimited') %>' : value;
+            return '' == value ? '<%= tjs('admin.virtual_servers.limits.unlimited') %>' : value;
           },
           editor: new Ext.form.TextField({
             maskRe: /\d+/

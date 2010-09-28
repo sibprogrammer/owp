@@ -15,10 +15,6 @@ en:
       cancel: "Cancel"
       create: "Create"
   activerecord:
-    models:
-      virtual_server:
-        limit:
-          unlimited: "unlimited"
     errors:
       models:
         user:
@@ -223,6 +219,8 @@ en:
           memory_usage: "{{percent}}%, {{used}} of {{total}} / {{free}} free"
     virtual_servers:
       title: "Virtual Servers"
+      limits:
+        unlimited: "unlimited"
       grid:
         title: "Virtual servers list"
         column:

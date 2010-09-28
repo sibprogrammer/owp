@@ -199,11 +199,11 @@ class VirtualServer < ActiveRecord::Base
   end
   
   def human_diskspace
-    0 != self.diskspace ? self.diskspace : I18n.translate('activerecord.models.virtual_server.limit.unlimited')
+    0 != self.diskspace ? self.diskspace : I18n.translate('admin.virtual_servers.limits.unlimited')
   end
   
   def human_memory
-    0 != self.memory ? self.memory : I18n.translate('activerecord.models.virtual_server.limit.unlimited')
+    0 != self.memory ? self.memory : I18n.translate('admin.virtual_servers.limits.unlimited')
   end
   
   private
