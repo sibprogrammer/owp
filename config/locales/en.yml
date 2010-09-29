@@ -82,6 +82,7 @@ en:
     button_login: "Log in"
     locale: "Language"
     bad_login: "Invalid login or password."
+    locked_user: "User is locked."
   admin:
     menu:
       title: "Menu"
@@ -137,7 +138,11 @@ en:
           ok: "User {{login}} is logged in."
           bad_password: "User {{login}} failed to login with incorrect password."
           bad_login: "Attempt to login with unknown login name."
+          locked_user: "Locked user {{login}} tried to login."
         logout: "User {{login}} is logged out."
+        removed: "User {{login}} was removed."
+        enabled: "User {{login}} was enabled."
+        disabled: "User {{login}} was disabled."
     tasks:
       os_templates:
         install: "OS templates installation on the server {{host}}."
@@ -387,6 +392,7 @@ en:
       grid:
         title: "Users list"
         column:
+          enabled: "State"
           login: "Login"
           created_at: "Creation Date"
           role: "Role"
@@ -396,6 +402,8 @@ en:
           add: "Add User"
           remove: "Delete User"
           edit: "Edit User"
+          enable: "Enable"
+          disable: "Disable"
       form:
         remove_user:
           sure_to_remove: "Are you sure you want to remove selected users?"

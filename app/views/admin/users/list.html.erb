@@ -158,6 +158,19 @@ Ext.onReady(function() {
       }
     );
   }
+  
+  var changeUserState = function(action) {
+    Owp.list.groupAction({
+      gridName: 'usersGrid',
+      url: '/admin/users/change_state',
+      command: action,
+      waitMsg: '<%= tjs('form.performing_task') %>',
+      failure: {
+        title: '<%= tjs('form.error.title') %>',
+        msg: '<%= tjs('admin.users.form.change_state.failed') %>'
+      }
+    });
+  }
 
   var store = new Ext.data.JsonStore({
     url: '/admin/users/list_data',
@@ -167,6 +180,7 @@ Ext.onReady(function() {
     sortInfo: { field: 'login', direction: 'ASC' },
     fields: [
       { name: 'id' },
+      { name: 'enabled' },
       { name: 'login' },
       { name: 'role_type' },
       { name: 'created_at' },
@@ -191,8 +205,12 @@ Ext.onReady(function() {
       selectionchange: function(selectionModel) {
         if (selectionModel.getCount()) {
           usersGrid.removeButton.enable();
+          usersGrid.enableButton.enable();
+          usersGrid.disableButton.enable();
         } else {
           usersGrid.removeButton.disable();
+          usersGrid.enableButton.disable();
+          usersGrid.disableButton.disable();
         }
         
         if (1 == selectionModel.getCount()) {
@@ -218,6 +236,17 @@ Ext.onReady(function() {
     cm: new Ext.grid.ColumnModel([
       selectionModel,
       {
+        id: 'enabled',
+        header: '<%= tjs('admin.users.grid.column.enabled') %>',
+        renderer: function(value) {
+          var image = value ? 'run.png' : 'stop.png';
+          return '<img src="/images/' + image + '"/>';
+        },
+        width: 60,
+        align: 'center',
+        sortable: true,
+        dataIndex: 'enabled'
+      }, {
         id: 'login',
         header: '<%= tjs('admin.users.grid.column.login') %>',
         sortable: true,
@@ -277,6 +306,20 @@ Ext.onReady(function() {
       cls: 'x-btn-text-icon',
       icon: '/images/wrench.png',
       ref: '../editButton',
+      disabled: true
+    }, '-', {
+      text: '<%= tjs('admin.users.grid.button.enable') %>',
+      handler: changeUserState.createCallback('enable'),
+      cls: 'x-btn-text-icon',
+      icon: '/images/run.png',
+      ref: '../enableButton',
+      disabled: true
+    }, {
+      text: '<%= tjs('admin.users.grid.button.disable') %>',
+      handler: changeUserState.createCallback('disable'),
+      cls: 'x-btn-text-icon',
+      icon: '/images/stop.png',
+      ref: '../disableButton',
       disabled: true
     }]
   });

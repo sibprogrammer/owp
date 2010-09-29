@@ -2,6 +2,8 @@
   <% @users.each do |user| %>
     <li class="textbox">
       <span class="header">
+        <% icon = user.enabled ? 'run.png' : 'stop.png' %>
+        <%= '<img class="inline" src="/images/' + icon + '"/>' %>
         <%= h(user.full_name) %>
       </span>
       <% if !user.email.blank? %>

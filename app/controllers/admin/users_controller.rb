@@ -31,12 +31,15 @@ class Admin::UsersController < Admin::Base
   
   def delete
     params[:ids].split(',').each { |id|
-      user = User.find(id) 
+      user = User.find(id)
+      login = user.login
       
       if !user.delete
         render :json => { :success => false }  
         return
       end
+      
+      EventLog.info("user.removed", { :login => login })
     }
     
     render :json => { :success => true }
@@ -65,12 +68,34 @@ class Admin::UsersController < Admin::Base
     }}
   end
   
+  def change_state
+    params[:ids].split(',').each { |id|
+      user = User.find(id) 
+      
+      case params[:command]  
+        when 'enable' then user.enabled = true
+        when 'disable' then user.enabled = false
+      end
+      
+      if !user.save
+        render :json => { :success => false }  
+        return
+      end
+      
+      EventLog.info("user.enabled", { :login => user.login }) if user.enabled
+      EventLog.info("user.disabled", { :login => user.login }) if !user.enabled
+    }
+    
+    render :json => { :success => true }
+  end
+  
   private
   
     def users_list
       users = User.all
       users.map! { |user| {
         :id => user.id,
+        :enabled => user.enabled,
         :login => user.login,
         :role_type => t('admin.users.role.' + (1 == user.role_type ? 'infrastructure_admin' : 'virtual_server_owner')),
         :created_at => user.created_at.strftime("%Y.%m.%d %H:%M:%S"),
