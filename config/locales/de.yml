@@ -4,7 +4,7 @@ de:
   form:
     loading: "Bitte warten..."
     confirmation: "Best&auml;tigen"
-    performing_task: "Bitte warten. Performing task..."
+    performing_task: "Bitte warten. Aktion wird ausgef&uuml;hrt..."
     error:
       title: "Fehler"
       fill_form: "Bitte Formular ausf&uuml;llen."
@@ -26,13 +26,24 @@ de:
               blank: "Passwortbest&auml;tigung ist erforderlich."
             login:
               taken: "Ein Benutzer mit diesem Benutzernamen existiert bereits."
+              too_short: "Benutzername ist zu kurz (Mindestl&auml;nge: {{count}} Zeichen)."
         hardware_server:
           attributes:
             host:
               taken: "Ein Server mit diesem Namen existiert bereits."
               connection: "Verbindung fehlgeschlagen. Eventuell wurde der Daemon nicht gestartet."
+              ssh_connection: "SSH-Verbindung konnte nicht hergestellt werden."
+              openvz_not_found: "OpenVZ Virtualisierung konnte auf dem Server nicht gefunden werden."
+              ruby_not_found: "Ruby Interpreter konnte auf dem Server nicht gefunden werden."
             auth_key:
-              bad_auth: "Login nicht m&ouml;glich. Eventuell falsches Passwort eingegeben."
+              bad_auth: "Anmeldung nicht m&ouml;glich. Eventuell falsches Passwort eingegeben."
+            daemon_port:
+              not_a_number: "Ung&uuml;ltiger Port."
+              greater_than: "Port sollte h&ouml;her als {{count}} sein."
+              less_than: "Port sollte niedriger als {{count}} sein."
+            root_password:
+              ssh_bad_auth: "SSH-Authentifizierung fehlgeschlagen."
+              empty: "Dieses Feld ist zwingend erforderlich."
         virtual_server:
           attributes:
             ip_address:
@@ -44,6 +55,16 @@ de:
               confirmation: "Passwort und Best&auml;tigung stimmen nicht &uuml;berein."
             nameserver:
               invalid: "IP-Adresse des DNS-Servers ist ung&uuml;ltig."
+            host_name:
+              invalid: "Hostname ist ung&uuml;ltig."
+            search_domain:
+              invalid: "Suchdom&auml;nen sind ung&uuml;ltig."
+            description:
+              invalid: "Beschreibung enth&auml;lt ung&uuml;ltige Zeichen."
+        server_template:
+          attributes:
+            name:
+              taken: "Es existiert bereits eine Server-Vorlage mit diesem Namen."
   about:
     copyright: "Copyright 2008-2010 SoftUnity."
     right_reserved: "Alle Rechte vorbehalten."
@@ -61,6 +82,7 @@ de:
     button_login: "Anmelden"
     locale: "Sprache"
     bad_login: "Ung&uuml;ltiger Benutzername oder Passwort."
+    locked_user: "Benutzer ist gesperrt."
   admin:
     menu:
       title: "Men&uuml;"
@@ -68,8 +90,11 @@ de:
         title: "Allgemein"
         dashboard: "&Uuml;bersicht"
         hardware_servers: "Physische Server"
+        virtual_servers: "Virtuelle Server"
         my_profile: "Mein Profil"
         users: "Benutzer"
+        requests: "Aufforderungen"
+        tasks: "Aufgaben"
         event_log: "Ereignisanzeige"
         logout: "Abmelden"
       help:
@@ -78,7 +103,15 @@ de:
         support: "Support"
     operations:
       up_level: "Up Level"
-    logout: "Sind Sie sicher, dass Sie sich abmelden wollen?"
+      search: "Suche"
+    logout: "M&ouml;chten Sie sich wirklich abmelden?"
+    search:
+      form:
+        title: "Suche"
+        field:
+          query: "Anfrage"
+        button:
+          search: "Suchen"
     my_profile:
       title: "Mein Profil"
       user_name: "Benutzername"
@@ -86,14 +119,36 @@ de:
       new_password: "Neues Passwort"
       confirm_password: "Passwort best&auml;tigen"
       bad_current_password: "Aktuelles Passwort ist falsch."
+      contact_name: "Kontakt Name"
+      email: "E-Mail"
     events:
+      internal_error: "Interner Fehler: {{message}}"
       hardware_server:
         connect: "Physischen Server {{host}} eingebunden."
         disconnect: "Physischen Server {{host}} entfernt."
         sync: "Server's {{host}} Status wurde synchronisiert."
+        reboot: "Neustart des Servers {{host}} wird durchgef&uuml;hrt."
       virtual_server:
         created: "Virtuellen Server {{identity}} erstellt."
         removed: "Virtuellen Server {{identity}} entfernt."
+        change_state_failed: "Fehler bei der Status&auml;nderung des virtuellen Servers {{identity}}; Status: {{state}}; Code: {{code}}."
+        updated: "Einstellungen des virtuellen Servers {{identity}} wurden ge&auml;ndert."
+      user:
+        login:
+          ok: "Benutzer {{login}} ist angemeldet."
+          bad_password: "Benutzer {{login}} konnte sich wegen eines falschen Passworts nicht anmelden."
+          bad_login: "Anmeldeversuch mit unbekanntem Benutzernamen."
+          locked_user: "Gesperrter Benutzer {{login}} hat versucht sich anzumelden."
+        logout: "Benutzer {{login}} ist abgemeldet."
+        removed: "Benutzer {{login}} wurde gel&ouml;scht."
+        enabled: "Benutzer {{login}} wurde aktiviert."
+        disabled: "Benutzer {{login}} wurde deaktiviert."
+    tasks:
+      os_templates:
+        install: "Installation der Betriebssystem-Vorlage auf dem Server {{host}}."
+      backups:
+        create: "Erstelle Backup des virtuellen Servers #{{identity}} auf dem physischen Server {{host}}."
+        restore: "Stelle Backup des virtuellen Servers #{{identity}} auf dem physischen Server {{host}} wieder her."
     dashboard:
       title: "&Uuml;bersicht"
       intro:
@@ -104,7 +159,7 @@ de:
         text: "Sie sind als {{login}} angemeldet."
       updates:
         text: "Eine neue Version ist verf&uuml;gbar: {{product}}."
-        update_command: "Um das Update durchzuf&uuml;hren m&uuml;ssen Sie folgenden Befehl ausf&uuml;hren: {{command}}"
+        update_command: "Um das Update durchzuf&uuml;hren, m&uuml;ssen Sie folgenden Befehl ausf&uuml;hren: {{command}}"
       stats_grid:
         title: "Statistiken"
         column:
@@ -116,7 +171,7 @@ de:
           virtual_servers: "Virtuelle Server"
           virtual_servers_running: "Virtuelle Server - gestartet"
           virtual_servers_stopped: "Virtuelle Server - gestoppt"
-          os_templates: "Betriebssystem-Vorlagen"
+          virtual_servers_expired: "Virtuelle Server - ausgelaufen"
     hardware_servers:
       title: "Physische Server"
       grid:
@@ -132,6 +187,7 @@ de:
           details: "Details" 
           sync: "Synchronisierung"
           edit: "Einstellungen verwalten"
+          reboot: "Neustarten"
       form:
         connect_server:
           title: "Neuen physischen Server einbinden"
@@ -141,18 +197,42 @@ de:
             host_name: "Hostname"
             auth_key: "Authorisierungsschl&uuml;ssel"
             description: "Beschreibung"
+            daemon_port: "Service Port"
+            root_password: "Root Passwort"
+          fieldset:
+            additional_settings: "Weitere Einstellungen"
         disconnect_server:
           sure_to_disconnect: "M&ouml;chten Sie die ausgew&auml;hlten Server wirklich entfernen?"
           deletion_failed: "Einige Server konnten nicht entfernt werden."
         sync:
           sync_failed: "Einige physische Server konnten nicht synchronisiert werden."
+        reboot_server:
+          sure_to_reboot: "Die ausgew&auml;hlten Server werden w&auml;hrend des Neustarts nicht erreichbar sein. M&ouml;chten Sie den Neustart wirklich durchf&uuml;hren?"
+          reboot_failed: "Neustart konnte auf einigen Servern nicht durchgef&uuml;hrt werden."
       show:
         title: "Physischer Server {{name}}"
       top_toolbar:
         os_templates: "Betriebssystem-Vorlagen"
+        server_templates: "Server-Vorlagen"
+      stats:
+        title: "Physische Server - Statistiken"
+        column:
+          parameter: "Parameter"
+          value: "Wert"
+        field:
+          os_version: "Betriebssystem-Version"
+          cpu_load_average: "CPU Durchschnittslast"
+          disk_usage: "HDD-Verbrauch, Partition {{partition}}"
+          memory_usage: "Speicher-Verbrauch"
+        value:
+          disk_usage: "{{percent}}%, {{used}} von {{total}} / {{free}} frei"
+          memory_usage: "{{percent}}%, {{used}} von {{total}} / {{free}} frei"
     virtual_servers:
+      title: "Virtuelle Server"
+      limits:
+        unlimited: "unbegrenzt"
       grid:
-        title: "Liste virtueller Server"
+        title: "Liste der virtuellen Server"
         column:
           state: "Status"
           identity: "VEID"
@@ -161,48 +241,89 @@ de:
           os_template: "Betriebssystem-Vorlagen"
           memory: "Arbeitsspeicher, Mb"
           diskspace: "Diskspace, Mb"
+          expiration_date: "Auslaufdatum"
+          owner: "Besitzer"
+          description: "Beschreibung"
         button:
-          create: "Create virtual server"
-          destroy: "Remove virtual server"
-          change_state: "Change state"
-          start: "Start"
-          restart: "Restart"
-          stop: "Stop"
-          edit: "Change settings"
+          create: "Virtuellen Server erstellen"
+          destroy: "Virtuellen Server entfernen"
+          change_state: "Status &auml;ndern"
+          start: "Starten"
+          restart: "Neustarten"
+          stop: "Anhalten"
+          edit: "Einstellungen &auml;ndern"
+          limits: "Grenzen"
+          reinstall: "Neuinstallation"
+          change_settings: "Einstellungen &auml;ndern"
+          console: "Konsole"
+          backup: "Backup"
       form:
+        change_settings:
+          title: "Einstellungen des virtuellen Servers &auml;ndern"
+        reinstall:
+          title: "Virtuellen Server neu installieren"
+          button:
+            reinstall: "Neuinstallieren"
         change_state:
-          failed: "Unable to change virtual server state."
+          failed: "Konnte Status des virtuellen Servers nicht &auml;ndern."
         remove_server:
-          sure_to_remove: "Are you sure you want to remove selected virtual servers?"
-          deletion_failed: "Unable to delete some virtual servers."
+          sure_to_remove: "M&ouml;chten Sie die markierten virtuellen Server wirklich entfernen?"
+          deletion_failed: "Einige virtuelle Server konnten nicht entfernt werden."
         create_server:
-          title: "Create new virtual server"
-          edit_title: "Change settings of virtual server"
-          button_create: "Create"
+          title: "Neuen virtuellen Server erstellen"
+          edit_title: "Einstellungen des virtuellen Servers &auml;ndern"
+          button_create: "Erstellen"
           field:
             identity: "Server ID (VEID)"
-            os_template: "OS Template"
-            select_os_template: "Select OS template"
-            ip_address: "IP Address"
-            host_name: "Host Name"
-            password: "Root Password"
-            confirm_password: "Confirm Password"
-            start_on_boot: "Start on Boot"
-            start_after_creation: "Start after Creation"
-            nameserver: "DNS Server"
-            searchdomain: "Search Domain"
-            diskspace: "Disk Space, Mb"
-            memory: "RAM Memory, Mb"
+            os_template: "Betriebssystem-Vorlage"
+            select_os_template: "Betriebssystem-Vorlage ausw&auml;hlen"
+            ip_address: "IP-Adresse"
+            host_name: "Hostname"
+            password: "Root Passwort"
+            confirm_password: "Passwort best&auml;tigen"
+            start_on_boot: "Beim Booten Starten"
+            start_after_creation: "Nach dem Erstellen Starten"
+            nameserver: "DNS-Server"
+            search_domain: "Suchdom&auml;ne"
+            diskspace: "HDD-Speicher, Mb"
+            memory: "Arbeitsspeicher, Mb"
+            status: "Status"
+            owner: "Besitzer"
+            select_owner: "Besitzer ausw&auml;hlen"
+            no_owner: "Kein Besitzer"
+            server_template: "Server-Vorlage"
+            select_server_template: "Server-Vorlage ausw&auml;hlen"
+            description: "Beschreibung"
+            cpu_units: "CPU Einheiten"
+            cpus: "Anzahl an CPUs"
+            cpu_limit: "CPU Grenze, %"
+            expiration_date: "Auslaufdatum"
           fieldset:
-            general: "General"
-            network: "Network"
-            system_access: "System Access"
-            start_options: "Start Options"
-            dns_settings: "DNS Settings"
-            limits: "Limits"
+            general: "Allgemein"
+            network: "Netzwerk"
+            system_access: "Systemzugriff"
+            start_options: "Startoptionen"
+            dns_settings: "DNS-Einstellungen"
+            limits: "Grenzen"
           tab:
-            main_settings: "Main Settings"
-            additional_settings: "Additional Settings"
+            main_settings: "Haupt-Einstellungen"
+            additional_settings: "Weitere Einstellungen"
+        limits:
+          title: "Grenzen"
+          grid:
+            column:
+              name: "Name"
+              soft_limit: "Soft-Grenze"
+              hard_limit: "Hard-Grenze"
+        console:
+          title: "Konsole"
+          error:
+            code: "R&uuml;ckgabecode:"
+            output: "Ausgabe:"
+          field:
+            command: "Befehl"
+          button:
+            run: "Ausf&uuml;hren"
       show:
         title: "Virtueller Server {{name}}"
         grid:
@@ -210,13 +331,23 @@ de:
           column:
             parameter: "Parameter"
             value: "Wert"
+      stats:
+        title: "Virtueller Server - Statistiken"
+        field:
+          cpu_load_average: "CPU Durchschnittslast"
+          disk_usage: "HDD-Verbrauch"
+          memory_usage: "Speicher-Verbrauch"
+        value:
+          disk_usage: "{{percent}}%, {{used}} von {{total}} / {{free}} frei"
+          memory_usage: "{{percent}}%, {{used}} von {{total}} / {{free}} frei"
     os_templates:
-      title: "Betriebssystem Vorlagen auf physischem Server {{name}}"
+      title: "Betriebssystem-Vorlagen auf physischem Server {{name}}"
       grid:
         title: "Installierte Betriebssystem-Vorlagen"
         column:
           name: "Name"
           size: "Gr&ouml;&szlig;e, Mb"
+          virtual_servers: "Server"
         button:
           install_new_template: "Neue Betriebssystem-Vorlage installieren"
           remove: "Vorlage entfernen"
@@ -226,9 +357,14 @@ de:
           tab:
             official: "Offiziell"
             contributed: "Beigesteuert"
+            url: "URL"
           button_install: "Installieren"
+          load_failed: "Fehler beim Laden der Betriebssystem-Vorlagen Liste."
           failed: "Fehler beim Start der Installation der Betriebssystem-Vorlage."
           scheduled: "Installation der Betriebssystem-Vorlage wurde eingeleitet."
+          field:
+            url: "Vorlagen URL"
+          invalid_url: "G&uuml;ltige URL f&uuml;r Betriebssystem-Vorlagen Archiv angeben."
         remove_template:
           sure_to_remove: "M&ouml;chten Sie die ausgew&auml;hlten Betriebssystem-Vorlagen wirklich entfernen?"
           deletion_failed: "Einige Betriebssystem-Vorlagen konnten nicht entfernt werden."
@@ -241,17 +377,32 @@ de:
           created_at: "Datum"
           message: "Ereignis"
           id: "ID"
+        button:
+          clear: "Log leeren"
+      form:
+        clear:
+          sure_to_clear: "M&ouml;chten Sie wirklich alle Log Eintr&auml;ge l&ouml;schen?"
+          clear_failed: "Log konnte nicht geleert werden."
     users:
+      role:
+        infrastructure_admin: "Infrastruktur Administrator"
+        virtual_server_owner: "Virtueller Server Besitzer"
       title: "Benutzer"
       grid:
         title: "Benutzerliste"
         column:
+          enabled: "Status"
           login: "Benutzername"
           created_at: "Erstellungsdatum"
+          role: "Funktion"
+          contact_name: "Kontakt Name"
+          email: "E-Mail"
         button:
           add: "Benutzer hinzuf&uuml;gen"
           remove: "Benutzer l&ouml;schen"
           edit: "Benutzer bearbeiten"
+          enable: "Aktivieren"
+          disable: "Deaktivieren"
       form:
         remove_user:
           sure_to_remove: "M&ouml;chten Sie die ausgew&auml;hlten Benutzer wirklich entfernen?"
@@ -264,3 +415,128 @@ de:
             login: "Benutzername"
             password: "Passwort"
             confirm_password: "Passwort best&auml;tigen"
+            role: "Funktion"
+            select_role: "Funktion ausw&auml;hlen"
+            contact_name: "Kontakt Name"
+            email: "E-Mail"
+    task:
+      title: "Aufgaben"
+      grid:
+        title: "Aufgabenliste"
+        column:
+          status: "Status"
+          id: "ID"
+          description: "Beschreibung"
+    server_templates:
+      title: "Server-Vorlagen auf physischem Server {{name}}"
+      grid:
+        title: "Verf&uuml;gbare Server-Vorlagen"
+        column:
+          name: "Name"
+          template_default: "Vorgabe"
+          virtual_servers: "Server"
+        button:
+          add: "Vorlage hinzuf&uuml;gen"
+          remove: "Vorlage entfernen"
+          edit: "Vorlage &auml;ndern"
+      form:
+        remove_template:
+          sure_to_remove: "M&ouml;chten Sie die ausgew&auml;hlten Server-Vorlagen wirklich entfernen?"
+          deletion_failed: "Einige Server-Vorlagen konnten nicht entfernt werden."
+        create_server:
+          title: "Neue Server-Vorlage erstellen"
+          edit_title: "Server-Vorlage bearbeiten"
+          button_create: "Erstellen"
+          tab:
+            main_settings: "Haupt-Einstellungen"
+            advanced_settings: "Weitere Einstellungen"
+          fieldset:
+            general: "Allgemein"
+            limits: "Grenzen"
+            dns_settings: "DNS-Einstellungen"
+            start_options: "Startoptionen"
+          field:
+            name: "Name"
+            diskspace: "HDD-Speicher, Mb"
+            memory: "Arbeitsspeicher, Mb"
+            start_on_boot: "Beim Booten Starten"
+            nameserver: "DNS-Server"
+            search_domain: "Suchdom&auml;ne"
+            cpu_units: "CPU Einheiten"
+            cpus: "Anzahl an CPUs"
+            cpu_limit: "CPU Grenze, %"
+          grid:
+            column:
+              name: "Name"
+              soft_limit: "Soft-Grenze"
+              hard_limit: "Hard-Grenze"
+    backups:
+      title: "Backups von virtuellem Server #{{identity}}"
+      grid:
+        title: "Backups"
+        button:
+          create: "Backup"
+          restore: "Wiederherstellen"
+          destroy: "L&ouml;schen"
+        column:
+          archive_date: "Datum"
+          description: "Beschreibung"
+          size: "Gr&ouml;&szlig;e, Mb"
+      form:
+        remove_backup:
+          sure_to_remove: "M&ouml;chten Sie die ausgew&auml;hlten Backups wirklich l&ouml;schen?"
+          deletion_failed: "Einige Backups konnten nicht gel&ouml;scht werden."
+        create:
+          title: "Neues Backup erstellen"
+          hint: "Hinweis: Virtueller Server wird f&uuml;r das Backup angehalten."
+          scheduled: "Backup-Prozedur wurde gestartet und wird einige zeit in Anspruch nehmen."
+          field:
+            description: "Beschreibung"
+          button_create: "Erstellen"
+        restore:
+          sure_to_restore: "M&ouml;chten Sie die ausgew&auml;hlten Backups wirklich wiederherstellen? Der Server wird w&auml;hrend der Wiederherstellungsprozedur nicht erreichbar sein."
+          failed: "Wiederherstellungsprozedur fehlgeschlagen."
+          scheduled: "Wiederherstellungsprozedur wurde gestartet und wird einige zeit in Anspruch nehmen."
+    requests:
+      title: "Anfragen"
+      grid:
+        title: "Anfragen Liste"
+        column:
+          opened: "Status"
+          id: "ID"
+          subject: "Betreff"
+          replies: "Antworten"
+          author: "Autor"
+          updated_at: "Update Datum"
+        button:
+          add: "Anfrage erstellen"
+          remove: "Anfrage l&ouml;schen"
+          details: "Details"
+          solve: "Anfrage schlie&szlig;en"
+          reopen: "Anfrage erneut &ouml;ffnen"
+      form:
+        remove_request:
+          sure_to_remove: "M&ouml;chten Sie die ausgew&auml;hlten Anfragen wirklich entfernen?"
+          deletion_failed: "Einige Anfragen konnten nicht entfernt werden."
+        create:
+          title: "Anfrage erstellen"
+          button_create: "Erstellen"
+          field:
+            subject: "Betreff"
+            content: "Nachricht"
+      comments:
+        title: "Anfrage #{{id}}"
+        grid:
+          title: "Kommentare"
+          column:
+            created_at: "Datum"
+            author: "Autor"
+            content: "Nachricht"
+          button:
+            add: "Kommentar hinzuf&uuml;gen"
+        form:
+          add:
+            title: "Kommentar hinzuf&uuml;gen"
+            button_add: "Hinzuf&uuml;gen"
+            field:
+              content: "Nachricht"
