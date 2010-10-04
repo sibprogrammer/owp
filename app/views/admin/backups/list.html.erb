@@ -18,15 +18,27 @@ Ext.onReady(function() {
         }
       }],
       items: [{
-        xtype: 'displayfield',
-        hideLabel: true,
-        anchor: '100%',
-        value: '<%= tjs('admin.backups.form.create.hint') %>'
-      }, {
         fieldLabel: '<%= tjs('admin.backups.form.create.field.description') %>',
         name: 'description',
         xtype: 'textfield',
         allowBlank: true
+      }, {
+        fieldLabel: '<%= tjs('admin.backups.form.create.field.ve_state.title') %>',
+        boxLabel: '<%= tjs('admin.backups.form.create.field.ve_state.suspend') %>',
+        inputValue: 'suspend',
+        name: 've_state',
+        xtype: 'radio',
+        checked: true
+      }, {
+        boxLabel: '<%= tjs('admin.backups.form.create.field.ve_state.stop') %>',
+        inputValue: 'stop',
+        xtype: 'radio',
+        name: 've_state'
+      }, {
+        boxLabel: '<%= tjs('admin.backups.form.create.field.ve_state.live') %>',
+        inputValue: 'live',
+        xtype: 'radio',
+        name: 've_state'
       }]
     });
     

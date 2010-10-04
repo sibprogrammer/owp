@@ -206,6 +206,14 @@ class VirtualServer < ActiveRecord::Base
     0 != self.memory ? self.memory : I18n.translate('admin.virtual_servers.limits.unlimited')
   end
   
+  def suspend
+    hardware_server.rpc_client.exec('vzctl', "chkpnt #{identity.to_s} --suspend")
+  end
+  
+  def resume
+    hardware_server.rpc_client.exec('vzctl', "chkpnt #{identity.to_s} --resume")
+  end
+  
   private
 
     def vzctl_set(param)

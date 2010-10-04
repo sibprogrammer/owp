@@ -489,10 +489,14 @@ en:
           deletion_failed: "Unable to delete some backups."
         create:
           title: "Create new backup"
-          hint: "Note: virtual server will be stopped during backup."
           scheduled: "Backup procedure was started and will take some time."
           field:
             description: "Description"
+            ve_state:
+              title: "Server state"
+              suspend: "suspend (recommended)"
+              stop: "stop"
+              live: "keep running"
           button_create: "Create"
         restore:
           sure_to_restore: "Are you sure you want to restore selected backup? Server will be unavailable during restore."

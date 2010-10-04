@@ -35,7 +35,14 @@ class Admin::BackupsController < Admin::Base
     hardware_server = virtual_server.hardware_server
     
     orig_ve_state = virtual_server.state
-    virtual_server.stop if 'running' == orig_ve_state
+    ve_state = params[:ve_state]
+    
+    if 'running' == orig_ve_state
+      case ve_state
+        when 'suspend' then virtual_server.suspend
+        when 'stop' then virtual_server.stop
+      end
+    end
     
     result = virtual_server.backup
     job_id = result[:job]['job_id']
@@ -55,7 +62,13 @@ class Admin::BackupsController < Admin::Base
       job.finish
       backup.save
       hardware_server.sync_backups
-      virtual_server.start if 'running' == orig_ve_state
+      
+      if 'running' == orig_ve_state
+        case ve_state
+          when 'suspend' then virtual_server.resume
+          when 'stop' then virtual_server.start
+        end
+      end
     end
     
     render :json => { :success => true }
