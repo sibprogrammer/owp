@@ -133,6 +133,7 @@ en:
         removed: "Virtual server {{identity}} was removed."
         change_state_failed: "Failed to change state for virtual server {{identity}}; state: {{state}}; code: {{code}}."
         updated: "Settings for virtual server {{identity}} were updated."
+        cloned: "Virtual server {{identity}} was cloned."
       user:
         login:
           ok: "User {{login}} is logged in."
@@ -255,6 +256,7 @@ en:
           edit: "Change settings"
           limits: "Limits"
           reinstall: "Reinstall"
+          clone: "Clone"
           change_settings: "Change settings"
           console: "Console"
           backup: "Backup"
@@ -325,6 +327,8 @@ en:
             command: "Command"
           button:
             run: "Run"
+        clone:
+          title: "Clone virtual server"
       show:
         title: "Virtual server {{name}}"
         grid:

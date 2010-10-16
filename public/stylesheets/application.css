@@ -35,6 +35,7 @@ td.x-grid3-td-checker, td.x-grid3-td-state { vertical-align: middle; }
 .icon-window-reinstall { background-image: url(/images/refresh.png) !important; }
 .icon-window-console { background-image: url(/images/monitor.png) !important; }
 .icon-window-search { background-image: url(/images/zoom.png) !important; }
+.icon-window-clone { background-image: url(/images/server_add.png) !important; }
 .icon-button-login { background-image: url(/images/arrow_right.png) !important; }
 .icon-button-save { background-image: url(/images/accept.png) !important; }
 .icon-button-add { background-image: url(/images/add.png) !important; }
@@ -50,6 +51,7 @@ td.x-grid3-td-checker, td.x-grid3-td-state { vertical-align: middle; }
 .icon-button-backup { background-image: url(/images/disk_multiple.png) !important; }
 .icon-button-solve { background-image: url(/images/accept.png) !important; }
 .icon-button-reopen { background-image: url(/images/help.png) !important; }
+.icon-button-clone { background-image: url(/images/server_add.png) !important; }
 
 .icon-inline { height: 16px; width: 16px; padding-right: 5px; vertical-align: middle; }
 .icon-inline-big { height: 32px; width: 32px; padding-right: 5px; vertical-align: middle; }

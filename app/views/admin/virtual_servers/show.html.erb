@@ -524,6 +524,102 @@ Ext.onReady(function() {
   var backupAction = function() {
     document.location.href = '/admin/backups/list?virtual_server_id=<%= @virtual_server.id %>';
   }
+  
+  var cloneAction = function() {
+    var formClone = new Owp.form.BasicForm({
+      labelWidth: 180,
+      waitMsgTarget: true,
+      url: '/admin/virtual-servers/clone?id=<%= @virtual_server.id %>',
+      keys: [{
+        key: Ext.EventObject.ENTER,
+        fn: function() {
+          windowClone.submitButton.handler();
+        }
+      }],
+      autoHeight: true,
+      layout: 'form',
+      items: [{
+        xtype: 'fieldset',
+        title: '<%= tjs('admin.virtual_servers.form.create_server.fieldset.general') %>',
+        autoHeight: true,
+        defaults: { width: 155 },
+        defaultType: 'textfield',
+        items: [{
+          fieldLabel: '<%= tjs('admin.virtual_servers.form.create_server.field.identity') %>',
+          name: 'identity',
+          xtype: 'numberfield',
+          allowBlank: false
+        }]
+      }, {
+        xtype: 'fieldset',
+        title: '<%= tjs('admin.virtual_servers.form.create_server.fieldset.system_access') %>',
+        autoHeight: true,
+        defaults: { width: 155 },
+        defaultType: 'textfield',
+        items: [{
+          fieldLabel: '<%= tjs('admin.virtual_servers.form.create_server.field.password') %>',
+          name: 'password',
+          inputType: 'password'
+        }, {
+          fieldLabel: '<%= tjs('admin.virtual_servers.form.create_server.field.confirm_password') %>',
+          name: 'password_confirmation',
+          inputType: 'password'
+        }]
+      }, {
+        xtype: 'fieldset',
+        title: '<%= tjs('admin.virtual_servers.form.create_server.fieldset.network') %>',
+        autoHeight: true,
+        defaults: { width: 155 },
+        defaultType: 'textfield',
+        items: [{
+          fieldLabel: '<%= tjs('admin.virtual_servers.form.create_server.field.ip_address') %>',
+          name: 'ip_address'
+        }, {
+          fieldLabel: '<%= tjs('admin.virtual_servers.form.create_server.field.host_name') %>',
+          name: 'host_name'
+        }]
+      }]
+    });  
+    
+    var windowClone = new Owp.form.BasicFormWindow({
+      title: '<%= tjs('admin.virtual_servers.form.clone.title') %>',
+      iconCls: 'icon-window-clone',
+      width: 410,
+      autoHeight: true,
+      modal: true,
+      layout: 'fit',
+      plain: true,
+      bodyStyle: 'padding: 5px;',
+      resizable: false,
+      items: formClone,
+      
+      buttons: [{
+        text: '<%= tjs('form.button.save') %>',
+        iconCls: 'icon-button-save',
+        ref: '../submitButton',
+        handler: function() {
+          formClone.form.submit({
+            waitMsg: '<%= tjs('form.loading') %>',
+            success: function() {
+              windowClone.close();
+            },
+            failure: function(form, action) {
+              Owp.form.errorHandler(form, action);
+              windowClone.focus();
+            }
+          });
+        }
+      }, {
+        text: '<%= tjs('form.button.cancel') %>',
+        iconCls: 'icon-button-cancel',
+        handler: function() {
+          windowClone.close();
+        }
+      }]
+    });
+    
+    windowClone.show();
+  }
 
   var mainContentCenterPanel = Ext.getCmp('mainContentCenterPanel');
   
@@ -535,6 +631,15 @@ Ext.onReady(function() {
   });
   
   mainContentCenterPanel.getTopToolbar().insertButton(0, '-');
+  
+  <% if @current_user.superadmin? %>
+    mainContentCenterPanel.getTopToolbar().insertButton(0, {
+      text: '<%= tjs('admin.virtual_servers.grid.button.clone') %>',
+      iconCls: 'icon-button-clone',
+      ref: '../cloneButton',
+      handler: cloneAction
+    });
+  <% end -%>
   
   <% if AppConfig.backups.allow_for_users %>
     mainContentCenterPanel.getTopToolbar().insertButton(0, {

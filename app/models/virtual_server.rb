@@ -214,6 +214,34 @@ class VirtualServer < ActiveRecord::Base
     hardware_server.rpc_client.exec('vzctl', "chkpnt #{identity.to_s} --resume")
   end
   
+  def clone_physically(orig_server)
+    return false if !valid?
+    
+    path = '/etc/vz/conf'
+    hardware_server.rpc_client.exec("cp #{path}/#{orig_server.identity}.conf #{path}/#{identity}.conf")
+    
+    orig_server.suspend
+    hardware_server.rpc_client.exec("cp -a #{orig_server.private_dir} #{self.private_dir}")
+    orig_server.resume
+    
+    begin
+      vzctl_set("--userpasswd root:#{password}") if password and !password.blank?
+      vzctl_set("--hostname #{host_name} --save") if !host_name.blank? and host_name_changed?
+      vzctl_set("--ipdel all --save") if !ip_address_was.blank?
+      vzctl_set(ip_address.split.map { |ip| "--ipadd #{ip} " }.join + "--save") if !ip_address.blank? and ip_address_changed?
+    rescue HwDaemonExecException => exception
+      raise exception
+    end
+    
+    self.state = 'stopped'
+    return false if !save
+    
+    start if 'running' == orig_server.state
+    
+    EventLog.info("virtual_server.cloned", { :identity => orig_server.identity })
+    true
+  end
+  
   private
 
     def vzctl_set(param)

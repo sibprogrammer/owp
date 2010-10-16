@@ -1,5 +1,5 @@
 class Admin::VirtualServersController < Admin::Base
-  before_filter :superadmin_required, :only => [:list_data, :delete, :create]
+  before_filter :superadmin_required, :only => [:list_data, :delete, :create, :clone]
   
   def list
     @up_level = '/admin/dashboard'
@@ -241,6 +241,20 @@ class Admin::VirtualServersController < Admin::Base
       output = result['output']
     end
     render :json => { :success => true, :output => output }
+  end
+  
+  def clone
+    virtual_server = VirtualServer.find_by_id(params[:id])
+    redirect_to :controller => 'dashboard' and return if !virtual_server or !@current_user.can_control(virtual_server)
+    
+    new_server = virtual_server.clone
+    new_server.attributes = params
+    
+    if new_server.clone_physically(virtual_server)
+      render :json => { :success => true }  
+    else
+      render :json => { :success => false, :form_errors => new_server.errors }
+    end
   end
   
   private
