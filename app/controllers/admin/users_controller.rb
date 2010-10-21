@@ -15,6 +15,7 @@ class Admin::UsersController < Admin::Base
     @current_user.attributes = params
     
     if @current_user.errors.empty? && @current_user.save
+      EventLog.info("user.profile_updated", { :login => @current_user.login })
       render :json => { :success => true }  
     else
       render :json => { :success => false, :form_errors => @current_user.errors }
@@ -35,7 +36,7 @@ class Admin::UsersController < Admin::Base
       user = User.find(id)
       login = user.login
       
-      if !user.delete
+      if !user.destroy
         render :json => { :success => false }  
         return
       end
@@ -48,9 +49,11 @@ class Admin::UsersController < Admin::Base
   
   def update
     user = (params[:id].to_i > 0) ? User.find_by_id(params[:id]) : User.new
+    is_new = user.new_record?
     user.attributes = params
     
     if user.save
+      EventLog.info(is_new ? "user.created" : "user.updated", { :login => user.login })
       render :json => { :success => true }  
     else
       render :json => { :success => false, :form_errors => user.errors }

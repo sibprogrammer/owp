@@ -16,7 +16,7 @@ class Admin::RequestsController < Admin::Base
     params[:ids].split(',').each { |id|
       request = Request.find(id) 
       
-      if !request.delete
+      if !request.destroy
         render :json => { :success => false }
         return
       end

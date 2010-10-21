@@ -15,8 +15,11 @@ class Admin::RolesController < Admin::Base
     success = true
     params[:ids].split(',').each { |id|
       role = Role.find(id)
+      role_name = role.name
       
-      success = false if !role.delete
+      success = false if !role.destroy
+      
+      EventLog.info("role.removed", { :name => role_name }) if success
     }
     
     render :json => { :success => success }
@@ -24,6 +27,7 @@ class Admin::RolesController < Admin::Base
   
   def update
     role = (params[:id].to_i > 0) ? Role.find_by_id(params[:id]) : Role.new
+    is_new = role.new_record?
     role.attributes = params
     
     role.permissions = []
@@ -31,7 +35,8 @@ class Admin::RolesController < Admin::Base
     params[:permissions].each { |key,value| role.permissions << Permission.find_by_name(key) }
     
     if role.built_in || role.save
-      render :json => { :success => true }  
+      EventLog.info(is_new ? "role.created" : "role.updated", { :name => role.name })
+      render :json => { :success => true }
     else
       render :json => { :success => false, :form_errors => role.errors }
     end

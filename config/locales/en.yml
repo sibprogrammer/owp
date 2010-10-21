@@ -148,6 +148,13 @@ en:
         removed: "User {{login}} was removed."
         enabled: "User {{login}} was enabled."
         disabled: "User {{login}} was disabled."
+        created: "User {{login}} was created."
+        updated: "User {{login}} was updated."
+        profile_updated: "User {{login}} profile was updated."
+      role:
+        removed: "Role {{name}} was removed."
+        created: "Role {{name}} was created."
+        updated: "Role {{name}} was updated."
     tasks:
       os_templates:
         install: "OS templates installation on the server {{host}}."

@@ -148,6 +148,13 @@ ru:
         removed: "Пользователь {{login}} был удален."
         enabled: "Пользователь {{login}} был разблокирован."
         disabled: "Пользователь {{login}} был заблокирован."
+        created: "Пользователь {{login}} был создан."
+        updated: "Пользователь {{login}} был обновлен."
+        profile_updated: "Профиль пользователя {{login}} был обновлен."
+      role:
+        removed: "Роль {{name}} была удалена."
+        created: "Роль {{name}} была создана."
+        updated: "Роль {{name}} была обновлена."
     tasks:
       os_templates:
         install: "Установка шаблонов ОС на сервер {{host}}."

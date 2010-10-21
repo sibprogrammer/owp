@@ -17,7 +17,7 @@ class Role < ActiveRecord::Base
   protected
   
     def before_destroy
-      0 == role.users.count && !role.built_in
+      0 == users.count && !built_in
     end
   
 end
