@@ -251,7 +251,7 @@ Ext.onReady(function() {
   }
   
   var reinstallAction = function() {
-    <% if @current_user.superadmin? %>
+    <% if @current_user.can_select_os_on_reinstall? %>
       var osTemplatesStore = new Ext.data.JsonStore({
         sortInfo: { field: 'name', direction: 'ASC' },
         fields: [
@@ -284,7 +284,7 @@ Ext.onReady(function() {
         name: 'password_confirmation',
         inputType: 'password',
         allowBlank: false
-      } <% if @current_user.superadmin? %>, {
+      } <% if @current_user.can_select_os_on_reinstall? %>, {
         fieldLabel: '<%= tjs('admin.virtual_servers.form.create_server.field.os_template') %>',
         xtype: 'combo',
         hiddenName: 'orig_os_template',

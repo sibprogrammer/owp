@@ -589,3 +589,4 @@ en:
             view_logs: "Event logs listing"
             manage_logs: "Event logs management"
             manage_users: "Users management"
+            select_os_on_reinstall: "OS selection on reinstall"
