@@ -1,4 +1,5 @@
 class Iphone::UsersController < Iphone::Base
+  before_filter :is_allowed
   
   def profile
     @page_title = t('admin.my_profile.title')
@@ -27,5 +28,11 @@ class Iphone::UsersController < Iphone::Base
     @page_title = t('admin.users.title')
     @users = User.all(:order => 'login')
   end
+  
+  private
+  
+    def is_allowed
+      redirect_to :controller => 'iphone/dashboard' if !@current_user.can_manage_users?
+    end
   
 end

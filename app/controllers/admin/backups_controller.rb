@@ -104,7 +104,9 @@ class Admin::BackupsController < Admin::Base
   private
   
     def is_allowed
-      redirect_to :controller => 'admin/dashboard' unless @current_user.superadmin? || AppConfig.backups.allow_for_users
+      if !@current_user.superadmin? && !AppConfig.backups.allow_for_users || !@current_user.can_backup_ve?
+        redirect_to :controller => 'admin/dashboard'
+      end
     end
   
     def backups_list(virtual_server)

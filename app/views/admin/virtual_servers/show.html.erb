@@ -623,15 +623,15 @@ Ext.onReady(function() {
 
   var mainContentCenterPanel = Ext.getCmp('mainContentCenterPanel');
   
-  mainContentCenterPanel.getTopToolbar().insertButton(0, {
-    text: '<%= tjs('admin.virtual_servers.grid.button.console') %>',
-    iconCls: 'icon-button-console',
-    ref: '../consoleButton',
-    handler: consoleAction
-  });
-  
-  mainContentCenterPanel.getTopToolbar().insertButton(0, '-');
-  
+  <% if @current_user.can_use_ve_console? %>
+    mainContentCenterPanel.getTopToolbar().insertButton(0, {
+      text: '<%= tjs('admin.virtual_servers.grid.button.console') %>',
+      iconCls: 'icon-button-console',
+      ref: '../consoleButton',
+      handler: consoleAction
+    });
+  <% end %>
+    
   <% if @current_user.superadmin? %>
     mainContentCenterPanel.getTopToolbar().insertButton(0, {
       text: '<%= tjs('admin.virtual_servers.grid.button.clone') %>',
@@ -641,7 +641,7 @@ Ext.onReady(function() {
     });
   <% end -%>
   
-  <% if AppConfig.backups.allow_for_users %>
+  <% if AppConfig.backups.allow_for_users and @current_user.can_backup_ve? %>
     mainContentCenterPanel.getTopToolbar().insertButton(0, {
       text: '<%= tjs('admin.virtual_servers.grid.button.backup') %>',
       iconCls: 'icon-button-backup',
@@ -650,12 +650,14 @@ Ext.onReady(function() {
     });
   <% end -%>
   
-  mainContentCenterPanel.getTopToolbar().insertButton(0, {
-    text: '<%= tjs('admin.virtual_servers.grid.button.reinstall') %>',
-    iconCls: 'icon-button-reinstall',
-    ref: '../reinstallButton',
-    handler: reinstallAction
-  });
+  <% if @current_user.can_reinstall_ve? %>
+    mainContentCenterPanel.getTopToolbar().insertButton(0, {
+      text: '<%= tjs('admin.virtual_servers.grid.button.reinstall') %>',
+      iconCls: 'icon-button-reinstall',
+      ref: '../reinstallButton',
+      handler: reinstallAction
+    });
+  <% end -%>
   
   mainContentCenterPanel.getTopToolbar().insertButton(0, '-');
   

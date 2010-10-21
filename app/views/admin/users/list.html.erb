@@ -46,23 +46,20 @@ Ext.onReady(function() {
         vtype: 'email'
       }, {
         fieldLabel: '<%= tjs('admin.users.form.create.field.role') %>',
-        name: 'role_type',
+        name: 'role_id',
         xtype: 'combo',
         allowBlank: false,
         editable: false,
         mode: 'local',
         forceSelection: true,
         triggerAction: 'all',
-        displayField: 'name',
-        valueField: 'role_type',
-        hiddenName: 'role_type',
+        displayField: 'role_name',
+        valueField: 'role_id',
+        hiddenName: 'role_id',
         emptyText: '<%= tjs('admin.users.form.create.field.select_role') %>',
         store: new Ext.data.ArrayStore({
-          fields: ['role_type', 'name'],
-          data: [
-            [1, '<%= tjs('admin.users.role.infrastructure_admin') %>'],
-            [2, '<%= tjs('admin.users.role.virtual_server_owner') %>']
-          ]
+          fields: ['role_id', 'role_name'],
+          data: <%= Role.find(:all).map { |role| [role.id, role.display_name] }.to_json %>
         })
       }]
     });
@@ -182,7 +179,7 @@ Ext.onReady(function() {
       { name: 'id' },
       { name: 'enabled' },
       { name: 'login' },
-      { name: 'role_type' },
+      { name: 'role' },
       { name: 'created_at' },
       { name: 'contact_name' },
       { name: 'email' }
@@ -269,10 +266,10 @@ Ext.onReady(function() {
             : '';
         }
       }, {
-        id: 'role_type',
+        id: 'role',
         header: '<%= tjs('admin.users.grid.column.role') %>',
         sortable: true,
-        dataIndex: 'role_type'
+        dataIndex: 'role'
       }, {
         id: 'created_at',
         header: '<%= tjs('admin.users.grid.column.created_at') %>',
@@ -283,7 +280,7 @@ Ext.onReady(function() {
     ]),
     sm: selectionModel,
     stripeRows: true,
-    autoExpandColumn: 'role_type',
+    autoExpandColumn: 'role',
     autoWidth: true,
     stripeRows: true,
     frame: true,
@@ -325,5 +322,17 @@ Ext.onReady(function() {
   });
 
   Owp.layout.addToCenter(usersGrid);
+  
+  var mainContentCenterPanel = Ext.getCmp('mainContentCenterPanel');
+  
+  mainContentCenterPanel.getTopToolbar().insertButton(0, {
+    text: '<%= tjs('admin.users.top_toolbar.roles') %>',
+    icon: '/images/user_suit.png',
+    handler: function() {
+      document.location.href = '/admin/roles/list';
+    }
+  });
+  
+  mainContentCenterPanel.doLayout();
 });
 <% end -%>

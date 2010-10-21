@@ -1,0 +1,11 @@
+perm_role_1_1:
+  permission_id: 1
+  role_id: 1
+  
+perm_role_1_2:
+  permission_id: 2
+  role_id: 1
+  
+perm_role_2_1:
+  permission_id: 2
+  role_id: 2

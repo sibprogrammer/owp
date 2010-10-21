@@ -1,5 +1,5 @@
 class Admin::EventLogController < Admin::Base
-  before_filter :superadmin_required
+  before_filter :is_allowed
   
   def list
     @up_level = '/admin/dashboard'
@@ -11,6 +11,7 @@ class Admin::EventLogController < Admin::Base
   end
   
   def clear
+    redirect_to :controller => 'admin/dashboard' if !@current_user.can_manage_logs?
     render :json => { :success => EventLog.delete_all }
   end
   
@@ -24,6 +25,10 @@ class Admin::EventLogController < Admin::Base
         :level => item.level,
         :created_at => item.created_at.strftime("%Y.%m.%d %H:%M:%S"),
       }}
+    end
+  
+    def is_allowed
+      redirect_to :controller => 'admin/dashboard' if !@current_user.can_view_logs? && !@current_user.can_manage_logs?
     end
   
 end

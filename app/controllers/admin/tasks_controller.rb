@@ -1,5 +1,5 @@
 class Admin::TasksController < Admin::Base
-  before_filter :superadmin_required
+  before_filter :is_allowed
   
   def status
     job = BackgroundJob.find_last_by_status(BackgroundJob::RUNNING)
@@ -24,6 +24,10 @@ class Admin::TasksController < Admin::Base
         :status => item.status,
         :description => item.t_description
       }}
+    end
+  
+    def is_allowed
+      redirect_to :controller => 'admin/dashboard' if !@current_user.can_view_tasks?
     end
   
 end

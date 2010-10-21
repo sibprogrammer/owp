@@ -122,7 +122,7 @@ Ext.onReady(function() {
     }
   });
   
-  <% if !@current_user.superadmin? %>
+  <% if !@current_user.can_handle_requests? %>
     selectionModel = new Ext.grid.RowSelectionModel({
       listeners: {
         selectionchange: function(selectionModel) {
@@ -148,7 +148,7 @@ Ext.onReady(function() {
       }
     }],
     cm: new Ext.grid.ColumnModel([
-      <% if @current_user.superadmin? %> selectionModel, <% end -%>
+      <% if @current_user.can_handle_requests? %> selectionModel, <% end -%>
       { 
         id: 'opened',
         header: '<%= tjs('admin.requests.grid.column.opened') %>',
@@ -212,7 +212,7 @@ Ext.onReady(function() {
       handler: createRequest,
       cls: 'x-btn-text-icon',
       icon: '/images/add.png'
-    }, <% if @current_user.superadmin? %> {
+    }, <% if @current_user.can_handle_requests? %> {
       text: '<%= tjs('admin.requests.grid.button.remove') %>',
       handler: removeRequest,
       cls: 'x-btn-text-icon',

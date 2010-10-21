@@ -194,7 +194,9 @@ class Admin::VirtualServersController < Admin::Base
   
   def reinstall
     virtual_server = VirtualServer.find_by_id(params[:id])
-    redirect_to :controller => 'dashboard' and return if !virtual_server or !@current_user.can_control(virtual_server)
+    if !virtual_server or !@current_user.can_control(virtual_server) or !@current_user.can_reinstall_ve?
+      redirect_to :controller => 'dashboard' and return
+    end
     
     virtual_server.password = params[:password]
     virtual_server.password_confirmation = params[:password_confirmation]
@@ -232,7 +234,9 @@ class Admin::VirtualServersController < Admin::Base
   
   def run_command
     virtual_server = VirtualServer.find_by_id(params[:id])
-    redirect_to :controller => 'dashboard' and return if !virtual_server or !@current_user.can_control(virtual_server)
+    if !virtual_server or !@current_user.can_control(virtual_server) or !@current_user.can_use_ve_console?
+      redirect_to :controller => 'dashboard' and return
+    end
     result = virtual_server.run_command(params[:command])
     if result.key?('error')
       output =  I18n.t('admin.virtual_servers.form.console.error.code') + ' ' + result['error'].code.to_s + "\n" +

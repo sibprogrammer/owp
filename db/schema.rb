@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100929132210) do
+ActiveRecord::Schema.define(:version => 20101018160616) do
 
   create_table "background_jobs", :force => true do |t|
     t.string  "description"
@@ -58,6 +58,15 @@ ActiveRecord::Schema.define(:version => 20100929132210) do
     t.integer "hardware_server_id"
   end
 
+  create_table "permissions", :force => true do |t|
+    t.string "name"
+  end
+
+  create_table "permissions_roles", :id => false, :force => true do |t|
+    t.integer "permission_id"
+    t.integer "role_id"
+  end
+
   create_table "requests", :force => true do |t|
     t.string   "subject"
     t.text     "content"
@@ -65,6 +74,11 @@ ActiveRecord::Schema.define(:version => 20100929132210) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "user_id"
+  end
+
+  create_table "roles", :force => true do |t|
+    t.string  "name"
+    t.boolean "built_in"
   end
 
   create_table "server_templates", :force => true do |t|
@@ -80,10 +94,10 @@ ActiveRecord::Schema.define(:version => 20100929132210) do
     t.datetime "updated_at"
     t.string   "remember_token",            :limit => 40
     t.datetime "remember_token_expires_at"
-    t.integer  "role_type",                               :default => 1
     t.string   "email"
     t.string   "contact_name"
     t.boolean  "enabled",                                 :default => true
+    t.integer  "role_id"
   end
 
   add_index "users", ["login"], :name => "index_users_on_login", :unique => true

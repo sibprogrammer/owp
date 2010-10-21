@@ -1,4 +1,5 @@
 class Iphone::EventLogController < Iphone::Base
+  before_filter :is_allowed
   
   def list
     @page_title = t('admin.event_log.title')
@@ -11,5 +12,11 @@ class Iphone::EventLogController < Iphone::Base
       :created_at => item.created_at.strftime("%Y.%m.%d %H:%M:%S"),
     }}
   end
+  
+  private
+  
+    def is_allowed
+      redirect_to :controller => 'iphone/dashboard' if !@current_user.can_view_logs? && !@current_user.can_manage_logs?
+    end
   
 end

@@ -11,14 +11,16 @@ class User < ActiveRecord::Base
   validates_format_of :login, :with => Authentication.login_regex, :message => Authentication.bad_login_message
   validates_format_of :email, :with => /^.+@.+$/, :if => :email?
 
-  attr_accessible :login, :password, :password_confirmation, :role_type, :email, :contact_name,
-    :enabled
+  attr_accessible :login, :password, :password_confirmation, :email, :contact_name,
+    :enabled, :role_id
   
   attr_accessor :password, :password_confirmation, :current_password
   
   has_many :virtual_servers
   has_many :requests
   has_many :comments
+  belongs_to :role
+  delegate :permissions, :to => :role
 
   def self.authenticate(login, password)
     return nil if login.blank? || password.blank?
@@ -31,7 +33,7 @@ class User < ActiveRecord::Base
   end
   
   def superadmin?
-    role_type == 1
+    can_manage_hardware_servers?
   end
   
   def can_control(server)
@@ -41,6 +43,14 @@ class User < ActiveRecord::Base
   def full_name
     contact_name.blank? ? login : "#{contact_name} (#{login})"
   end
+  
+  def method_missing(method_id, *args)
+    if match = matches_dynamic_perm_check?(method_id)
+      return true if permissions.find_by_name(match.captures.first)
+    else
+      super
+    end
+  end
 
   protected
   
@@ -48,4 +58,9 @@ class User < ActiveRecord::Base
       login != 'admin'
     end
     
+  private
+  
+    def matches_dynamic_perm_check?(method_id)
+      /^can_([a-zA-Z]\w*)\?$/.match(method_id.to_s)
+    end
 end

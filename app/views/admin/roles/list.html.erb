@@ -1,0 +1,235 @@
+<% @page_title = t('admin.roles.title') %>
+<% @page_icon = 'user_suit.png' %>
+
+<% javascript_tag do -%>
+Ext.onReady(function() {
+
+  function showRoleEditForm(mode) {
+    var formEditRole = new Owp.form.BasicForm({
+      labelWidth: 150,
+      waitMsgTarget: true,
+      url: '/admin/roles/update',
+      autoHeight: true,
+      defaults: { width: 200 },
+      keys: [{
+        key: Ext.EventObject.ENTER,
+        fn: function() {
+          windowEditRole.submitButton.handler();
+        }
+      }],
+      items: [{
+        name: 'id',
+        xtype: 'hidden'
+      }, {
+        name: 'built_in',
+        xtype: 'hidden'
+      }, {
+        fieldLabel: '<%= tjs('admin.roles.form.create.field.name') %>',
+        name: 'name',
+        inputType: 'textfield',
+        allowBlank: false
+      }, {
+        xtype: 'fieldset',
+        title: '<%= tjs('admin.roles.form.create.fieldset.permissions') %>',
+        autoHeight: true,
+        autoWidth: true,
+        defaultType: 'checkbox',
+        defaults: { labelStyle: 'width: 300px' },
+        items: <%= @permissions.map { |item| { 'fieldLabel' => t('admin.roles.form.create.permissions.' + item), 'name' => "permissions[#{item}]" } }.to_json %>
+      }]
+    });
+    
+    var windowEditRole = new Owp.form.BasicFormWindow({
+      title: ('add' == mode)
+        ? '<%= tjs('admin.roles.form.create.title') %>'
+        : '<%= tjs('admin.roles.form.create.edit_title') %>',
+      iconCls: ('add' == mode) ? 'icon-window-add' : 'icon-window-edit',
+      width: 410,
+      autoHeight: true,
+      modal: true,
+      layout: 'fit',
+      plain: true,
+      bodyStyle: 'padding: 5px;',
+      resizable: false,
+      items: formEditRole,
+      buttons: [{
+        text: ('add' == mode)
+          ? '<%= tjs('admin.roles.form.create.button_create') %>'
+          : '<%= tjs('form.button.save') %>',
+        iconCls: ('add' == mode) ? 'icon-button-add' : 'icon-button-save',
+        ref: '../submitButton',
+        handler: function() {
+          formEditRole.form.submit({
+            waitMsg: '<%= tjs('form.loading') %>',
+            success: function() {
+              rolesGrid.store.reload();
+              windowEditRole.close();
+              rolesGrid.getSelectionModel().clearSelections();
+            },
+            failure: function(form, action) {
+              Owp.form.errorHandler(form, action);
+            }
+          });
+        }
+      }, {
+        text: '<%= tjs('form.button.cancel') %>',
+        iconCls: 'icon-button-cancel',
+        handler: function() {
+          windowEditRole.close();
+        }
+      }]
+    });
+    
+    windowEditRole.on('show', function() {
+      if ('add' == mode) {
+        formEditRole.getForm().reset();
+        windowEditRole.focus();
+      } else {
+        var selectedNode = Ext.getCmp('rolesGrid').getSelectionModel().getSelected();
+        formEditRole.getForm().load({
+          waitMsg: '<%= tjs('form.loading') %>',
+          success: function() {
+            var builtInField = formEditRole.getForm().findField('built_in');
+            if ('true' == builtInField.getValue()) {
+              formEditRole.getForm().items.each(function(field) {
+                if ('id' != field.name) {
+                  field.setReadOnly(true);
+                  if ('checkbox' == field.getXType()) {
+                    field.disable();
+                  }
+                }
+              });
+            }
+            windowEditRole.focus();
+          },
+          url: '/admin/roles/load_data',
+          params: {
+            id: selectedNode.id
+          }
+        });
+        formEditRole.getForm().findField('id').setValue(selectedNode.id);
+      }
+    });
+    
+    windowEditRole.show();
+  }
+
+  function addRole() {
+    showRoleEditForm('add');
+  }
+  
+  function editRole() {
+    showRoleEditForm('edit');
+  }
+  
+  function removeRole() {
+    Ext.MessageBox.confirm(
+      '<%= tjs('form.confirmation') %>',
+      '<%= tjs('admin.roles.form.remove_role.sure_to_remove') %>',
+      function(button, text) {
+        if ('yes' == button) { 
+          Owp.list.groupAction({
+            gridName: 'rolesGrid',
+            url: '/admin/roles/delete',
+            waitMsg: '<%= tjs('form.performing_task') %>',
+            failure: {
+              title: '<%= tjs('form.error.title') %>',
+              msg: '<%= tjs('admin.roles.form.remove_role.deletion_failed') %>'
+            }
+          });
+        }
+      }
+    );
+  }
+  
+  var store = new Ext.data.JsonStore({
+    url: '/admin/roles/list_data',
+    root: 'data',
+    data: <%= { :data => @roles_list }.to_json %>,
+    autoLoad: true,
+    sortInfo: { field: 'name', direction: 'ASC' },
+    fields: [
+      { name: 'id' },
+      { name: 'name' },
+      { name: 'built_in' },
+      { name: 'users' }
+    ]
+  });
+
+  var selectionModel = new Ext.grid.CheckboxSelectionModel({
+    listeners: {
+      selectionchange: function(selectionModel) {
+        if (selectionModel.getCount()) {
+          rolesGrid.removeButton.enable();
+        } else {
+          rolesGrid.removeButton.disable();
+        }
+        
+        if (1 == selectionModel.getCount()) {
+          rolesGrid.editButton.enable();
+        } else {
+          rolesGrid.editButton.disable();
+        }
+      }
+    }
+  });
+  
+  var rolesGrid = new Ext.grid.GridPanel({
+    id: 'rolesGrid',
+    store: store,
+    title: '<%= tjs('admin.roles.grid.title') %>',
+    loadMask: true,
+    tools: [{ 
+      id: 'refresh',
+      handler: function() {
+        rolesGrid.getStore().reload();
+      }
+    }],
+    cm: new Ext.grid.ColumnModel([
+      selectionModel,
+      {
+        id: 'name',
+        header: '<%= tjs('admin.roles.grid.column.name') %>',
+        sortable: true,
+        dataIndex: 'name'
+      }, {
+        id: 'users',
+        header: '<%= tjs('admin.roles.grid.column.users') %>',
+        sortable: true,
+        width: 130,
+        dataIndex: 'users'
+      }
+    ]),
+    sm: selectionModel,
+    stripeRows: true,
+    autoExpandColumn: 'name',
+    autoWidth: true,
+    stripeRows: true,
+    frame: true,
+    iconCls: 'icon-items-list',
+    tbar: [{
+      text: '<%= tjs('admin.roles.grid.button.add') %>',
+      handler: addRole,
+      cls: 'x-btn-text-icon',
+      icon: '/images/add.png'
+    }, {
+      text: '<%= tjs('admin.roles.grid.button.remove') %>',
+      handler: removeRole,
+      cls: 'x-btn-text-icon',
+      icon: '/images/delete.png',
+      ref: '../removeButton',
+      disabled: true
+    }, {
+      text: '<%= tjs('admin.roles.grid.button.edit') %>',
+      handler: editRole,
+      cls: 'x-btn-text-icon',
+      icon: '/images/wrench.png',
+      ref: '../editButton',
+      disabled: true
+    }]
+  });
+
+  Owp.layout.addToCenter(rolesGrid);
+
+});
+<% end -%>

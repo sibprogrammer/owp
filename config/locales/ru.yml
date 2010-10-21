@@ -65,6 +65,10 @@ ru:
           attributes:
             name:
               taken: "Шаблон сервера с таким именем уже существует."
+        role:
+          attributes:
+            name:
+              taken: "Роль с таким именем уже существует."
   about:
     copyright: "Авторское право 2008-2010 SoftUnity."
     right_reserved: "Все права зарезервированы."
@@ -393,6 +397,8 @@ ru:
         infrastructure_admin: "Администратор инфраструктуры"
         virtual_server_owner: "Владелец виртуального сервера"
       title: "Пользователи"
+      top_toolbar:
+        roles: "Роли"
       grid:
         title: "Список пользователей"
         column:
@@ -549,3 +555,38 @@ ru:
             button_add: "Добавить"
             field:
               content: "Сообщение"
+    roles:
+      title: "Роли"
+      grid:
+        title: "Список ролей"
+        column:
+          name: "Имя"
+          users: "Пользователи"
+        button:
+          add: "Добавить роль"
+          remove: "Удалить роль"
+          edit: "Редактировать роль"
+      form:
+        remove_role:
+          sure_to_remove: "Вы действительно хотите удалить выбранные роли?"
+          deletion_failed: "Не удалось удалить некоторые роли. Роли, используемые пользователями, не могут быть удалены."
+        create:
+          title: "Создать новую роль"
+          edit_title: "Редактировать роль"
+          field:
+            name: "Имя"
+          fieldset:
+            permissions: "Права"
+          button_create: "Создать"
+          permissions:
+            manage_hardware_servers: "Управление физическими серверами"
+            use_ve_console: "Консоль виртуального сервера"
+            backup_ve: "Резерные копии виртуального сервера"
+            reinstall_ve: "Переустановка виртуального сервера"
+            manage_requests: "Создание/обрабатка запросов"
+            handle_requests: "Обработка запросов"
+            create_requests: "Создание запросов"
+            view_tasks: "Просмотр задач"
+            view_logs: "Просмотр журнала событий"
+            manage_logs: "Управление журналом событий"
+            manage_users: "Управление пользователями"

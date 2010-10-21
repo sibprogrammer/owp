@@ -6,9 +6,13 @@
     <%= imenu_link_to(t('admin.menu.general.virtual_servers'), { :controller => "virtual_servers", :action => "list" }, '/images/big-icons/server.png') %>
   <% end %>
   <%= imenu_link_to(t('admin.menu.general.my_profile'), { :controller => "users", :action => "profile" }, '/images/big-icons/vcard.png') %>
-  <% if @current_user.superadmin? %>
+  <% if @current_user.can_manage_users? %>
     <%= imenu_link_to(t('admin.menu.general.users'), { :controller => "users", :action => "list" }, '/images/big-icons/user.png') %>
+  <% end %>
+  <% if @current_user.can_view_tasks? %>
     <%= imenu_link_to(t('admin.menu.general.tasks'), { :controller => "tasks", :action => "list" }, '/images/big-icons/cog.png') %>
+  <% end %>
+  <% if @current_user.can_view_logs? || @current_user.can_manage_logs? %>
     <%= imenu_link_to(t('admin.menu.general.event_log'), { :controller => "event_log", :action => "list" }, '/images/big-icons/book.png') %>
   <% end %>
 </ul> 

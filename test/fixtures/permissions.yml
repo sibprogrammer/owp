@@ -1,0 +1,7 @@
+permission_1:
+  id: 1
+  name: manage_hardware_servers
+  
+permission_2:
+  id: 2
+  name: use_ve_console

@@ -9,7 +9,7 @@
       <% if !user.email.blank? %>
         <a href="mailto:<%= h(user.email) %>"><%= h(user.email) %></a><br>
       <% end %>
-      <%= t('admin.users.role.' + (1 == user.role_type ? 'infrastructure_admin' : 'virtual_server_owner')) %>
+      <%= h(user.role.display_name) %>
     </li>
   <% end %>
 </ul>

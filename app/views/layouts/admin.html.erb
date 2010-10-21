@@ -126,23 +126,23 @@
                 windowMyProfile.show();
               }
             }
-          }, <% if @current_user.superadmin? %> {
+          }, <% if @current_user.can_manage_users? %> {
             cls: 'menu-item',
             text: '<%= tjs('admin.menu.general.users') %>',
             href: '/admin/users/list',
             icon: '/images/user.png',
             leaf: true
-          }, <% end -%> {
+          }, <% end -%> <% if @current_user.can_create_requests? || @current_user.can_handle_requests? %> {
             cls: 'menu-item',
             text: '<%= tjs('admin.menu.general.requests') %>',
             href: '/admin/requests/list',
             icon: '/images/comment_edit.png'
-          }, <% if @current_user.superadmin? %> {
+          }, <% end -%> <% if @current_user.can_view_tasks? %> {
             cls: 'menu-item',
             text: '<%= tjs('admin.menu.general.tasks') %>',
             href: '/admin/tasks/list',
             icon: '/images/cog.png'
-          }, {
+          }, <% end -%> <% if @current_user.can_view_logs? || @current_user.can_manage_logs? %> {
             cls: 'menu-item',
             text: '<%= tjs('admin.menu.general.event_log') %>',
             href: '/admin/event-log/list',

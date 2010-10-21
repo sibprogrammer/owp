@@ -96,12 +96,12 @@ Ext.onReady(function() {
     stripeRows: true,
     frame: true,
     iconCls: 'icon-items-list',
-    tbar: [{
+    <% if @current_user.can_manage_logs? %> tbar: [{
       text: '<%= tjs('admin.event_log.grid.button.clear') %>',
       handler: clearLog,
       cls: 'x-btn-text-icon',
       icon: '/images/delete.png'
-    }]
+    }] <% end -%>
   });
   
   Owp.layout.addToCenter(eventLogGrid);

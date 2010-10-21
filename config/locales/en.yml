@@ -65,6 +65,10 @@ en:
           attributes:
             name:
               taken: "Server template with such name is already exist."
+        role:
+          attributes:
+            name:
+              taken: "Role with such name is already exist."
   about:
     copyright: "Copyright 2008-2010 SoftUnity."
     right_reserved: "All Rights Reserved."
@@ -393,6 +397,8 @@ en:
         infrastructure_admin: "Infrastructure administrator"
         virtual_server_owner: "Virtual server owner"
       title: "Users"
+      top_toolbar:
+        roles: "Roles"
       grid:
         title: "Users list"
         column:
@@ -549,3 +555,37 @@ en:
             button_add: "Add"
             field:
               content: "Message"
+    roles:
+      title: "Roles"
+      grid:
+        title: "Roles list"
+        column:
+          name: "Name"
+          users: "Users"
+        button:
+          add: "Add Role"
+          remove: "Remove Role"
+          edit: "Edit Role"
+      form:
+        remove_role:
+          sure_to_remove: "Are you sure you want to remove selected roles?"
+          deletion_failed: "Unable to delete some roles. Roles with assigned users cannot be deleted."
+        create:
+          title: "Create new role"
+          edit_title: "Edit role"
+          field:
+            name: "Name"
+          fieldset:
+            permissions: "Permissions"
+          button_create: "Create"
+          permissions:
+            manage_hardware_servers: "Physical servers management"
+            use_ve_console: "Virtual server console"
+            backup_ve: "Virtual server backups"
+            reinstall_ve: "Virtual server reinstall"
+            handle_requests: "Requests handling"
+            create_requests: "Requests creation"
+            view_tasks: "Tasks listing"
+            view_logs: "Event logs listing"
+            manage_logs: "Event logs management"
+            manage_users: "Users management"

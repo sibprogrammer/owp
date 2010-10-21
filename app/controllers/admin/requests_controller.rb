@@ -1,5 +1,5 @@
 class Admin::RequestsController < Admin::Base
-  before_filter :superadmin_required, :only => :delete
+  before_filter :is_allowed
   
   def list
     @up_level = '/admin/dashboard'
@@ -11,6 +11,8 @@ class Admin::RequestsController < Admin::Base
   end
   
   def delete
+    redirect_to :controller => 'admin/dashboard' if !@current_user.can_handle_requests?
+    
     params[:ids].split(',').each { |id|
       request = Request.find(id) 
       
@@ -25,14 +27,14 @@ class Admin::RequestsController < Admin::Base
   
   def show
     @request = Request.find_by_id(params[:id])
-    redirect_to :controller => 'dashboard' and return if !@request or (!@current_user.superadmin? and (@request.user.id != @current_user.id))
+    redirect_to :controller => 'dashboard' and return if !@request or (!@current_user.can_handle_requests? and (@request.user.id != @current_user.id))
     @up_level = '/admin/requests/list'
     @comments = request_comments_list(@request)
   end
   
   def comments_list_data
     @request = Request.find_by_id(params[:id])
-    redirect_to :controller => 'dashboard' and return if !@request or (!@current_user.superadmin? and (@request.user.id != @current_user.id))
+    redirect_to :controller => 'dashboard' and return if !@request or (!@current_user.can_handle_requests? and (@request.user.id != @current_user.id))
     render :json => { :data => request_comments_list(@request) }
   end
   
@@ -50,7 +52,7 @@ class Admin::RequestsController < Admin::Base
   
   def add_comment
     @request = Request.find_by_id(params[:request_id])
-    redirect_to :controller => 'dashboard' and return if !@request or (!@current_user.superadmin? and (@request.user.id != @current_user.id))
+    redirect_to :controller => 'dashboard' and return if !@request or (!@current_user.can_handle_requests? and (@request.user.id != @current_user.id))
     
     comment = Comment.new
     comment.attributes = params
@@ -66,9 +68,9 @@ class Admin::RequestsController < Admin::Base
   
   def toggle
     @request = Request.find_by_id(params[:request_id])
-    redirect_to :controller => 'dashboard' and return if !@request or (!@current_user.superadmin? and (@request.user.id != @current_user.id))
+    redirect_to :controller => 'dashboard' and return if !@request or (!@current_user.can_handle_requests? and (@request.user.id != @current_user.id))
     
-    @request.opened = @current_user.superadmin? ? !@request.opened : true
+    @request.opened = @current_user.can_handle_requests? ? !@request.opened : true
     @request.save
     
     if @request.opened
@@ -81,7 +83,7 @@ class Admin::RequestsController < Admin::Base
   private
   
     def requests_list
-      requests = @current_user.superadmin? ? Request.all : @current_user.requests
+      requests = @current_user.can_handle_requests? ? Request.all : @current_user.requests
       requests.map! { |request| {
         :id => request.id,
         :opened => request.opened,
@@ -107,6 +109,10 @@ class Admin::RequestsController < Admin::Base
         :author => request.user ? request.user.login : '',
         :created_at => request.created_at.strftime("%Y.%m.%d %H:%M:%S"),
       })
+    end
+  
+    def is_allowed
+      redirect_to :controller => 'admin/dashboard' if !@current_user.can_create_requests?
     end
   
 end

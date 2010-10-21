@@ -1,0 +1,9 @@
+superadmin:
+  id: 1
+  name: superadmin
+  built_in: true
+
+ve_admin:
+  id: 2
+  name: ve_admin
+  built_in: true

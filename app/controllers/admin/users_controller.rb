@@ -1,5 +1,5 @@
 class Admin::UsersController < Admin::Base
-  before_filter :superadmin_required, :except => :save_profile
+  before_filter :is_allowed, :except => :save_profile
   
   def save_profile
     if !params[:password].blank?
@@ -11,6 +11,7 @@ class Admin::UsersController < Admin::Base
       params.delete(:password_confirmation)
     end
     
+    params.delete(:role_id)
     @current_user.attributes = params
     
     if @current_user.errors.empty? && @current_user.save
@@ -62,7 +63,7 @@ class Admin::UsersController < Admin::Base
     
     render :json => { :success => true, :data => {
       :login => user.login,
-      :role_type => user.role_type,
+      :role_id => user.role_id,
       :contact_name => user.contact_name,
       :email => user.email,
     }}
@@ -97,11 +98,14 @@ class Admin::UsersController < Admin::Base
         :id => user.id,
         :enabled => user.enabled,
         :login => user.login,
-        :role_type => t('admin.users.role.' + (1 == user.role_type ? 'infrastructure_admin' : 'virtual_server_owner')),
+        :role => user.role.display_name,
         :created_at => user.created_at.strftime("%Y.%m.%d %H:%M:%S"),
         :contact_name => user.contact_name,
         :email => user.email,
       }}
     end
   
+    def is_allowed
+      redirect_to :controller => 'admin/dashboard' if !@current_user.can_manage_users?
+    end
 end

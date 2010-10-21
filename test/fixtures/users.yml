@@ -4,7 +4,7 @@ admin:
   salt: 356a192b7913b04c54574d18c28d46e6395428ab # SHA1('0')
   crypted_password: 813f6adc5a8fab8f268e1fec5394d196896365fe # monkey
   created_at: <%= 5.days.ago.to_s :db  %>
-  role_type: 1
+  role_id: 1
   
 john:
   id: 2
@@ -12,4 +12,4 @@ john:
   salt: 7e3041ebc2fc05a40c60028e2c4901a81035d3cd
   crypted_password: 00742970dc9e6319f8019fd54864d3ea740f04b1 # test
   created_at: <%= 1.days.ago.to_s :db %>
-  role_type: 2
+  role_id: 2
