@@ -138,6 +138,7 @@ en:
         change_state_failed: "Failed to change state for virtual server {{identity}}; state: {{state}}; code: {{code}}."
         updated: "Settings for virtual server {{identity}} were updated."
         cloned: "Virtual server {{identity}} was cloned."
+        counter_reached: "Limit {{name}} was reached for virtual server {{identity}} on physical server {{host}}."
       user:
         login:
           ok: "User {{login}} is logged in."
@@ -356,6 +357,26 @@ en:
         value:
           disk_usage: "{{percent}}%, {{used}} of {{total}} / {{free}} free"
           memory_usage: "{{percent}}%, {{used}} of {{total}} / {{free}} free"
+        button:
+          stat_details: "Details"
+      stat_details:
+        title: "Virtual server {{name}} statistics"
+        grid:
+          title: "Virtual server limits"
+          column:
+            parameter: "Parameter"
+            current: "Current Use"
+            max: "Max Use"
+            barrier: "Barrier"
+            limit: "Limit"
+            failcnt: "Fails"
+        chart:
+          cpu_usage:
+            title: "CPU usage"
+          ram_usage:
+            title: "RAM usage"
+          disk_usage:
+            title: "Disk usage"
     os_templates:
       title: "OS Templates on Physical Server {{name}}"
       grid:

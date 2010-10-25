@@ -1,0 +1,174 @@
+<%
+  @page_title = t('admin.virtual_servers.stat_details.title', 
+    :name => @virtual_server.host_name.blank? ? "#" + @virtual_server.identity.to_s : @virtual_server.host_name )
+%>
+<% @page_icon = 'chart_bar.png' %>
+
+<% javascript_tag do -%>
+Ext.onReady(function() {
+
+  var cpuUsageStore = new Ext.data.JsonStore({
+    fields: [ 'time', 'usage' ],
+    data: <%= @cpu_usage.to_json %>
+  });
+
+  var cpuChart = new Ext.Panel({
+    iconCls: 'chart',
+    title: '<%= tjs('admin.virtual_servers.stat_details.chart.cpu_usage.title') %>',
+    frame: true,
+    width: '33%',
+    height: 200,
+    iconCls: 'icon-items-chart',
+    items: {
+      xtype: 'columnchart',
+      store: cpuUsageStore,
+      url: '/ext/resources/charts.swf',
+      xField: 'time',
+      yField: 'usage',
+      yAxis: new Ext.chart.NumericAxis({
+        labelRenderer: Ext.util.Format.numberRenderer('0'),
+        maximum: 100
+      }),
+      tipRenderer : function(chart, record){
+        return Ext.util.Format.number(record.data.usage, '0%');
+      }
+    }
+  });
+
+  var diskUsageStore = new Ext.data.JsonStore({
+    fields: [ 'time', 'usage' ],
+    data: <%= @disk_usage.to_json %>
+  });
+
+  var diskChart = new Ext.Panel({
+    iconCls: 'chart',
+    title: '<%= tjs('admin.virtual_servers.stat_details.chart.disk_usage.title') %>',
+    frame: true,
+    width: '33%',
+    height: 200,
+    iconCls: 'icon-items-chart',
+    items: {
+      xtype: 'columnchart',
+      store: diskUsageStore,
+      url: '/ext/resources/charts.swf',
+      xField: 'time',
+      yField: 'usage',
+      yAxis: new Ext.chart.NumericAxis({
+        labelRenderer: Ext.util.Format.numberRenderer('0,0'),
+        maximum: <%= @disk_max %>
+      }),
+      tipRenderer : function(chart, record){
+        return Ext.util.Format.number(record.data.usage, '0,0');
+      }
+    }
+  });
+  
+  var ramUsageStore = new Ext.data.JsonStore({
+    fields: [ 'time', 'usage' ],
+    data: <%= @ram_usage.to_json %>
+  });
+
+  var ramChart = new Ext.Panel({
+    iconCls: 'chart',
+    title: '<%= tjs('admin.virtual_servers.stat_details.chart.ram_usage.title') %>',
+    frame: true,
+    height: 200,
+    iconCls: 'icon-items-chart',
+    items: {
+      xtype: 'columnchart',
+      store: ramUsageStore,
+      url: '/ext/resources/charts.swf',
+      xField: 'time',
+      yField: 'usage',
+      yAxis: new Ext.chart.NumericAxis({
+        labelRenderer: Ext.util.Format.numberRenderer('0,0'),
+        maximum: <%= @ram_max %>
+      }),
+      tipRenderer : function(chart, record){
+        return Ext.util.Format.number(record.data.usage, '0,0');
+      }
+    }
+  });
+  
+  var chartsPanelsWrapper = new Ext.Panel({
+    layout: 'hbox',
+    border: false,
+    region: 'north',
+    height: 200,
+    items: [ cpuChart, diskChart, ramChart ]
+  });
+
+  var store = new Ext.data.JsonStore({
+    root: 'data',
+    autoLoad: true,
+    data: <%= { :data => @virtual_server_stats }.to_json %>,
+    fields: [
+      { name: 'parameter' },
+      { name: 'current' },
+      { name: 'max' },
+      { name: 'barrier' },
+      { name: 'limit' },
+      { name: 'failcnt' },
+      { name: 'alert' }
+    ]
+  });
+  
+  var virtualServerStatsGrid = new Ext.grid.GridPanel({
+    id: 'virtualServerStatsGrid',
+    title: '<%= tjs('admin.virtual_servers.stat_details.grid.title') %>',
+    region: 'center',
+    loadMask: true,
+    iconCls: 'icon-items-list',
+    store: store,
+    autoWidth: true,
+    stripeRows: true,
+    autoExpandColumn: 'parameter',
+    stateId: 'virtualServerStatsGrid',
+    cm: new Ext.grid.ColumnModel([{
+      id: 'parameter',
+      header: '<%= tjs('admin.virtual_servers.stat_details.grid.column.parameter') %>',
+      renderer: function(value, metadata, record) {
+        return record.data.alert ? ('<span class="error-text">' + value + '</span>') : value;
+      },
+      dataIndex: 'parameter'
+    }, {
+      id: 'current',
+      header: '<%= tjs('admin.virtual_servers.stat_details.grid.column.current') %>',
+      width: 130,
+      dataIndex: 'current'
+    }, {
+      id: 'max',
+      header: '<%= tjs('admin.virtual_servers.stat_details.grid.column.max') %>',
+      width: 130,
+      dataIndex: 'max'
+    }, {
+      id: 'barrier',
+      header: '<%= tjs('admin.virtual_servers.stat_details.grid.column.barrier') %>',
+      width: 130,
+      dataIndex: 'barrier'
+    }, {
+      id: 'limit',
+      header: '<%= tjs('admin.virtual_servers.stat_details.grid.column.limit') %>',
+      width: 130,
+      dataIndex: 'limit'
+    }, {
+      id: 'failcnt',
+      header: '<%= tjs('admin.virtual_servers.stat_details.grid.column.failcnt') %>',
+      width: 130,
+      renderer: function(value, metadata, record) {
+        return record.data.alert ? ('<span class="error-text">' + value + '</span>') : value;
+      },
+      dataIndex: 'failcnt'
+    }])
+  });
+  
+  var panelsWrapper = new Ext.Panel({
+    layout: 'border',
+    border: false,
+    items: [ chartsPanelsWrapper, virtualServerStatsGrid ]
+  });
+
+  Owp.layout.addToCenter(panelsWrapper);
+
+});
+<% end -%>

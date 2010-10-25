@@ -50,6 +50,7 @@ start() {
     else
       ruby $INSTALL_DIR/script/server webrick -e production -p $PORT -b $IP -d
     fi
+    ruby $INSTALL_DIR/utils/watchdog/watchdog.rb start
     [ "$ENVIRONMENT" = "HW-NODE" ] && ruby $INSTALL_DIR/utils/hw-daemon/hw-daemon.rb start
     touch $LOCK_FILE
     sleep 1 # wait a little for forked processes
@@ -63,10 +64,13 @@ stop() {
   PANEL_APP_PID=`ps auxww | grep ruby | grep script/server | awk '{ print $2 }'`
   [ -n "$PANEL_APP_PID" ] && kill -2 $PANEL_APP_PID
   [ "$ENVIRONMENT" = "HW-NODE" ] && ruby $INSTALL_DIR/utils/hw-daemon/hw-daemon.rb stop
+  ruby $INSTALL_DIR/utils/watchdog/watchdog.rb stop
   rm -f $LOCK_FILE
 }
 
 status() {
+  ruby $INSTALL_DIR/utils/watchdog/watchdog.rb status
+  
   if [ -f $LOCK_FILE ]; then
     echo "OpenVZ Web Panel is running!"
     exit 0

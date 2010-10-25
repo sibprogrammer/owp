@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20101021154600) do
+ActiveRecord::Schema.define(:version => 20101024070705) do
 
   create_table "background_jobs", :force => true do |t|
     t.string  "description"
@@ -22,6 +22,18 @@ ActiveRecord::Schema.define(:version => 20101021154600) do
     t.string  "description"
     t.integer "size"
     t.integer "virtual_server_id"
+  end
+
+  create_table "bean_counters", :force => true do |t|
+    t.string   "name"
+    t.integer  "virtual_server_id"
+    t.string   "held"
+    t.string   "maxheld"
+    t.string   "barrier"
+    t.string   "limit"
+    t.string   "failcnt"
+    t.integer  "period_type"
+    t.datetime "created_at"
   end
 
   create_table "comments", :force => true do |t|

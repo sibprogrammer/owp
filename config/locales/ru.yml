@@ -138,6 +138,7 @@ ru:
         change_state_failed: "Не удалось изменить состояние виртуального сервера {{identity}}; состояние: {{state}}; код: {{code}}."
         updated: "Настройки для виртуального сервера {{identity}} были обновлены."
         cloned: "Виртуальный сервер {{identity}} был клонирован."
+        counter_reached: "Достигнут лимит {{name}} для виртуального сервера {{identity}} на физическом сервере {{host}}."
       user:
         login:
           ok: "Пользователь {{login}} вошел в панель."
@@ -356,6 +357,26 @@ ru:
         value:
           disk_usage: "{{percent}}%, {{used}} из {{total}} / {{free}} свободно"
           memory_usage: "{{percent}}%, {{used}} из {{total}} / {{free}} свободно"
+        button:
+          stat_details: "Детали"
+      stat_details:
+        title: "Статистика виртуального сервера {{name}}"
+        grid:
+          title: "Ограничения виртуального сервера"
+          column:
+            parameter: "Параметр"
+            current: "Текущее использование"
+            max: "Макс. использование"
+            barrier: "Барьер"
+            limit: "Лимит"
+            failcnt: "Отказы"
+        chart:
+          cpu_usage:
+            title: "Использование процессора"
+          ram_usage:
+            title: "Использование памяти"
+          disk_usage:
+            title: "Использование диска"
     os_templates:
       title: "Шаблоны ОС на физическом сервере {{name}}"
       grid:

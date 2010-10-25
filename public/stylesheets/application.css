@@ -28,6 +28,7 @@ td.x-grid3-td-checker, td.x-grid3-td-state { vertical-align: middle; }
 .x-tree-node div.menu-item { padding: 5px; }
 
 .icon-items-list { background-image: url(/images/table.png) !important; }
+.icon-items-chart { background-image: url(/images/chart_bar.png) !important; }
 .icon-window-login { background-image: url(/images/key.png) !important; }
 .icon-window-my-profile { background-image: url(/images/vcard.png) !important; }
 .icon-window-add { background-image: url(/images/add.png) !important; }

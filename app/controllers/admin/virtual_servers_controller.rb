@@ -99,6 +99,84 @@ class Admin::VirtualServersController < Admin::Base
     end
     
     @virtual_server_properties = virtual_server_properties(@virtual_server)
+    @virtual_server_stats = get_usage_stats(@virtual_server)
+  end
+  
+  def stat_details
+    @virtual_server = VirtualServer.find_by_id(params[:id])
+    redirect_to :controller => 'dashboard' and return if !@virtual_server or !@current_user.can_control(@virtual_server)
+    
+    @up_level = '/admin/virtual-servers/show?id=' + @virtual_server.id.to_s
+    
+    @virtual_server_stats = []
+    is_running = 'running' == @virtual_server.state
+    
+    %w( kmemsize lockedpages privvmpages shmpages numproc physpages vmguarpages 
+        oomguarpages numtcpsock numflock numpty numsiginfo tcpsndbuf tcprcvbuf 
+        othersockbuf dgramrcvbuf numothersock dcachesize numfile numiptent 
+    ).each do |limit|
+      counters = @virtual_server.bean_counters.find(
+        :all, :limit => 10, :order => 'id DESC',
+        :conditions => { :name => limit }
+      )
+      case  counters.size
+        when 0 then last_counter = nil; prev_counters = []
+        else last_counter = counters.shift; prev_counters = counters
+      end
+      
+      last_counter = nil if last_counter and last_counter.created_at < (DateTime.now - 10.minutes).utc
+      
+      if last_counter and is_running
+        alert = false
+        
+        prev_counters.each do |prev_counter|
+          alert = true == (prev_counter and last_counter.failcnt.to_i > prev_counter.failcnt.to_i)
+          break if alert
+        end
+        
+        @virtual_server_stats << { 
+          :parameter => limit.upcase,
+          :current => last_counter.held,
+          :max => last_counter.maxheld,
+          :barrier => last_counter.barrier,
+          :limit => last_counter.limit,
+          :failcnt => last_counter.failcnt,
+          :alert => alert,
+        }
+      else
+        @virtual_server_stats << { 
+          :parameter => limit.upcase,
+          :current => '-', :max => '-', :barrier => '-', :limit => '-', :failcnt => '-', :alert => false
+        }
+      end
+    end
+    
+    @ram_usage = !is_running ? [] : @virtual_server.bean_counters.find(
+      :all, :limit => 60, :order => 'id DESC',
+      :conditions => { :name => 'privvmpages' }
+    ).map { |counter| { 'time' => counter.created_at.min, 'usage' => counter.held.to_i * 4 / 1024 } }.reverse
+    
+    @ram_max = 0
+    if !@ram_usage.blank?
+      last_counter = @virtual_server.bean_counters.find(:last, :order => 'id DESC', :conditions => { :name => 'privvmpages' })
+      @ram_max = last_counter.limit.to_i * 4 / 1024
+    end
+    
+    @disk_usage = !is_running ? [] : @virtual_server.bean_counters.find(
+      :all, :limit => 60, :order => 'id DESC',
+      :conditions => { :name => '_diskspace' }
+    ).map { |counter| { 'time' => counter.created_at.min, 'usage' => counter.held.to_i / (1024 * 1024) } }.reverse
+    
+    @disk_max = 0
+    if !@disk_usage.blank?
+      last_counter = @virtual_server.bean_counters.find(:last, :order => 'id DESC', :conditions => { :name => '_diskspace' })
+      @disk_max = last_counter.limit.to_i / (1024 * 1024)
+    end
+    
+    @cpu_usage = !is_running ? [] : @virtual_server.bean_counters.find(
+      :all, :limit => 60, :order => 'id DESC',
+      :conditions => { :name => '_cpu_usage' }
+    ).map { |counter| { 'time' => counter.created_at.min, 'usage' => counter.held.to_i } }.reverse
   end
   
   def get_properties
@@ -112,50 +190,7 @@ class Admin::VirtualServersController < Admin::Base
     virtual_server = VirtualServer.find_by_id(params[:id])
     redirect_to :controller => 'dashboard' and return if !virtual_server or !@current_user.can_control(virtual_server)
 
-    stats = []
-    
-    if 'running' == virtual_server.state
-      stats << {
-        :parameter => t('admin.virtual_servers.stats.field.cpu_load_average'),
-        :value => virtual_server.cpu_load_average.join(', '),
-      }
-    end
-    
-    helper = Object.new.extend(ActionView::Helpers::NumberHelper)
-    
-    disk_usage = virtual_server.disk_usage
-    
-    stats << {
-      :parameter => t('admin.virtual_servers.stats.field.disk_usage'),
-      :value => {
-        'text' => t(
-          'admin.virtual_servers.stats.value.disk_usage',
-          :percent => disk_usage['usage_percent'].to_s,
-          :free =>  helper.number_to_human_size(disk_usage['free_bytes'], :locale => :en),
-          :used => helper.number_to_human_size(disk_usage['used_bytes'], :locale => :en),
-          :total => helper.number_to_human_size(disk_usage['total_bytes'], :locale => :en)
-        ),
-        'percent' => disk_usage['usage_percent'].to_f / 100
-      }
-    }
-    
-    if 'running' == virtual_server.state
-      memory_usage = virtual_server.memory_usage
-      
-      stats << {
-        :parameter => t('admin.virtual_servers.stats.field.memory_usage'),
-        :value => { 
-          'text' => t(
-            'admin.virtual_servers.stats.value.memory_usage',
-            :percent => memory_usage['usage_percent'].to_s,
-            :free =>  helper.number_to_human_size(memory_usage['free_bytes'], :locale => :en),
-            :used => helper.number_to_human_size(memory_usage['used_bytes'], :locale => :en),
-            :total => helper.number_to_human_size(memory_usage['total_bytes'], :locale => :en)
-          ),
-          'percent' => memory_usage['usage_percent'].to_f / 100
-        }
-      }
-    end
+    stats = get_usage_stats(virtual_server)
 
     render :json => { :success => true, :data => stats }
   end
@@ -307,6 +342,70 @@ class Admin::VirtualServersController < Admin::Base
       end
       
       params
+    end
+  
+    def get_usage_stats(virtual_server)
+      is_running = 'running' == virtual_server.state
+      
+      stats = []
+
+      counter = BeanCounter.find_last_by_name_and_virtual_server_id('_cpu_usage', virtual_server.id)
+      
+      if counter and is_running
+        stats << {
+          :parameter => t('admin.virtual_servers.stats.field.cpu_load_average'),
+          :value => {
+            'text' => "#{counter.held}%",
+            'percent' => counter.held.to_f / 100,
+          }
+        }
+      else
+        stats << { :parameter => t('admin.virtual_servers.stats.field.cpu_load_average'), :value => '-' }
+      end
+      
+      helper = Object.new.extend(ActionView::Helpers::NumberHelper)
+      
+      counter = BeanCounter.find_last_by_name_and_virtual_server_id('_diskspace', virtual_server.id)
+  
+      if counter and is_running
+        stats << {
+          :parameter => t('admin.virtual_servers.stats.field.disk_usage'),
+          :value => {
+            'text' => t(
+              'admin.virtual_servers.stats.value.disk_usage',
+              :percent => (counter.held.to_f / counter.limit.to_f * 100).to_i.to_s,
+              :free =>  helper.number_to_human_size(counter.limit.to_i - counter.held.to_i, :locale => :en),
+              :used => helper.number_to_human_size(counter.held.to_i, :locale => :en),
+              :total => helper.number_to_human_size(counter.limit.to_i, :locale => :en)
+            ),
+            'percent' => counter.held.to_f / counter.limit.to_f
+          }
+        }
+      else
+        stats << { :parameter => t('admin.virtual_servers.stats.field.disk_usage'), :value => '-' }
+      end
+      
+      counter = BeanCounter.find_last_by_name_and_virtual_server_id('privvmpages', virtual_server.id)
+      
+      if counter and is_running
+        stats << {
+          :parameter => t('admin.virtual_servers.stats.field.memory_usage'),
+          :value => { 
+            'text' => t(
+              'admin.virtual_servers.stats.value.memory_usage',
+              :percent => (counter.held.to_f / counter.limit.to_f * 100).to_i.to_s,
+              :free =>  helper.number_to_human_size((counter.limit.to_i - counter.held.to_i) * 4096, :locale => :en),
+              :used => helper.number_to_human_size(counter.held.to_i * 4096, :locale => :en),
+              :total => helper.number_to_human_size(counter.limit.to_i * 4096, :locale => :en)
+            ),
+            'percent' => counter.held.to_f / counter.limit.to_f
+          }
+        }
+      else
+        stats << { :parameter => t('admin.virtual_servers.stats.field.memory_usage'), :value => '-' }
+      end
+      
+      stats
     end
   
 end

@@ -48,11 +48,16 @@ Ext.onReady(function() {
       dataIndex: 'value'
     }])
   });
+  
+  function viewStatDetails() {
+    document.location.href = '/admin/virtual-servers/stat_details?id=<%= @virtual_server.id %>';
+  }
 
   var statsStore = new Ext.data.JsonStore({
     url: '/admin/virtual-servers/get_stats?id=<%= @virtual_server.id %>',
     root: 'data',
     autoLoad: true,
+    data: <%= { :data => @virtual_server_stats }.to_json %>,
     fields: [
       { name: 'parameter' },
       { name: 'value' }
@@ -66,7 +71,7 @@ Ext.onReady(function() {
     loadMask: true,
     collapsible: true,
     autoWidth: true,
-    height: 130,
+    height: 150,
     autoExpandColumn: 'value',
     stateId: 'virtualServerStatsGrid',
     iconCls: 'icon-items-list',
@@ -103,7 +108,13 @@ Ext.onReady(function() {
           return '<div><div style="float: left; padding-right: 10px;" id="' + progressBarId + '"></div> <div>' + value['text'] + '</div></div>';
         }
       }
-    }])
+    }]),
+    tbar: [{
+      text: '<%= tjs('admin.virtual_servers.stats.button.stat_details') %>',
+      cls: 'x-btn-text-icon',
+      icon: '/images/chart_bar.png',
+      handler: viewStatDetails
+    }]
   });
   
   var panelsWrapper = new Ext.Panel({

@@ -8,6 +8,7 @@ class VirtualServer < ActiveRecord::Base
   belongs_to :hardware_server
   belongs_to :user
   has_many :backups, :dependent => :destroy
+  has_many :bean_counters, :dependent => :destroy
   
   validates_presence_of :identity
   validates_format_of :ip_address, :with => /^((\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})|\s|(([\da-fA-F]{1,4}:?)|(::)){1,8})*$/
