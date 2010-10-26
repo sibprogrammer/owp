@@ -111,37 +111,23 @@ class Admin::VirtualServersController < Admin::Base
     @virtual_server_stats = []
     is_running = 'running' == @virtual_server.state
     
+    counters = @virtual_server.bean_counters.find(:all, :conditions => { :period_type => BeanCounter::PERIOD_PERMANENT })
+    
     %w( kmemsize lockedpages privvmpages shmpages numproc physpages vmguarpages 
         oomguarpages numtcpsock numflock numpty numsiginfo tcpsndbuf tcprcvbuf 
         othersockbuf dgramrcvbuf numothersock dcachesize numfile numiptent 
     ).each do |limit|
-      counters = @virtual_server.bean_counters.find(
-        :all, :limit => 10, :order => 'id DESC',
-        :conditions => { :name => limit }
-      )
-      case  counters.size
-        when 0 then last_counter = nil; prev_counters = []
-        else last_counter = counters.shift; prev_counters = counters
-      end
+      counter = counters.find { |counter| counter.name == limit }
       
-      last_counter = nil if last_counter and last_counter.created_at < (DateTime.now - 10.minutes).utc
-      
-      if last_counter and is_running
-        alert = false
-        
-        prev_counters.each do |prev_counter|
-          alert = true == (prev_counter and last_counter.failcnt.to_i > prev_counter.failcnt.to_i)
-          break if alert
-        end
-        
+      if counter and is_running
         @virtual_server_stats << { 
           :parameter => limit.upcase,
-          :current => last_counter.held,
-          :max => last_counter.maxheld,
-          :barrier => last_counter.barrier,
-          :limit => last_counter.limit,
-          :failcnt => last_counter.failcnt,
-          :alert => alert,
+          :current => counter.held,
+          :max => counter.maxheld,
+          :barrier => counter.barrier,
+          :limit => counter.limit,
+          :failcnt => counter.failcnt,
+          :alert => counter.alert
         }
       else
         @virtual_server_stats << { 

@@ -99,11 +99,11 @@ class WatchdogDaemon
     loop do
       begin
         collect_data
-        rotate_data
       rescue Exception => e
         log "Exception: #{e.message}"
         log e.backtrace.inspect
       end
+      rotate_data
       sleep 60
       @tick_counter += 1
     end
@@ -112,6 +112,7 @@ class WatchdogDaemon
   def collect_data
     HardwareServer.all.each do |hardware_server|
       next unless hardware_server.rpc_client.ping
+      @virtual_servers = hardware_server.virtual_servers.find_all_by_state('running')
       collect_beancounters(hardware_server)
       collect_diskspace(hardware_server)
       collect_cpu_usage(hardware_server)
@@ -130,14 +131,12 @@ class WatchdogDaemon
       counter_info = record.split
       if counter_info[0] =~ /^\d+:$/
         current_ve_id = counter_info[0].gsub(/[^\d]/, '').to_i
-        current_ve = hardware_server.virtual_servers.find_by_identity(current_ve_id)
+        current_ve = @virtual_servers.find { |ve| ve.identity == current_ve_id }
         counter_info.shift
       end
       
       if current_ve and current_ve_id == current_ve.identity and 'dummy' != counter_info[0]
-        prev_counter = BeanCounter.find_last_by_name_and_virtual_server_id(counter_info[0], current_ve.id)
-        
-        counter = BeanCounter.create({
+        params = {
           :name => counter_info[0],
           :virtual_server_id => current_ve.id,
           :held => counter_info[1],
@@ -145,18 +144,30 @@ class WatchdogDaemon
           :barrier => counter_info[3],
           :limit => counter_info[4],
           :failcnt => counter_info[5],
-          :period_type => BeanCounter::PERIOD_MINUTE,
-        })
-        
-        if counter_info[5].to_i > 0 and prev_counter
-          if counter.failcnt.to_i > prev_counter.failcnt.to_i
+          :period_type => BeanCounter::PERIOD_PERMANENT,
+        }
+
+        counter = BeanCounter.find_last_by_name_and_virtual_server_id_and_period_type(counter_info[0], current_ve.id, BeanCounter::PERIOD_PERMANENT)
+        counter = BeanCounter.create(params) if !counter
+
+        if counter.held != params[:held] or counter.maxheld != params[:maxheld] or counter.barrier != params[:barrier] or counter.limit != params[:limit] or counter.failcnt != params[:failcnt]
+          if counter.failcnt != params[:failcnt]
             EventLog.error("virtual_server.counter_reached", {
               :name => counter.name.upcase,
               :identity => current_ve.identity,
-              :host => current_ve.hardware_server.host,
+              :host => hardware_server.host,
             })
+            params[:alert] = true
           end
+          counter.update_attributes(params)
+        else
+          counter.update_attribute(:alert, false) if counter.alert
         end
+
+        if 'privvmpages' == params[:name]
+          params[:period_type] = BeanCounter::PERIOD_MINUTE
+          BeanCounter.create(params)
+        end 
       end
     end
   end
@@ -172,7 +183,7 @@ class WatchdogDaemon
       counter_info = record.split
       
       current_ve_id = counter_info[0].to_i
-      current_ve = hardware_server.virtual_servers.find_by_identity(current_ve_id)
+      current_ve = @virtual_servers.find { |ve| ve.identity == current_ve_id }
       
       if current_ve and current_ve_id == current_ve.identity
         info = {}
@@ -204,7 +215,7 @@ class WatchdogDaemon
       next if counter_info.size < 6
 
       current_ve_id = counter_info[0].to_i
-      current_ve = hardware_server.virtual_servers.find_by_identity(current_ve_id)
+      current_ve = @virtual_servers.find { |ve| ve.identity == current_ve_id }
 
       if current_ve and current_ve_id == current_ve.identity
         prev_counter = BeanCounter.find_last_by_name_and_virtual_server_id('_cpu', current_ve.id)
@@ -262,6 +273,8 @@ class WatchdogDaemon
     ENV["RAILS_ENV"] = environment
     RAILS_ENV.replace(environment) if defined?(RAILS_ENV)
     require RAILS_ROOT + '/config/environment'
+    
+    ActiveRecord::Base.logger.level = Logger::ERROR if '1' != ENV['WATCHDOG_DEBUG']
   end
   
   def log(message)

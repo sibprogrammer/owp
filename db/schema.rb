@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20101024070705) do
+ActiveRecord::Schema.define(:version => 20101026161959) do
 
   create_table "background_jobs", :force => true do |t|
     t.string  "description"
@@ -34,6 +34,7 @@ ActiveRecord::Schema.define(:version => 20101024070705) do
     t.string   "failcnt"
     t.integer  "period_type"
     t.datetime "created_at"
+    t.boolean  "alert",             :default => false
   end
 
   create_table "comments", :force => true do |t|
