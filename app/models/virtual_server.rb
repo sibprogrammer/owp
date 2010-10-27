@@ -107,7 +107,7 @@ class VirtualServer < ActiveRecord::Base
       vzctl_set("--cpulimit #{cpu_limit} --save") if !cpu_limit.blank? and cpu_limit_changed?
       vzctl_set("--description '#{description}' --save") if hardware_server.ve_descriptions_supported? and !description.empty? and description_changed?
       
-      vzctl_set("--ipdel all --save") if !ip_address_was.blank?
+      vzctl_set("--ipdel all --save") if !ip_address_was.blank? and ip_address_changed?
       vzctl_set(ip_address.split.map { |ip| "--ipadd #{ip} " }.join + "--save") if !ip_address.blank? and ip_address_changed?
       
       privvmpages = 0 == memory.to_i ? 'unlimited' : memory.to_i * 1024 / 4
