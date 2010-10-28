@@ -130,5 +130,17 @@ class ApplicationController < ActionController::Base
         }}
       end
     end
+
+    def local_datetime(datetime)
+      datetime.localtime.strftime("%Y.%m.%d %H:%M:%S")
+    end
   
+    def local_date(datetime)
+      datetime.localtime.strftime("%Y.%m.%d")
+    end
+  
+    def format_date(date)
+      date.strftime("%Y.%m.%d")
+    end
+
 end

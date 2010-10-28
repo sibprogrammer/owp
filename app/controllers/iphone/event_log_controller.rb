@@ -9,7 +9,7 @@ class Iphone::EventLogController < Iphone::Base
       :id => item.id,
       :message => item.html_message,
       :level => item.level,
-      :created_at => item.created_at.strftime("%Y.%m.%d %H:%M:%S"),
+      :created_at => local_datetime(item.created_at),
     }}
   end
   

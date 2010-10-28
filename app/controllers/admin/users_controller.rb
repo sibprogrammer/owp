@@ -102,7 +102,7 @@ class Admin::UsersController < Admin::Base
         :enabled => user.enabled,
         :login => user.login,
         :role => user.role.display_name,
-        :created_at => user.created_at.strftime("%Y.%m.%d %H:%M:%S"),
+        :created_at => local_datetime(user.created_at),
         :contact_name => user.contact_name,
         :email => user.email,
       }}

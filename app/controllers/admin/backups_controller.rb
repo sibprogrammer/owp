@@ -116,7 +116,7 @@ class Admin::BackupsController < Admin::Base
         :name => backup.name,
         :description => backup.description,
         :size => backup.size,
-        :archive_date => backup.date.strftime("%Y.%m.%d %H:%M:%S"),
+        :archive_date => local_datetime(backup.date),
       }}
     end
    

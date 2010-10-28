@@ -18,7 +18,7 @@ class Admin::Base < ApplicationController
         :os_template_name => virtual_server.orig_os_template,
         :diskspace => virtual_server.human_diskspace,
         :memory => virtual_server.human_memory,
-        :expiration_date => virtual_server.expiration_date.blank? ? '' : virtual_server.expiration_date.strftime("%Y.%m.%d"),
+        :expiration_date => virtual_server.expiration_date.blank? ? '' : format_date(virtual_server.expiration_date),
         :is_expired => !virtual_server.expiration_date.blank? && Date.today > virtual_server.expiration_date,
         :owner => virtual_server.user ? virtual_server.user.login : '',
         :description => virtual_server.description.to_s,

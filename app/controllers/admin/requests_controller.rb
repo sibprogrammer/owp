@@ -90,7 +90,7 @@ class Admin::RequestsController < Admin::Base
         :subject => CGI.escapeHTML(request.subject),
         :replies => request.comments.count,
         :author => request.user ? request.user.login : '',
-        :updated_at => request.updated_at.strftime("%Y.%m.%d %H:%M:%S"),
+        :updated_at => local_datetime(request.updated_at),
       }}
     end
     
@@ -100,14 +100,14 @@ class Admin::RequestsController < Admin::Base
         :id => comment.id,
         :content => CGI.escapeHTML(comment.content).gsub(/\n/, '<br />'),
         :author => comment.user ? comment.user.login : '',
-        :created_at => comment.created_at.strftime("%Y.%m.%d %H:%M:%S"),
+        :created_at => local_datetime(comment.created_at),
       }}
       
       comments.insert(0, {
         :id => 0,
         :content => CGI.escapeHTML(request.content).gsub(/\n/, '<br />'),
         :author => request.user ? request.user.login : '',
-        :created_at => request.created_at.strftime("%Y.%m.%d %H:%M:%S"),
+        :created_at => local_datetime(request.created_at),
       })
     end
   
