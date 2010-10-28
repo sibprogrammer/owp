@@ -1,6 +1,8 @@
 #!/bin/sh
 
-set -xv
+set -xve
+
+trap '{ echo "Build preparation failed." ; exit 255; }' EXIT
 
 cd `dirname $0`
 
