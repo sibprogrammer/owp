@@ -2,7 +2,7 @@
 
 set -xve
 
-trap '{ echo "Build preparation failed." ; exit 255; }' EXIT
+trap '{ STATUS=$?; if [ $STATUS -ne 0 ]; then echo "Build preparation failed." ; exit $STATUS; fi }' EXIT
 
 cd `dirname $0`
 
@@ -37,7 +37,7 @@ cd `dirname $0`
     rm -rf build test vendor/rails/railties/doc/guides vendor/rails/activerecord/test
   cd ..
   
-  [ -f $PROJECT-$VERSION.tgz ] && rm $PROJECT-$VERSION.tgz
+  [ -f $PROJECT-$VERSION.tgz ] && rm $PROJECT-$VERSION.tgz || true
   tar --owner 0 -czf $PROJECT-$VERSION.tgz ./$PROJECT
   
 } 2>&1 | tee build.log
