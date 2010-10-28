@@ -151,7 +151,7 @@ class WatchdogDaemon
         counter = BeanCounter.create(params) if !counter
 
         if counter.held != params[:held] or counter.maxheld != params[:maxheld] or counter.barrier != params[:barrier] or counter.limit != params[:limit] or counter.failcnt != params[:failcnt]
-          if counter.failcnt != params[:failcnt]
+          if params[:failcnt].to_i > counter.failcnt.to_i
             EventLog.error("virtual_server.counter_reached", {
               :name => counter.name.upcase,
               :identity => current_ve.identity,
