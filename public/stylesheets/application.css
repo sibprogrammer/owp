@@ -5,6 +5,7 @@ a { color: #000 }
 .x-form-checkbox { margin-top: 4px; }
 .x-panel-body p { margin: 10px; }
 td.x-grid3-td-checker, td.x-grid3-td-state { vertical-align: middle; }
+.x-grid3-row td, .x-grid3-summary-row td, .x-grid3-cell-text, .x-grid3-hd-text, .x-grid3-hd, .x-grid3-row { -moz-user-select:inherit; -khtml-user-select:text; }
 
 .monospace-field { font-family: monospace; }
 .error-text { color: #CC0000; font-weight: bold; }
