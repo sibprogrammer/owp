@@ -32,12 +32,18 @@ hu:
             host:
               taken: "A szervernév már létezik."
               connection: "A csatlakozás sikertelen. Talán nem fut a szolgáltatás."
+              ssh_connection: "Nem lehet létrehozni SSH kapcsolatot."
+              openvz_not_found: "OpenVZ virtualizáció nem található a szerveren."
+              ruby_not_found: "Ruby értelmezőprogram nem található a szerveren."
             auth_key:
               bad_auth: "Sikertelen hitelesítés. Valószínűleg helytelen a hitelesítő kulcs."
             daemon_port:
               not_a_number: "Érvénytelen port szám."
               greater_than: "A port számának nagyobbnak kell lenni mint {{count}}."
               less_than: "A port száma kissebb kell legyen mint {{count}}."
+            root_password:
+              ssh_bad_auth: "Az SSH hitelesítés sikertelen."
+              empty: "Ennek a mezőnek a kitöltése kötelező."
         virtual_server:
           attributes:
             ip_address:
@@ -59,6 +65,10 @@ hu:
           attributes:
             name:
               taken: "Már létezik szerver sablon ezen a néven."
+        role:
+          attributes:
+            name:
+              taken: "Már létezik jogkör ilyen néven."
   about:
     copyright: "Copyright 2008-2010 SoftUnity."
     right_reserved: "Minden jog fenntartva."
@@ -76,6 +86,7 @@ hu:
     button_login: "Belépés"
     locale: "Nyelv"
     bad_login: "Érvénytelen név vagy jelszó."
+    locked_user: "A felhasználó le van zárva."
   admin:
     menu:
       title: "Menü"
@@ -86,6 +97,7 @@ hu:
         virtual_servers: "Virtuális szerverek"
         my_profile: "Profilom"
         users: "Felhasználók"
+        requests: "Kérések"
         tasks: "Feladatok"
         event_log: "Eseménynapló"
         logout: "Kijelentkezés"
@@ -111,6 +123,8 @@ hu:
       new_password: "Új jelszó"
       confirm_password: "Jelszó megerősítése"
       bad_current_password: "Érvénytelen jelenlegi jelszó."
+      contact_name: "Kapcsolattartó neve"
+      email: "E-mail"
     events:
       internal_error: "Belső hiba: {{message}}"
       hardware_server:
@@ -123,6 +137,25 @@ hu:
         removed: "Virtuális szerver {{identity}} eltávolítva."
         change_state_failed: "Nem sikerült megváltoztatni a(z) {{identity}} szerver állapotát; állapot: {{state}}; hibakód: {{code}}."
         updated: "A(z) {{identity}} virtuális szerver beállítása frissült."
+        cloned: "A(z) {{identity}} virtuális szerver le van klónozva."
+        counter_reached: "A {{name}} elérte a limitet a {{identity}} virtuális gépen a {{host}} fizikai szerveren."
+      user:
+        login:
+          ok: "A(z) {{login}} be van jelentkezve."
+          bad_password: "A(z) {{login}} felhasználó sikertelen bejelentkezése hibás jelszó miatt."
+          bad_login: "Ismeretlen névvel történt bejelentkezési kísérlet."
+          locked_user: "A következő zárolt felhasználó próbált meg bejelentkezni: {{login}}."
+        logout: "A(z) {{login}} felhasználó kijelentkezett."
+        removed: "A(z) {{login}} felhasználó el lett távolítva."
+        enabled: "A(z) {{login}} felhasználó engedélyezve."
+        disabled: "A(z) {{login}} felhasználó tiltva."
+        created: "A(z) {{login}} felhasználó létrehozva."
+        updated: "A(z) {{login}} felhasználó frissítve."
+        profile_updated: "A(z) {{login}} felhasználó profilja frissítve."
+      role:
+        removed: "A(z) {{name}} jogkör eltávolítva."
+        created: "A(z) {{name}} jogkör létrehozva."
+        updated: "A(z) {{name}} jogkör frissítve."
     tasks:
       os_templates:
         install: "Rendszer sablonok telepítése a(z) {{host}} szerverre."
@@ -151,6 +184,8 @@ hu:
           virtual_servers: "Virtuális szerverek"
           virtual_servers_running: "Futó virtuális szerverek"
           virtual_servers_stopped: "Megállított virtuális szerverek"
+          virtual_servers_expired: "Lejárt virtuális szerverek"
+          opened_requests: "Nyitott kérések"
     hardware_servers:
       title: "Fizikai szerverek"
       grid:
@@ -177,6 +212,9 @@ hu:
             auth_key: "Hitelesítő kulcs"
             description: "Leírás"
             daemon_port: "Szolgáltatás port"
+            root_password: "Root jelszó"
+          fieldset:
+            additional_settings: "További beállítások"
         disconnect_server:
           sure_to_disconnect: "Biztosan le akarja választani a kijelölt szervereket?"
           deletion_failed: "A szerverleválasztási kérés meghiúsult."
@@ -205,6 +243,8 @@ hu:
           memory_usage: "{{percent}}%, {{used}} használt a {{total}} -l / {{free}} szabad"
     virtual_servers:
       title: "Virtuális Szerverek"
+      limits:
+        unlimited: "korlátlan"
       grid:
         title: "Virtuális szerverek listája"
         column:
@@ -215,6 +255,7 @@ hu:
           os_template: "Rendszer sablon"
           memory: "Memória, Mb"
           diskspace: "Lemezterület, Mb"
+          expiration_date: "Lejárati idő"
           owner: "Tulajdonos"
           description: "Leírás"
         button:
@@ -227,6 +268,7 @@ hu:
           edit: "Beállítások"
           limits: "Korlátozások"
           reinstall: "Újratelepítés"
+          clone: "Klónozás"
           change_settings: "Beállítások módosítása"
           console: "Konzol"
           backup: "Mentés"
@@ -257,7 +299,7 @@ hu:
             start_on_boot: "Indítás Bootkor"
             start_after_creation: "Indítás létrehozás után"
             nameserver: "DNS Szerver"
-            searchdomain: "Keresési tartomány"
+            search_domain: "Keresési tartomány"
             diskspace: "Lemezterület, Mb"
             memory: "RAM Memória, Mb"
             status: "Státusz"
@@ -270,6 +312,7 @@ hu:
             cpu_units: "CPU egység"
             cpus: "CPU-k száma"
             cpu_limit: "CPU korlát, %"
+            expiration_date: "Lejárati idő"
           fieldset:
             general: "Általános"
             network: "Hálózat"
@@ -277,7 +320,6 @@ hu:
             start_options: "Indítási beállítás"
             dns_settings: "DNS beállítások"
             limits: "Korlátozások"
-            panel_access: "Panel hozzáférés"
           tab:
             main_settings: "Fő beállítások"
             additional_settings: "További beállítások"
@@ -297,6 +339,8 @@ hu:
             command: "Parancs"
           button:
             run: "Futtatás"
+        clone:
+          title: "Virtuális szerver klónozása"
       show:
         title: "Virtuális szerver {{name}}"
         grid:
@@ -313,6 +357,26 @@ hu:
         value:
           disk_usage: "{{percent}}%, {{used}} használt a {{total}} -l / {{free}} szabad"
           memory_usage: "{{percent}}%, {{used}} használt a {{total}} -l / {{free}} szabad"       
+        button:
+          stat_details: "Részletek"
+      stat_details:
+        title: "A(z) {{name}} virtuális szerver statisztikája"
+        grid:
+          title: "Virtuális szerver korlátai"
+          column:
+            parameter: "Paraméter"
+            current: "Jelenlegi használat"
+            max: "Maximum használat"
+            barrier: "Akadályok"
+            limit: "Limit"
+            failcnt: "Hibázások"
+        chart:
+          cpu_usage:
+            title: "CPU használat"
+          ram_usage:
+            title: "Memória használat"
+          disk_usage:
+            title: "Lemez használat"
     os_templates:
       title: "Rendszer sablonok a(z) {{name}} szerveren"
       grid:
@@ -361,16 +425,23 @@ hu:
         infrastructure_admin: "Adminisztrátor"
         virtual_server_owner: "Virtuális szerver tulajdonos"
       title: "Felhasználók"
+      top_toolbar:
+        roles: "Jogkörök"
       grid:
         title: "Felhasználói lista"
         column:
+          enabled: "Státusz"
           login: "Felhasználó név"
           created_at: "Létrehozás dátuma"
           role: "Jogkör"
+          contact_name: "Kapcsolattartó neve"
+          email: "E-mail"
         button:
           add: "Felhasználó hozzáadása"
           remove: "Felhasználó törlése"
           edit: "Szerkesztés"
+          enable: "Engedélyez"
+          disable: "Letilt"
       form:
         remove_user:
           sure_to_remove: "Biztos benne hogy törölni szeretné a kiválasztott felhasználókat?"
@@ -385,6 +456,8 @@ hu:
             confirm_password: "Jelszó megerősítése"
             role: "Jogkör"
             select_role: "Jogkör kiválasztása"
+            contact_name: "Kapcsolattartó neve"
+            email: "E-mail"
     task:
       title: "Feladatok"
       grid:
@@ -427,7 +500,7 @@ hu:
             memory: "Memória, Mb"
             start_on_boot: "Indítás Bootkor"
             nameserver: "DNS Szerver"
-            searchdomain: "Keresési tartomány"
+            search_domain: "Keresési tartomány"
             cpu_units: "CPU egységek"
             cpus: "CPU-k száma"
             cpu_limit: "CPU korlát, %"            
@@ -454,12 +527,94 @@ hu:
           deletion_failed: "Nem sikerült törölni néhány mentést."
         create:
           title: "Új mentés készítése"
-          hint: "Megjegyzés: a virtuális szerver le fog állni a mentés készítése alatt."
           scheduled: "A mentési eljárás elindult és időbe telik a lefutása."
           field:
             description: "Leírás"
+            ve_state:
+              title: "Szerver állapota a mentés alatt"
+              suspend: "felfüggesztett (ajánlott)"
+              stop: "megállított"
+              live: "futtatva marad"
           button_create: "Létrehozás"
         restore:
           sure_to_restore: "Biztosan vissza szeretné állítani a kiválasztott mentésből a szervert? A szerver nem lesz elérhető a visszaállítás alatt."
           failed: "A visszaállítás nem sikerült."
           scheduled: "A viszaállítás elindult és időbe telik a lefutása."
+    requests:
+      title: "Kérések"
+      grid:
+        title: "Kérések listája"
+        column:
+          opened: "Státusz"
+          id: "Azonosító (ID)"
+          subject: "Tárgy"
+          replies: "Válaszok"
+          author: "Szerző"
+          updated_at: "Utoljára frissítve"
+        button:
+          add: "Kérés létrehozása"
+          remove: "Kérés törlése"
+          details: "Részletek"
+          solve: "Kérés lezárása"
+          reopen: "Lezárt kérés újra megnyitása"
+      form:
+        remove_request:
+          sure_to_remove: "Biztosan el kívánja távolítani a kiválasztott kéréseket?"
+          deletion_failed: "Egyes kérések nem törölhetőek."
+        create:
+          title: "Kérés létrehozása"
+          button_create: "Létrehozás"
+          field:
+            subject: "Tárgy"
+            content: "Üzenet"
+      comments:
+        title: "Kérés #{{id}}"
+        grid:
+          title: "Hozzászólások"
+          column:
+            created_at: "Dátum"
+            author: "Szerző"
+            content: "Üzenet"
+          button:
+            add: "Hozzászólás hozzáadása"
+        form:
+          add:
+            title: "Hozzászólás hozzáadása"
+            button_add: "Hozzáadás"
+            field:
+              content: "Üzenet"
+    roles:
+      title: "Jogkörök"
+      grid:
+        title: "Jogkör lista"
+        column:
+          name: "Név"
+          users: "Felhasználók"
+        button:
+          add: "Jogkör hozzáadása"
+          remove: "Jogkör eltávolítása"
+          edit: "Jogkör szerkesztése"
+      form:
+        remove_role:
+          sure_to_remove: "Biztosan el kívánja távolítani a kiválasztott jogköröket?"
+          deletion_failed: "Nem lehet törölni néhány jogkört. A jogkör a kijelölt felhasználóval nem törölhető."
+        create:
+          title: "Új jogkör létrehozása"
+          edit_title: "Jogkör szerkesztése"
+          field:
+            name: "Név"
+          fieldset:
+            permissions: "Hozzáférések"
+          button_create: "Létrehozás"
+          permissions:
+            manage_hardware_servers: "Fizikai szerverek kezelése"
+            use_ve_console: "Virtuális szerver konzol"
+            backup_ve: "Virtuális szerver mentések"
+            reinstall_ve: "Virtuális szerver újratelepítése"
+            handle_requests: "Kérelmek kezelése"
+            create_requests: "Kérelmek létrehozása"
+            view_tasks: "Feladatok listázása"
+            view_logs: "Eseménynaplók listázása"
+            manage_logs: "Eseménynaplók kezelése"
+            manage_users: "Felhasználók kezelése"
+            select_os_on_reinstall: "Operációs rendszer kiválasztása újratelepítésre"
