@@ -292,24 +292,30 @@ class HardwareServer < ActiveRecord::Base
   
     def prepare_daemon_config(sftp, config_file)
       if !sftp_file_readable(sftp, config_file)
-        sftp.file.open(config_file, "w") do |file|
-          file.puts "address = 0.0.0.0"
-          file.puts "port = #{daemon_port.to_s}"
-          file.puts "key = #{auth_key}"
-        end
+        upload_daemon_config(sftp, config_file)
       else
+        listen_address = ''
         sftp.file.open(config_file, "r") do |file|
           while (line = file.gets)
             key, value = line.split('=', 2).each { |v| v.strip! }
             
             case key
-              when 'port'
-                self.daemon_port = value.to_i
-              when 'key'
-                self.auth_key = value
+              when 'port' then self.daemon_port = value.to_i
+              when 'key' then self.auth_key = value
+              when 'address' then listen_address = value
             end
           end
         end
+        
+        upload_daemon_config(sftp, config_file) if '127.0.0.1' == listen_address
+      end
+    end
+    
+    def upload_daemon_config(sftp, config_file)
+      sftp.file.open(config_file, "w") do |file|
+        file.puts "address = 0.0.0.0"
+        file.puts "port = #{daemon_port.to_s}"
+        file.puts "key = #{auth_key}"
       end
     end
   
