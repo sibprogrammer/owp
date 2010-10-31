@@ -27,6 +27,8 @@ class WatchdogDaemon
       puts "Ruby #{RUBY_VERSION} is not supported."
       exit(1)
     end
+    
+    @debug = '1' == ENV['WATCHDOG_DEBUG']
   end
   
   def do_start
@@ -96,7 +98,10 @@ class WatchdogDaemon
     @tick_counter = 1
     load_rails_env
     
+    @sql = ActiveRecord::Base.connection.instance_variable_get(:@connection)
+    
     loop do
+      @sql.execute('BEGIN TRANSACTION;')
       begin
         collect_data
       rescue Exception => e
@@ -104,6 +109,8 @@ class WatchdogDaemon
         log e.backtrace.inspect
       end
       rotate_data
+      @sql.execute('COMMIT;')
+      
       sleep 60
       @tick_counter += 1
     end
@@ -126,7 +133,9 @@ class WatchdogDaemon
     counters.shift; counters.shift
     
     current_ve_id = current_ve = nil
-    
+   
+    saved_counters = BeanCounter.find_all_by_period_type(BeanCounter::PERIOD_PERMANENT)
+ 
     counters.each do |record|
       counter_info = record.split
       if counter_info[0] =~ /^\d+:$/
@@ -147,27 +156,32 @@ class WatchdogDaemon
           :period_type => BeanCounter::PERIOD_PERMANENT,
         }
 
-        counter = BeanCounter.find_last_by_name_and_virtual_server_id_and_period_type(counter_info[0], current_ve.id, BeanCounter::PERIOD_PERMANENT)
-        counter = BeanCounter.create(params) if !counter
+        counter = saved_counters.find { |counter| counter.name == counter_info[0] and counter.virtual_server_id == current_ve.id }
+        counter = add_counter(params) if !counter
 
         if counter.held != params[:held] or counter.maxheld != params[:maxheld] or counter.barrier != params[:barrier] or counter.limit != params[:limit] or counter.failcnt != params[:failcnt]
           if params[:failcnt].to_i > counter.failcnt.to_i
-            EventLog.error("virtual_server.counter_reached", {
-              :name => counter.name.upcase,
-              :identity => current_ve.identity,
-              :host => hardware_server.host,
-            })
-            params[:alert] = true
+            @sql.execute(
+              "INSERT INTO event_logs (level, message, params, created_at) VALUES (:level, :message, :params, datetime(:created_at))",
+              { 
+                :level => EventLog::WARN,
+                :message => "virtual_server.counter_reached",
+                :params => Marshal.dump({ :name => counter.name.upcase, :identity => current_ve.identity, :host => hardware_server.host, }),
+                :created_at => DateTime.now.utc
+              }
+            )
+            log "Limit #{counter.name.upcase} was reached for virtual server #{current_ve.identity}" if @debug
+            params[:alert] = 't'
           end
-          counter.update_attributes(params)
+          update_counter(counter, params)
         else
-          counter.update_attribute(:alert, false) if counter.alert
+          update_counter(counter, { :alert => 'f' }) if counter.alert
         end
 
         if 'privvmpages' == params[:name]
           params[:period_type] = BeanCounter::PERIOD_MINUTE
-          BeanCounter.create(params)
-        end 
+          add_counter(params)
+        end
       end
     end
   end
@@ -191,7 +205,7 @@ class WatchdogDaemon
         info['total_bytes'] = info['block_size'] * counter_info[2].to_i
         info['free_bytes'] = info['block_size'] * counter_info[3].to_i
         info['used_bytes'] = info['total_bytes'] - info['free_bytes']
-        BeanCounter.create({
+        add_counter({
           :name => '_diskspace',
           :virtual_server_id => current_ve.id,
           :held => info['used_bytes'].to_s,
@@ -220,7 +234,7 @@ class WatchdogDaemon
       if current_ve and current_ve_id == current_ve.identity
         prev_counter = BeanCounter.find_last_by_name_and_virtual_server_id('_cpu', current_ve.id)
         
-        counter = BeanCounter.create({
+        counter = add_counter({
           :name => '_cpu',
           :virtual_server_id => current_ve.id,
           :held => counter_info[5],
@@ -232,7 +246,7 @@ class WatchdogDaemon
         })
         
         if prev_counter
-          cpu_usage = BeanCounter.create({
+          add_counter({
             :name => '_cpu_usage',
             :virtual_server_id => current_ve.id,
             :held => (100 - ((counter.held.to_i - prev_counter.held.to_i) * 100 / (counter.limit.to_i - prev_counter.limit.to_i))).to_s,
@@ -245,19 +259,37 @@ class WatchdogDaemon
         end
       end
     end
-  end  
+  end
+  
+  def add_counter(params)
+    params[:created_at] = DateTime.now.utc
+    fields = params.keys.map{ |item| '"' + item.to_s + '"' }.join(', ')
+    bindings = params.keys.map{ |item| item.to_s == 'created_at' ? ("datetime(:#{item.to_s})") : (':' + item.to_s) }.join(', ')
+    @sql.execute("INSERT INTO bean_counters (#{fields}) VALUES (#{bindings})", params)
+    BeanCounter.new(params)
+  end
+  
+  def update_counter(counter, params)
+    fields = []
+    params.each { |key,value| fields << "'#{key.to_s}' = '#{value.to_s}'" }
+    fields = fields.join(', ')
+    @sql.execute("UPDATE bean_counters SET #{fields} WHERE id = ?", counter.id)
+  end
 
   def rotate_data
-    BeanCounter.delete_all([
-      'period_type = ? AND created_at < ?',
-      BeanCounter::PERIOD_MINUTE,
-      (DateTime.now - 60.minute).utc
-    ])
+    if 0 == (@tick_counter % 5)
+      @sql.execute(
+        'DELETE FROM bean_counters WHERE period_type = ? AND created_at < datetime(?);',
+        BeanCounter::PERIOD_MINUTE,
+        (DateTime.now - 60.minute).utc
+      )
+      log "Clean up of old bean counters." if @debug
+    end
     
     # compress every hour
     return unless 0 == (@tick_counter % 60)
-    # TODO: check DB engine
-    BeanCounter.connection.execute("VACUUM;")
+    @sql.execute('VACUUM;') if 'SQLite3::Database' == @sql.class.to_s
+    log "SQLite database was compressed." if @debug
   end
   
   def shutdown
@@ -274,7 +306,7 @@ class WatchdogDaemon
     RAILS_ENV.replace(environment) if defined?(RAILS_ENV)
     require RAILS_ROOT + '/config/environment'
     
-    ActiveRecord::Base.logger.level = Logger::ERROR if '1' != ENV['WATCHDOG_DEBUG']
+    ActiveRecord::Base.logger.level = Logger::ERROR if @debug
   end
   
   def log(message)
