@@ -23,6 +23,8 @@ namespace :translate do
       puts "Unknown (obsoleted) #{unknown_keys.size} keys:"
       puts "\t" + unknown_keys.sort.join("\n\t")
     end
+    
+    raise "Locale has missed keys." if !missed_keys.empty?
   end
 
   private
