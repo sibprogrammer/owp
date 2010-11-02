@@ -24,7 +24,7 @@ namespace :translate do
       puts "\t" + unknown_keys.sort.join("\n\t")
     end
     
-    raise "Locale has missed keys." if !missed_keys.empty?
+    exit 2 if !missed_keys.empty?
   end
 
   private
