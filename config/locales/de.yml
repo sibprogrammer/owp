@@ -65,6 +65,10 @@ de:
           attributes:
             name:
               taken: "Es existiert bereits eine Server-Vorlage mit diesem Namen."
+        role:
+          attributes:
+            name:
+              taken: "Es existiert bereits eine Rolle mit diesem Namen."
   about:
     copyright: "Copyright 2008-2010 SoftUnity."
     right_reserved: "Alle Rechte vorbehalten."
@@ -133,6 +137,8 @@ de:
         removed: "Virtuellen Server {{identity}} entfernt."
         change_state_failed: "Fehler bei der Status&auml;nderung des virtuellen Servers {{identity}}; Status: {{state}}; Code: {{code}}."
         updated: "Einstellungen des virtuellen Servers {{identity}} wurden ge&auml;ndert."
+        cloned: "Virtueller Server {{identity}} wurde geklont."
+        counter_reached: "Die {{name}} Grenze f&uml;r den virtuellen Server {{identity}} auf dem phasischen Server {{host}} wurde erreicht."
       user:
         login:
           ok: "Benutzer {{login}} ist angemeldet."
@@ -143,6 +149,13 @@ de:
         removed: "Benutzer {{login}} wurde gel&ouml;scht."
         enabled: "Benutzer {{login}} wurde aktiviert."
         disabled: "Benutzer {{login}} wurde deaktiviert."
+        created: "Benutzer {{login}} wurde erstellt."
+        updated: "Benutzer {{login}} wurde ge&auml;ndert."
+        profile_updated: "Benutzer-Profil {{login}} wurde ge&auml;ndert."
+      role:
+        removed: "Rolle {{name}} wurde gel&ouml;scht."
+        created: "Rolle {{name}} wurde erstellt."
+        updated: "Rolle {{name}} wurde ge&auml;ndert."
     tasks:
       os_templates:
         install: "Installation der Betriebssystem-Vorlage auf dem Server {{host}}."
@@ -172,6 +185,7 @@ de:
           virtual_servers_running: "Virtuelle Server - gestartet"
           virtual_servers_stopped: "Virtuelle Server - gestoppt"
           virtual_servers_expired: "Virtuelle Server - ausgelaufen"
+          opened_requests: "Offene Anfragen"
     hardware_servers:
       title: "Physische Server"
       grid:
@@ -254,6 +268,7 @@ de:
           edit: "Einstellungen &auml;ndern"
           limits: "Grenzen"
           reinstall: "Neuinstallation"
+          clone: "Klonen"
           change_settings: "Einstellungen &auml;ndern"
           console: "Konsole"
           backup: "Backup"
@@ -324,6 +339,8 @@ de:
             command: "Befehl"
           button:
             run: "Ausf&uuml;hren"
+        clone:
+          title: "Virtuellen Server klonen"
       show:
         title: "Virtueller Server {{name}}"
         grid:
@@ -340,6 +357,26 @@ de:
         value:
           disk_usage: "{{percent}}%, {{used}} von {{total}} / {{free}} frei"
           memory_usage: "{{percent}}%, {{used}} von {{total}} / {{free}} frei"
+        button:
+          stat_details: "Details"
+      stat_details:
+        title: "Statistiken f&uuml;r virtuellen Server {{name}}"
+        grid:
+          title: "Grenzen der virtuellen Server"
+          column:
+            parameter: "Parameter"
+            current: "Aktueller Verbrauch"
+            max: "Maximaler Verbrauch"
+            barrier: "Warnung"
+            limit: "Grenze"
+            failcnt: "Fehlschlag"
+        chart:
+          cpu_usage:
+            title: "CPU-Verbrauch"
+          ram_usage:
+            title: "RAM-Verbrauch"
+          disk_usage:
+            title: "HDD-Verbrauch"
     os_templates:
       title: "Betriebssystem-Vorlagen auf physischem Server {{name}}"
       grid:
@@ -388,6 +425,8 @@ de:
         infrastructure_admin: "Infrastruktur Administrator"
         virtual_server_owner: "Virtueller Server Besitzer"
       title: "Benutzer"
+      top_toolbar:
+        roles: "Rollen"
       grid:
         title: "Benutzerliste"
         column:
@@ -488,10 +527,14 @@ de:
           deletion_failed: "Einige Backups konnten nicht gel&ouml;scht werden."
         create:
           title: "Neues Backup erstellen"
-          hint: "Hinweis: Virtueller Server wird f&uuml;r das Backup angehalten."
           scheduled: "Backup-Prozedur wurde gestartet und wird einige zeit in Anspruch nehmen."
           field:
             description: "Beschreibung"
+            ve_state:
+              title: "Server Status"
+              suspend: "unterbrechen (empfohlen)"
+              stop: "anhalten"
+              live: "weiterlaufen lassen"
           button_create: "Erstellen"
         restore:
           sure_to_restore: "M&ouml;chten Sie die ausgew&auml;hlten Backups wirklich wiederherstellen? Der Server wird w&auml;hrend der Wiederherstellungsprozedur nicht erreichbar sein."
@@ -540,3 +583,38 @@ de:
             button_add: "Hinzuf&uuml;gen"
             field:
               content: "Nachricht"
+    roles:
+      title: "Rollen"
+      grid:
+        title: "Rollen-Liste"
+        column:
+          name: "Name"
+          users: "Benutzer"
+        button:
+          add: "Rolle hinzuf&uuml;gen"
+          remove: "Rolle entfernen"
+          edit: "Rolle &auml;ndern"
+      form:
+        remove_role:
+          sure_to_remove: "M&ouml;chten Sie die ausgew&auml;hlten Rollen wirklich entfernen?"
+          deletion_failed: "Einige Rollen konnten nicht entfernt werden. Rollen die noch Benutzern zugewiesen sind k&ouml;nnen nicht entfernt werden."
+        create:
+          title: "Neue Rolle erstellen"
+          edit_title: "Rolle &auml;ndern"
+          field:
+            name: "Name"
+          fieldset:
+            permissions: "Rechte"
+          button_create: "Erstellen"
+          permissions:
+            manage_hardware_servers: "Physische Server managen"
+            use_ve_console: "Virtuelle Server Konsole"
+            backup_ve: "Virtuelle Server Backups"
+            reinstall_ve: "Virtuelle Server Neuinstallation"
+            handle_requests: "Anfragen-Bearbeitung"
+            create_requests: "Anfragen-Erstellung"
+            view_tasks: "Aufgaben-Liste"
+            view_logs: "Ereignisanzeigen-Liste"
+            manage_logs: "Erignisanzeige Management"
+            manage_users: "Benutzer Management"
+            select_os_on_reinstall: "Betriebssystemauswahl bei Neuinstallation"
