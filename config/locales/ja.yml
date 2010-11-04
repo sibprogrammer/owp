@@ -7,7 +7,7 @@ ja:
     performing_task: "お待ちください。タスクを実行しています..."
     error:
       title: "エラー"
-      fill_form: "フォームに入力してください。"
+      fill_form: "フォームににゅ力してください。"
     info:
       title: "インフォメーション"
     button:
@@ -20,33 +20,39 @@ ja:
         user:
           attributes:
             password:
-              confirmation: "パスワードおよび確認用が一致しません。"
-              too_short: "パスワードが短すぎます (最小値 : {{count}}) 。"
+              confirmation: "パスワードとその確認が一致しません。"
+              too_short: "パスワードが短すぎます (最小値: {{count}})."
             password_confirmation:
               blank: "確認用パスワードは必須です。"
             login:
-              taken: "そのログイン名のユーザーが既に存在します。"
-              too_short: "ログイン名が短すぎます (最小値 : {{count}}) 。"
+              taken: "そのログイン名のユーザーがすでに存在します。"
+              too_short: "ログイン名が短すぎます (最小値: {{count}})."
         hardware_server:
           attributes:
             host:
-              taken: "その名前のサーバーは既に存在します。"
+              taken: "その名前のサーバーはすでに存在します。"
               connection: "接続に失敗しました。daemon が動作していない可能性があります。"
+              ssh_connection: "SSH 接続が確立できません。"
+              openvz_not_found: "サーバー上に OpenVZ 仮想化が見つかりませんでした。"
+              ruby_not_found: "サーバー上に Ruby インタプリタが見つかりませんでした。"
             auth_key:
               bad_auth: "認証できません。おそらく認証キーが無効です。"
             daemon_port:
               not_a_number: "無効なポートナンバー。"
               greater_than: "ポートナンバーは {{count}} 以上である必要があります。"
               less_than: "ポートナンバーは {{count}} 以下である必要があります。"
+            root_password:
+              ssh_bad_auth: "SSH 認証に失敗しました。"
+              empty: "このフィールドは必須です。"
         virtual_server:
           attributes:
             ip_address:
               invalid: "不正な IP アドレス。"
-              taken: "IP アドレスは既に他のサーバーにアサインされています。"
+              taken: "IP アドレスはすでに他のサーバーにアサインされています。"
             identity:
               taken: "その ID は他のサーバーに属しています。"
             password:
-              confirmation: "パスワードおよび確認用は一致しません。"
+              confirmation: "パスワードとその確認が一致しません。"
             nameserver:
               invalid: "DNS サーバー IP アドレスは無効です。"
             host_name:
@@ -54,28 +60,33 @@ ja:
             search_domain:
               invalid: "サーチドメインは無効です。"
             description:
-              invalid: "説明に無効なキャラクタが含まれてまいます。"
+              invalid: "説明に無効なキャラクタが含まれています。"
         server_template:
           attributes:
             name:
-              taken: "その名前のサーバーテンプレートは既に存在します。"
+              taken: "その名前のサーバーテンプレートはすでに存在します。"
+        role:
+          attributes:
+            name:
+              taken: "その名前のロールはすでに存在します。"
   about:
     copyright: "Copyright 2008-2010 SoftUnity."
     right_reserved: "All Rights Reserved."
     about_program: "プログラムについて"
-    author: "メインデベロッパ "
-    contributors: "コントリビュータ "
-    contributors_list: "リスト "
-    web_site: "Web サイト "
+    author: "メインデベロッパ"
+    contributors: "コントリビュータ"
+    contributors_list: "リスト"
+    web_site: "Web サイト"
   login:
-    page_title: "ログイン"
-    window_title: "ログイン {{product}}"
-    username: "ユーザー名 "
-    password: "パスワード "
-    remember_me: "記憶させる "
+    page_title: "ログインLogin"
+    window_title: "{{product}} へログイン"
+    username: "ユーザー名"
+    password: "パスワード"
+    remember_me: "記憶させる"
     button_login: "ログイン"
-    locale: "言語 "
-    bad_login: "無効なログイン名またはパスワード"
+    locale: "言語"
+    bad_login: "無効なログイン名、またはパスワード"
+    locked_user: "ユーザーはロックされています。"
   admin:
     menu:
       title: "メニュー"
@@ -86,6 +97,7 @@ ja:
         virtual_servers: "仮想サーバー"
         my_profile: "プロファイル"
         users: "ユーザー"
+        requests: "リクエスト"
         tasks: "タスク"
         event_log: "イベントログ"
         logout: "ログアウト"
@@ -96,36 +108,57 @@ ja:
     operations:
       up_level: "上の階層へ"
       search: "検索"
-    logout: "ログアウトしてもよろしいですか ?"
+    logout: "ログアウトしてもよろしいですか?"
     search:
       form:
         title: "検索"
         field:
-          query: "クエリ "
+          query: "クエリ"
         button:
           search: "検索"
     my_profile:
       title: "プロファイル"
-      user_name: "ユーザー名 "
-      current_password: "現在のパスワード "
-      new_password: "新しいパスワード "
-      confirm_password: "確認用パスワード "
+      user_name: "ユーザー名"
+      current_password: "現在のパスワード"
+      new_password: "新しいパスワード"
+      confirm_password: "確認用パスワード"
       bad_current_password: "現在のパスワードが無効です。"
+      contact_name: "コンタクト名"
+      email: "メール"
     events:
-      internal_error: "内部エラー : {{message}}"
+      internal_error: "内部エラー: {{message}}"
       hardware_server:
         connect: "物理サーバー {{host}} は接続されています。"
         disconnect: "物理サーバー {{host}} は切断されています。"
-        sync: "サーバー {{host}} のステータスは同期されています。"
+        sync: "サーバー {{host}} のステータスは同期されました。"
         reboot: "サーバー {{host}} のリブートの開始。"
       virtual_server:
         created: "仮想サーバー {{identity}} は作成されました。"
         removed: "仮想サーバー {{identity}} は削除されました。"
-        change_state_failed: "仮想サーバー {{identity}} のステータス変更に失敗 ; ステータス : {{state}}; コード : {{code}} 。"
+        change_state_failed: "仮想サーバー {{identity}} ステータス変更に失敗; iステータス: {{state}}; コード: {{code}} 。"
         updated: "仮想サーバー {{identity}} の設定はアップデートされました。"
+        cloned: "仮想サーバー {{identity}} は、複製されました。"
+        counter_reached: "リミット {{name}} は、物理サーバー {{host}} 上の仮想サーバー {{identity}} に到達しました。"
+      user:
+        login:
+          ok: "ユーザー {{login}} がログイン。"
+          bad_password: "ユーザー {{login}} が無効なパスワードによりログインに失敗しました。"
+          bad_login: "不明なログイン名でログインが試行されました。"
+          locked_user: "ロックされたユーザー {{login}} がログインを試行しました。"
+        logout: "ユーザー {{login}} がログアウトしました。"
+        removed: "ユーザー {{login}} が削除されました。"
+        enabled: "ユーザー {{login}} が有効になりました。"
+        disabled: "ユーザー {{login}} が無効になりました。"
+        created: "ユーザー {{login}} が作成されました。"
+        updated: "ユーザー {{login}} が更新されました。"
+        profile_updated: "ユーザー {{login}} プロファイルがアップデートされました。"
+      role:
+        removed: "ロール {{name}} が削除されました。"
+        created: "ロール {{name}} が作成されました。"
+        updated: "ロール {{name}} が更新されました。"
     tasks:
       os_templates:
-        install: "サーバー {{host}} へ OS テンプレートのインストール。"
+        install: "サーバー {{host}} に OS テンプレートのインストール。"
       backups:
         create: "仮想サーバー #{{identity}} を物理サーバー {{host}} にバックアップ。"
         restore: "仮想サーバー #{{identity}} を物理サーバー {{host}} にレストア。"
@@ -133,13 +166,13 @@ ja:
       title: "ダッシュボード"
       intro:
         title: "イントロ"
-        text: "OpenVZ Web Panel は OpenVZ 仮想化テクノロジ搭載の物理サーバーをコントロールする、web ベース GUI のフロントエンドです。"
+        text: "OpenVZ Web Panel は OpenVZ 仮想化テクノロジを実装した物理サーバーをコントロールする、web ベース GUI のフロントエンドです。"
       profile:
         title: "プロファイル"
         text: "{{login}} としてログインしています。"
       updates:
-        text: "新しいバージョンが入手可能です : {{product}} 。"
-        update_command: "アップデートを実行するには、次のコマンドを起動する必要があります : {{command}}"
+        text: "新しいバージョンが入手可能です: {{product}} 。"
+        update_command: "アップデートを実行するには、次のコマンドを起動する必要があります: {{command}}"
       stats_grid:
         title: "統計情報"
         column:
@@ -149,8 +182,10 @@ ja:
           panel_users: "パネルユーザー"
           hardware_servers: "物理サーバー"
           virtual_servers: "仮想サーバー"
-          virtual_servers_running: "仮想サーバー - 動作中"
-          virtual_servers_stopped: "仮想サーバー - 停止中"
+          virtual_servers_running: "動作中の仮想サーバー"
+          virtual_servers_stopped: "停止中の仮想サーバー"
+          virtual_servers_expired: "期限切れの仮想サーバー"
+          opened_requests: "オープンされたリクエスト"
     hardware_servers:
       title: "物理サーバー"
       grid:
@@ -160,30 +195,33 @@ ja:
           description: "説明"
           virtual_servers: "仮想サーバー数"
         button:
-          connect: "新規サーバーへの接続"
-          reconnect: "サーバーへの再接続"
-          disconnect: "サーバーの切断"   
+          connect: "新規サーバーへ接続"
+          reconnect: "サーバーへ再接続"
+          disconnect: "サーバーを切断"   
           details: "詳細" 
           sync: "同期"
-          edit: "設定の変更"
+          edit: "設定を変更"
           reboot: "リブート"
       form:
         connect_server:
-          title: "新規物理サーバーへの接続"
-          edit_title: "物理サーバーの設定の変更"
+          title: "新規物理サーバーへ接続"
+          edit_title: "物理サーバーの設定を変更"
           button_connect: "接続"
           field:
-            host_name: "ホスト名 "
-            auth_key: "認証キー "
-            description: "説明 "
-            daemon_port: "サービスポート "
+            host_name: "ホスト名"
+            auth_key: "認証キー"
+            description: "説明"
+            daemon_port: "サービスポート"
+            root_password: "Root パスワード"
+          fieldset:
+            additional_settings: "追加設定"
         disconnect_server:
-          sure_to_disconnect: "選択したサーバーを切断してもよろしいですか ?"
+          sure_to_disconnect: "選択したサーバーを切断してもよろしいですか?"
           deletion_failed: "サーバー切断リクエストに失敗しました。"
         sync:
-          sync_failed: "いくつかの物理サーバーに関する情報を同期できません。"
+          sync_failed: "いくつかの物理サーバーに燗する情報を同期できません。"
         reboot_server:
-          sure_to_reboot: "選択されたサーバーは、リブートのあいだ、利用できません。それらをリブートしてもよろしいですか"
+          sure_to_reboot: "選択されたサーバーはリブートのあいだ、利用できません。それらをリブートしてよろしいですか?"
           reboot_failed: "いくつかのサーバーのリブートを開始できません。"
       show:
         title: "物理サーバー {{name}}"
@@ -205,6 +243,8 @@ ja:
           memory_usage: "{{percent}}% 、{{total}} 中 {{used}} / {{free}} フリー"
     virtual_servers:
       title: "仮想サーバー"
+      limits:
+        unlimited: "無制限"
       grid:
         title: "仮想サーバーリスト"
         column:
@@ -214,7 +254,8 @@ ja:
           host_name: "ホスト名"
           os_template: "OS テンプレート"
           memory: "メモリ、Mb"
-          diskspace: "ディスクスペース、Mb"
+          diskspace: "ディスクスペース、 Mb"
+          expiration_date: "有効期限"
           owner: "所有者"
           description: "説明"
         button:
@@ -224,65 +265,66 @@ ja:
           start: "スタート"
           restart: "リスタート"
           stop: "ストップ"
-          edit: "設定の変更"
+          edit: "設定を変更"
           limits: "制限"
           reinstall: "再インストール"
-          change_settings: "設定の変更"
+          clone: "クローン"
+          change_settings: "設定を変更"
           console: "コンソール"
           backup: "バックアップ"
       form:
         change_settings:
-          title: "仮想サーバーの設定の変更"
+          title: "仮想サーバーの設定を変更"
         reinstall:
           title: "仮想サーバーの再インストール"
           button:
             reinstall: "再インストール"
         change_state:
-          failed: "仮想サーバーのステータスの変更ができません。"
+          failed: "仮想サーバーのステータスが変更できません。"
         remove_server:
-          sure_to_remove: "選択された仮想サーバーを削除してもよろしいですか ?"
+          sure_to_remove: "選択された仮想サーバーを削除してよろしいですか?"
           deletion_failed: "いくつかの仮想サーバーを削除できません。"
         create_server:
           title: "新規仮想サーバーの作成"
-          edit_title: "仮想サーバーの設定の変更"
+          edit_title: "仮想サーバー設定の変更"
           button_create: "作成"
           field:
-            identity: "サーバー ID (VEID) "
-            os_template: "OS テンプレート "
-            select_os_template: "OS テンプレートの選択 "
-            ip_address: "IP アドレス "
-            host_name: "ホスト名 "
-            password: "Root パスワード "
-            confirm_password: "確認用パスワード "
-            start_on_boot: "ブートの開始 "
-            start_after_creation: "作成後の開始 "
-            nameserver: "DNS サーバー "
-            searchdomain: "サーチドメイン "
-            diskspace: "ディスクスペース、Mb "
-            memory: "RAM メモリ、Mb "
-            status: "ステータス "
-            owner: "所有者 "
-            select_owner: "所有者の選択 "
-            no_owner: "所有者なし "
-            server_template: "サーバーテンプレート "
-            select_server_template: "サーバーテンプレートの選択 "
-            description: "説明 "
-            cpu_units: "CPU ユニット "
-            cpus: "CPU の数 "
-            cpu_limit: "CPU 制限、% "
+            identity: "サーバー ID (VEID)"
+            os_template: "OS テンプレート"
+            select_os_template: "OS テンプレートの選択"
+            ip_address: "IP アドレス"
+            host_name: "ホスト名"
+            password: "Root パスワード"
+            confirm_password: "確認用パスワード"
+            start_on_boot: "起動時にスタート"
+            start_after_creation: "作成後にスタート"
+            nameserver: "DNS サーバー"
+            search_domain: "サーチドメイン"
+            diskspace: "ディスクスペース、Mb"
+            memory: "RAM メモリ、Mb"
+            status: "ステータス"
+            owner: "所有者"
+            select_owner: "所有者の選択"
+            no_owner: "所有者なし"
+            server_template: "サーバーテンプレート"
+            select_server_template: "サーバーテンプレートの選択"
+            description: "説明"
+            cpu_units: "CPU ユニット"
+            cpus: "CPU の設定"
+            cpu_limit: "CPU 制限、%"
+            expiration_date: "有効期限"
           fieldset:
             general: "一般"
             network: "ネットワーク"
             system_access: "システムアクセス"
-            start_options: "開始オプション"
+            start_options: "スタートオプション"
             dns_settings: "DNS 設定"
             limits: "制限"
-            panel_access: "パネルアクセス"
           tab:
             main_settings: "メイン設定"
             additional_settings: "追加設定"
         limits:
-          title: "制限"
+          title: "設定"
           grid:
             column:
               name: "名前"
@@ -291,12 +333,14 @@ ja:
         console:
           title: "コンソール"
           error:
-            code: "リターンコード :"
-            output: "出力 :"
+            code: "リターンコード:"
+            output: "出力:"
           field:
-            command: "コマンド "
+            command: "コマンド"
           button:
             run: "実行"
+        clone:
+          title: "仮想サーバーのクローン"
       show:
         title: "仮想サーバー {{name}}"
         grid:
@@ -313,10 +357,30 @@ ja:
         value:
           disk_usage: "{{percent}}% 、{{total}} 中 {{used}} / {{free}} フリー"
           memory_usage: "{{percent}}% 、{{total}} 中 {{used}} / {{free}} フリー"
+        button:
+          stat_details: "詳細"
+      stat_details:
+        title: "仮想サーバー {{name}} 統計情報"
+        grid:
+          title: "仮想サーバー制限"
+          column:
+            parameter: "パラメータ"
+            current: "現在の使用量"
+            max: "最大の使用量"
+            barrier: "境界"
+            limit: "制限"
+            failcnt: "フェール値"
+        chart:
+          cpu_usage:
+            title: "CPU 使用量"
+          ram_usage:
+            title: "RAM 使用量"
+          disk_usage:
+            title: "ディスク使用量"
     os_templates:
       title: "物理サーバー {{name}} の OS テンプレート"
       grid:
-        title: "インストール済みの OS テンプレート"
+        title: "インストール済み OS テンプレート"
         column:
           name: "名前"
           size: "サイズ、Mb"
@@ -333,18 +397,18 @@ ja:
             url: "URL"
           button_install: "インストール"
           load_failed: "OS テンプレートリストの読み込みに失敗しました。"
-          failed: "OS テンプレートのインストールの開始に失敗しました。"
-          scheduled: "OS テンプレートのインストールがスケジュールされました。しばらくすると、新規テンプレートが表示されます。"
+          failed: "OS テンプレートインストールの開始に失敗しました。"
+          scheduled: "OS テンプレートインストールがスケジュールされました。しばらくすると、新しいテンプレートが表示されます。"
           field:
-            url: "テンプレート URL "
+            url: "テンプレート URL"
           invalid_url: "有効な OS テンプレートアーカイブの URL を入力してください。"
         remove_template:
-          sure_to_remove: "選択された OS テンプレートを削除してもよろしいですか ?"
+          sure_to_remove: "選択された OS テンプレートを削除してよろしいですか?"
           deletion_failed: "いくつかの OS テンプレートの削除に失敗しました。"
     event_log:
       title: "イベントログ"
       grid:
-        title: "最終イベント"
+        title: "最新のイベント"
         column:
           level: "ステータス"
           created_at: "日付"
@@ -354,37 +418,46 @@ ja:
           clear: "ログのクリア"
       form:
         clear:
-          sure_to_clear: "すべてのレコードを削除してもよろしいですか ?"
+          sure_to_clear: "すべてのレコードを削除してよろしいですか?"
           clear_failed: "ログのクリアができません。"
     users:
       role:
         infrastructure_admin: "インフラストラクチャ管理者"
         virtual_server_owner: "仮想サーバー所有者"
       title: "ユーザー"
+      top_toolbar:
+        roles: "ロール"
       grid:
         title: "ユーザーリスト"
         column:
-          login: "ログイン名"
-          created_at: "作成した日時"
+          enabled: "ステータス"
+          login: "ログイン"
+          created_at: "作成日"
           role: "ロール"
+          contact_name: "コンタクト名"
+          email: "メール"
         button:
-          add: "ユーザーの追加"
-          remove: "ユーザーの削除"
-          edit: "ユーザーの編集"
+          add: "ユーザーを追加"
+          remove: "ユーザーを削除"
+          edit: "ユーザーを編集"
+          enable: "有効化"
+          disable: "無効化"
       form:
         remove_user:
-          sure_to_remove: "選択されたユーザーを削除してもよろしいですか ?"
+          sure_to_remove: "選択されたユーザーを削除してよろしいですか?"
           deletion_failed: "いくつかのユーザーは削除できません。"
         create:
-          title: "新規ユーザーの作成"
-          edit_title: "ユーザーの編集"
+          title: "新規ユーザーを作成"
+          edit_title: "ユーザーを編集"
           button_create: "作成"
           field:
-            login: "ログイン名 "
-            password: "パスワード "
-            confirm_password: "確認用パスワード "
-            role: "ロール "
-            select_role: "ロールの選択 "
+            login: "ログイン"
+            password: "パスワード"
+            confirm_password: "確認用パスワード"
+            role: "ロール"
+            select_role: "ロールの選択"
+            contact_name: "コンタクト名"
+            email: "メール"
     task:
       title: "タスク"
       grid:
@@ -407,7 +480,7 @@ ja:
           edit: "テンプレートの変更"
       form:
         remove_template:
-          sure_to_remove: "選択されたテンプレートを削除してもよろしいですか ?"
+          sure_to_remove: "選択されたテンプレートを削除してよろしいですか?"
           deletion_failed: "いくつかのテンプレートを削除できません。"
         create_server:
           title: "新規サーバーテンプレートの作成"
@@ -415,22 +488,22 @@ ja:
           button_create: "作成"
           tab:
             main_settings: "メイン設定"
-            advanced_settings: "追加設定"
+            advanced_settings: "詳細な設定"
           fieldset:
             general: "一般"
             limits: "制限"
             dns_settings: "DNS 設定"
-            start_options: "開始オプション"
+            start_options: "スタートオプション"
           field:
-            name: "名前 "
-            diskspace: "ディスクスペース、Mb "
-            memory: "メモリ、Mb "
-            start_on_boot: "ブート時に開始 "
-            nameserver: "DNS サーバー "
-            searchdomain: "サーチドメイン "
-            cpu_units: "CPU ユニット "
-            cpus: "CPU の数 "
-            cpu_limit: "CPU 制限、% "
+            name: "名前"
+            diskspace: "ディスクスペース、Mb"
+            memory: "メモリ、Mb"
+            start_on_boot: "起動時にスタート"
+            nameserver: "DNS サーバー"
+            search_domain: "サーチドメイン"
+            cpu_units: "CPU ユニット"
+            cpus: "CPU の数"
+            cpu_limit: "CPU 制限、%"
           grid:
             column:
               name: "名前"
@@ -450,16 +523,98 @@ ja:
           size: "サイズ、Mb"
       form:
         remove_backup:
-          sure_to_remove: "選択されたバックアップを削除してもよろしいですか ?"
+          sure_to_remove: "選択されたバックアップを削除してよろしいですか?"
           deletion_failed: "いくつかのバックアップは削除できません。"
         create:
-          title: "新規バックアップの作成"
-          hint: "注意 : 仮想サーバーはバックアップのあいだ、停止します。"
-          scheduled: "バックアップ行程が開始し、相当な時間を要します。"
+          title: "新規バックアップを作成"
+          scheduled: "バックアップ行程が開始しました。相当な時間を要します。"
           field:
-            description: "説明 "
+            description: "説明"
+            ve_state:
+              title: "サーバーステータス"
+              suspend: "サスペンド (推奨)"
+              stop: "ストップ"
+              live: "動作中を維持"
           button_create: "作成"
         restore:
-          sure_to_restore: "選択されたバックアップからレストアしますか ? サーバーはレストアのあいだ、利用できなくなります。"
+          sure_to_restore: "選択されたバックアップからレストアしますか? サーバーはレストアのあいだ、利用できなくなります。"
           failed: "レストア行程は失敗しました。"
-          scheduled: "レストア行程が開始し、相当な時間を要します。"
+          scheduled: "レストア行程が開始しました。相当な時間を要します。"
+    requests:
+      title: "リクエスト"
+      grid:
+        title: "リクエストリスト"
+        column:
+          opened: "ステータス"
+          id: "ID"
+          subject: "サブジェクト"
+          replies: "リプライ"
+          author: "ユーザー"
+          updated_at: "更新日"
+        button:
+          add: "リクエストを作成"
+          remove: "リクエストを削除"
+          details: "詳細"
+          solve: "リクエストをクローズ"
+          reopen: "リクエストを再オープン"
+      form:
+        remove_request:
+          sure_to_remove: "選択されたリクエストを削除してよろしいですか?"
+          deletion_failed: "いくつかのリクエストは削除できません。"
+        create:
+          title: "リクエストを作成"
+          button_create: "作成"
+          field:
+            subject: "サブジェクト"
+            content: "メッセージ"
+      comments:
+        title: "リクエスト #{{id}}"
+        grid:
+          title: "コメント"
+          column:
+            created_at: "日付"
+            author: "ユーザー"
+            content: "メッセージ"
+          button:
+            add: "コメントを追加"
+        form:
+          add:
+            title: "コメントを追加"
+            button_add: "追加"
+            field:
+              content: "メッセージ"
+    roles:
+      title: "ロール"
+      grid:
+        title: "ロールリスト"
+        column:
+          name: "名前"
+          users: "ユーザー"
+        button:
+          add: "ロールを追加"
+          remove: "ロールを削除"
+          edit: "ロールを編集"
+      form:
+        remove_role:
+          sure_to_remove: "選択されたロールを削除してよろしいですか?"
+          deletion_failed: "いくつかのロールは削除できません。ロールにアサインされたユーザーが削除できません。"
+        create:
+          title: "新規ロールを作成"
+          edit_title: "ロールを編集"
+          field:
+            name: "名前"
+          fieldset:
+            permissions: "パーミッション"
+          button_create: "作成"
+          permissions:
+            manage_hardware_servers: "物理サーバー管理者"
+            use_ve_console: "仮想サーバーコンソール"
+            backup_ve: "仮想サーバーバックアップ"
+            reinstall_ve: "仮想サーバー再インストール"
+            handle_requests: "リクエストハンドリング"
+            create_requests: "リクエスト作成"
+            view_tasks: "タスクリスト"
+            view_logs: "イベントログリスト"
+            manage_logs: "イベントログ管理者"
+            manage_users: "ユーザー管理者"
+            select_os_on_reinstall: "再インストール時の OS 選択"
