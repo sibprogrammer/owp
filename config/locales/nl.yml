@@ -13,7 +13,7 @@ nl:
     button:
       save: "Opslaan"
       cancel: "Annuleren"
-      create: "Cre&emul;er"
+      create: "Cre&euml;er"
   activerecord:
     errors:
       models:
@@ -32,12 +32,18 @@ nl:
             host:
               taken: "Server met deze naam bestaat al."
               connection: "Connectie mislukt. Daemon draait mogelijk niet."
+              ssh_connection: "SSH connectie maken is mislukt."
+              openvz_not_found: "OpenVZ virtualisatie is niet gevonden op de server."
+              ruby_not_found: "Ruby interperter is niet gevonden op de server."
             auth_key:
-              bad_auth: "Kan niet authenticeren. Mogelijk onjuiste autorisatie sleutel."
+              bad_auth: "Kan niet authenticeren. Mogelijk onjuiste authorisatie sleutel."
             daemon_port:
               not_a_number: "Onjuist port nummer."
               greater_than: "Port nummer moet groter zijn dan {{count}}."
               less_than: "Port nummer mnoet kleiner zijn dan {{count}}."
+            root_password:
+              ssh_bad_auth: "SSH authorisatie is mislukt."
+              empty: "Dit veld is verplicht."
         virtual_server:
           attributes:
             ip_address:
@@ -59,6 +65,10 @@ nl:
           attributes:
             name:
               taken: "Server template naam is al in gebruik."
+        role:
+          attributes:
+            name:
+              taken: "Een rol met deze naam bestaat al."
   about:
     copyright: "Copyright 2008-2010 SoftUnity."
     right_reserved: "All Rights Reserved."
@@ -76,6 +86,7 @@ nl:
     button_login: "Inloggen"
     locale: "Taal"
     bad_login: "Onjuiste gebruikersnaam of wachtwoord."
+    locked_user: "Gebruiker is geblokkeerd."
   admin:
     menu:
       title: "Menu"
@@ -86,6 +97,7 @@ nl:
         virtual_servers: "Virtuele servers"
         my_profile: "Mijn profiel"
         users: "Gebruikers"
+        requests: "Verzoeken"
         tasks: "Taken"
         event_log: "Gebeurtenissen"
         logout: "Uitloggen"
@@ -107,10 +119,12 @@ nl:
     my_profile:
       title: "Mijn profiel"
       user_name: "Gebruikersnaam"
-      current_password: "Huidige wachtwoord"
+      current_password: "Huidig wachtwoord"
       new_password: "Nieuw wachtwoord"
       confirm_password: "Bevestig wachtwoord"
       bad_current_password: "Onjuist huidig wachtwoord."
+      contact_name: "Contact naam"
+      email: "E-mail"
     events:
       internal_error: "Interne fout: {{message}}"
       hardware_server:
@@ -121,8 +135,27 @@ nl:
       virtual_server:
         created: "Virtuele server {{identity}} is aangemaakt."
         removed: "Virtuele server {{identity}} is verwijderd."
-        change_state_failed: "Status veranderen mislukt voor virtuele server {{identity}}; status: {{state}}; code: {{code}}."
-        updated: "Instellingen voor virtuele server {{identity}} zijn ge-update."
+        change_state_failed: "Het veranderen van de status mislukt voor virtuele server {{identity}}; status: {{state}}; code: {{code}}."
+        updated: "Instellingen voor de virtuele server {{identity}} zijn ge-update."
+        cloned: "Virtuele server {{identity}} is gecloned."
+        counter_reached: "Limiet {{name}} is bereikt voor virtuel server {{identity}} op fysieke server {{host}}."
+      user:
+        login:
+          ok: "Gebruiker {{login}} is ingelogd."
+          bad_password: "Gebruiker {{login}} is niet ingelogd vanwege een verkeerd wachtwoord."
+          bad_login: "Login geprobeert met een onbekende gebruikersnaam."
+          locked_user: "Geblokkeerde gebruiker {{login}} heeft geprobeert in te loggen."
+        logout: "Gebruiker {{login}} is uitgelogd."
+        removed: "Gebruiker {{login}} is verwijderd."
+        enabled: "Gebruiker {{login}} is enabled."
+        disabled: "Gebruiker {{login}} is disabled."
+        created: "Gebruiker {{login}} is gecre&euml;erd."
+        updated: "Gebruiker {{login}} is vernieuwd."
+        profile_updated: "Gebruiker {{login}} profile was updated."
+      role:
+        removed: "Rol {{name}} is verwijderd."
+        created: "Rol {{name}} is gecre&euml;erd."
+        updated: "Rol {{name}} is vernieuwd."
     tasks:
       os_templates:
         install: "OS templates installatie op de server {{host}}."
@@ -151,6 +184,8 @@ nl:
           virtual_servers: "Virtuele servers"
           virtual_servers_running: "Virtuele servers - draaiend"
           virtual_servers_stopped: "Virtuele servers - gestopt"
+          virtual_servers_expired: "Virtuele servers - verlopen"
+          opened_requests: "Geopende verzoeken"
     hardware_servers:
       title: "Fysieke servers"
       grid:
@@ -177,6 +212,9 @@ nl:
             auth_key: "Autorisatie sleutel"
             description: "Omschrijving"
             daemon_port: "Service port"
+            root_password: "Root wachtwoord"
+          fieldset:
+            additional_settings: "Additionle instellingen"
         disconnect_server:
           sure_to_disconnect: "Weet u zeker dat u de verbinding wilt stoppen voor de geselecteerde servers?"
           deletion_failed: "Verzoek om verbinding te stoppen is mislukt."
@@ -205,6 +243,8 @@ nl:
           memory_usage: "{{percent}}%, {{used}} van {{total}} / {{free}} vrij"
     virtual_servers:
       title: "Virtuele servers"
+      limits:
+        unlimited: "ongelimiteerd"
       grid:
         title: "Virtuele servers lijst"
         column:
@@ -215,6 +255,7 @@ nl:
           os_template: "OS template"
           memory: "Geheugen, Mb"
           diskspace: "Diskruimte, Mb"
+          expiration_date: "Verloop datum"
           owner: "Eigenaar"
           description: "Omschrijving"
         button:
@@ -227,6 +268,7 @@ nl:
           edit: "Verander instellingen"
           limits: "Limieten"
           reinstall: "Herinstalleer"
+          clone: "Clone"
           change_settings: "Verander instellingen"
           console: "Console"
           backup: "Backup"
@@ -257,7 +299,7 @@ nl:
             start_on_boot: "Start bij booten"
             start_after_creation: "Start na creatie"
             nameserver: "DNS server"
-            searchdomain: "Zoek domain"
+            search_domain: "Zoek domain"
             diskspace: "Diskruimte, Mb"
             memory: "RAM geheugen, Mb"
             status: "Status"
@@ -270,6 +312,7 @@ nl:
             cpu_units: "CPU Eenheden"
             cpus: "Aantal CPUs"
             cpu_limit: "CPU Limiet, %"
+            expiration_date: "Verloop datum"
           fieldset:
             general: "Generiek"
             network: "Netwerk"
@@ -277,7 +320,6 @@ nl:
             start_options: "Start opties"
             dns_settings: "DNS instellingen"
             limits: "Limieten"
-            panel_access: "Panel toegang"
           tab:
             main_settings: "Hoofd instellingen"
             additional_settings: "Extra instellingen"
@@ -296,7 +338,9 @@ nl:
           field:
             command: "Commando"
           button:
-            run: "Run"
+            run: "Uitvoeren"
+        clone:
+          title: "Clone virtuele server"
       show:
         title: "Virtuele server {{name}}"
         grid:
@@ -307,12 +351,32 @@ nl:
       stats:
         title: "Virtuele server statistieken"
         field:
-          cpu_load_average: "CPU load gemiddelde"
+          cpu_load_average: "Gemiddelde processor belasting"
           disk_usage: "Disk gebruik"
           memory_usage: "Geheugen gebruik"
         value:
           disk_usage: "{{percent}}%, {{used}} van {{total}} / {{free}} vrij"
           memory_usage: "{{percent}}%, {{used}} van {{total}} / {{free}} vrij"
+        button:
+          stat_details: "Details"
+      stat_details:
+        title: "Virtuele server {{name}} statistieken"
+        grid:
+          title: "Virtuele server limieten"
+          column:
+            parameter: "Parameters"
+            current: "Huidig gebruik"
+            max: "Maximum gebruik"
+            barrier: "Barri&egrave;re"
+            limit: "Limiet"
+            failcnt: "Fouten"
+        chart:
+          cpu_usage:
+            title: "Processor gebruik"
+          ram_usage:
+            title: "Geheugen gebruik"
+          disk_usage:
+            title: "Disk gebruik"
     os_templates:
       title: "OS Templates op fysieke server {{name}}"
       grid:
@@ -361,16 +425,23 @@ nl:
         infrastructure_admin: "Infrastructuur administrator"
         virtual_server_owner: "Virtuele server eigenaar"
       title: "Gebruikers"
+      top_toolbar:
+        roles: "Rollen"
       grid:
         title: "Gebruikers lijst"
         column:
+          enabled: "State"
           login: "Login"
           created_at: "Creatie datum"
           role: "Rol"
+          contact_name: "Contact naam"
+          email: "E-mail"
         button:
           add: "Gebruiker toevoegen"
           remove: "Gebruiker verwijderen"
           edit: "Gebruiker veranderen"
+          enable: "Enable"
+          disable: "Disable"
       form:
         remove_user:
           sure_to_remove: "Weet u zeker dat u de geselecteerd gebruikers wilt verwijderen?"
@@ -385,6 +456,8 @@ nl:
             confirm_password: "Bevestig wachtwoord"
             role: "Rol"
             select_role: "Selecteer een rol"
+            contact_name: "Contact naam"
+            email: "E-mail"
     task:
       title: "Taken"
       grid:
@@ -427,7 +500,7 @@ nl:
             memory: "Geheugen, Mb"
             start_on_boot: "Start bij booten"
             nameserver: "DNS server"
-            searchdomain: "Zoek domein"
+            search_domain: "Zoek domein"
             cpu_units: "CPU eenheden"
             cpus: "Aantal CPUs"
             cpu_limit: "CPU Limiet, %"
@@ -454,12 +527,94 @@ nl:
           deletion_failed: "Het was niet mogelijk sommige backups te verwijderen."
         create:
           title: "Cre&euml;er een nieuwe backup"
-          hint: "Note: virtuele server wordt gestopt tijden de backup."
           scheduled: "Backup procedure is gestart en duurt even."
           field:
             description: "Omschrijving"
+            ve_state:
+              title: "Server status"
+              suspend: "supend (aanbevolen)"
+              stop: "stop"
+              live: "blijf draaien"
           button_create: "Cre&euml;er"
         restore:
           sure_to_restore: "Weet u zeker dat u de geselecteerde backup wilt herstellen? De Sserver is onbereikbaar tijdens het herstellen."
-          failed: "Herstel procedure is mislulkt."
+          failed: "Herstel procedure is mislukt."
           scheduled: "Herstel procedure is gestart en duurt even."
+    requests:
+      title: "Verzoeken"
+      grid:
+        title: "Verzoek lijst"
+        column:
+          opened: "Status"
+          id: "ID"
+          subject: "Onderwerp"
+          replies: "Antwoorden"
+          author: "Auteur"
+          updated_at: "Update datum"
+        button:
+          add: "Nieuw verzoek"
+          remove: "Verwijder verzoek"
+          details: "Details"
+          solve: "Sluit verzoek af"
+          reopen: "Heropen verzoek"
+      form:
+        remove_request:
+          sure_to_remove: "Weet u zeker dat u de geselecteerde verzoeken wilt verwijderen?"
+          deletion_failed: "Verwijderen van sommige requests is mislukt."
+        create:
+          title: "Nieuw verzoek"
+          button_create: "Cre&euml;er"
+          field:
+            subject: "Onderwerp"
+            content: "Bericht"
+      comments:
+        title: "Verzoek #{{id}}"
+        grid:
+          title: "Commentaar"
+          column:
+            created_at: "Datum"
+            author: "Auteur"
+            content: "Bericht"
+          button:
+            add: "Nieuw commentaar"
+        form:
+          add:
+            title: "Nieuw commentaar"
+            button_add: "Toevoegen"
+            field:
+              content: "Bericht"
+    roles:
+      title: "Rollen"
+      grid:
+        title: "Rollen lijst"
+        column:
+          name: "Naam"
+          users: "Gebruikers"
+        button:
+          add: "Rol toevoegen"
+          remove: "Rol verwijderen"
+          edit: "Rol aanpassen"
+      form:
+        remove_role:
+          sure_to_remove: "Weet u zeker dat u de geselecteerde rollen wilt verwijderen?"
+          deletion_failed: "Verwijderen van sommige rollen is mislukt. Rollen in gebruik door gebruikers kunnen niet verwijderd worden."
+        create:
+          title: Rol toevoegen"
+          edit_title: "Rol veranderen"
+          field:
+            name: "Naam"
+          fieldset:
+            permissions: "Permissies"
+          button_create: "Cre&uml;en"
+          permissions:
+            manage_hardware_servers: "Physieke servers management"
+            use_ve_console: "Virtuele server console"
+            backup_ve: "Virtuele server backups"
+            reinstall_ve: "Virtuele server herinstallatie"
+            handle_requests: "Verzoek behandeling"
+            create_requests: "Verzoek aanmaken"
+            view_tasks: "Taken bekijken"
+            view_logs: "Gebeurtenis logs bekijken"
+            manage_logs: "Gebeurtenis logs management"
+            manage_users: "Gebruiker management"
+            select_os_on_reinstall: "OS selectie bij herinstallatie"
