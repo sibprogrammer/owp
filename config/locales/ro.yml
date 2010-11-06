@@ -4,7 +4,7 @@ ro:
   form:
     loading: "Va rugam asteptati..."
     confirmation: "Confirmati"
-    performing_task: "Va rugam asteptai. Procesare sarcina..."
+    performing_task: "Va rugam asteptati. Procesare sarcina..."
     error:
       title: "Eroare"
       fill_form: "Va rugam sa completati formularul"
@@ -13,7 +13,7 @@ ro:
     button:
       save: "Salveaza"
       cancel: "Anuleaza"
-      create: "Creaza"
+      create: "Creeaza"
   activerecord:
     errors:
       models:
@@ -36,7 +36,7 @@ ro:
               bad_auth: "Autentificare esuata. Cheia este incorecta."
             daemon_port:
               not_a_number: "Numar port invalid."
-              greater_than: "Port-ul trebuie sa fie mai mare de {{count}}."
+              greater_than: "Portul trebuie sa fie mai mare de {{count}}."
               less_than: "Portul trebuie sa fie mai mic decat {{count}}."
         virtual_server:
           attributes:
@@ -86,6 +86,7 @@ ro:
         virtual_servers: "Servere virtuale"
         my_profile: "Profil"
         users: "Utilizatori"
+        requests: "Cereri"
         tasks: "Sarcini"
         event_log: "Jurnal evenimente"
         logout: "Deconectare"
@@ -111,6 +112,7 @@ ro:
       new_password: "Parola noua"
       confirm_password: "Confirmare parola"
       bad_current_password: "Parola curenta invalida."
+      contact_name: "Nume"
     events:
       internal_error: "Eroare interna: {{message}}"
       hardware_server:
@@ -133,7 +135,7 @@ ro:
       title: "Vedere generala"
       intro:
         title: "Introducere"
-        text: "OpenVZ Web Panel este o aplicatie web pentru controlul serverelor fizicefor cu tehnologia de virtualizare OpenVZ."
+        text: "OpenVZ Web Panel este o aplicatie web pentru controlul serverelor fizice cu tehnologia de virtualizare OpenVZ."
       profile:
         title: "Profil"
         text: "Este logat cu {{login}}."
@@ -151,6 +153,8 @@ ro:
           virtual_servers: "Servere virtuale"
           virtual_servers_running: "Servere virtuale - pornite"
           virtual_servers_stopped: "Servere virtuale - oprite"
+          virtual_servers_expired: "Servere virtuale - expirate"
+          opened_requests: "Cereri deschise"
     hardware_servers:
       title: "Servere fizice"
       grid:
@@ -177,6 +181,9 @@ ro:
             auth_key: "Cheie autentificare"
             description: "Descriere"
             daemon_port: "Port serviciu"
+            root_password: "Parola root"
+          fieldset:
+            additional_settings: "Setari aditionale"
         disconnect_server:
           sure_to_disconnect: "Sunteti sigur ca vreti sa deconectati serverele selectate?"
           deletion_failed: "Cere deconectare servere esuata."
@@ -215,10 +222,11 @@ ro:
           os_template: "Sablon SO"
           memory: "Memorie, Mb"
           diskspace: "Spatiu disc, Mb"
+          expiration_date: "Data expirarii"
           owner: "Proprietar"
           description: "Descriere"
         button:
-          create: "Creaza server virtual"
+          create: "Creeaza server virtual"
           destroy: "Sterge server virtual"
           change_state: "Schimba stare"
           start: "Pornire"
@@ -245,7 +253,7 @@ ro:
         create_server:
           title: "Creare server virtual nou"
           edit_title: "Modifica setarile serverului virtual"
-          button_create: "Creaza"
+          button_create: "Creeaza"
           field:
             identity: "ID server (VEID)"
             os_template: "Sablon SO"
@@ -257,7 +265,7 @@ ro:
             start_on_boot: "Porneste la boot"
             start_after_creation: "Porneste dupa creare"
             nameserver: "Server DNS"
-            searchdomain: "Domeniu"
+            search_domain: "Domeniu"
             diskspace: "Spatiu disc, Mb"
             memory: "Memorie RAM, Mb"
             status: "Stare"
@@ -277,7 +285,6 @@ ro:
             start_options: "Optiuni pornire"
             dns_settings: "Setari DNS"
             limits: "Limite"
-            panel_access: "Acces panou"
           tab:
             main_settings: "Setari principare"
             additional_settings: "Setari aditionale"
@@ -329,7 +336,7 @@ ro:
           title: "Instalare sablon SO nou"
           tab:
             official: "Oficial"
-            contributed: "Contribuite"
+            contributed: "Contribuitii"
             url: "URL"
           button_install: "Instaleaza"
           load_failed: "Nu s-a putut incarca list de sabloane SO."
@@ -361,12 +368,14 @@ ro:
         infrastructure_admin: "Administrator infrastructura"
         virtual_server_owner: "Proprietar server virtual"
       title: "Utilizatori"
+      top_toolbar:
+        roles: "Tipuri"
       grid:
         title: "Lista utilizatori"
         column:
           login: "Utilizator"
           created_at: "Data creare"
-          role: "Rol"
+          role: "Tip"
         button:
           add: "Adauga utilizator"
           remove: "Sterge utilizator"
@@ -376,9 +385,9 @@ ro:
           sure_to_remove: "Sunteti sigur ca doriti sa stergeti utilizatorii selectati?"
           deletion_failed: "Nu s-au putut sterge unii utilizatori."
         create:
-          title: "Creaza utilizator nou"
+          title: "Creeaza utilizator nou"
           edit_title: "Modifica utilizator"
-          button_create: "Creaza"
+          button_create: "Creeaza"
           field:
             login: "Utilizator"
             password: "Parola"
@@ -412,7 +421,7 @@ ro:
         create_server:
           title: "Creare sablon de server nou"
           edit_title: "Modifica sablon de server"
-          button_create: "Creaza"
+          button_create: "Creeaza"
           tab:
             main_settings: "Setari primare"
             advanced_settings: "Setari avansate"
@@ -427,7 +436,7 @@ ro:
             memory: "Memorie, Mb"
             start_on_boot: "Porneste la boot"
             nameserver: "Server DNS"
-            searchdomain: "Domeniu"
+            search_domain: "Domeniu"
             cpu_units: "Unitati CPU"
             cpus: "Numar CPU-uri"
             cpu_limit: "Limita CPU, %"
@@ -437,11 +446,11 @@ ro:
               soft_limit: "Bariera"
               hard_limit: "Limita"
     backups:
-      title: "Copii de rezerva pentru serverul virtual #{{identity}}"
+      title: "Copii de siguranta pentru serverul virtual #{{identity}}"
       grid:
-        title: "Copii de rezerva"
+        title: "Copii de siguranta"
         button:
-          create: "Backup"
+          create: "Creeaza"
           restore: "Restaureaza"
           destroy: "Sterge"
         column:
@@ -453,13 +462,95 @@ ro:
           sure_to_remove: "Sunteti sigur ca vreti sa stergeti copiile de rezerva selectate?"
           deletion_failed: "Nu s-au putut sterge unele copii de rezerva."
         create:
-          title: "Creaza copie de rezerva noua"
-          hint: "Nota: serverul virutal va fi oprit in timpul realizarii copiei de rezerva."
+          title: "Creeaza copie de rezerva noua"
           scheduled: "Procedura de realizare a copiei de rezerva a inceput. Va rugam asteptati."
           field:
             description: "Descriere"
-          button_create: "Creaza"
+            ve_state:
+              title: Stare server
+              suspend: "suspendat (recomandat)"
+              stop: "oprit"
+              live: "din mers"
+          button_create: "Creeaza"
         restore:
           sure_to_restore: "Sunteti sigur ca dorit sa restaurati copia de rezerva selectat? Serverul va fi indisponibil in timpul restaurarii."
           failed: "Procedura de restaurare esuata."
           scheduled: "Procedura de restaurare a inceput. Va rugam asteptati."
+    requests:
+      title: "Cereri"
+      grid:
+        title: "Lista cereri"
+        column:
+          opened: "Stare"
+          id: "ID"
+          subject: "Subiect"
+          replies: "Raspunsuri"
+          author: "Autor"
+          updated_at: "Ultima actualizare"
+        button:
+          add: "Creeaza cerere"
+          remove: "Sterge cerere"
+          details: "Detalii"
+          solve: "Inchide cerere"
+          reopen: "Redeschide cerere"
+      form:
+        remove_request:
+          sure_to_remove: "Esti sigur ca doresti sa stergi cererile selectate?"
+          deletion_failed: "Nu s-au putut sterge anumite cereri."
+        create:
+          title: "Creeaza cerere"
+          button_create: "Creeaza"
+          field:
+            subject: "Subiect"
+            content: "Mesaj"
+      comments:
+        title: "Cerere #{{id}}"
+        grid:
+          title: "Comentarii"
+          column:
+            created_at: "Data"
+            author: "Autor"
+            content: "Mesaj"
+          button:
+            add: "Adauga comentariu"
+        form:
+          add:
+            title: "Adauga comentariu"
+            button_add: "Adauga"
+            field:
+              content: "Mesaj"
+    roles:
+      title: "Tipuri utilizatori"
+      grid:
+        title: "Lista tipuri"
+        column:
+          name: "Nume"
+          users: "Utilizatori"
+        button:
+          add: "Adauga Tip"
+          remove: "Sterge Tip"
+          edit: "Editeaza Tip"
+      form:
+        remove_role:
+          sure_to_remove: "Esti sigur ca doresti stergerea tipurilor selectate?"
+          deletion_failed: "Nu au putut fi sterse anumite tipuri. Tipurile cu ce au deka utilizatori atribuiti nu pot fi sterse."
+        create:
+          title: "Creeaza tip nou"
+          edit_title: "Editeaza tip"
+          field:
+            name: "Nume"
+          fieldset:
+            permissions: "Permisiuni"
+          button_create: "Creeaza"
+          permissions:
+            manage_hardware_servers: "Administrare servere fizice"
+            use_ve_console: "Utilizare consola servere virtuale"
+            backup_ve: "Creeare copie siguranta servere virtuale"
+            reinstall_ve: "Reinstalare servere virtual"
+            handle_requests: "Administrare cereri"
+            create_requests: "Creeare cereri"
+            view_tasks: "Vizualizare sarcini"
+            view_logs: "Vizualizare jurnal evenimente"
+            manage_logs: "Event logs management"
+            manage_users: "Administrare utilizatori"
+            select_os_on_reinstall: "Selectare SO la reinstalare"
