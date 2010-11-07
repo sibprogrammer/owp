@@ -1,3 +1,36 @@
+= OpenVZ Web Panel 1.6 (2010-11-07) =
+
+This version is a major release. The following items were fixed and/or added:
+
+  * Show local dates and time with timezone correction in UI (issue 195).
+  * Proper detection of upgrade and re-installation cases (issue 186).
+  * Ability to suspend virtual server during backup instead of stopping it
+    (issue 183).
+  * Make IP address an optional field (182).
+  * Upgrade to ExtJS 3.2.1 (issue 181).
+  * Support of unlimited values for limits (issue 180).
+  * Limit updates checking procedure to avoid freeze of dashboard if internet
+    connection is not allowed (issue 174).
+  * Customizable user roles (issue 168).
+  * Login/logout attempts tracking (issue 167).
+  * Ability for user to change OS (issue 160).
+  * Use first server template if config points to non-existent template
+    (issue 159).
+  * Ability to disable user (issue 155).
+  * Add email field for user (issue 154).
+  * Add contact name field for user (issue 153).
+  * Ability to select text for copying for Firefox and Chrome (issue 151).
+  * Japanese language support (issue 148).
+  * Use passive FTP mode for OS templates downloading by default (issue 145).
+  * Ability to set default language (issue 143).
+  * French language support (issue 141).
+  * Simple QOS alerts and charts (issue 98).
+  * Expiration date for virtual server (issue 96).
+  * Requests tracking system (issue 87).
+  * Ability to connect additional hardware servers using root shell access
+    (issue 74).
+  * Ability to clone virtual server (issue 48).
+
 = OpenVZ Web Panel 1.5 (2010-07-31) =
 
 This version is a major release. The following items were fixed and/or added:
