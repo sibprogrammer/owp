@@ -38,6 +38,35 @@ Ext.override(Ext.ProgressBar, {
   }
 });
 
+// workaround for IE: proper checkboxes rendering
+if (Ext.isIE) {
+  Ext.override(Ext.form.Checkbox, {
+    onRender: function(ct, position){
+      Ext.form.Checkbox.superclass.onRender.call(this, ct, position);
+      if (this.inputValue !== undefined) {
+        this.el.dom.value = this.inputValue;
+      }
+      this.wrap = this.el.wrap({
+        cls: 'x-form-check-wrap'
+      });
+      if (this.boxLabel) {
+        this.wrap.createChild({
+          tag: 'label',
+          htmlFor: this.el.id,
+          cls: 'x-form-cb-label',
+          html: this.boxLabel
+        });
+      }
+      if (this.checked) {
+        this.setValue(true);
+      } else {
+        this.checked = this.el.dom.checked;
+      }
+      this.resizeEl = this.positionEl = this.wrap;
+    }
+  });
+}
+
 Ext.ns('Owp.form');
 
 Owp.form.errorHandler = function(form, action, params) {
