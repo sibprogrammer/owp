@@ -6,7 +6,7 @@ class HardwareServer < ActiveRecord::Base
   has_many :server_templates, :dependent => :destroy
   has_many :virtual_servers, :dependent => :destroy
   
-  def connect(root_password)
+  def connect(root_password = '')
     if !auth_key.blank?
       begin
         if !rpc_client.ping
