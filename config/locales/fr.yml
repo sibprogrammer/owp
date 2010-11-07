@@ -32,12 +32,18 @@ fr:
             host:
               taken: "Un serveur est déjà présent avec ce nom."
               connection: "Connexion échouée. Le démon n'est peut-être pas démarré."
+              ssh_connection: "Impossible d'établir une connexion SSH."
+              openvz_not_found: "Le système de virtualisation OpenVZ n'a pas été trouvée sur le serveur."
+              ruby_not_found: "L'interpreteur Ruby n'a pas été trouvé sur le serveur."
             auth_key:
               bad_auth: "Authorisation impossible. Clé probablement incorrecte."
             daemon_port:
               not_a_number: "Numéro de port invalide."
               greater_than: "Le numéro de port devrait être plus grand que {{count}}."
               less_than: "Le numéro de port devrait être inférieur à {{count}}."
+            root_password:
+              ssh_bad_auth: "L'authentification SSH a échouée."
+              empty: "Ce champ est obligatoire."
         virtual_server:
           attributes:
             ip_address:
@@ -59,6 +65,10 @@ fr:
           attributes:
             name:
               taken: "Un gabarit de serveur avec ce nom existe déjà."
+        role:
+          attributes:
+            name:
+              taken: "Un rôle possedant le même nom existe déjà"
   about:
     copyright: "Copyright 2008-2010 SoftUnity."
     right_reserved: "Tous droits réservés."
@@ -76,6 +86,7 @@ fr:
     button_login: "Connexion"
     locale: "Langage"
     bad_login: "Nom d'utilisateur ou mot de passe invalide."
+    locked_user: "L'utilisateur est bloqué."
   admin:
     menu:
       title: "Menu"
@@ -86,6 +97,7 @@ fr:
         virtual_servers: "Serveurs virtuels"
         my_profile: "Mon profil"
         users: "Utilisateurs"
+        requests: "Requêtes"
         tasks: "Tâches"
         event_log: "Journal des évènements"
         logout: "Déconnexion"
@@ -111,6 +123,8 @@ fr:
       new_password: "Nouveau mot de passe"
       confirm_password: "Confirmation"
       bad_current_password: "Mot de passe actuel invalide."
+      contact_name: "Nom de Contact"
+      email: "E-mail"
     events:
       internal_error: "Erreur interne: {{message}}"
       hardware_server:
@@ -123,6 +137,25 @@ fr:
         removed: "Le serveur virtuel {{identity}} a été effacé."
         change_state_failed: "Échec du changement d'état du serveur virtuel {{identity}}; état: {{state}}; code: {{code}}."
         updated: "Les options du serveur virtuel {{identity}} ont été mises à jour."
+        cloned: "Le serveur virtuel {{identity}} a été cloné."
+        counter_reached: "La limite {{name}} a été atteinte pour le serveur virtuel {{identity}} sur le serveur physique {{host}}."
+      user:
+        login:
+          ok: "L'utilisateur {{login}} s'est connecté."
+          bad_password: "L'utilisateur {{login}} n'a pas réussi à se connecter à cause d'un mot de passe erroné."
+          bad_login: "Tentative de connection avec un nom d'utilisateur inconnu."
+          locked_user: "L'utilisateur bloqué {{login}} a essayé de se connecter."
+        logout: "L'utilisateur {{login}} est déconnecté."
+        removed: "L'utilisateur {{login}} a été supprimé."
+        enabled: "L'utilisateur {{login}} a été activé."
+        disabled: "L'utilisateur {{login}} a été désactivé."
+        created: "L'utilisateur {{login}} a été créé."
+        updated: "L'utilisateur {{login}} a été mis à jour."
+        profile_updated: "Le profile de l'utilisateur {{login}} a été mis à jour."
+      role:
+        removed: "Le rôle {{name}} a été supprimé."
+        created: "Le rôle {{name}} a été créé."
+        updated: "Le rôle {{name}} a été mis à jour."
     tasks:
       os_templates:
         install: "Installation des gabarits d'OS sur le serveur {{host}}."
@@ -151,6 +184,8 @@ fr:
           virtual_servers: "Serveurs virtuels"
           virtual_servers_running: "Serveurs virtuels - en fonctionnement"
           virtual_servers_stopped: "Serveurs virtuels - arrêtés"
+          virtual_servers_expired: "Serveurs virtuels - expirés"
+          opened_requests: "Requêtes ouvertes"
     hardware_servers:
       title: "Serveurs physiques"
       grid:
@@ -177,6 +212,9 @@ fr:
             auth_key: "Clé d'authentification"
             description: "Description"
             daemon_port: "Port du service"
+            root_password: "Mot de passe Root"
+          fieldset:
+            additional_settings: "Options complémentaires"
         disconnect_server:
           sure_to_disconnect: "Êtes-vous sûr de vouloir déconnecter les serveurs sélectionnés ?"
           deletion_failed: "La requête de déconnexion des serveurs a échouée."
@@ -205,6 +243,8 @@ fr:
           memory_usage: "{{percent}}%, {{used}} de {{total}} / {{free}} libres"
     virtual_servers:
       title: "Serveurs virtuels"
+      limits:
+        unlimited: "sans limite"
       grid:
         title: "Liste des serveurs virtuels"
         column:
@@ -215,6 +255,7 @@ fr:
           os_template: "Gabarit d'OS"
           memory: "Mémoire, Mb"
           diskspace: "Espace disque, Mb"
+          expiration_date: "Date d'expiration"
           owner: "Propriétaire"
           description: "Description"
         button:
@@ -227,6 +268,7 @@ fr:
           edit: "Éditer"
           limits: "Limites"
           reinstall: "Réinstaller"
+          clone: "Cloner"
           change_settings: "Modifier les options"
           console: "Console"
           backup: "Sauvegarde"
@@ -257,7 +299,7 @@ fr:
             start_on_boot: "Démarrage au Boot"
             start_after_creation: "Démarrer après la création"
             nameserver: "Serveur DNS"
-            searchdomain: "Domaine de recherche"
+            search_domain: "Domaine de recherche"
             diskspace: "Espace disque, Mb"
             memory: "Mémoire RAM, Mb"
             status: "Statut"
@@ -270,6 +312,7 @@ fr:
             cpu_units: "Unités CPU"
             cpus: "Nombre de CPUs"
             cpu_limit: "Limite CPU, %"
+            expiration_date: "Date d'expiration"
           fieldset:
             general: "Général"
             network: "Réseau"
@@ -277,7 +320,6 @@ fr:
             start_options: "Options de démarrage"
             dns_settings: "Options DNS"
             limits: "Limites"
-            panel_access: "Panneau accès"
           tab:
             main_settings: "Options Principales"
             additional_settings: "Options Supplémentaires"
@@ -297,6 +339,8 @@ fr:
             command: "Commande"
           button:
             run: "Exécuter"
+        clone:
+          title: "Cloner un serveur virtuel"
       show:
         title: "Serveur virtuel {{name}}"
         grid:
@@ -313,6 +357,26 @@ fr:
         value:
           disk_usage: "{{percent}}%, {{used}} de {{total}} / {{free}} libres"
           memory_usage: "{{percent}}%, {{used}} de {{total}} / {{free}} libres"
+        button:
+          stat_details: "Détails"
+      stat_details:
+        title: "Statistique du serveur virtuel {{name}}"
+        grid:
+          title: "Limites du du serveur virtuel"
+          column:
+            parameter: "Paramètre"
+            current: "Utilisation actuelle"
+            max: "Utilisation maximale"
+            barrier: "Barrière"
+            limit: "Limite"
+            failcnt: "Échec"
+        chart:
+          cpu_usage:
+            title: "Utilisation CPU"
+          ram_usage:
+            title: "Utilisation RAM"
+          disk_usage:
+            title: "Utilisation Disk"
     os_templates:
       title: "Gabarits d'OS sur le serveur physique {{name}}"
       grid:
@@ -361,16 +425,23 @@ fr:
         infrastructure_admin: "Administrateur infrastructure"
         virtual_server_owner: "Propriétaire de serveurs virtuels"
       title: "Utilisateurs"
+      top_toolbar:
+        roles: "Rôles"
       grid:
         title: "Liste des utilisateurs"
         column:
+          enabled: "Etat"
           login: "Connexion"
           created_at: "Date de création"
           role: "Rôle"
+          contact_name: "Nom de Contact"
+          email: "E-mail"
         button:
           add: "Ajouter un utilisateur"
           remove: "Supprimer des utilisateurs"
           edit: "Modifier un utilisateur"
+          enable: "Activé"
+          disable: "Désactivé"
       form:
         remove_user:
           sure_to_remove: "Êtes-vous sûr de vouloir supprimer les utilisateurs sélectionnés ?"
@@ -385,6 +456,8 @@ fr:
             confirm_password: "Confirmer le mot de passe"
             role: "Rôle"
             select_role: "Sélectionner un rôle"
+            contact_name: "Nom de Contact"
+            email: "E-mail"
     task:
       title: "Tâches"
       grid:
@@ -427,7 +500,7 @@ fr:
             memory: "Mémoire, Mb"
             start_on_boot: "Démarrage au Boot"
             nameserver: "Serveur DNS"
-            searchdomain: "Domaine de recherche"
+            search_domain: "Domaine de recherche"
             cpu_units: "Unités CPU"
             cpus: "Nombre de CPUs"
             cpu_limit: "Limite CPU, %"
@@ -454,12 +527,94 @@ fr:
           deletion_failed: "Impossible de supprimer certaines sauvegardes."
         create:
           title: "Créer une nouvelle sauvegarde"
-          hint: "Remarque: Le serveur virtuel sera arrêté pendant la sauvegarde."
           scheduled: "Une procédure de sauvegarde a été démarrée et prendra quelques temps."
           field:
             description: "Description"
+            ve_state:
+              title: Etat du serveur"
+              suspend: "suspendre (recommandé)"
+              stop: "Arreter"
+              live: "Laisser fonctionner"
           button_create: "Créer"
         restore:
           sure_to_restore: "Êtes-vous sûr de vouloir restaurer la sauvegarde sélectionnée ? Le serveur sera indisponible pendant la restauration."
           failed: "La procédure de restauration a échoué."
           scheduled: "Une procédure de restauration a été démarrée et prendra quelques temps."
+    requests:
+      title: "Requêtes"
+      grid:
+        title: "Liste des requêtes"
+        column:
+          opened: "Etat"
+          id: "ID"
+          subject: "Objet"
+          replies: "Réponses"
+          author: "Auteur"
+          updated_at: "Mis à jour le"
+        button:
+          add: "Créer une requête"
+          remove: "Supprimer des requêtes"
+          details: "Détails"
+          solve: "Fermer la requête"
+          reopen: "Ré-ouvrir la requête"
+      form:
+        remove_request:
+          sure_to_remove: "Êtes-vous sûr de vouloir supprimer les requêtes sélectionnées?"
+          deletion_failed: "La suppression de certaines requêtes a échouée."
+        create:
+          title: "Créer une requête"
+          button_create: "Créer"
+          field:
+            subject: "Objet"
+            content: "Message"
+      comments:
+        title: "Requête #{{id}}"
+        grid:
+          title: "Commentaires"
+          column:
+            created_at: "Date"
+            author: "Auteur"
+            content: "Message"
+          button:
+            add: "Ajouter un commentaire"
+        form:
+          add:
+            title: "Ajouter un commentaire"
+            button_add: "Ajouter"
+            field:
+              content: "Message"
+    roles:
+      title: "Rôles"
+      grid:
+        title: "Liste des rôles"
+        column:
+          name: "Nom"
+          users: "Utilisateurs"
+        button:
+          add: "Ajouter un rôle"
+          remove: "Supprimer des rôles"
+          edit: "Modifier un rôle"
+      form:
+        remove_role:
+          sure_to_remove: "Êtes-vous sûr de vouloir supprimer les rôles sélectionnés?"
+          deletion_failed: "La suppression de certains rôles a échouée. Les rôles assignés à des utilisateurs ne peuvent être supprimés."
+        create:
+          title: "Créer un nouveau rôle"
+          edit_title: "Modifier le rôle"
+          field:
+            name: "Nom"
+          fieldset:
+            permissions: "Permissions"
+          button_create: "Créer"
+          permissions:
+            manage_hardware_servers: "Gérer les serveurs physiques"
+            use_ve_console: "Console des serveurs virtuels"
+            backup_ve: "Sauvegarder des serveurs virtuels"
+            reinstall_ve: "Réinstaller des serveurs virtuels"
+            handle_requests: "Traiter les requêtes"
+            create_requests: "Créer des requêtes"
+            view_tasks: "Lister les tâches"
+            view_logs: "Lister les journaux d'évènement"
+            manage_logs: "Gérer les journaux d'évènement"
+            manage_users: "Gérer les utilisateurs"
+            select_os_on_reinstall: "Choisir le gabarit d'OS à la réinstallation"
