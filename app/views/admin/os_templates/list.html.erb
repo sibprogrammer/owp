@@ -177,6 +177,13 @@ Ext.onReady(function() {
         bodyStyle: 'padding:5px;',
         resizable: false,
         autoHeight: true,
+        listeners: {
+          show: function() {
+            if (Ext.isIE) {
+              windowInstallNewTemplate.officialTemplatesGrid.setSize('100%', 300);
+            }
+          }
+        },
         items: [{
           xtype: 'tabpanel',
           activeTab: 0,
@@ -184,7 +191,6 @@ Ext.onReady(function() {
           autoHeight: true,
           listeners: {
             tabchange: function(tabPanel, activePanel) {
-              //windowInstallNewTemplate.setHeight(100);
               windowInstallNewTemplate.syncSize();
             }
           },
