@@ -32,12 +32,18 @@ ro:
             host:
               taken: "Un server cu acest nume deja exista."
               connection: "Conectare esuata. Poate serviciul nu functioneaza."
+              ssh_connection: "Nu a putut fi stabilita conexiunea SSH"
+              openvz_not_found: "OpenVZ nu a fost gasit pe server"
+              ruby_not_found: "Ruby nu a fost gasit pe server"
             auth_key:
               bad_auth: "Autentificare esuata. Cheia este incorecta."
             daemon_port:
               not_a_number: "Numar port invalid."
               greater_than: "Portul trebuie sa fie mai mare de {{count}}."
               less_than: "Portul trebuie sa fie mai mic decat {{count}}."
+            root_password: 
+              ssh_bad_auth: "Autorizare SSH esuata."
+              empty: "Acest camp este obligatoriu."
         virtual_server:
           attributes:
             ip_address:
@@ -59,6 +65,10 @@ ro:
           attributes:
             name:
               taken: "Exista deja un sablon de server cu acest nume."
+        role:
+          attributes:
+            name:
+              taken: "Exista deja un tip de utilizator cu acest nume"
   about:
     copyright: "Copyright 2008-2010 SoftUnity."
     right_reserved: "Toate drepturile rezervate."
@@ -76,6 +86,7 @@ ro:
     button_login: "Autentifica"
     locale: "Limba"
     bad_login: "Utilizator sau parola incorecte."
+    locked_user: "Utilizatorul este blocat."
   admin:
     menu:
       title: "Meniu"
@@ -113,6 +124,7 @@ ro:
       confirm_password: "Confirmare parola"
       bad_current_password: "Parola curenta invalida."
       contact_name: "Nume"
+      email: "E-mail"
     events:
       internal_error: "Eroare interna: {{message}}"
       hardware_server:
@@ -125,6 +137,25 @@ ro:
         removed: "Serverul virtual {{identity}} a fost sters."
         change_state_failed: "Nu s-a putut schimba starea serverului virtual {{identity}}; stare: {{state}}; cod: {{code}}."
         updated: "Setarile pentru serverul virtual {{identity}} au fost actualizate."
+        cloned: "Serverul virtual {{identity}} a fost clonat."
+        counter_reached: "Limita {{name}} a fost atinsa pentru serverul virtual {{identity}} pe serverul fizic {{host}}."
+      user:
+        login:
+          ok: "Utilizatorul {{login}} a fost autentificat."
+          bad_password: "Utilizatorul {{login}} nu a putut fi autentificat - parola incorecta."
+          bad_login: "Tentativa de autentificare cu nume de utilizator necunoscut."
+          locked_user: "Utilizatorul blocat {{login}} a incercat sa se autentifice."
+        logout: "Utilizatorul {{login}} a foist deconectat."
+        removed: "Utilizatorul {{login}} a fost sters."
+        enabled: "Utilizatorul {{login}} a fost activat."
+        disabled: "Utilizatorul {{login}} a fost dezactivat."
+        created: "Utilizatorul {{login}} a fost creat."
+        updated: "Utilizatorul {{login}} a fost actualizat."
+        profile_updated: "Profilul utilizatorului {{login}} a fost actualizat."
+      role:
+        removed: "Tipul {{name}} a fost sters."
+        created: "Tipul {{name}} a fost adaugat."
+        updated: "Tipul {{name}} a fost actualizat."
     tasks:
       os_templates:
         install: "Sabloane SO pe serverul {{host}}."
@@ -212,6 +243,8 @@ ro:
           memory_usage: "{{percent}}%, {{used}} din {{total}} / {{free}} liber"
     virtual_servers:
       title: "Servere virtuale"
+      limits:
+        unlimited: "nelimitat"
       grid:
         title: "Lista servere virtuale"
         column:
@@ -235,6 +268,7 @@ ro:
           edit: "Modifica setari"
           limits: "Limite"
           reinstall: "Reinstalare"
+          clone: "Cloneaza"
           change_settings: "Modifica setari"
           console: "Consola"
           backup: "Copie de siguranta"
@@ -278,6 +312,7 @@ ro:
             cpu_units: "Unitati CPU"
             cpus: "Numar CPU-uri"
             cpu_limit: "Limita CPU, %"
+            expiration_date: "Data expirarii"
           fieldset:
             general: "General"
             network: "Retea"
@@ -304,6 +339,8 @@ ro:
             command: "Comanda"
           button:
             run: "Executa"
+        clone:
+          title: "Cloneaza serverul virtual"
       show:
         title: "Server virtual {{name}}"
         grid:
@@ -320,6 +357,26 @@ ro:
         value:
           disk_usage: "{{percent}}%, {{used}} din {{total}} / {{free}} liber"
           memory_usage: "{{percent}}%, {{used}} din {{total}} / {{free}} liber"
+        button:
+          stat_details: "Detalii"
+      stat_details:
+        title: "Statistici pentru serverul virtual {{name}}"
+        grid:
+          title: "Limite server virtual"
+          column:
+            parameter: "Parametru"
+            current: "Utilizare actuala"
+            max: "Utilizare maxima"
+            barrier: "Bariera"
+            limit: "Limita"
+            failcnt: "Erori"
+        chart:
+          cpu_usage:
+            title: "Utilizare CPU"
+          ram_usage:
+            title: "Utilizare RAM"
+          disk_usage:
+            title: "Utilizare HDD"
     os_templates:
       title: "Sabloane SO pe serverul fizic {{name}}"
       grid:
@@ -373,13 +430,18 @@ ro:
       grid:
         title: "Lista utilizatori"
         column:
+          enabled: "Stare"
           login: "Utilizator"
           created_at: "Data creare"
           role: "Tip"
+          contact_name: "Nume"
+          email: "E-mail"
         button:
           add: "Adauga utilizator"
           remove: "Sterge utilizator"
           edit: "Modifica utilizator"
+          enable: "Activeaza"
+          disable: "Dezactiveaza"
       form:
         remove_user:
           sure_to_remove: "Sunteti sigur ca doriti sa stergeti utilizatorii selectati?"
@@ -394,6 +456,8 @@ ro:
             confirm_password: "Confirmare parola"
             role: "Rol"
             select_role: "Selecteaza un rol"
+            contact_name: "Nume"
+            email: "E-mail"
     task:
       title: "Sarcini"
       grid:
