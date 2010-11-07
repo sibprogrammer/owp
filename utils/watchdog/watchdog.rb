@@ -101,15 +101,16 @@ class WatchdogDaemon
     @sql = ActiveRecord::Base.connection.instance_variable_get(:@connection)
     
     loop do
-      @sql.execute('BEGIN TRANSACTION;')
       begin
+        @sql.execute('BEGIN TRANSACTION;')
         collect_data
+        rotate_data
+        @sql.execute('COMMIT;')
       rescue Exception => e
         log "Exception: #{e.message}"
         log e.backtrace.inspect
+        @sql.execute('ROLLBACK;')
       end
-      rotate_data
-      @sql.execute('COMMIT;')
       
       sleep 60
       @tick_counter += 1
