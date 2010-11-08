@@ -109,9 +109,11 @@ class WatchdogDaemon
       rescue Exception => e
         log "Exception: #{e.message}"
         log e.backtrace.inspect
-        @sql.execute('ROLLBACK;')
       end
-      
+     
+      # compress every hour
+      compress_db if 0 == (@tick_counter % 60)
+ 
       sleep 60
       @tick_counter += 1
     end
@@ -286,13 +288,17 @@ class WatchdogDaemon
       )
       log "Clean up of old bean counters." if @debug
     end
-    
-    # compress every hour
-    return unless 0 == (@tick_counter % 60)
-    @sql.execute('VACUUM;') if 'SQLite3::Database' == @sql.class.to_s
-    log "SQLite database was compressed." if @debug
   end
-  
+ 
+  def compress_db
+    begin
+      @sql.execute('VACUUM;') if 'SQLite3::Database' == @sql.class.to_s
+      log "Database was compressed." if @debug
+    rescue Exception => e
+      log "Failed to compress database."
+    end
+  end
+ 
   def shutdown
     log "Daemon shutdown."
     delete_pid_file
