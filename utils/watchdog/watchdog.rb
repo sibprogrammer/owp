@@ -165,12 +165,12 @@ class WatchdogDaemon
         if counter.held != params[:held] or counter.maxheld != params[:maxheld] or counter.barrier != params[:barrier] or counter.limit != params[:limit] or counter.failcnt != params[:failcnt]
           if params[:failcnt].to_i > counter.failcnt.to_i
             @sql.execute(
-              "INSERT INTO event_logs (level, message, params, created_at) VALUES (:level, :message, :params, datetime(:created_at))",
+              "INSERT INTO event_logs (level, message, params, created_at) VALUES (:level, :message, :params, :created_at)",
               { 
                 :level => EventLog::WARN,
                 :message => "virtual_server.counter_reached",
                 :params => Marshal.dump({ :name => counter.name.upcase, :identity => current_ve.identity, :host => hardware_server.host, }),
-                :created_at => DateTime.now.utc
+                :created_at => DateTime.now.utc.strftime("%Y-%m-%d %H:%M:%S")
               }
             )
             log "Limit #{counter.name.upcase} was reached for virtual server #{current_ve.identity}" if @debug
@@ -265,9 +265,9 @@ class WatchdogDaemon
   end
   
   def add_counter(params)
-    params[:created_at] = DateTime.now.utc
+    params[:created_at] = DateTime.now.utc.strftime("%Y-%m-%d %H:%M:%S")
     fields = params.keys.map{ |item| '"' + item.to_s + '"' }.join(', ')
-    bindings = params.keys.map{ |item| item.to_s == 'created_at' ? ("datetime(:#{item.to_s})") : (':' + item.to_s) }.join(', ')
+    bindings = params.keys.map{ |item| ':' + item.to_s }.join(', ')
     @sql.execute("INSERT INTO bean_counters (#{fields}) VALUES (#{bindings})", params)
     BeanCounter.new(params)
   end
@@ -282,9 +282,9 @@ class WatchdogDaemon
   def rotate_data
     if 0 == (@tick_counter % 5)
       @sql.execute(
-        'DELETE FROM bean_counters WHERE period_type = ? AND created_at < datetime(?);',
+        'DELETE FROM bean_counters WHERE period_type = ? AND created_at < ?;',
         BeanCounter::PERIOD_MINUTE,
-        (DateTime.now - 60.minute).utc
+        (DateTime.now - 60.minute).utc.strftime("%Y-%m-%d %H:%M:%S")
       )
       log "Clean up of old bean counters." if @debug
     end
