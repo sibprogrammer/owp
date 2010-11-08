@@ -32,12 +32,18 @@ pt_BR:
             host:
               taken: "Servidor com esse nome já existe."
               connection: "Conexão falhou. Talvez este serviço não esteja rodando."
+              ssh_connection: "Não foi possível estabelecer conexão SSH."
+              openvz_not_found: "Virtualização OpenVZ não encontrada no servidor."
+              ruby_not_found: "O interpretador Ruby não foi encontrado no servidor."
             auth_key:
               bad_auth: "Não autorizado. Provavelmente a chave de autenticação está incorreta."
             daemon_port:
               not_a_number: "Porta inválida."
               greater_than: "O número da porta deverá ser superior a {{count}}."
               less_than: "O número da porta não poderá ser inferior a {{count}}."
+            root_password:
+              ssh_bad_auth: "Autorização SSH falhou."
+              empty: "Necessário o preenchimento deste campo."
         virtual_server:
           attributes:
             ip_address:
@@ -59,6 +65,10 @@ pt_BR:
           attributes:
             name:
               taken: "O nome atraibuido para este template já existe."
+        role:
+          attributes:
+            name:
+              taken: "Regra com este nome já existe."
   about:
     copyright: "Copyright 2008-2010 SoftUnity."
     right_reserved: "Todos os direitos reservados."
@@ -76,6 +86,7 @@ pt_BR:
     button_login: "Acessar"
     locale: "Idioma"
     bad_login: "Usuário ou senha inválido."
+    locked_user: "Usuário bloqueado."
   admin:
     menu:
       title: "Menu"
@@ -86,6 +97,7 @@ pt_BR:
         virtual_servers: "Servidores Virtuais"
         my_profile: "Meu perfil"
         users: "Usuários"
+        requests: "Requisições"
         tasks: "Tarefas"
         event_log: "Log de eventos"
         logout: "Sair"
@@ -111,6 +123,8 @@ pt_BR:
       new_password: "Nova senha"
       confirm_password: "Confirme a nova senha"
       bad_current_password: "Senha atual inválida."
+      contact_name: "Nome de contato"
+      email: "E-mail"
     events:
       internal_error: "Erro interno: {{message}}"
       hardware_server:
@@ -123,6 +137,25 @@ pt_BR:
         removed: "Servidor virtual {{identity}} foi removido."
         change_state_failed: "Falha ao tentar mudar o stado do servidor virtual {{identity}}; stado: {{state}}; code: {{code}}."
         updated: "Condigurações do servidor virtual {{identity}} foram atualizadas."
+        cloned: "Servidor virtual {{identity}} foi clonado."
+        counter_reached: "Limite {{name}} atingido no servidor virtual {{identity}} no servidor físico {{host}}."
+      user:
+        login:
+          ok: "Usuário {{login}} está logado."
+          bad_password: "Usuário {{login}} não digitou a senha correta."
+          bad_login: "tentativa de acesso com nome de usuário desconhecido."
+          locked_user: "Usuário bloqueado {{login}} tentou realizar acesso."
+        logout: "Usuário {{login}} desconectado."
+        removed: "Usuário {{login}} removido."
+        enabled: "Usuário {{login}} habilitado."
+        disabled: "Usuário {{login}} desabilitado."
+        created: "Usuário {{login}} criado."
+        updated: "Usuário {{login}} atualizado."
+        profile_updated: "Perfil do usuário {{login}} atualizado."
+      role:
+        removed: "Regra {{name}} removida."
+        created: "Regra {{name}} criada."
+        updated: "Regra {{name}} atualizada."
     tasks:
       os_templates:
         install: "Instalação de template no servidor {{host}}."
@@ -151,6 +184,8 @@ pt_BR:
           virtual_servers: "Servidores virtuais"
           virtual_servers_running: "Servidores virtuais - rodando"
           virtual_servers_stopped: "Servidores virtuais - parados"
+          virtual_servers_expired: "Servidores virtuais - expirados"
+          opened_requests: "Requisições abertas"
     hardware_servers:
       title: "Servidores físicos"
       grid:
@@ -177,6 +212,9 @@ pt_BR:
             auth_key: "Chave de autorização"
             description: "Descrição"
             daemon_port: "Porta de conexão"
+            root_password: "Senha do  usuário root"
+          fieldset:
+            additional_settings: "Configurações adicionais"
         disconnect_server:
           sure_to_disconnect: "Tem certeza que deseja desconectar do servidor selecionado?"
           deletion_failed: "Falha ao desconectar do servidor."
@@ -205,6 +243,8 @@ pt_BR:
           memory_usage: "{{percent}}%, {{used}} de {{total}} / {{free}} Livre"
     virtual_servers:
       title: "Servidores virtuais"
+      limits:
+        unlimited: "Ilimitado"
       grid:
         title: "Lista de servidores virtuais"
         column:
@@ -215,6 +255,7 @@ pt_BR:
           os_template: "Template do SO"
           memory: "Memória, Mb"
           diskspace: "Espaço em disco, Mb"
+          expiration_date: "Data de expiração"
           owner: "Responsável"
           description: "Descrição"
         button:
@@ -227,6 +268,7 @@ pt_BR:
           edit: "Editar configurações"
           limits: "Limites"
           reinstall: "Re-instalar"
+          clone: "Clone"
           change_settings: "Alterar configurações"
           console: "Terminal"
           backup: "Backup"
@@ -257,7 +299,7 @@ pt_BR:
             start_on_boot: "Iniciar no boot"
             start_after_creation: "Iniciar após a criação"
             nameserver: "Servidor DNS"
-            searchdomain: "Domínio de pesquisa"
+            search_domain: "Domínio de pesquisa"
             diskspace: "Espaço em disco, Mb"
             memory: "Memória RAM, Mb"
             status: "Status"
@@ -270,6 +312,7 @@ pt_BR:
             cpu_units: "Unidades de CPU"
             cpus: "Quantidade de processadores"
             cpu_limit: "Uso da CPU, %"
+            expiration_date: "Data de expiração"
           fieldset:
             general: "Principal"
             network: "Rede"
@@ -277,7 +320,6 @@ pt_BR:
             start_options: "Opções de inicialização"
             dns_settings: "Configurações de DNS"
             limits: "Limites"
-            panel_access: "Acesso ao painel"
           tab:
             main_settings: "Configurações básicas"
             additional_settings: "Configurações adicionais"
@@ -297,6 +339,8 @@ pt_BR:
             command: "Comando"
           button:
             run: "Executar"
+        clone:
+          title: "Clonar servidor virtual"
       show:
         title: "Servidor virtual {{name}}"
         grid:
@@ -313,6 +357,26 @@ pt_BR:
         value:
           disk_usage: "{{percent}}%, {{used}} de {{total}} / {{free}} livre"
           memory_usage: "{{percent}}%, {{used}} de {{total}} / {{free}} livre"
+        button:
+          stat_details: "Detalhes"
+      stat_details:
+        title: "Estatísticas do servidor virtual {{name}}"
+        grid:
+          title: "Limites do servidor virtual"
+          column:
+            parameter: "Parâmetros"
+            current: "Utilização atual"
+            max: "Utilização máxima"
+            barrier: "Barreira"
+            limit: "Limite"
+            failcnt: "Falhas"
+        chart:
+          cpu_usage:
+            title: "Uso de CPU"
+          ram_usage:
+            title: "Uso de memória RAM"
+          disk_usage:
+            title: "Uso de disco"
     os_templates:
       title: "Template de SO {{name}}"
       grid:
@@ -361,16 +425,23 @@ pt_BR:
         infrastructure_admin: "Administrador de infra-estrutura"
         virtual_server_owner: "Responsável por servidores virtuais"
       title: "Usuários"
+      top_toolbar:
+        roles: "Regras"
       grid:
         title: "Lista de usuários"
         column:
+          enabled: "State"
           login: "Login"
           created_at: "Data de criação"
           role: "Permissão"
+          contact_name: "Nome do contato"
+          email: "E-mail"
         button:
           add: "Adicionar usuário"
           remove: "Remover usuário"
           edit: "Editar usuário"
+          enable: "Habilitado"
+          disable: "Desabilitado"
       form:
         remove_user:
           sure_to_remove: "Você tem certeza que deseja remover os usuários selecionados?"
@@ -385,6 +456,8 @@ pt_BR:
             confirm_password: "Confirme a senha"
             role: "Permissão"
             select_role: "Selecione a permissão"
+            contact_name: "Nome do contato"
+            email: "E-mail"
     task:
       title: "Tarefas"
       grid:
@@ -427,7 +500,7 @@ pt_BR:
             memory: "Memória, Mb"
             start_on_boot: "Iníciar no boot"
             nameserver: "Servidor DNS"
-            searchdomain: "Domínio de pesquisa"
+            search_domain: "Domínio de pesquisa"
             cpu_units: "Quantidade de CPUs"
             cpus: "Quantidade de Processadores"
             cpu_limit: "Uso da CPU, %"
@@ -454,12 +527,94 @@ pt_BR:
           deletion_failed: "Não foi possível remover alguns backups."
         create:
           title: "Criar novo backup"
-          hint: "Nota: servidor virtual poderá ser parado durante o backup."
           scheduled: "Procedimento do backup iniciado e poderá levar alguns minutos para finalizar."
           field:
             description: "Descrição"
+            ve_state:
+              title: "Estado do servidor"
+              suspend: "suspender (recomendado)"
+              stop: "parar"
+              live: "continuar rodando"
           button_create: "Criar"
         restore:
           sure_to_restore: "Tem certeza que deseja restaurar o backup selecionado? O servidor poderá ficar indisponível durante a restauração."
           failed: "Procedimento de restauração falhou."
           scheduled: "Procedimento de restauração iniciado e poderá levar alguns minutos para finalizar."
+    requests:
+      title: "Requisições"
+      grid:
+        title: "Lista de requisições"
+        column:
+          opened: "Estado"
+          id: "ID"
+          subject: "Assuntos"
+          replies: "Respostas"
+          author: "Autor"
+          updated_at: "Data da atualização"
+        button:
+          add: "Criar requisição"
+          remove: "Remover requisição"
+          details: "Detalhes"
+          solve: "Fechar requisição"
+          reopen: "Reabrir requisição"
+      form:
+        remove_request:
+          sure_to_remove: "Tem certeza que deseja apagar as requisições selecionadas?"
+          deletion_failed: "Não foi possível apagar algumas requisições"
+        create:
+          title: "Criar requisição"
+          button_create: "Criar"
+          field:
+            subject: "Assunto"
+            content: "Mensagem"
+      comments:
+        title: "Requisição número #{{id}}"
+        grid:
+          title: "Comentários"
+          column:
+            created_at: "Data"
+            author: "Autor"
+            content: "Mensagem"
+          button:
+            add: "Adicionar comentário"
+        form:
+          add:
+            title: "Adicionar comentário"
+            button_add: "Adicionar"
+            field:
+              content: "Mensagem"
+    roles:
+      title: "Regras"
+      grid:
+        title: "Lista de regras"
+        column:
+          name: "Nome"
+          users: "Usuários"
+        button:
+          add: "Adicionar regra"
+          remove: "Remover regra"
+          edit: "Editar regra"
+      form:
+        remove_role:
+          sure_to_remove: "Tem certeza que deseja apagar as regras selecionadas?"
+          deletion_failed: "Não foi possível excluir algumas regras. Regras atribuídas a usuários não podem ser excluidas."
+        create:
+          title: "Criar regra"
+          edit_title: "Editar regra"
+          field:
+            name: "Nome"
+          fieldset:
+            permissions: "Permissão"
+          button_create: "Criar"
+          permissions:
+            manage_hardware_servers: "Gerenciamento de servidores físicos"
+            use_ve_console: "Console do servidor virtual"
+            backup_ve: "Backup do servidor virtual"
+            reinstall_ve: "Reinstalar servidor virtual"
+            handle_requests: "Tratamento de requisições"
+            create_requests: "Criação de requisições"
+            view_tasks: "Lista de tarefas"
+            view_logs: "Lista de log de eventos"
+            manage_logs: "Gerenciamento de log de eventos"
+            manage_users: "Gerenciamento de usuários"
+            select_os_on_reinstall: "Seleção de SO para reinstalação"
