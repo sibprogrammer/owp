@@ -139,13 +139,13 @@ class Admin::VirtualServersController < Admin::Base
     
     @ram_usage = !is_running ? [] : @virtual_server.bean_counters.find(
       :all, :limit => 60, :order => 'id DESC',
-      :conditions => { :name => 'privvmpages' }
-    ).map { |counter| { 'time' => counter.created_at.min, 'usage' => counter.held.to_i * 4 / 1024 } }.reverse
+      :conditions => { :name => '_memory' }
+    ).map { |counter| { 'time' => counter.created_at.min, 'usage' => counter.held.to_i / (1024 * 1024) } }.reverse
     
     @ram_max = 0
     if !@ram_usage.blank?
-      last_counter = @virtual_server.bean_counters.find(:last, :order => 'id DESC', :conditions => { :name => 'privvmpages' })
-      @ram_max = last_counter.limit.to_i * 4 / 1024
+      last_counter = @virtual_server.bean_counters.find(:last, :order => 'id DESC', :conditions => { :name => '_memory' })
+      @ram_max = last_counter.limit.to_i / (1024 * 1024)
     end
     
     @disk_usage = !is_running ? [] : @virtual_server.bean_counters.find(
@@ -371,7 +371,7 @@ class Admin::VirtualServersController < Admin::Base
         stats << { :parameter => t('admin.virtual_servers.stats.field.disk_usage'), :value => '-' }
       end
       
-      counter = BeanCounter.find_last_by_name_and_virtual_server_id('privvmpages', virtual_server.id)
+      counter = BeanCounter.find_last_by_name_and_virtual_server_id('_memory', virtual_server.id)
       
       if counter and is_running
         stats << {
@@ -380,9 +380,9 @@ class Admin::VirtualServersController < Admin::Base
             'text' => t(
               'admin.virtual_servers.stats.value.memory_usage',
               :percent => (counter.held.to_f / counter.limit.to_f * 100).to_i.to_s,
-              :free =>  helper.number_to_human_size((counter.limit.to_i - counter.held.to_i) * 4096, :locale => :en),
-              :used => helper.number_to_human_size(counter.held.to_i * 4096, :locale => :en),
-              :total => helper.number_to_human_size(counter.limit.to_i * 4096, :locale => :en)
+              :free =>  helper.number_to_human_size(counter.limit.to_i - counter.held.to_i, :locale => :en),
+              :used => helper.number_to_human_size(counter.held.to_i, :locale => :en),
+              :total => helper.number_to_human_size(counter.limit.to_i, :locale => :en)
             ),
             'percent' => counter.held.to_f / counter.limit.to_f
           }

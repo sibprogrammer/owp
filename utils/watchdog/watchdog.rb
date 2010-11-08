@@ -124,6 +124,7 @@ class WatchdogDaemon
       next unless hardware_server.rpc_client.ping
       @virtual_servers = hardware_server.virtual_servers.find_all_by_state('running')
       collect_beancounters(hardware_server)
+      collect_memory_usage(hardware_server)
       collect_diskspace(hardware_server)
       collect_cpu_usage(hardware_server)
     end
@@ -180,11 +181,38 @@ class WatchdogDaemon
         else
           update_counter(counter, { :alert => 'f' }) if counter.alert
         end
-
-        if 'privvmpages' == params[:name]
-          params[:period_type] = BeanCounter::PERIOD_MINUTE
-          add_counter(params)
-        end
+      end
+    end
+  end
+  
+  def collect_memory_usage(hardware_server)
+    ve_list = hardware_server.virtual_servers.find_all_by_state('running').map(&:identity).join(' ')
+    command = "for VE in #{ve_list}; do echo $VE `vzctl exec $VE 'free -bo | sed \"1d;3d\"'`; done"
+    counters = hardware_server.rpc_client.exec(command)['output'].split("\n")
+    
+    current_ve_id = current_ve = nil
+    
+    counters.each do |record|
+      counter_info = record.split
+      
+      current_ve_id = counter_info[0].to_i
+      current_ve = @virtual_servers.find { |ve| ve.identity == current_ve_id }
+      
+      if current_ve and current_ve_id == current_ve.identity
+        info = {}
+        info['total_bytes'] = counter_info[2].to_i
+        info['free_bytes'] = counter_info[4].to_i
+        info['used_bytes'] = counter_info[3].to_i
+        add_counter({
+          :name => '_memory',
+          :virtual_server_id => current_ve.id,
+          :held => info['used_bytes'].to_s,
+          :maxheld => '',
+          :barrier => '',
+          :limit => info['total_bytes'].to_s,
+          :failcnt => '',
+          :period_type => BeanCounter::PERIOD_MINUTE,
+        })
       end
     end
   end
