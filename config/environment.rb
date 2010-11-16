@@ -21,4 +21,4 @@ Rails::Initializer.run do |config|
 end
 
 PRODUCT_NAME = 'OpenVZ Web Panel'
-PRODUCT_VERSION = '1.6'
+PRODUCT_VERSION = '2.0'
