@@ -167,7 +167,7 @@ class WatchdogDaemon
         if counter.held != params[:held] or counter.maxheld != params[:maxheld] or counter.barrier != params[:barrier] or counter.limit != params[:limit] or counter.failcnt != params[:failcnt]
           if params[:failcnt].to_i > counter.failcnt.to_i
             exec_query(
-              "INSERT INTO event_logs (level, message, params, created_at) VALUES (:level, :message, :params, :created_at)",
+              "INSERT INTO event_logs (`level`, `message`, `params`, `created_at`) VALUES (:level, :message, :params, :created_at)",
               { 
                 :level => EventLog::WARN,
                 :message => "virtual_server.counter_reached",
@@ -358,11 +358,12 @@ class WatchdogDaemon
         @sql.query(sql)
       else
         if 1 == bind_vars.size and bind_vars[0].kind_of?(Hash)
-          bind_vars[0].keys.map do |key|
-            sql.sub!(':' + key.to_s, '?')
+          values = []
+          while "" != (param = sql.match(/:[a-z_]*/).to_s) do
+            sql.sub!(param, '?')
+            values << bind_vars[0][param.sub(':','').to_sym]
           end
           statement = @sql.prepare(sql)
-          values = bind_vars[0].values
           statement.execute(*values)
         else
           statement = @sql.prepare(sql)
