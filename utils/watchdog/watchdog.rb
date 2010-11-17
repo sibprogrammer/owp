@@ -99,13 +99,14 @@ class WatchdogDaemon
     load_rails_env
     
     @sql = ActiveRecord::Base.connection.instance_variable_get(:@connection)
+    @db_type = ('SQLite3::Database' == @sql.class.to_s) ? 'sqlite' : 'mysql'
     
     loop do
       begin
-        @sql.execute('BEGIN TRANSACTION;')
+        exec_query('BEGIN;')
         collect_data
         rotate_data
-        @sql.execute('COMMIT;')
+        exec_query('COMMIT;')
       rescue Exception => e
         log "Exception: #{e.message}"
         log e.backtrace.inspect
@@ -165,7 +166,7 @@ class WatchdogDaemon
 
         if counter.held != params[:held] or counter.maxheld != params[:maxheld] or counter.barrier != params[:barrier] or counter.limit != params[:limit] or counter.failcnt != params[:failcnt]
           if params[:failcnt].to_i > counter.failcnt.to_i
-            @sql.execute(
+            exec_query(
               "INSERT INTO event_logs (level, message, params, created_at) VALUES (:level, :message, :params, :created_at)",
               { 
                 :level => EventLog::WARN,
@@ -294,22 +295,22 @@ class WatchdogDaemon
   
   def add_counter(params)
     params[:created_at] = DateTime.now.utc.strftime("%Y-%m-%d %H:%M:%S")
-    fields = params.keys.map{ |item| '"' + item.to_s + '"' }.join(', ')
+    fields = params.keys.map{ |item| '`' + item.to_s + '`' }.join(', ')
     bindings = params.keys.map{ |item| ':' + item.to_s }.join(', ')
-    @sql.execute("INSERT INTO bean_counters (#{fields}) VALUES (#{bindings})", params)
+    exec_query("INSERT INTO bean_counters (#{fields}) VALUES (#{bindings})", params)
     BeanCounter.new(params)
   end
   
   def update_counter(counter, params)
     fields = []
-    params.each { |key,value| fields << "'#{key.to_s}' = '#{value.to_s}'" }
+    params.each { |key,value| fields << "`#{key.to_s}` = '#{value.to_s}'" }
     fields = fields.join(', ')
-    @sql.execute("UPDATE bean_counters SET #{fields} WHERE id = ?", counter.id)
+    exec_query("UPDATE bean_counters SET #{fields} WHERE id = ?", counter.id)
   end
 
   def rotate_data
     if 0 == (@tick_counter % 5)
-      @sql.execute(
+      exec_query(
         'DELETE FROM bean_counters WHERE period_type = ? AND created_at < ?;',
         BeanCounter::PERIOD_MINUTE,
         (DateTime.now - 60.minute).utc.strftime("%Y-%m-%d %H:%M:%S")
@@ -320,7 +321,7 @@ class WatchdogDaemon
  
   def compress_db
     begin
-      @sql.execute('VACUUM;') if 'SQLite3::Database' == @sql.class.to_s
+      exec_query('VACUUM;') if 'sqlite' == @db_type
       log "Database was compressed." if @debug
     rescue Exception => e
       log "Failed to compress database."
@@ -347,6 +348,28 @@ class WatchdogDaemon
   def log(message)
     puts DateTime.now.to_s + ' ' + message
     STDOUT.flush
+  end
+  
+  def exec_query(sql, *bind_vars)
+    if 'sqlite' == @db_type
+      @sql.execute(sql, *bind_vars)
+    else
+      if 0 == bind_vars.size
+        @sql.query(sql)
+      else
+        if 1 == bind_vars.size and bind_vars[0].kind_of?(Hash)
+          bind_vars[0].keys.map do |key|
+            sql.sub!(':' + key.to_s, '?')
+          end
+          statement = @sql.prepare(sql)
+          values = bind_vars[0].values
+          statement.execute(*values)
+        else
+          statement = @sql.prepare(sql)
+          statement.execute(*bind_vars)
+        end
+      end
+    end
   end
 
 end
