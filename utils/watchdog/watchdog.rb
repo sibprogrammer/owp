@@ -171,7 +171,7 @@ class WatchdogDaemon
               { 
                 :level => EventLog::WARN,
                 :message => "virtual_server.counter_reached",
-                :params => Marshal.dump({ :name => counter.name.upcase, :identity => current_ve.identity, :host => hardware_server.host, }),
+                :params => Marshal.safe_dump({ :name => counter.name.upcase, :identity => current_ve.identity, :host => hardware_server.host, }),
                 :created_at => DateTime.now.utc.strftime("%Y-%m-%d %H:%M:%S")
               }
             )
@@ -361,7 +361,7 @@ class WatchdogDaemon
           values = []
           while "" != (param = sql.match(/:[a-z_]*/).to_s) do
             sql.sub!(param, '?')
-            values << bind_vars[0][param.sub(':','').to_sym]
+            values << bind_vars[0][param.sub(':','').to_sym].to_s
           end
           statement = @sql.prepare(sql)
           statement.execute(*values)

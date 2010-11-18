@@ -9,7 +9,7 @@ class BackgroundJob < ActiveRecord::Base
       BackgroundJob.delete_all(["id <= ?", limit_record.id])
     end
     
-    super(:description => description, :status => RUNNING, :params => Marshal.dump(params))
+    super(:description => description, :status => RUNNING, :params => Marshal.safe_dump(params))
   end
   
   def finish
@@ -18,7 +18,7 @@ class BackgroundJob < ActiveRecord::Base
   end
 
   def t_description(locale = I18n.locale)
-    params = Marshal.load(self.params)
+    params = Marshal.safe_load(self.params)
     params[:locale] = locale
     I18n.t("admin.tasks." + self.description, params)
   end
