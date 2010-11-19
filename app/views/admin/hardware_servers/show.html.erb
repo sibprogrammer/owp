@@ -257,6 +257,7 @@ Ext.onReady(function() {
   var statsStore = new Ext.data.JsonStore({
     url: '/admin/hardware-servers/get_stats?id=<%= @hardware_server.id %>',
     root: 'data',
+    data: <%= { :data => @hardware_server_stats }.to_json %>,
     autoLoad: true,
     fields: [
       { name: 'parameter' },

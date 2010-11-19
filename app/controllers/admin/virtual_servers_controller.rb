@@ -111,13 +111,11 @@ class Admin::VirtualServersController < Admin::Base
     @virtual_server_stats = []
     is_running = 'running' == @virtual_server.state
     
-    counters = @virtual_server.bean_counters.find(:all, :conditions => { :period_type => BeanCounter::PERIOD_PERMANENT })
-    
     %w( kmemsize lockedpages privvmpages shmpages numproc physpages vmguarpages 
         oomguarpages numtcpsock numflock numpty numsiginfo tcpsndbuf tcprcvbuf 
         othersockbuf dgramrcvbuf numothersock dcachesize numfile numiptent 
     ).each do |limit|
-      counter = counters.find { |counter| counter.name == limit }
+      counter = Watchdog.get_ve_counter(limit, @virtual_server.id)
       
       if counter and is_running
         @virtual_server_stats << { 
@@ -137,32 +135,23 @@ class Admin::VirtualServersController < Admin::Base
       end
     end
     
-    @ram_usage = !is_running ? [] : @virtual_server.bean_counters.find(
-      :all, :limit => 60, :order => 'id DESC',
-      :conditions => { :name => '_memory' }
-    ).map { |counter| { 'time' => counter.created_at.min, 'usage' => counter.held.to_i / (1024 * 1024) } }.reverse
+    @ram_max = @virtual_server.memory
+    @ram_usage = !is_running ? [] : Watchdog.get_ve_counters_queue('_memory', @virtual_server.id).map { |counter|
+      ram = counter[:held].to_i / (1024 * 1024)
+      @ram_max = ram if ram > @ram_max
+      { 'time' => counter[:created_at].min, 'usage' => ram }
+    }
     
-    @ram_max = 0
-    if !@ram_usage.blank?
-      last_counter = @virtual_server.bean_counters.find(:last, :order => 'id DESC', :conditions => { :name => '_memory' })
-      @ram_max = last_counter.limit.to_i / (1024 * 1024)
-    end
+    @disk_max = @virtual_server.diskspace
+    @disk_usage = !is_running ? [] : Watchdog.get_ve_counters_queue('_diskspace', @virtual_server.id).map { |counter|
+      diskspace = counter[:held].to_i / (1024 * 1024)
+      @disk_max = diskspace if diskspace > @disk_max
+      { 'time' => counter[:created_at].min, 'usage' => diskspace }
+    }
     
-    @disk_usage = !is_running ? [] : @virtual_server.bean_counters.find(
-      :all, :limit => 60, :order => 'id DESC',
-      :conditions => { :name => '_diskspace' }
-    ).map { |counter| { 'time' => counter.created_at.min, 'usage' => counter.held.to_i / (1024 * 1024) } }.reverse
-    
-    @disk_max = 0
-    if !@disk_usage.blank?
-      last_counter = @virtual_server.bean_counters.find(:last, :order => 'id DESC', :conditions => { :name => '_diskspace' })
-      @disk_max = last_counter.limit.to_i / (1024 * 1024)
-    end
-    
-    @cpu_usage = !is_running ? [] : @virtual_server.bean_counters.find(
-      :all, :limit => 60, :order => 'id DESC',
-      :conditions => { :name => '_cpu_usage' }
-    ).map { |counter| { 'time' => counter.created_at.min, 'usage' => counter.held.to_i } }.reverse
+    @cpu_usage = !is_running ? [] : Watchdog.get_ve_counters_queue('_cpu_usage', @virtual_server.id).map { |counter|
+      { 'time' => counter[:created_at].min, 'usage' => counter[:held].to_i }
+    }
   end
   
   def get_properties
@@ -335,7 +324,7 @@ class Admin::VirtualServersController < Admin::Base
       
       stats = []
 
-      counter = BeanCounter.find_last_by_name_and_virtual_server_id('_cpu_usage', virtual_server.id)
+      counter = Watchdog.get_ve_counter('_cpu_usage', virtual_server.id)
       
       if counter and is_running
         stats << {
@@ -351,7 +340,7 @@ class Admin::VirtualServersController < Admin::Base
       
       helper = Object.new.extend(ActionView::Helpers::NumberHelper)
       
-      counter = BeanCounter.find_last_by_name_and_virtual_server_id('_diskspace', virtual_server.id)
+      counter = Watchdog.get_ve_counter('_diskspace', virtual_server.id)
   
       if counter and is_running
         stats << {
@@ -370,8 +359,8 @@ class Admin::VirtualServersController < Admin::Base
       else
         stats << { :parameter => t('admin.virtual_servers.stats.field.disk_usage'), :value => '-' }
       end
-      
-      counter = BeanCounter.find_last_by_name_and_virtual_server_id('_memory', virtual_server.id)
+
+      counter = Watchdog.get_ve_counter('_memory', virtual_server.id)
       
       if counter and is_running
         stats << {

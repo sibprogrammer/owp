@@ -8,6 +8,19 @@ Ext.onReady(function() {
     layout: 'anchor'
   });
   
+  <% if !@watchdog_alive %>
+    // TODO: add localization
+    var watchdogPanel = new Ext.Panel({
+      header: false,
+      cls: 'panel-dashboard',
+      html: '<p><img src="/images/exclamation.png" class="icon-inline"/>' 
+        + 'Unable to connect to watchdog daemon. Probably it is not running. '
+        + '</p>'
+    });
+    
+    container.add(watchdogPanel);
+  <% end -%>
+  
   <% if @updates %>
     var updatesPanel = new Ext.Panel({
       header: false,

@@ -234,36 +234,19 @@ class HardwareServer < ActiveRecord::Base
   end
   
   def disk_usage
-    raw_info = rpc_client.exec('df', '-lP -k')['output']
-    raw_info.split("\n").find_all{ |item| item =~ /^\// }.map{ |item|
-      item = item.split
-      {
-        'partition' => item[0],
-        'total_bytes' => item[1].to_i * 1024,
-        'used_bytes' => item[2].to_i * 1024,
-        'free_bytes' => item[3].to_i * 1024,
-        'usage_percent' => item[4].to_i,
-        'mount_point' => item[5],
-      }
-    }
+    Watchdog.get_hw_param('disk_usage', id)
   end
   
   def cpu_load_average
-    rpc_client.exec('cat', '/proc/loadavg')['output'].split[0..2]
+    Watchdog.get_hw_param('cpu_load_average', id)
   end
   
   def memory_usage
-    raw_info = rpc_client.exec('free', '-bo')['output'].split("\n")[1].split
-    info = {}
-    info['total_bytes'] = raw_info[1].to_i
-    info['used_bytes'] = raw_info[2].to_i
-    info['free_bytes'] = raw_info[3].to_i
-    info['usage_percent'] = (info['used_bytes'].to_f / info['total_bytes'].to_f * 100).to_i
-    info
+    Watchdog.get_hw_param('memory_usage', id)
   end
   
   def os_version
-    rpc_client.exec('uname', '-srm')['output']
+    Watchdog.get_hw_param('os_version', id).to_s
   end
   
   private

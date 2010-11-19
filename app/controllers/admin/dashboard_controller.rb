@@ -7,6 +7,7 @@ class Admin::DashboardController < Admin::Base
   def index 
     @stats_data = get_stats
     @updates = get_updates
+    @watchdog_alive = Watchdog.alive
   end
   
   private

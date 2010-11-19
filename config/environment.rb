@@ -22,3 +22,5 @@ end
 
 PRODUCT_NAME = 'OpenVZ Web Panel'
 PRODUCT_VERSION = '2.0'
+
+Watchdog = WatchdogClient.new
