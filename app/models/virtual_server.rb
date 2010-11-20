@@ -12,7 +12,7 @@ class VirtualServer < ActiveRecord::Base
   
   validates_presence_of :identity
   validates_format_of :ip_address, :with => /^((\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})|\s|(([\da-fA-F]{1,4}:?)|(::)){1,8})*$/
-  validates_uniqueness_of :ip_address
+  validates_uniqueness_of :ip_address, :allow_blank => true
   validates_uniqueness_of :identity, :scope => :hardware_server_id
   validates_confirmation_of :password
   validates_format_of :nameserver, :with => /^((\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})|\s|(([\da-fA-F]{1,4}:?)|(::)){1,8})*$/
