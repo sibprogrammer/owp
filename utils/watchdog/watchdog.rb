@@ -99,7 +99,7 @@ class WatchdogService
       current_ve_id = counter_info[0].to_i
       current_ve = @virtual_servers.find { |ve| ve.identity == current_ve_id }
       
-      if current_ve and current_ve_id == current_ve.identity
+      if current_ve and current_ve_id == current_ve.identity and '' != counter_info[1]
         info = {}
         info['total_bytes'] = counter_info[2].to_i
         info['free_bytes'] = counter_info[4].to_i
@@ -127,7 +127,7 @@ class WatchdogService
       current_ve_id = counter_info[0].to_i
       current_ve = @virtual_servers.find { |ve| ve.identity == current_ve_id }
       
-      if current_ve and current_ve_id == current_ve.identity
+      if current_ve and current_ve_id == current_ve.identity and '' != counter_info[1]
         info = {}
         info['block_size'] = counter_info[1].to_i
         info['total_bytes'] = info['block_size'] * counter_info[2].to_i
