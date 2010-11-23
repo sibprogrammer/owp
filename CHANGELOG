@@ -1,3 +1,15 @@
+= OpenVZ Web Panel 1.7 (2010-11-23) =
+
+This version is a maintenance release. The following items were fixed and/or
+added:
+
+  * Fix problem with SQLite3::BusyException: database is locked (issue 211).
+  * Ability to use MySQL for backend (issue 212).
+  * Make IP address for virtual server an optional field (issue 216).
+  * Fix problem with virtual server statistics page if server is out of sync
+    (issue 118).
+  * Fix problems with expiration dates on CentOS (issue 217). 
+
 = OpenVZ Web Panel 1.6 (2010-11-07) =
 
 This version is a major release. The following items were fixed and/or added:
