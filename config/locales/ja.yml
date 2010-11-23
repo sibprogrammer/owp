@@ -7,7 +7,7 @@ ja:
     performing_task: "お待ちください。タスクを実行しています..."
     error:
       title: "エラー"
-      fill_form: "フォームににゅ力してください。"
+      fill_form: "フォームに入力してください。"
     info:
       title: "インフォメーション"
     button:
@@ -21,12 +21,12 @@ ja:
           attributes:
             password:
               confirmation: "パスワードとその確認が一致しません。"
-              too_short: "パスワードが短すぎます (最小値: {{count}})."
+              too_short: "パスワードが短すぎます (最小値: {{count}}) 。"
             password_confirmation:
               blank: "確認用パスワードは必須です。"
             login:
               taken: "そのログイン名のユーザーがすでに存在します。"
-              too_short: "ログイン名が短すぎます (最小値: {{count}})."
+              too_short: "ログイン名が短すぎます (最小値: {{count}}) 。"
         hardware_server:
           attributes:
             host:
@@ -78,7 +78,7 @@ ja:
     contributors_list: "リスト"
     web_site: "Web サイト"
   login:
-    page_title: "ログインLogin"
+    page_title: "ログイン"
     window_title: "{{product}} へログイン"
     username: "ユーザー名"
     password: "パスワード"
@@ -108,7 +108,7 @@ ja:
     operations:
       up_level: "上の階層へ"
       search: "検索"
-    logout: "ログアウトしてもよろしいですか?"
+    logout: "ログアウトしてよろしいですか?"
     search:
       form:
         title: "検索"
@@ -135,7 +135,7 @@ ja:
       virtual_server:
         created: "仮想サーバー {{identity}} は作成されました。"
         removed: "仮想サーバー {{identity}} は削除されました。"
-        change_state_failed: "仮想サーバー {{identity}} ステータス変更に失敗; iステータス: {{state}}; コード: {{code}} 。"
+        change_state_failed: "仮想サーバー {{identity}} ステータス変更に失敗; ステータス: {{state}}; コード: {{code}} 。"
         updated: "仮想サーバー {{identity}} の設定はアップデートされました。"
         cloned: "仮想サーバー {{identity}} は、複製されました。"
         counter_reached: "リミット {{name}} は、物理サーバー {{host}} 上の仮想サーバー {{identity}} に到達しました。"
@@ -216,10 +216,10 @@ ja:
           fieldset:
             additional_settings: "追加設定"
         disconnect_server:
-          sure_to_disconnect: "選択したサーバーを切断してもよろしいですか?"
+          sure_to_disconnect: "選択したサーバーを切断してよろしいですか?"
           deletion_failed: "サーバー切断リクエストに失敗しました。"
         sync:
-          sync_failed: "いくつかの物理サーバーに燗する情報を同期できません。"
+          sync_failed: "いくつかの物理サーバーに関する情報を同期できません。"
         reboot_server:
           sure_to_reboot: "選択されたサーバーはリブートのあいだ、利用できません。それらをリブートしてよろしいですか?"
           reboot_failed: "いくつかのサーバーのリブートを開始できません。"
@@ -254,7 +254,7 @@ ja:
           host_name: "ホスト名"
           os_template: "OS テンプレート"
           memory: "メモリ、Mb"
-          diskspace: "ディスクスペース、 Mb"
+          diskspace: "ディスクスペース、Mb"
           expiration_date: "有効期限"
           owner: "所有者"
           description: "説明"
