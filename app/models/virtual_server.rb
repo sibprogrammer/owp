@@ -20,6 +20,10 @@ class VirtualServer < ActiveRecord::Base
   validates_format_of :host_name, :with => /^[a-z0-9\-\.]*$/i
   validates_format_of :description, :with => /^[a-z0-9\-\.\s]*$/i if AppConfig.vzctl.save_descriptions
 
+  def expiration_date=(date)
+    write_attribute(:expiration_date, date.gsub('.', '-'))
+  end
+
   def get_limits
     parser = IniParser.new(hardware_server.rpc_client.exec('cat', "/etc/vz/conf/#{identity.to_s}.conf")['output'])
     
