@@ -531,7 +531,7 @@ fr:
           field:
             description: "Description"
             ve_state:
-              title: Etat du serveur"
+              title: "Etat du serveur"
               suspend: "suspendre (recommandé)"
               stop: "Arreter"
               live: "Laisser fonctionner"
