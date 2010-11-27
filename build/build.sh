@@ -34,7 +34,7 @@ cd `dirname $0`
     rake db:migrate RAILS_ENV="production"
     
     # minimize distribution size
-    rm -rf build test vendor/rails/railties/doc/guides vendor/rails/activerecord/test
+    rm -rf build vendor/rails/railties/doc/guides vendor/rails/activerecord/test
   cd ..
   
   [ -f $PROJECT-$VERSION.tgz ] && rm $PROJECT-$VERSION.tgz || true
