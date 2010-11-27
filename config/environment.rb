@@ -21,6 +21,6 @@ Rails::Initializer.run do |config|
 end
 
 PRODUCT_NAME = 'OpenVZ Web Panel'
-PRODUCT_VERSION = '1.7'
+PRODUCT_VERSION = '2.0'
 
 Watchdog = WatchdogClient.new
