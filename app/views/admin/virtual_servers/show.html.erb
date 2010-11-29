@@ -289,12 +289,12 @@ Ext.onReady(function() {
         fieldLabel: '<%= tjs('admin.virtual_servers.form.create_server.field.password') %>',
         name: 'password',
         inputType: 'password',
-        allowBlank: false
+        allowBlank: true
       }, {
         fieldLabel: '<%= tjs('admin.virtual_servers.form.create_server.field.confirm_password') %>',
         name: 'password_confirmation',
         inputType: 'password',
-        allowBlank: false
+        allowBlank: true
       } <% if @current_user.can_select_os_on_reinstall? %>, {
         fieldLabel: '<%= tjs('admin.virtual_servers.form.create_server.field.os_template') %>',
         xtype: 'combo',

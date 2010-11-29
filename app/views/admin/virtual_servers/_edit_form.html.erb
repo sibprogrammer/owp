@@ -147,12 +147,12 @@ var showVirtualServerEditForm = function(mode, grid, statsGrid) {
             fieldLabel: '<%= tjs('admin.virtual_servers.form.create_server.field.password') %>',
             name: 'password',
             inputType: 'password',
-            allowBlank: ('edit' == mode)
+            allowBlank: true
           }, {
             fieldLabel: '<%= tjs('admin.virtual_servers.form.create_server.field.confirm_password') %>',
             name: 'password_confirmation',
             inputType: 'password',
-            allowBlank: ('edit' == mode)
+            allowBlank: true
           }, {
             fieldLabel: '<%= tjs('admin.virtual_servers.form.create_server.field.owner') %>',
             xtype: 'combo',
