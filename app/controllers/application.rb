@@ -15,7 +15,7 @@ class ApplicationController < ActionController::Base
   # from your application log (in this case, all fields with names like "password"). 
   # filter_parameter_logging :password
     
-  before_filter :set_locale, :set_product_name, :set_response_format, :set_extjs_base
+  before_filter :set_locale, :set_product_name, :set_response_format, :set_extjs_base, :set_remote_ip
     
   protected  
   
@@ -37,6 +37,10 @@ class ApplicationController < ActionController::Base
     
     def set_extjs_base
       @extjs_base_url = AppConfig.extjs.cdn.enabled ? AppConfig.extjs.cdn.base_url : '/ext'
+    end
+
+    def set_remote_ip
+      EventLog.remote_ip = request.remote_ip
     end
   
     def log_error(exception)

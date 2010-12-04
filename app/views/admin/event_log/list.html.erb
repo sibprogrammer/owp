@@ -34,6 +34,7 @@ Ext.onReady(function() {
       { name: 'id' },
       { name: 'level' },
       { name: 'created_at' },
+      { name: 'ip_address' },
       { name: 'message' }
     ]
   });
@@ -84,6 +85,12 @@ Ext.onReady(function() {
         width: 130,
         sortable: true,
         dataIndex: 'created_at'
+      }, {
+        id: 'created_at',
+        header: '<%= tjs('admin.event_log.grid.column.ip_address') %>',
+        width: 130,
+        sortable: true,
+        dataIndex: 'ip_address'
       }, { 
         id: 'message',
         header: '<%= tjs('admin.event_log.grid.column.message') %>',

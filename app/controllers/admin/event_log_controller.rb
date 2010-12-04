@@ -24,6 +24,7 @@ class Admin::EventLogController < Admin::Base
         :message => item.html_message,
         :level => item.level,
         :created_at => local_datetime(item.created_at),
+        :ip_address => item.ip_address,
       }}
     end
   

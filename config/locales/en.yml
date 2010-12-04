@@ -412,6 +412,7 @@ en:
         column:
           level: "Status"
           created_at: "Date"
+          ip_address: "IP Address"
           message: "Message"
           id: "ID"
         button:

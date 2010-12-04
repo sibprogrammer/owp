@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20101026161959) do
+ActiveRecord::Schema.define(:version => 20101204131237) do
 
   create_table "background_jobs", :force => true do |t|
     t.string  "description"
@@ -49,6 +49,7 @@ ActiveRecord::Schema.define(:version => 20101026161959) do
     t.string   "message"
     t.string   "params"
     t.datetime "created_at"
+    t.string   "ip_address"
   end
 
   create_table "hardware_servers", :force => true do |t|
