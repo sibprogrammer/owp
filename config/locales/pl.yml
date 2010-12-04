@@ -1,0 +1,620 @@
+pl:
+  language:
+    title: "Polski"
+  form:
+    loading: "Proszę czekać..."
+    confirmation: "Potwierdzenie"
+    performing_task: "Proszę czekać. Wykonuję zadanie..."
+    error:
+      title: "Błąd"
+      fill_form: "Proszę wypełnić formularz."
+    info:
+      title: "Informacje"
+    button:
+      save: "Zapisz"
+      cancel: "Anuluj"
+      create: "Utwórz"
+  activerecord:
+    errors:
+      models:
+        user:
+          attributes:
+            password:
+              confirmation: "Niewłaściwie powtórzone hasło."
+              too_short: "Hasło zbyt krótkie (minimalna liczba znaków: {{count}})."
+            password_confirmation:
+              blank: "Wymagane jest powtórzenie hasła."
+            login:
+              taken: "Użytkownik z takim loginem juz istnieje."
+              too_short: "Login jest zbyt krótki (minimalna liczba znaków: {{count}})."
+        hardware_server:
+          attributes:
+            host:
+              taken: "Serwer o takiej nazwie już istnieje."
+              connection: "Błąd połączenia. Być może daemon nie został uruchomiony."
+              ssh_connection: "Błąd przy zestawianiu połączenia SSH."
+              openvz_not_found: "Wirtualizacja OpenVZ nie odnaleziona na tym serwerze."
+              ruby_not_found: "Interpreter Ruby nie odnaleziony na serwerze."
+            auth_key:
+              bad_auth: "Błąd autoryzacji. Prawdopodobnie niewłaściwy klucz."
+            daemon_port:
+              not_a_number: "Błędny numer portu."
+              greater_than: "Numer portu musi być większy niż {{count}}."
+              less_than: "Numer portu musi być mniejszy niż {{count}}."
+            root_password:
+              ssh_bad_auth: "Nieudana autoryzacja SSH."
+              empty: "To pole jest wymagane."
+        virtual_server:
+          attributes:
+            ip_address:
+              invalid: "Niewłaściwy adres IP."
+              taken: "Ten adres IP został już przydzieony do innego serwera."
+            identity:
+              taken: "Ta tożsamość należy do innego serwera."
+            password:
+              confirmation: "Hasło i potwierdzenie nie zgadzają się."
+            nameserver:
+              invalid: "Adres IP serwera DNS jest nieprawidłowy."
+            host_name:
+              invalid: "Nazwa hosta jest nieprawidłowa."
+            search_domain:
+              invalid: "Domena wyszukiwania jest nieprawidłowa."
+            description:
+              invalid: "Opis zawiera niedozwolone znaki."
+        server_template:
+          attributes:
+            name:
+              taken: "Istnieje już szablon serwera z taką nazwą."
+        role:
+          attributes:
+            name:
+              taken: "Rola o takiej nazwie już występuje w systemie."
+  about:
+    copyright: "Copyright 2008-2010 SoftUnity."
+    right_reserved: "Wszystkie prawa zastrzeżone."
+    about_program: "O programie..."
+    author: "Główny projektant"
+    contributors: "Uczestnicy projektu"
+    contributors_list: "lista"
+    web_site: "Strona WWW"
+  login:
+    page_title: "Logowanie"
+    window_title: "Zaloguj się do {{product}}"
+    username: "Login"
+    password: "Hasło"
+    remember_me: "Pamiętaj mnie"
+    button_login: "Zaloguj"
+    locale: "Język"
+    bad_login: "Niewłaściwy login lub hasło."
+    locked_user: "Użytkownik jest zablokowany."
+  admin:
+    menu:
+      title: "Menu"
+      general:
+        title: "Główne"
+        dashboard: "Panel"
+        hardware_servers: "Serwery fizyczne"
+        virtual_servers: "Serwery wirtualne"
+        my_profile: "Mój profil"
+        users: "Użytkownicy"
+        requests: "Tickety"
+        tasks: "Zadania"
+        event_log: "Log zdarzeń"
+        logout: "Wyloguj"
+      help:
+        title: "Pomoc"
+        documentation: "Dokumentacja"
+        support: "Wsparcie"
+    operations:
+      up_level: "Do góry"
+      search: "Szukaj"
+    logout: "Na pewno chcesz się wylogować?"
+    search:
+      form:
+        title: "Szukaj"
+        field:
+          query: "Zapytanie"
+        button:
+          search: "Szukaj"
+    my_profile:
+      title: "Mój profil"
+      user_name: "Login"
+      current_password: "Aktualne hasło"
+      new_password: "Nowe hasło"
+      confirm_password: "Potwierdź hasło"
+      bad_current_password: "Aktualne hasło nie zgadza się."
+      contact_name: "Osoba kontaktowa"
+      email: "E-mail"
+    events:
+      internal_error: "Błąd wewnętrzny: {{message}}"
+      hardware_server:
+        connect: "Serwer fizyczny {{host}} został podłączony."
+        disconnect: "Serwer fizyczny {{host}} został odłączony."
+        sync: "Stan serwera {{host}} zsynchronizowany."
+        reboot: "Start restartu serwera {{host}}."
+      virtual_server:
+        created: "Serwer wirtualny {{identity}} został utworzony."
+        removed: "Serwer wirtualny {{identity}} został usunięty."
+        change_state_failed: "Nieudana zmiana statusu serwera wirtualnego {{identity}}; status: {{state}}; kod: {{code}}."
+        updated: "Uaktualniono ustawienia serwera wirtualnego {{identity}}."
+        cloned: "Sklonowano serwer wirtualny {{identity}}."
+        counter_reached: "Limit {{name}} został osiagnięty dla wirtualnego lerwera {{identity}} na serwerze fizycznym {{host}}."
+      user:
+        login:
+          ok: "Użytkownik {{login}} zalogował się."
+          bad_password: "Użytkownik {{login}} wprowadził nieprawidłowe hasło."
+          bad_login: "Próba logowania nieznanym loginem."
+          locked_user: "Zablokowany użytkowni {{login}} próbował się zalogować."
+        logout: "Użytkownik {{login}} wylogował się."
+        removed: "Użytkownik {{login}} został usunięty."
+        enabled: "Użytkownik {{login}} został odblokowany."
+        disabled: "Użytkownik {{login}} został zablokowany."
+        created: "Użytkownik {{login}} został utworzony."
+        updated: "Użytkownik {{login}} został uaktualniony."
+        profile_updated: "Profil Użytkownika {{login}} został uaktualniony."
+      role:
+        removed: "Rola {{name}} została usunięta."
+        created: "Rola {{name}} została utworzona."
+        updated: "Rola {{name}} została uaktualniona."
+    tasks:
+      os_templates:
+        install: "Instalacja szablonów OS na serwerze {{host}}."
+      backups:
+        create: "Backup serwera wirtualnego #{{identity}} na serwerze fizycznym {{host}}."
+        restore: "Odtworzenie backupu serwera wirtualnego #{{identity}} na serwerze fizycznym {{host}}."
+    dashboard:
+      title: "Panel"
+      intro:
+        title: "Wprowadzenie"
+        text: "OpenVZ Web Panel to GUI służące do zarządzania za pomocą przeglądarki fizycznymi serwerami z technologią wirtualizacji OpenVZ"
+      profile:
+        title: "Profil"
+        text: "Jesteś zalogowany jako {{login}}."
+      updates:
+        text: "Dostępna jest nowa wersja: {{product}}."
+        update_command: "Aby dokonać uaktualnienia wykonaj następujące polecenie: {{command}}"
+      stats_grid:
+        title: "Statystyki"
+        column:
+          parameter: "Parametr"
+          value: "Wartość"
+        parameter:
+          panel_users: "Liczba użytkowników"
+          hardware_servers: "Serwery fizyczne"
+          virtual_servers: "Serwery wirtualne"
+          virtual_servers_running: "Uruchomione serwery wirtualne"
+          virtual_servers_stopped: "Zatrzymane serwery wirtualne"
+          virtual_servers_expired: "Przeterminowane serwery wirtualne"
+          opened_requests: "Otwarte tickety"
+    hardware_servers:
+      title: "Serwery fizyczne"
+      grid:
+        title: "Lista serwerów fizycznych"
+        column:
+          host_name: "Nazwa hosta"
+          description: "Opis"
+          virtual_servers: "Serwery wirtualne"
+        button:
+          connect: "Podłącz nowy serwer"
+          reconnect: "Włącz/Wyłącz serwer"
+          disconnect: "Odłącz serwer"   
+          details: "Szczegóły" 
+          sync: "Synchronizacja"
+          edit: "Zmień ustawienia"
+          reboot: "Restart"
+      form:
+        connect_server:
+          title: "Podłącz nowy serwer fizyczny"
+          edit_title: "Zmień ustawienia serwera fizycznego"
+          button_connect: "Podłącz"
+          field:
+            host_name: "Nazwa hosta"
+            auth_key: "Klucz autoryzacji"
+            description: "Opis"
+            daemon_port: "Port serwisowy"
+            root_password: "Hasło root-a"
+          fieldset:
+            additional_settings: "Dodatkowe ustawienia"
+        disconnect_server:
+          sure_to_disconnect: "Jesteś pewien że chcesz odłączyć wybrane serwery?"
+          deletion_failed: "Odłączenie serwerów zakończone niepowodzeniem."
+        sync:
+          sync_failed: "Brak możliwości synchronizacji informacji na niektórych serwerach fizycznych."
+        reboot_server:
+          sure_to_reboot: "Wybrane serwery będą niedostępne podczas restartu. Jesteś pewien że chcesz je zrestartować?"
+          reboot_failed: "Brak możliwości restartu niektórych serwerów."
+      show:
+        title: "Serwer fizyczny {{name}}"
+      top_toolbar:
+        os_templates: "Szablony systemów"
+        server_templates: "Szablony serwerów"
+      stats:
+        title: "Statystyka serwera fizycznego"
+        column:
+          parameter: "Parametr"
+          value: "Wartość"
+        field:
+          os_version: "Wersja systemu"
+          cpu_load_average: "Średnie obciążenie procesora"
+          disk_usage: "Zapełnienie dysku, partycja {{partition}}"
+          memory_usage: "Zużycie pamięci"
+        value:
+          disk_usage: "{{percent}}%, {{used}} z {{total}} / {{free}} wolnych"
+          memory_usage: "{{percent}}%, {{used}} z {{total}} / {{free}} wolnych"
+    virtual_servers:
+      title: "Serwery wirtualne"
+      limits:
+        unlimited: "brak limitu"
+      grid:
+        title: "Lista serwerów wirtualnych"
+        column:
+          state: "Stan"
+          identity: "VEID"
+          ip_address: "Adres IP"
+          host_name: "Nazwa hosta"
+          os_template: "Szablon systemu"
+          memory: "Pamięć, MB"
+          diskspace: "Dysk, MB"
+          expiration_date: "Data ważności"
+          owner: "Właściciel"
+          description: "Opis"
+        button:
+          create: "Utwórz serwer wirtualny"
+          destroy: "Usuń serwer wirtualny"
+          change_state: "Zmień stan"
+          start: "Start"
+          restart: "Restart"
+          stop: "Stop"
+          edit: "Zmień ustawienia"
+          limits: "Limity"
+          reinstall: "Reinstaluj"
+          clone: "Klonuj"
+          change_settings: "Zmiana ustawień"
+          console: "Konsola"
+          backup: "Kopia bezpieczeństwa"
+      form:
+        change_settings:
+          title: "Zmień ustawienia serwera wirtualnego"
+        reinstall:
+          title: "Przeinstaluj serwer wirtualny"
+          button:
+            reinstall: "Przeinstaluj"
+        change_state:
+          failed: "Brak możliwości zmiany stanu serwera wirtualnego."
+        remove_server:
+          sure_to_remove: "Jesteś pewien że chcesz usunąć wybrane serwery wirtualne?"
+          deletion_failed: "Brak możlwości usunięcia niektórych serwerów wirtualnych."
+        create_server:
+          title: "Utwórz nowy serwer wirtualny."
+          edit_title: "Zmień ustawienia serwera wirtualnego"
+          button_create: "Utwórz"
+          field:
+            identity: "ID serwera (VEID)"
+            os_template: "Szablon systemu"
+            select_os_template: "Wybierz szablon systemu"
+            ip_address: "Adres IP"
+            host_name: "Nazwa hosta"
+            password: "Hasło root-a"
+            confirm_password: "Potwierdź hasło"
+            start_on_boot: "Uruchamiaj na starcie"
+            start_after_creation: "Uruchom po utworzeniu"
+            nameserver: "Serwer DNS"
+            search_domain: "Domena przeszukiwania"
+            diskspace: "Przestrzeń dyskowa, MB"
+            memory: "Pamięć RAM, MB"
+            status: "Status"
+            owner: "Właściciel"
+            select_owner: "Wybierz właściciela"
+            no_owner: "Brak właściciela"
+            server_template: "Szablon serwera"
+            select_server_template: "Wybierz szablon serwera"
+            description: "Opis"
+            cpu_units: "Jednostki procesora"
+            cpus: "Liczba procesorów"
+            cpu_limit: "Limit procesora, %"
+            expiration_date: "Data ważności"
+          fieldset:
+            general: "Ogólne"
+            network: "Sieć"
+            system_access: "Dostęp do systemu"
+            start_options: "Opcje startowe"
+            dns_settings: "Ustawienia DNS"
+            limits: "Limity"
+          tab:
+            main_settings: "Głowne ustawienia"
+            additional_settings: "Dodatkowe ustawienia"
+        limits:
+          title: "Limity"
+          grid:
+            column:
+              name: "Nazwa"
+              soft_limit: "Limit miękki"
+              hard_limit: "Limit twardy"
+        console:
+          title: "Konsola"
+          error:
+            code: "Kod powrotu:"
+            output: "Wyjście:"
+          field:
+            command: "Komenda"
+          button:
+            run: "Uruchom"
+        clone:
+          title: "Klonuj serwer wirtualny"
+      show:
+        title: "Serwer wirtualny {{name}}"
+        grid:
+          title: "Informacje o serwerze wirtualnym"
+          column:
+            parameter: "Paramter"
+            value: "Wartość"
+      stats:
+        title: "Statystyki serwera wirtualnego"
+        field:
+          cpu_load_average: "Średnie obciążenie procesora"
+          disk_usage: "Zapełnienie dysku"
+          memory_usage: "Zużycie pamięci"
+        value:
+          disk_usage: "{{percent}}%, {{used}} z {{total}} / {{free}} wolnych"
+          memory_usage: "{{percent}}%, {{used}} z {{total}} / {{free}} wolnych"
+        button:
+          stat_details: "Szczegóły"
+      stat_details:
+        title: "Statystyki serwera wirtualnego {{name}}"
+        grid:
+          title: "Limity serwera wirtualnego"
+          column:
+            parameter: "Parametr"
+            current: "Aktualne użycie"
+            max: "Maksymalne użycie"
+            barrier: "Limit miękki"
+            limit: "Limit twardy"
+            failcnt: "Błędy"
+        chart:
+          cpu_usage:
+            title: "Użycie procesora"
+          ram_usage:
+            title: "Użycie pamięci"
+          disk_usage:
+            title: "Zapełnienie dysku"
+    os_templates:
+      title: "Szablony systemu na fizycznym serwerze {{name}}"
+      grid:
+        title: "Zainstalowane szablony systemu"
+        column:
+          name: "Nazwa"
+          size: "Rozmiar, MB"
+          virtual_servers: "Serwery"
+        button:
+          install_new_template: "Zainstaluj nowy szablon systemu"
+          remove: "Usuń szablon"
+      form:
+        install:
+          title: "Instalacja nowego szablonu systemu"
+          tab:
+            official: "Oficjalne"
+            contributed: "Społeczności"
+            url: "URL"
+          button_install: "Instaluj"
+          load_failed: "Nie mogę załadować listy szablonów systemów."
+          failed: "Uruchomienie instalacji szablonów systemów nie powiodło się."
+          scheduled: "Instalacja szablonów systemów zaplanowana. Nowe szablony pojawią się za niedługo."
+          field:
+            url: "URL Szablonu"
+          invalid_url: "Wprowadź prowidłowy URL do archiwum szablonów systemów."
+        remove_template:
+          sure_to_remove: "Jesteś pewien że chcesz usunąć wybrane szablony systemów?"
+          deletion_failed: "Nie udało się usunąć kilku szablonów systemów."
+    event_log:
+      title: "Log zdarzeń"
+      grid:
+        title: "Ostatnie zdarzenia"
+        column:
+          level: "Status"
+          created_at: "Data"
+          message: "Wiadomość"
+          id: "ID"
+        button:
+          clear: "Wyczyść logi"
+      form:
+        clear:
+          sure_to_clear: "Jesteś pewien że chcesz usunąć wszystkie wpisy?"
+          clear_failed: "Nie udało się wyczyścić logów."
+    users:
+      role:
+        infrastructure_admin: "Administrator"
+        virtual_server_owner: "Właściciel serwera wirtualnego"
+      title: "Użytkownicy"
+      top_toolbar:
+        roles: "Role"
+      grid:
+        title: "Lista użytkowników"
+        column:
+          enabled: "Stan"
+          login: "Login"
+          created_at: "Data utworzenia"
+          role: "Rola"
+          contact_name: "Osoba kontaktowa"
+          email: "E-mail"
+        button:
+          add: "Dodaj użytkownika"
+          remove: "Skasuj użytkownika"
+          edit: "Edytuj użytkownika"
+          enable: "Włącz"
+          disable: "Wyłącz"
+      form:
+        remove_user:
+          sure_to_remove: "Jesteś pewien że chcesz usunąć wybranych użytkowników?"
+          deletion_failed: "Nie udało się usunąć niektórych użytkowników."
+        create:
+          title: "Utwórzy nowego użytkownika"
+          edit_title: "Edytuj użytkownika"
+          button_create: "Utwórz"
+          field:
+            login: "Login"
+            password: "Hasło"
+            confirm_password: "Powtórz hasło"
+            role: "Rola"
+            select_role: "Wybierz rolę"
+            contact_name: "Osoba kontaktowa"
+            email: "E-mail"
+    task:
+      title: "Zadania"
+      grid:
+        title: "Lista zadań"
+        column:
+          status: "Status"
+          id: "ID"
+          description: "Opis"
+    server_templates:
+      title: "Szablony serwerów na fizycznym serwerze {{name}}"
+      grid:
+        title: "Dostępne szablony serwerów"
+        column:
+          name: "Nazwa"
+          template_default: "domyślny"
+          virtual_servers: "Serwery"
+        button:
+          add: "Dodaj szablon"
+          remove: "Usuń szablon"
+          edit: "Zmień szablon"
+      form:
+        remove_template:
+          sure_to_remove: "Jesteś pewien że chcesz usunąć wybrane szablony serwerów?"
+          deletion_failed: "Błąd podczas usuwania niektórych szablonów serwerów."
+        create_server:
+          title: "Utwórz nowy szablon serwera"
+          edit_title: "Edytuj szablon serwera"
+          button_create: "Utwórz"
+          tab:
+            main_settings: "Główne ustawinia"
+            advanced_settings: "Dodatkowe ustawienia"
+          fieldset:
+            general: "Ogólne"
+            limits: "Limity"
+            dns_settings: "Ustawienia DNS"
+            start_options: "Opcje startowe"
+          field:
+            name: "Nazwa"
+            diskspace: "Dyski, MB"
+            memory: "Pamięć, MB"
+            start_on_boot: "Uruchom na starcie"
+            nameserver: "Serwer DNS"
+            search_domain: "Domena przeszukiwania"
+            cpu_units: "Jednostki procesora"
+            cpus: "Liczba procesorów"
+            cpu_limit: "Limit procesora, %"
+          grid:
+            column:
+              name: "Nazwa"
+              soft_limit: "Limit miękki"
+              hard_limit: "Limit twardy"
+    backups:
+      title: "Kopie bezpieczeństwa serwerów wirtualnych #{{identity}}"
+      grid:
+        title: "Backupy"
+        button:
+          create: "Rób backup"
+          restore: "Odtwórz backup"
+          destroy: "Usuń"
+        column:
+          archive_date: "Data"
+          description: "Opis"
+          size: "Rozmiar, MB"
+      form:
+        remove_backup:
+          sure_to_remove: "Jesteś pewien że chcesz usunąć wybrane kopie bezpieczeństwa?"
+          deletion_failed: "Nie udało się usunąć niektórych kopii bezpieczeńtwa"
+        create:
+          title: "Utwórz nową kopię bezpieczeństwa"
+          scheduled: "Proces kopii został zainicjowany i chwilę potrwa."
+          field:
+            description: "Opis"
+            ve_state:
+              title: "Stan"
+              suspend: "Uśpij (zalecany)"
+              stop: "Zatrzymaj"
+              live: "Pozostaw uruchomiony"
+          button_create: "Utwórz"
+        restore:
+          sure_to_restore: "Jesteś pewien że chcesz odzyskać wybrane kopie bezpieczeństwa? Serwer będzie niedostępny w czasie odzyskiwania"
+          failed: "Procedura odzyskiwania zakończona niepowodzeniem."
+          scheduled: "Proces odzyskiwania został zainicjowany i chwilę potrwa."
+    requests:
+      title: "Tickety"
+      grid:
+        title: "lista ticketów"
+        column:
+          opened: "Stan"
+          id: "ID"
+          subject: "Temat"
+          replies: "Odpowiedzi"
+          author: "Autor"
+          updated_at: "Data uaktualnienia"
+        button:
+          add: "Utwórz ticket"
+          remove: "Usuń ticket"
+          details: "Szczegóły"
+          solve: "Zamknij ticket"
+          reopen: "Otwórz ponownie ticket"
+      form:
+        remove_request:
+          sure_to_remove: "Jesteś pewien że chcesz usunąć wybrane tickety?"
+          deletion_failed: "Usunięcie niektórych ticketów nie udało się."
+        create:
+          title: "Utwórz ticket"
+          button_create: "Utwórz"
+          field:
+            subject: "Temat"
+            content: "Wiadomość"
+      comments:
+        title: "Ticket #{{id}}"
+        grid:
+          title: "Komentarz"
+          column:
+            created_at: "Data"
+            author: "Autor"
+            content: "Wiadomość"
+          button:
+            add: "Dodaj komentarz"
+        form:
+          add:
+            title: "Dodaj komentarz"
+            button_add: "Dodaj"
+            field:
+              content: "Wiadomość"
+    roles:
+      title: "Role"
+      grid:
+        title: "Lista ról"
+        column:
+          name: "Nazwa"
+          users: "Użytkownicy"
+        button:
+          add: "Dodaj rolę"
+          remove: "Usuń rolę"
+          edit: "Edytuj rolę"
+      form:
+        remove_role:
+          sure_to_remove: "Jesteś pewien że chcesz usunąć wybrane role?"
+          deletion_failed: "Błąd w czasie usuwania niektórych ról. Role przypisane do użytkowników nie mogą być usuwane."
+        create:
+          title: "Utwórz nową rolę"
+          edit_title: "Edytuj rolę"
+          field:
+            name: "Nazwa"
+          fieldset:
+            permissions: "Uprawnienia"
+          button_create: "Utwórz"
+          permissions:
+            manage_hardware_servers: "Zarządzanie serwerami fizycznymi"
+            use_ve_console: "Konsola serwera wirtualnego"
+            backup_ve: "Backupy serwera wirtualnego"
+            reinstall_ve: "Reinstalacja serwera wirtualnego"
+            handle_requests: "Obsługa ticketów"
+            create_requests: "Tworzenie ticketów"
+            view_tasks: "Listowanie zadań"
+            view_logs: "Listowanie logów zdarzeń"
+            manage_logs: "Zarządzanie logami zdarzeń"
+            manage_users: "Zarządzanie użytkownikami"
+            select_os_on_reinstall: "Wybór systemu przy reinstalacji"
