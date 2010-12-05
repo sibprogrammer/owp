@@ -8,6 +8,7 @@ class Iphone::EventLogController < Iphone::Base
     @events.map! { |item| {
       :id => item.id,
       :message => item.html_message,
+      :ip_address => item.ip_address,
       :level => item.level,
       :created_at => local_datetime(item.created_at),
     }}

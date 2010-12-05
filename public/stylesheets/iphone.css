@@ -16,3 +16,8 @@ ul.error {
 img.inline {
   vertical-align: middle;
 }
+
+.ip_address {
+  color: gray;
+  font-size: 12px;
+}

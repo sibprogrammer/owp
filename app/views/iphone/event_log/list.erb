@@ -10,7 +10,8 @@
         <%= '<img class="inline" src="/images/' + icon + '"/>' %>
         #<%= h(event[:id]) %> - <%= h(event[:created_at]) %>
       </span>
-      <%= event[:message] %>
+      <%= event[:message] %><br/>
+      <span class="ip_address"><%= h(event[:ip_address]) %></span>
     </li>
   <% end %>
 </ul>
