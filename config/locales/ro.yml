@@ -153,9 +153,9 @@ ro:
         updated: "Utilizatorul {{login}} a fost actualizat."
         profile_updated: "Profilul utilizatorului {{login}} a fost actualizat."
       role:
-        removed: "Tipul {{name}} a fost sters."
-        created: "Tipul {{name}} a fost adaugat."
-        updated: "Tipul {{name}} a fost actualizat."
+        removed: "Rolul {{name}} a fost sters."
+        created: "Rolul {{name}} a fost adaugat."
+        updated: "Rolul {{name}} a fost actualizat."
     tasks:
       os_templates:
         install: "Sabloane SO pe serverul {{host}}."
@@ -333,8 +333,8 @@ ro:
         console:
           title: "Consola"
           error:
-            code: "Return code:"
-            output: "Output:"
+            code: "Comanda:"
+            output: "Rezultat:"
           field:
             command: "Comanda"
           button:
@@ -584,23 +584,23 @@ ro:
             field:
               content: "Mesaj"
     roles:
-      title: "Tipuri utilizatori"
+      title: "Roluri utilizatori"
       grid:
-        title: "Lista tipuri"
+        title: "Lista roluri"
         column:
           name: "Nume"
           users: "Utilizatori"
         button:
-          add: "Adauga Tip"
-          remove: "Sterge Tip"
-          edit: "Editeaza Tip"
+          add: "Adauga rol"
+          remove: "Sterge rol"
+          edit: "Editeaza rol"
       form:
         remove_role:
-          sure_to_remove: "Esti sigur ca doresti stergerea tipurilor selectate?"
-          deletion_failed: "Nu au putut fi sterse anumite tipuri. Tipurile cu ce au deka utilizatori atribuiti nu pot fi sterse."
+          sure_to_remove: "Esti sigur ca doresti stergerea rolurilor selectate?"
+          deletion_failed: "Nu au putut fi sterse anumite roluri. Rolurile ce au deja utilizatori atribuiti nu pot fi sterse."
         create:
-          title: "Creeaza tip nou"
-          edit_title: "Editeaza tip"
+          title: "Creeaza rol nou"
+          edit_title: "Editeaza rol"
           field:
             name: "Nume"
           fieldset:
@@ -615,6 +615,6 @@ ro:
             create_requests: "Creeare cereri"
             view_tasks: "Vizualizare sarcini"
             view_logs: "Vizualizare jurnal evenimente"
-            manage_logs: "Event logs management"
+            manage_logs: "Administrare jurnal evenimente"
             manage_users: "Administrare utilizatori"
             select_os_on_reinstall: "Selectare SO la reinstalare"
