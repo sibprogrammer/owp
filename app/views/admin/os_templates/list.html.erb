@@ -302,6 +302,7 @@ Ext.onReady(function() {
     fields: [
       { name: 'id' },
       { name: 'name' },
+      { name: 'size' },
       { name: 'virtual_servers' }
     ]
   });
@@ -336,6 +337,12 @@ Ext.onReady(function() {
         header: '<%= tjs('admin.os_templates.grid.column.name') %>',
         sortable: true,
         dataIndex: 'name'
+      }, {
+        id: 'size',
+        header: '<%= tjs('admin.os_templates.grid.column.size') %>',
+        sortable: true,
+        width: 100,
+        dataIndex: 'size'
       }, {
         id: 'virtual_servers',
         header: '<%= tjs('admin.os_templates.grid.column.virtual_servers') %>',
