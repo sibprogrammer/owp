@@ -195,8 +195,8 @@ class WatchdogService
     raw_info = hardware_server.rpc_client.exec('free', '-bo')['output'].split("\n")[1].split
     info = {}
     info['total_bytes'] = raw_info[1].to_i
-    info['used_bytes'] = raw_info[2].to_i
-    info['free_bytes'] = raw_info[3].to_i
+    info['free_bytes'] = raw_info[3].to_i + raw_info[5].to_i + raw_info[6].to_i
+    info['used_bytes'] = info['total_bytes'] - info['free_bytes']
     info['usage_percent'] = (info['used_bytes'].to_f / info['total_bytes'].to_f * 100).to_i
     info
   end
