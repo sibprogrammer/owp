@@ -58,11 +58,10 @@ class HwDaemonClient
   
   def ping
     begin
-      rpc_call('hwDaemon.version')
+      return false != rpc_call('hwDaemon.version')
     rescue
       return false
     end
-    true
   end
   
   def write_file(filename, content)

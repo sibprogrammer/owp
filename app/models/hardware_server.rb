@@ -220,11 +220,17 @@ class HardwareServer < ActiveRecord::Base
   end
   
   def sync
+    if !rpc_client.ping
+      EventLog.error("hardware_server.sync_failed", { :host => self.host })
+      return
+    end
+
     sync_server_info
     sync_os_templates
     sync_server_templates
     sync_virtual_servers
     sync_backups
+
     EventLog.info("hardware_server.sync", { :host => self.host })
   end
   

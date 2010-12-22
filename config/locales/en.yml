@@ -131,6 +131,7 @@ en:
         connect: "Physical server {{host}} was connected."
         disconnect: "Physical server {{host}} was disconnected."
         sync: "Server's {{host}} state was synchronized."
+        sync_failed: "Failed to synchronize {{host}} server state."
         reboot: "Start rebooting of the server {{host}}."
       virtual_server:
         created: "Virtual server {{identity}} was created."
