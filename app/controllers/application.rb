@@ -2,6 +2,9 @@
 # Likewise, all the methods added will be available for all controllers.
 
 class ApplicationController < ActionController::Base
+  # filter out password parameters from log files
+  filter_parameter_logging :password
+
   helper :all # include all helpers, all the time
   
   include AuthenticatedSystem
