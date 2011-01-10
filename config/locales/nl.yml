@@ -70,7 +70,7 @@ nl:
             name:
               taken: "Een rol met deze naam bestaat al."
   about:
-    copyright: "Copyright 2008-2010 SoftUnity."
+    copyright: "Copyright 2008-2011 SoftUnity."
     right_reserved: "All Rights Reserved."
     about_program: "About program"
     author: "Main developer"

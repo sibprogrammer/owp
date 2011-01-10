@@ -70,7 +70,7 @@ ro:
             name:
               taken: "Exista deja un tip de utilizator cu acest nume"
   about:
-    copyright: "Copyright 2008-2010 SoftUnity."
+    copyright: "Copyright 2008-2011 SoftUnity."
     right_reserved: "Toate drepturile rezervate."
     about_program: "Despre aplicatie"
     author: "Dezvoltator principal"

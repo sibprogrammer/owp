@@ -70,7 +70,7 @@ en:
             name:
               taken: "Role with such name is already exist."
   about:
-    copyright: "Copyright 2008-2010 SoftUnity."
+    copyright: "Copyright 2008-2011 SoftUnity."
     right_reserved: "All Rights Reserved."
     about_program: "About program"
     author: "Main developer"

@@ -70,7 +70,7 @@ pl:
             name:
               taken: "Rola o takiej nazwie już występuje w systemie."
   about:
-    copyright: "Copyright 2008-2010 SoftUnity."
+    copyright: "Copyright 2008-2011 SoftUnity."
     right_reserved: "Wszystkie prawa zastrzeżone."
     about_program: "O programie..."
     author: "Główny projektant"
