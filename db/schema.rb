@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20101214053337) do
+ActiveRecord::Schema.define(:version => 20110111162109) do
 
   create_table "background_jobs", :force => true do |t|
     t.string  "description"
@@ -63,6 +63,7 @@ ActiveRecord::Schema.define(:version => 20101214053337) do
     t.integer "daemon_port",             :default => 7767
     t.string  "backups_dir"
     t.string  "ve_private"
+    t.boolean "use_ssl",                 :default => false
   end
 
   add_index "hardware_servers", ["host"], :name => "index_hardware_servers_on_host", :unique => true

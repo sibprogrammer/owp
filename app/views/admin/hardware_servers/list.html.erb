@@ -43,6 +43,10 @@ Ext.onReady(function() {
         fieldLabel: '<%= tjs('admin.hardware_servers.form.connect_server.field.daemon_port') %>',
         name: 'daemon_port',
         allowBlank: false
+      }, {
+        fieldLabel: '<%= tjs('admin.hardware_servers.form.connect_server.field.use_ssl') %>',
+        name: 'use_ssl',
+        xtype: 'checkbox'
       }]
     });
   

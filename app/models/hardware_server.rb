@@ -1,5 +1,5 @@
 class HardwareServer < ActiveRecord::Base
-  attr_accessible :host, :auth_key, :description, :daemon_port
+  attr_accessible :host, :auth_key, :description, :daemon_port, :use_ssl
   validates_uniqueness_of :host
   validates_numericality_of :daemon_port, :only_integer => true, :greater_than => 1023, :less_than => 49152
   has_many :os_templates, :dependent => :destroy
@@ -53,7 +53,10 @@ class HardwareServer < ActiveRecord::Base
           daemon_dir = '/opt/ovz-web-panel/utils/hw-daemon'
           
           sftp_mkdir_recursive(sftp, daemon_dir)
+          sftp_mkdir_recursive(sftp, "#{daemon_dir}/certs")
           sftp.upload!(Rails.root + '/utils/hw-daemon/hw-daemon.rb', daemon_dir + '/hw-daemon.rb')
+          sftp.upload!(Rails.root + '/utils/hw-daemon/certs/server.crt', daemon_dir + '/certs/server.crt')
+          sftp.upload!(Rails.root + '/utils/hw-daemon/certs/server.key', daemon_dir + '/certs/server.key')
           prepare_daemon_config(sftp, daemon_dir + '/hw-daemon.ini')
           ssh.exec!("ruby #{daemon_dir}/hw-daemon.rb restart")
         end
@@ -75,7 +78,7 @@ class HardwareServer < ActiveRecord::Base
   end
   
   def rpc_client
-    HwDaemonClient.new(host, auth_key, daemon_port, AppConfig.hw_daemon.timeout)
+    HwDaemonClient.new(host, auth_key, daemon_port, AppConfig.hw_daemon.timeout, use_ssl)
   end
       
   def sync_os_templates
@@ -287,7 +290,6 @@ class HardwareServer < ActiveRecord::Base
       if !sftp_file_readable(sftp, config_file)
         upload_daemon_config(sftp, config_file)
       else
-        listen_address = ''
         sftp.file.open(config_file, "r") do |file|
           while (line = file.gets)
             key, value = line.split('=', 2).each { |v| v.strip! }
@@ -295,12 +297,12 @@ class HardwareServer < ActiveRecord::Base
             case key
               when 'port' then self.daemon_port = value.to_i
               when 'key' then self.auth_key = value
-              when 'address' then listen_address = value
+              when 'ssl' then self.use_ssl = 'on' == value
             end
           end
         end
         
-        upload_daemon_config(sftp, config_file) if '127.0.0.1' == listen_address
+        upload_daemon_config(sftp, config_file)
       end
     end
     
@@ -309,6 +311,7 @@ class HardwareServer < ActiveRecord::Base
         file.puts "address = 0.0.0.0"
         file.puts "port = #{daemon_port.to_s}"
         file.puts "key = #{auth_key}"
+        file.puts "ssl = #{use_ssl ? 'on' : 'off'}"
       end
     end
   

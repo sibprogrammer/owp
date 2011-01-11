@@ -1,3 +1,5 @@
+#!/usr/bin/env ruby
+
 require 'webrick'
 require 'xmlrpc/server.rb'
 
@@ -6,16 +8,24 @@ Socket.do_not_reverse_lookup = true
 
 ENV['PATH'] += ':/usr/sbin'
 
-DAEMON_VERSION = '1.2'
+DAEMON_VERSION = '1.3'
 CURRENT_DIR = File.expand_path(File.dirname(__FILE__)) + '/'
-CONFIG_FILE = CURRENT_DIR + 'hw-daemon.ini';
-PID_FILE = CURRENT_DIR + 'hw-daemon.pid';
+CONFIG_FILE = CURRENT_DIR + 'hw-daemon.ini'
+PID_FILE = CURRENT_DIR + 'hw-daemon.pid'
 LOG_FILE = CURRENT_DIR + 'hw-daemon.log'
+SSL_CERT_FILE = CURRENT_DIR + "/certs/server.crt"
+SSL_PKEY_FILE = CURRENT_DIR + "/certs/server.key"
+
 $SERVER_ADDRESS = "0.0.0.0"
 $SERVER_PORT = 7767
 $AUTH_KEY = ""
 $DEBUG = false
 $LOG = WEBrick::Log.new(LOG_FILE)
+
+$SSL_ENABLE = false
+$SSL_CERT = ''
+$SSL_PKEY = ''
+
 $THREADS = {}
 
 class HwDaemonApiHandler < XMLRPC::WEBrickServlet  
@@ -94,6 +104,12 @@ class HwDaemonUtil
 
     load_config
     $LOG.level = WEBrick::Log::DEBUG if $DEBUG
+
+    if $SSL_ENABLE
+      require 'webrick/https'
+      $SSL_CERT = OpenSSL::X509::Certificate.new(File.open(SSL_CERT_FILE).read) if File.readable?(SSL_CERT_FILE)
+      $SSL_PKEY = OpenSSL::PKey::RSA.new(File.open(SSL_PKEY_FILE).read) if File.readable?(SSL_PKEY_FILE)
+    end
     
     command = ARGV[0]
 
@@ -135,7 +151,12 @@ class HwDaemonUtil
     server = WEBrick::HTTPServer.new(
       :Port => $SERVER_PORT,
       :BindAddress => $SERVER_ADDRESS,
-      :Logger => $LOG
+      :Logger => $LOG,
+      :SSLEnable => $SSL_ENABLE,
+      :SSLVerifyClient => ($SSL_ENABLE ? OpenSSL::SSL::VERIFY_NONE : nil),
+      :SSLCertificate => $SSL_CERT,
+      :SSLPrivateKey => $SSL_PKEY,
+      :SSLCertName => [ [ "CN", WEBrick::Utils::getservername ] ]
     )
     
     server.mount('/xmlrpc', servlet)
@@ -191,6 +212,8 @@ class HwDaemonUtil
           $SERVER_PORT = value
         when 'key'
           $AUTH_KEY = value
+        when 'ssl'
+          $SSL_ENABLE = true if value == 'on'
         when 'debug'
           $DEBUG = true if value == 'on'          
       end

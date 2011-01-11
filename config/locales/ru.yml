@@ -214,6 +214,7 @@ ru:
             description: "Описание"
             daemon_port: "Порт сервиса"
             root_password: "Пароль root'а"
+            use_ssl: "Использовать SSL"
           fieldset:
             additional_settings: "Дополнительные настройки"
         disconnect_server:

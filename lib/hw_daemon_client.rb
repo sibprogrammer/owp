@@ -22,7 +22,7 @@ end
 
 class HwDaemonClient
   
-  def initialize(host, auth_key, port, timeout)
+  def initialize(host, auth_key, port, timeout, use_ssl = false)
     @host = host
     @auth_key = auth_key
     @port = port
@@ -32,7 +32,8 @@ class HwDaemonClient
       :port => @port,
       :user => 'admin', 
       :password => @auth_key,
-      :timeout => timeout
+      :timeout => timeout,
+      :use_ssl => use_ssl
     })
   end
   

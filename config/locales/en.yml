@@ -214,6 +214,7 @@ en:
             description: "Description"
             daemon_port: "Service port"
             root_password: "Root password"
+            use_ssl: "Use SSL"
           fieldset:
             additional_settings: "Additional settings"
         disconnect_server:
