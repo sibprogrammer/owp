@@ -73,7 +73,8 @@ class ApplicationController < ActionController::Base
     end
   
     def iphone?
-      request.env["HTTP_USER_AGENT"] && request.env["HTTP_USER_AGENT"][/(Mobile\/.+Safari)/]
+      agent = request.env["HTTP_USER_AGENT"]
+      agent && (agent[/(Mobile\/.+Safari)/] || agent[/Android/])
     end
     
     def set_response_format
