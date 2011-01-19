@@ -48,7 +48,12 @@ config_defaults = {
   'locale' => {
     'default' => 'en',
     'single' => false,
-  }
+  },
+  'ldap' => {
+    'enabled' => false,
+    'host' => 'example.com',
+    'login_pattern' => 'uid=<login>,ou=people,dc=example,dc=com',
+  },
 }
 
 def hashes2ostruct(object)

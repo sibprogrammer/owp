@@ -24,8 +24,19 @@ class User < ActiveRecord::Base
 
   def self.authenticate(login, password)
     return nil if login.blank? || password.blank?
-    u = find_by_login(login.downcase) # need to get the salt
-    u && u.authenticated?(password) ? u : nil
+    u = find_by_login(login.downcase)
+    u && u.auth?(password) ? u : nil
+  end
+
+  def auth?(password)
+    if AppConfig.ldap.enabled
+      require 'net/ldap'
+      ldap = Net::LDAP.new :host => AppConfig.ldap.host
+      ldap.auth AppConfig.ldap.login_pattern.sub('<login>', login), password
+      ldap.bind || authenticated?(password)
+    else
+      authenticated?(password)
+    end
   end
 
   def login=(value)
@@ -34,6 +45,11 @@ class User < ActiveRecord::Base
   
   def superadmin?
     can_manage_hardware_servers?
+  end
+
+  def password_required?
+    external_auth = AppConfig.ldap.enabled
+    !external_auth && (crypted_password.blank? || !password.blank?)
   end
   
   def can_control(server)

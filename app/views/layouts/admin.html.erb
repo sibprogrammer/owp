@@ -18,7 +18,7 @@
           fieldLabel: '<%= tjs('admin.my_profile.user_name') %>',
           value: '<%= escape_javascript @current_user.login %>',
           xtype: 'displayfield'
-        }, {
+        }, <% if @current_user.superadmin? || !external_auth? %> {
           fieldLabel: '<%= tjs('admin.my_profile.current_password') %>',
           name: 'current_password',
           inputType: 'password'
@@ -30,7 +30,7 @@
           fieldLabel: '<%= tjs('admin.my_profile.confirm_password') %>',
           name: 'password_confirmation',
           inputType: 'password'
-        }, {
+        }, <% end -%> {
           fieldLabel: '<%= tjs('admin.my_profile.contact_name') %>',
           name: 'contact_name',
           inputType: 'textfield',

@@ -15,5 +15,9 @@ module ApplicationHelper
     title = icon + '<span class="name">' + h(title) + '</span><span class="arrow"></span>'
     '<li class="menu">' + link_to(title, options) + '</li>'
   end
+
+  def external_auth?
+    AppConfig.ldap.enabled
+  end
   
 end

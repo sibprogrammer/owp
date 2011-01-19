@@ -25,7 +25,7 @@ Ext.onReady(function() {
         name: 'login',
         xtype: ('add' == mode) ? 'textfield' : 'displayfield',
         allowBlank: ('edit' == mode)
-      }, {
+      }, <% if !external_auth? %> {
         fieldLabel: '<%= tjs('admin.users.form.create.field.password') %>',
         name: 'password',
         inputType: 'password',
@@ -35,7 +35,7 @@ Ext.onReady(function() {
         name: 'password_confirmation',
         inputType: 'password',
         allowBlank: ('edit' == mode)
-      }, {
+      }, <% end -%> {
         fieldLabel: '<%= tjs('admin.users.form.create.field.contact_name') %>',
         name: 'contact_name',
         inputType: 'textfield'
