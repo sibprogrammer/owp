@@ -26,6 +26,7 @@ class HwDaemonClient
     @host = host
     @auth_key = auth_key
     @port = port
+
     @rpc_client = XMLRPC::Client.new3({
       :host => @host,
       :path => "/xmlrpc",
@@ -35,6 +36,10 @@ class HwDaemonClient
       :timeout => timeout,
       :use_ssl => use_ssl
     })
+
+    if use_ssl
+      @rpc_client.instance_variable_get(:@http).instance_variable_get(:@ssl_context).instance_variable_set(:@verify_mode, OpenSSL::SSL::VERIFY_NONE)
+    end
   end
   
   def exec(command, args = '')
