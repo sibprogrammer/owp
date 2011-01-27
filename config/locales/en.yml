@@ -69,6 +69,11 @@ en:
           attributes:
             name:
               taken: "Role with such name is already exist."
+  api:
+    error:
+      access_denied: "Access denied."
+      object_not_found: "Object not found."
+      unknown_error: "Unknown error."
   about:
     copyright: "Copyright 2008-2011 SoftUnity."
     right_reserved: "All Rights Reserved."

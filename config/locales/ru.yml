@@ -69,6 +69,11 @@ ru:
           attributes:
             name:
               taken: "Роль с таким именем уже существует."
+  api:
+    error:
+      access_denied: "Доступ запрещен."
+      object_not_found: "Объект не найден."
+      unknown_error: "Неизвестная ошибка."
   about:
     copyright: "Авторское право 2008-2011 SoftUnity."
     right_reserved: "Все права зарезервированы."

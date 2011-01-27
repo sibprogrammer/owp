@@ -1,0 +1,6 @@
+xml.instruct!
+
+xml.error do
+  xml.code @reason
+  xml.message @error
+end
