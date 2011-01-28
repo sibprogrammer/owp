@@ -2,10 +2,6 @@ class Api::UsersController < Api::Base
   before_filter :is_allowed, :set_hidden_attrs
   before_filter :set_user_by_id, :only => [ :get, :delete, :update, :enable, :disable ]
 
-  def index
-    methods_list
-  end
-
   def list
     render_object_result(User.all, :root => 'users', :except => @hidden_attrs)
   end

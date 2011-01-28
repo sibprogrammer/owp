@@ -2,10 +2,6 @@ class Api::VirtualServersController < Api::Base
   before_filter :superadmin_required, :only => [ :delete, :create, :update ]
   before_filter :set_server_by_id, :only => [ :get, :get_advanced_limits, :delete, :start, :stop, :restart, :update ]
 
-  def index
-    methods_list
-  end
-
   def own_servers
     virtual_servers = @current_user.virtual_servers
     render_object_result(virtual_servers, :root => 'virtual_servers')

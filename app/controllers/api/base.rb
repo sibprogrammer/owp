@@ -1,6 +1,10 @@
 class Api::Base < ApplicationController
   before_filter :login_required
 
+  def index
+    methods_list
+  end
+
   protected
 
     def current_user

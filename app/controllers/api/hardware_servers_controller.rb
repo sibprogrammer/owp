@@ -2,10 +2,6 @@ class Api::HardwareServersController < Api::Base
   before_filter :superadmin_required, :set_hidden_attrs
   before_filter :set_server_by_id, :only => [ :get, :update, :disconnect, :sync, :virtual_servers, :os_templates, :server_templates ]
 
-  def index
-    methods_list
-  end
-
   def list
     hardware_servers = HardwareServer.all
     render_object_result(hardware_servers, :root => 'hardware_servers', :except => @hidden_attrs)
