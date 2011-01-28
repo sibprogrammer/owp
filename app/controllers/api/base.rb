@@ -3,6 +3,10 @@ class Api::Base < ApplicationController
 
   protected
 
+    def current_user
+      @current_user ||= login_from_basic_auth unless @current_user == false
+    end
+
     def set_response_format
       request.format = 'xml'.to_sym
     end
