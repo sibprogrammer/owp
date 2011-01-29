@@ -1,13 +1,13 @@
 class Admin::EventLogController < Admin::Base
   before_filter :is_allowed
+  before_filter :get_events, :only => [ :list, :list_data ]
   
   def list
     @up_level = '/admin/dashboard'
-    @events_list = events_list
   end
   
   def list_data
-    render :json => { :data => events_list }
+    render :json => @events
   end
   
   def clear
@@ -17,15 +17,9 @@ class Admin::EventLogController < Admin::Base
   
   private
   
-    def events_list
-      events = EventLog.all(:limit => 100, :order => 'id DESC')
-      events.map! { |item| {
-        :id => item.id,
-        :message => item.html_message,
-        :level => item.level,
-        :created_at => local_datetime(item.created_at),
-        :ip_address => item.ip_address,
-      }}
+    def get_events
+      filter = { :limit => 100, :order => 'id DESC' }
+      @events = EventLog.all(filter).to_json(:except => [ :params, :message ], :methods => :t_message)
     end
   
     def is_allowed

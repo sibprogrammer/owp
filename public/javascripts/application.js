@@ -265,6 +265,10 @@ Owp.list.groupAction = function(config) {
   });
 }
 
+Ext.list.dateTimeRenderer = function(value) {
+  return value.format('Y.m.d H:i:s');
+}
+
 Ext.ns('Owp.layout');
 
 Owp.layout.addToCenter = function(item) {

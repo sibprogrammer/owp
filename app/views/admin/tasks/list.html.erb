@@ -6,14 +6,13 @@ Ext.onReady(function() {
 
   var store = new Ext.data.JsonStore({
     url: '/admin/tasks/list_data',
-    root: 'data',
     autoLoad: true,
-    data: <%= { :data => @tasks_list }.to_json %>,
+    data: <%= @tasks %>,
     sortInfo: { field: 'id', direction: 'DESC' },
     fields: [
       { name: 'id' },
       { name: 'status' },
-      { name: 'description' }
+      { name: 'description', mapping: 't_description' }
     ]
   });
   

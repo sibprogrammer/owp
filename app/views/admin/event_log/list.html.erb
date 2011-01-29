@@ -26,16 +26,15 @@ Ext.onReady(function() {
 
   var store = new Ext.data.JsonStore({
     url: '/admin/event-log/list_data',
-    root: 'data',
     autoLoad: true,
-    data: <%= { :data => @events_list }.to_json %>,
+    data: <%= @events %>,
     sortInfo: { field: 'id', direction: 'DESC' },
     fields: [
       { name: 'id' },
       { name: 'level' },
-      { name: 'created_at' },
+      { name: 'created_at', 'type': 'date', dateFormat: 'c' },
       { name: 'ip_address' },
-      { name: 'message' }
+      { name: 'message', mapping: 't_message' }
     ]
   });
 
@@ -84,7 +83,8 @@ Ext.onReady(function() {
         header: '<%= tjs('admin.event_log.grid.column.created_at') %>',
         width: 130,
         sortable: true,
-        dataIndex: 'created_at'
+        dataIndex: 'created_at',
+        renderer: Ext.list.dateTimeRenderer
       }, {
         id: 'created_at',
         header: '<%= tjs('admin.event_log.grid.column.ip_address') %>',
