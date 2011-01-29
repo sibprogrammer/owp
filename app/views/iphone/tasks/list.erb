@@ -4,12 +4,12 @@
       <span class="header">
         <%
           icon = 'accept.png'
-          icon = 'spinner.gif' if 1 == task[:status]
+          icon = 'spinner.gif' if 1 == task.status
         %>
         <%= '<img class="inline" src="/images/' + icon + '"/>' %>
-        #<%= h(task[:id]) %>
+        #<%= h(task.id) %>
       </span>
-      <%= h(task[:description]) %>
+      <%= h(task.t_description) %>
     </li>
   <% end %>
 </ul>

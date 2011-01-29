@@ -19,5 +19,9 @@ module ApplicationHelper
   def external_auth?
     AppConfig.ldap.enabled
   end
+
+  def local_datetime(datetime)
+    datetime.localtime.strftime("%Y.%m.%d %H:%M:%S")
+  end
   
 end

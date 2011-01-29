@@ -4,14 +4,14 @@
       <span class="header">
         <%
           icon = 'exclamation.png'
-          icon = 'bug.png' if 0 == event[:level]
-          icon = 'information.png' if 1 == event[:level]
+          icon = 'bug.png' if 0 == event.level
+          icon = 'information.png' if 1 == event.level
         %>
         <%= '<img class="inline" src="/images/' + icon + '"/>' %>
-        #<%= h(event[:id]) %> - <%= h(event[:created_at]) %>
+        #<%= h(event.id) %> - <%= h(local_datetime(event.created_at)) %>
       </span>
-      <%= event[:message] %><br/>
-      <span class="ip_address"><%= h(event[:ip_address]) %></span>
+      <%= event.html_message %><br/>
+      <span class="ip_address"><%= h(event.ip_address) %></span>
     </li>
   <% end %>
 </ul>
