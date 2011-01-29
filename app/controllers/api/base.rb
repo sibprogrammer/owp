@@ -2,7 +2,9 @@ class Api::Base < ApplicationController
   before_filter :login_required
 
   def index
-    methods_list
+    result = {}
+    action_methods.delete('index').each { |method| result[method] = '' }
+    render_object_result(result, :root => 'methods')
   end
 
   protected
@@ -33,12 +35,6 @@ class Api::Base < ApplicationController
     def render_object_save_result(result, object)
       details = result ? { :id => object.id } : object.errors.collect { |field,error| { :field => field, :error => error } }
       render_scalar_result(result, details)
-    end
-
-    def methods_list
-      result = {}
-      action_methods.delete('index').each { |method| result[method] = '' }
-      render_object_result(result, :root => 'methods')
     end
   
 end
