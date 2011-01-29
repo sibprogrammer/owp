@@ -9,7 +9,7 @@ class Api::EventLogController < Api::Base
   private
 
     def is_allowed
-      redirect_to :controller => 'error', :reason => 'access_denied' if !@current_user.can_view_logs? && !@current_user.can_manage_logs?
+      render_error :reason => 'access_denied' if !@current_user.can_view_logs? && !@current_user.can_manage_logs?
     end
 
 end

@@ -47,7 +47,7 @@ class Api::HardwareServersController < Api::Base
 
     def set_server_by_id
       @hardware_server = HardwareServer.find_by_id(params[:id])
-      redirect_to :controller => 'error', :reason => 'object_not_found' if !@hardware_server
+      render_error :reason => 'object_not_found' if !@hardware_server
     end
 
     def create_or_update_server

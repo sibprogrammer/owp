@@ -43,7 +43,7 @@ class Api::VirtualServersController < Api::Base
 
     def set_server_by_id
       @virtual_server = VirtualServer.find_by_id(params[:id])
-      redirect_to :controller => 'error', :reason => 'object_not_found' if !@virtual_server or !@current_user.can_control(@virtual_server)
+      render_error :reason => 'object_not_found' if !@virtual_server or !@current_user.can_control(@virtual_server)
     end
 
     def create_or_update_server

@@ -9,7 +9,7 @@ class Api::TasksController < Api::Base
   private
 
     def is_allowed
-      redirect_to :controller => 'error', :reason => 'access_denied' if !@current_user.can_view_tasks?
+      render_error :reason => 'access_denied' if !@current_user.can_view_tasks?
     end
 
 end

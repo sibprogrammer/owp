@@ -36,7 +36,7 @@ class Api::UsersController < Api::Base
   private
 
     def is_allowed
-      redirect_to :controller => 'error', :reason => 'access_denied' if !@current_user.can_manage_users?
+      render_error :reason => 'access_denied' if !@current_user.can_manage_users?
     end
 
     def set_hidden_attrs
@@ -45,7 +45,7 @@ class Api::UsersController < Api::Base
 
     def set_user_by_id
       @user = User.find_by_id(params[:id])
-      redirect_to :controller => 'error', :reason => 'object_not_found' if !@user
+      render_error :reason => 'object_not_found' if !@user
     end
 
     def create_or_update_user

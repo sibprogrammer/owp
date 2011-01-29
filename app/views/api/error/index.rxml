@@ -3,4 +3,5 @@ xml.instruct!
 xml.error do
   xml.code @reason
   xml.message @error
+  xml.details @details if @details
 end

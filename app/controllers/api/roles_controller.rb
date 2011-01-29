@@ -8,7 +8,7 @@ class Api::RolesController < Api::Base
   private
 
     def is_allowed
-      redirect_to :controller => 'error', :reason => 'access_denied' if !@current_user.can_manage_users?
+      render_error :reason => 'access_denied' if !@current_user.can_manage_users?
     end
 
 end

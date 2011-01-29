@@ -14,11 +14,11 @@ class Api::Base < ApplicationController
     end
 
     def set_response_format
-      request.format = 'xml'.to_sym
+      request.format = :xml
     end
 
     def superadmin_required
-      redirect_to :controller => 'error' if !@current_user.superadmin?
+      render_error :reason => 'access_denied' if !@current_user.superadmin?
     end
 
     def render_scalar_result(result, details = {})
@@ -35,6 +35,21 @@ class Api::Base < ApplicationController
     def render_object_save_result(result, object)
       details = result ? { :id => object.id } : object.errors.collect { |field,error| { :field => field, :error => error } }
       render_scalar_result(result, details)
+    end
+
+    def render_error(params = {})
+      allowed_reasons = [ 'object_not_found', 'access_denied', 'internal_error' ]
+      @reason = allowed_reasons.include?(params[:reason]) ? params[:reason] : 'unknown_error'
+      @details = params[:details] if params.has_key?(:details)
+      @error = t('api.error.' + @reason)
+
+      render :template => 'api/error/index.rxml'
+      return false
+    end
+
+    def rescue_action(exception)
+      log_error(exception) if logger
+      render_error :reason => 'internal_error', :details => exception
     end
   
 end
