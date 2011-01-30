@@ -12,17 +12,7 @@ class Admin::RequestsController < Admin::Base
   
   def delete
     redirect_to :controller => 'admin/dashboard' if !@current_user.can_handle_requests?
-    
-    params[:ids].split(',').each { |id|
-      request = Request.find(id) 
-      
-      if !request.destroy
-        render :json => { :success => false }
-        return
-      end
-    }
-    
-    render :json => { :success => true }
+    objects_group_operation(Request, :destroy)
   end
   
   def show

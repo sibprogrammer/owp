@@ -5,6 +5,9 @@ class Role < ActiveRecord::Base
   validates_uniqueness_of :name
   
   attr_accessible :name
+
+  before_destroy { |record| 0 == record.users.count && !record.built_in }
+  after_destroy { |record| EventLog.info("role.removed", { :name => record.name }) }
   
   def display_name
     case name
@@ -13,11 +16,5 @@ class Role < ActiveRecord::Base
       else name
     end
   end
-  
-  protected
-  
-    def before_destroy
-      0 == users.count && !built_in
-    end
   
 end

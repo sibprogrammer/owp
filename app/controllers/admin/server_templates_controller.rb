@@ -18,16 +18,7 @@ class Admin::ServerTemplatesController < Admin::Base
   end
   
   def delete
-    params[:ids].split(',').each { |id|
-      server_template = ServerTemplate.find(id) 
-      
-      if !server_template.delete_physically
-        render :json => { :success => false }
-        return
-      end
-    }
-    
-    render :json => { :success => true }
+    objects_group_operation(ServerTemplate, :delete_physically)
   end
   
   def save

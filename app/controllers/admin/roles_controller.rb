@@ -12,17 +12,7 @@ class Admin::RolesController < Admin::Base
   end
   
   def delete
-    success = true
-    params[:ids].split(',').each { |id|
-      role = Role.find(id)
-      role_name = role.name
-      
-      success = false if !role.destroy
-      
-      EventLog.info("role.removed", { :name => role_name }) if success
-    }
-    
-    render :json => { :success => success }
+    objects_group_operation(Role, :destroy)
   end
   
   def update

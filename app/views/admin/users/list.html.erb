@@ -159,7 +159,7 @@ Ext.onReady(function() {
   var changeUserState = function(action) {
     Owp.list.groupAction({
       gridName: 'usersGrid',
-      url: '/admin/users/change_state',
+      url: '/admin/users/' + action,
       command: action,
       waitMsg: '<%= tjs('form.performing_task') %>',
       failure: {

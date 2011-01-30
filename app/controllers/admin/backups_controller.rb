@@ -17,16 +17,7 @@ class Admin::BackupsController < Admin::Base
   end
   
   def delete
-    params[:ids].split(',').each { |id|
-      backup = Backup.find(id) 
-      
-      if !backup.delete_physically
-        render :json => { :success => false }  
-        return
-      end
-    }
-    
-    render :json => { :success => true }
+    objects_group_operation(Backup, :delete_physically)
   end
   
   def create

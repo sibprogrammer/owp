@@ -32,28 +32,14 @@ class Admin::UsersController < Admin::Base
   end
   
   def delete
-    params[:ids].split(',').each { |id|
-      user = User.find(id)
-      login = user.login
-      
-      if !user.destroy
-        render :json => { :success => false }  
-        return
-      end
-      
-      EventLog.info("user.removed", { :login => login })
-    }
-    
-    render :json => { :success => true }
+    objects_group_operation(User, :destroy)
   end
   
   def update
     user = (params[:id].to_i > 0) ? User.find_by_id(params[:id]) : User.new
-    is_new = user.new_record?
     user.attributes = params
     
     if user.save
-      EventLog.info(is_new ? "user.created" : "user.updated", { :login => user.login })
       render :json => { :success => true }  
     else
       render :json => { :success => false, :form_errors => user.errors }
@@ -71,26 +57,13 @@ class Admin::UsersController < Admin::Base
       :email => user.email,
     }}
   end
-  
-  def change_state
-    params[:ids].split(',').each { |id|
-      user = User.find(id) 
-      
-      case params[:command]  
-        when 'enable' then user.enabled = true
-        when 'disable' then user.enabled = false
-      end
-      
-      if !user.save
-        render :json => { :success => false }  
-        return
-      end
-      
-      EventLog.info("user.enabled", { :login => user.login }) if user.enabled
-      EventLog.info("user.disabled", { :login => user.login }) if !user.enabled
-    }
-    
-    render :json => { :success => true }
+
+  def enable
+    objects_group_operation(User, :enable)
+  end
+
+  def disable
+    objects_group_operation(User, :disable)
   end
   
   private

@@ -24,5 +24,19 @@ class Admin::Base < ApplicationController
         :description => virtual_server.description.to_s,
       }} 
     end
+
+    def objects_group_operation(model, operation, &access)
+      success = true
+      
+      params[:ids].split(',').each do |id|
+        object = model.find(id)
+        if block_given?
+          next if !access.call(object)
+        end
+        success = false if !object || !object.send(operation)
+      end
+
+      render :json => { :success => success }
+    end
     
 end

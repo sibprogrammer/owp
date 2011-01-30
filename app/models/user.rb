@@ -11,9 +11,7 @@ class User < ActiveRecord::Base
   validates_format_of :login, :with => Authentication.login_regex, :message => Authentication.bad_login_message
   validates_format_of :email, :with => /^.+@.+$/, :if => :email?
 
-  attr_accessible :login, :password, :password_confirmation, :email, :contact_name,
-    :enabled, :role_id
-  
+  attr_accessible :login, :password, :password_confirmation, :email, :contact_name, :enabled, :role_id
   attr_accessor :password, :password_confirmation, :current_password
   
   has_many :virtual_servers
@@ -21,6 +19,11 @@ class User < ActiveRecord::Base
   has_many :comments
   belongs_to :role
   delegate :permissions, :to => :role
+
+  before_destroy { |record| record.login != 'admin' }
+  after_destroy { |record| EventLog.info("user.removed", { :login => record.login }) }
+  after_create { |record| EventLog.info("user.created", { :login => record.login }) }
+  after_update { |record| EventLog.info("user.updated", { :login => record.login }) }
 
   def self.authenticate(login, password)
     return nil if login.blank? || password.blank?
@@ -68,15 +71,22 @@ class User < ActiveRecord::Base
     end
   end
 
-  protected
-  
-    def before_destroy
-      login != 'admin'
-    end
+  def enable
+    self.enabled = true
+    EventLog.info("user.enabled", { :login => login })
+    save
+  end
+
+  def disable
+    self.enabled = false
+    EventLog.info("user.disabled", { :login => login })
+    save
+  end
     
   private
   
     def matches_dynamic_perm_check?(method_id)
       /^can_([a-zA-Z]\w*)\?$/.match(method_id.to_s)
     end
+
 end

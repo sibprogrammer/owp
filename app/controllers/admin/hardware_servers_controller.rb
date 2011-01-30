@@ -24,17 +24,7 @@ class Admin::HardwareServersController < Admin::Base
   end
   
   def disconnect
-    params[:ids].split(',').each { |id|
-      hardware_server = HardwareServer.find(id)  
-      logger.info "Disconnecting hardware server with id: #{id}"
-      
-      if !hardware_server.disconnect
-        render :json => { :success => false }  
-        return
-      end
-    }
-    
-    render :json => { :success => true }  
+    objects_group_operation(HardwareServer, :disconnect)
   end
   
   def show
@@ -47,29 +37,11 @@ class Admin::HardwareServersController < Admin::Base
   end
   
   def sync
-    params[:ids].split(',').each { |id|
-      hardware_server = HardwareServer.find(id)
-      
-      if !hardware_server.sync
-        render :json => { :success => false }  
-        return
-      end
-    }
-    
-    render :json => { :success => true }  
+    objects_group_operation(HardwareServer, :sync)
   end
   
   def reboot
-    params[:ids].split(',').each { |id|
-      hardware_server = HardwareServer.find(id)
-      
-      if !hardware_server.reboot
-        render :json => { :success => false }  
-        return
-      end
-    }
-    
-    render :json => { :success => true }  
+    objects_group_operation(HardwareServer, :reboot)
   end
   
   def load_data

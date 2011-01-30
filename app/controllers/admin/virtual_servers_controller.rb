@@ -14,35 +14,21 @@ class Admin::VirtualServersController < Admin::Base
     hardware_server = HardwareServer.find_by_id(params[:hardware_server_id])
     render :json => { :data => get_virtual_servers_map(hardware_server.virtual_servers) }
   end
-  
-  def change_state
-    params[:ids].split(',').each { |id|
-      virtual_server = VirtualServer.find_by_id(id)
-      next if !@current_user.can_control(virtual_server)
-      
-      case params[:command]  
-        when 'start' then result = virtual_server.start
-        when 'stop' then result = virtual_server.stop
-        when 'restart' then result = virtual_server.restart
-      end
-      
-      render :json => { :success => false } and return if !result
-    }
-    
-    render :json => { :success => true }
+
+  def start
+    objects_group_operation(VirtualServer, :start) { |server| @current_user.can_control(server) }
   end
-  
+
+  def stop
+    objects_group_operation(VirtualServer, :stop) { |server| @current_user.can_control(server) }
+  end
+
+  def restart
+    objects_group_operation(VirtualServer, :restart) { |server| @current_user.can_control(server) }
+  end
+
   def delete
-    params[:ids].split(',').each { |id|
-      virtual_server = VirtualServer.find(id) 
-      
-      if !virtual_server.delete_physically
-        render :json => { :success => false }  
-        return
-      end
-    }
-    
-    render :json => { :success => true }
+    objects_group_operation(VirtualServer, :delete_physically)
   end
   
   def create

@@ -9,7 +9,7 @@ Ext.onReady(function() {
   var changeStateAction = function(action) {
     Owp.list.groupAction({
       gridName: 'virtualServersGrid',
-      url: '/admin/virtual-servers/change_state',
+      url: '/admin/virtual-servers/' + action,
       command: action,
       waitMsg: '<%= tjs('form.performing_task') %>',
       failure: {
