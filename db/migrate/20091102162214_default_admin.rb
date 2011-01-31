@@ -1,5 +1,6 @@
 class DefaultAdmin < ActiveRecord::Migration
   def self.up
+    User.after_create.clear
     user = User.new
     user.login = 'admin'
     user.password = 'admin'
