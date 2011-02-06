@@ -24,6 +24,10 @@ class Admin::BackupsController < Admin::Base
     virtual_server = VirtualServer.find_by_id(params[:virtual_server_id])
     redirect_to :controller => 'dashboard' and return if !virtual_server or !@current_user.can_control(virtual_server)
     hardware_server = virtual_server.hardware_server
+
+    if @current_user.limit_reached?(:limit_backups, virtual_server.backups.count)
+      render :json => { :success => false, :message => t('admin.backups.form.create.limit_reached') } and return
+    end
     
     orig_ve_state = virtual_server.state
     ve_state = params[:ve_state]

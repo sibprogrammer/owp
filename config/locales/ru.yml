@@ -537,6 +537,7 @@ ru:
         create:
           title: "Создать новую резервную копию"
           scheduled: "Процедура резервного копирования запущена и займет некоторое время."
+          limit_reached: "Достигнут лимит на количество резервных копий."
           field:
             description: "Описание"
             ve_state:
@@ -614,6 +615,7 @@ ru:
             name: "Имя"
           fieldset:
             permissions: "Права"
+            limits: "Лимиты"
           button_create: "Создать"
           permissions:
             manage_hardware_servers: "Управление физическими серверами"
@@ -627,3 +629,6 @@ ru:
             manage_logs: "Управление журналом событий"
             manage_users: "Управление пользователями"
             select_os_on_reinstall: "Выбор OS при переустановке"
+          limits:
+            unlimited: "неограничено"
+            limit_backups: "Количество резервных копий"

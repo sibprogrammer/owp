@@ -82,6 +82,12 @@ class User < ActiveRecord::Base
     EventLog.info("user.disabled", { :login => login })
     save
   end
+
+  def limit_reached?(limit_name, usage)
+    allowed = role.send(limit_name)
+    return false if -1 == allowed
+    allowed <= usage
+  end
     
   private
   

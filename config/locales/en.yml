@@ -537,6 +537,7 @@ en:
         create:
           title: "Create new backup"
           scheduled: "Backup procedure was started and will take some time."
+          limit_reached: "Limit on number of backups was reached."
           field:
             description: "Description"
             ve_state:
@@ -614,6 +615,7 @@ en:
             name: "Name"
           fieldset:
             permissions: "Permissions"
+            limits: "Limits"
           button_create: "Create"
           permissions:
             manage_hardware_servers: "Physical servers management"
@@ -627,3 +629,6 @@ en:
             manage_logs: "Event logs management"
             manage_users: "Users management"
             select_os_on_reinstall: "OS selection on reinstall"
+          limits:
+            unlimited: "unlimited"
+            limit_backups: "Number of backups"

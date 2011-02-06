@@ -5,6 +5,7 @@ class Admin::RolesController < Admin::Base
     @up_level = '/admin/users/list'
     @roles_list = roles_list
     @permissions = Permission.all.map(&:name)
+    @limits = { 'limit_backups' => '' }
   end
   
   def list_data
@@ -23,6 +24,7 @@ class Admin::RolesController < Admin::Base
     role.permissions = []
     params[:permissions] = params[:permissions] || []
     params[:permissions].each { |key,value| role.permissions << Permission.find_by_name(key) }
+    role.limit_backups = params[:limits][:limit_backups]
     
     if role.built_in || role.save
       EventLog.info(is_new ? "role.created" : "role.updated", { :name => role.name })
@@ -38,6 +40,8 @@ class Admin::RolesController < Admin::Base
     
     data = { :name => role.display_name, :built_in => role.built_in }
     role.permissions.each { |permission| data["permissions[#{permission.name}]"] = true }
+
+    data["limits[limit_backups]"] = -1 == role.limit_backups ? '' : role.limit_backups;
     
     render :json => { :success => true, :data => data }
   end

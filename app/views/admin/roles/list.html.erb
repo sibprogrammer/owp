@@ -36,6 +36,19 @@ Ext.onReady(function() {
         defaultType: 'checkbox',
         defaults: { labelStyle: 'width: 300px' },
         items: <%= @permissions.map { |item| { 'fieldLabel' => t('admin.roles.form.create.permissions.' + item), 'name' => "permissions[#{item}]" } }.to_json %>
+      }, {
+        xtype: 'fieldset',
+        title: '<%= tjs('admin.roles.form.create.fieldset.limits') %>',
+        autoHeight: true,
+        autoWidth: true,
+        defaultType: 'numberfield',
+        defaults: { labelStyle: 'width: 260px', style: 'width: 80px' },
+        items: <%= @limits.map { |item,value| {
+            'fieldLabel' => t('admin.roles.form.create.limits.' + item),
+            'name' => "limits[#{item}]",
+            'value' => value,
+            'emptyText' => tjs('admin.roles.form.create.limits.unlimited'),
+        } }.to_json %>
       }]
     });
     
