@@ -11,6 +11,12 @@ class Api::HardwareServersController < Api::Base
     render_object_result(@hardware_server, :except => @hidden_attrs)
   end
 
+  def get_by_host
+    hardware_server = HardwareServer.find_by_host(params[:host])
+    render_error :reason => 'object_not_found' if !hardware_server
+    render_object_result(hardware_server, :except => @hidden_attrs) if hardware_server
+  end
+
   def connect
     create_or_update_server
   end

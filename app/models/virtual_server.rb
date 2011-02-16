@@ -10,7 +10,6 @@ class VirtualServer < ActiveRecord::Base
   has_many :backups, :dependent => :destroy
   has_many :bean_counters, :dependent => :destroy
   
-  validates_presence_of :identity
   validates_format_of :ip_address, :with => /^((\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})|\s|(([\da-fA-F]{1,4}:?)|(::)){1,8})*$/
   validates_uniqueness_of :ip_address, :allow_blank => true
   validates_uniqueness_of :identity, :scope => :hardware_server_id
@@ -92,6 +91,10 @@ class VirtualServer < ActiveRecord::Base
     is_new = new_record?
     
     if is_new
+      if identity.blank?
+        hash = connection.select_one("SELECT MAX(identity) AS max_identity FROM virtual_servers WHERE hardware_server_id=#{hardware_server.id}")
+        self.identity = hash['max_identity'].to_i + 1
+      end
       hardware_server.rpc_client.exec('vzctl', "create #{identity.to_s} --ostemplate #{orig_os_template} --config #{orig_server_template}")
       self.state = 'stopped'
     end

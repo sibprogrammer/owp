@@ -73,8 +73,7 @@ var showVirtualServerEditForm = function(mode, grid, statsGrid) {
           items: [{        
             fieldLabel: '<%= tjs('admin.virtual_servers.form.create_server.field.identity') %>',
             name: 'identity',
-            xtype: ('add' == mode) ? 'numberfield' : 'displayfield',
-            allowBlank: false
+            xtype: ('add' == mode) ? 'numberfield' : 'displayfield'
           }, {
             fieldLabel: '<%= tjs('admin.virtual_servers.form.create_server.field.os_template') %>',
             xtype: ('add' == mode) ? 'combo' : 'displayfield',

@@ -15,7 +15,13 @@ class SessionsController < ApplicationController
         new_cookie_flag = (params[:remember_me] == "on")
         handle_remember_cookie! new_cookie_flag
         respond_to do |format|
-          format.html { render :json => { :success => true } }
+          format.html do
+            if params[:plain_post].blank?
+              render :json => { :success => true }
+            else
+              redirect_to :controller => 'admin/dashboard'
+            end
+          end
           format.iphone { redirect_to :controller => 'iphone/dashboard' }
         end
       else
