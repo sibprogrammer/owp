@@ -10,6 +10,12 @@ class Api::UsersController < Api::Base
     render_object_result(@user, :except => @hidden_attrs)
   end
 
+  def get_by_login
+    user = User.find_by_login(params[:login])
+    render_error :reason => 'object_not_found' if !user
+    render_object_result(user, :except => @hidden_attrs) if user
+  end
+
   def delete
     @user.destroy
     render_scalar_result(true)

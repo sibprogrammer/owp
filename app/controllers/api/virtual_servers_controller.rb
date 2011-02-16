@@ -1,5 +1,5 @@
 class Api::VirtualServersController < Api::Base
-  before_filter :superadmin_required, :only => [ :delete, :create, :update ]
+  before_filter :superadmin_required, :only => [ :delete, :create, :update, :get_by_host ]
   before_filter :set_server_by_id, :only => [ :get, :get_advanced_limits, :delete, :start, :stop, :restart, :update ]
 
   def own_servers
@@ -9,6 +9,12 @@ class Api::VirtualServersController < Api::Base
 
   def get
     render_object_result(@virtual_server)
+  end
+
+  def get_by_host
+    virtual_server = VirtualServer.find_by_host_name(params[:host])
+    render_error :reason => 'object_not_found' if !virtual_server
+    render_object_result(virtual_server) if virtual_server
   end
 
   def get_advanced_limits
