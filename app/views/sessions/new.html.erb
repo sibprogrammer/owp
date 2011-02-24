@@ -47,6 +47,7 @@ Ext.onReady(function() {
     }, <% if !AppConfig.locale.single %> {
       fieldLabel: '<%= tjs('login.locale') %>',
       name: 'locale',
+      width: 210,
       xtype: 'combo',
       mode: 'local',      
       hiddenName: 'locale',
