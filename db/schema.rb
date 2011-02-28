@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110111162109) do
+ActiveRecord::Schema.define(:version => 20110206111020) do
 
   create_table "background_jobs", :force => true do |t|
     t.string  "description"
@@ -95,6 +95,7 @@ ActiveRecord::Schema.define(:version => 20110111162109) do
   create_table "roles", :force => true do |t|
     t.string  "name"
     t.boolean "built_in"
+    t.integer "limit_backups"
   end
 
   create_table "server_templates", :force => true do |t|

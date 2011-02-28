@@ -6,11 +6,6 @@ class VirtualServerTest < ActiveSupport::TestCase
     @server_101 =  virtual_servers(:server_101)
   end
   
-  test "Identity number is required" do
-    virtual_server = VirtualServer.new
-    assert !virtual_server.save
-  end
-  
   test "IPv6 address assignment" do
     @server_101.ip_address = "2001:0db8:85a3:0000:0000:8a2e:0370:7334"
     assert_valid @server_101
