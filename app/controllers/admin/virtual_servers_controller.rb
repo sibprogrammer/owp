@@ -328,7 +328,7 @@ class Admin::VirtualServersController < Admin::Base
       
       counter = Watchdog.get_ve_counter('_diskspace', virtual_server.id)
   
-      if counter and is_running
+      if counter and is_running and (counter.limit.to_i > 0)
         stats << {
           :parameter => t('admin.virtual_servers.stats.field.disk_usage'),
           :value => {
@@ -348,7 +348,7 @@ class Admin::VirtualServersController < Admin::Base
 
       counter = Watchdog.get_ve_counter('_memory', virtual_server.id)
       
-      if counter and is_running
+      if counter and is_running and (counter.limit.to_i > 0)
         stats << {
           :parameter => t('admin.virtual_servers.stats.field.memory_usage'),
           :value => { 
