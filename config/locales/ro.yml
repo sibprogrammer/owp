@@ -69,6 +69,12 @@ ro:
           attributes:
             name:
               taken: "Exista deja un tip de utilizator cu acest nume"
+  api:
+    error:
+      access_denied: "Acces refuzat."
+      object_not_found: "Obiectul nu a fost gasit."
+      unknown_error: "Eroare necunoscuta."
+      internal_error: "Eroare interna."                          
   about:
     copyright: "Copyright 2008-2011 SoftUnity."
     right_reserved: "Toate drepturile rezervate."
@@ -131,6 +137,7 @@ ro:
         connect: "Serverul fizic {{host}} a fost conectat."
         disconnect: "Serverul fizic {{host}} a fost deconectat."
         sync: "Starea serverului {{host}} a fost sincronizata."
+        sync_failed: "Sincronizarea serverului {{host}} a fost esuata."
         reboot: "Incepere procedura repornire server {{host}}."
       virtual_server:
         created: "Serverul virtual {{identity}} a fost creat."
@@ -213,6 +220,7 @@ ro:
             description: "Descriere"
             daemon_port: "Port serviciu"
             root_password: "Parola root"
+            use_ssl: "Foloseste SSL"
           fieldset:
             additional_settings: "Setari aditionale"
         disconnect_server:
@@ -412,6 +420,7 @@ ro:
         column:
           level: "Stare"
           created_at: "Data"
+          ip_address: "Adresa IP"
           message: "Mesaj"
           id: "ID"
         button:
@@ -528,6 +537,7 @@ ro:
         create:
           title: "Creeaza copie de rezerva noua"
           scheduled: "Procedura de realizare a copiei de rezerva a inceput. Va rugam asteptati."
+          limit_reached: "Numarul limita de copii de rezerva a fost atins."
           field:
             description: "Descriere"
             ve_state:
@@ -605,6 +615,7 @@ ro:
             name: "Nume"
           fieldset:
             permissions: "Permisiuni"
+            limits: "Limite"
           button_create: "Creeaza"
           permissions:
             manage_hardware_servers: "Administrare servere fizice"
@@ -618,3 +629,7 @@ ro:
             manage_logs: "Administrare jurnal evenimente"
             manage_users: "Administrare utilizatori"
             select_os_on_reinstall: "Selectare SO la reinstalare"
+          limits:
+            unlimited: "nelimitat"
+            limit_backups: "Numarul copiilor de rezerva"
+                                  
