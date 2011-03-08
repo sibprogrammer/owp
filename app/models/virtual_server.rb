@@ -50,12 +50,12 @@ class VirtualServer < ActiveRecord::Base
   end
 
   def start
-    return true if 'running' == state
+    return true if 'running' == real_state
     change_state('start', 'running')
   end
   
   def stop
-    return true if 'stopped' == state
+    return true if 'stopped' == real_state
     change_state('stop', 'stopped')
   end
   
@@ -138,7 +138,7 @@ class VirtualServer < ActiveRecord::Base
   end
   
   def reinstall
-    was_running = 'running' == state
+    was_running = 'running' == real_state
     path = '/etc/vz/conf'
     tmp_template = "tmp.template"
     
@@ -249,6 +249,19 @@ class VirtualServer < ActiveRecord::Base
     EventLog.info("virtual_server.cloned", { :identity => orig_server.identity })
     true
   end
+
+  def real_state
+    counter = Watchdog.get_ve_counter('state', id)
+    if counter
+      current_state = counter.state
+      if state != current_state
+        self.state = current_state
+        save
+      end
+    end
+
+    state
+  end
   
   private
 
@@ -265,6 +278,8 @@ class VirtualServer < ActiveRecord::Base
         })
         return false
       end
+
+      Watchdog.remove_ve_counter('state', id)
       
       self.state = status
       save

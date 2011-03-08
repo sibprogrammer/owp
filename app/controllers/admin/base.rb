@@ -14,7 +14,7 @@ class Admin::Base < ApplicationController
         :identity => virtual_server.identity,
         :ip_address => virtual_server.ip_address.blank? ? '' : virtual_server.ip_address.split.join(', '),
         :host_name => virtual_server.host_name,
-        :state => virtual_server.state,
+        :state => virtual_server.real_state,
         :os_template_name => virtual_server.orig_os_template,
         :diskspace => virtual_server.human_diskspace,
         :memory => virtual_server.human_memory,

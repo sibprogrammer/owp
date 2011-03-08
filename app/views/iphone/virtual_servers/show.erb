@@ -5,7 +5,7 @@
   </li>
   <li class="smallfield textfield">
     <span class="name"><%= t('admin.virtual_servers.form.create_server.field.status') %></span>
-    <span class="value"><%= '<img class="inline" src="/images/' + (('running' == @virtual_server.state) ? 'run' : 'stop') + '.png"/>' %></span>
+    <span class="value"><%= '<img class="inline" src="/images/' + (('running' == @virtual_server.real_state) ? 'run' : 'stop') + '.png"/>' %></span>
   </li>
   <li class="smallfield textfield">
     <span class="name"><%= t('admin.virtual_servers.form.create_server.field.os_template') %></span>

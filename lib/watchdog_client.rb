@@ -22,6 +22,14 @@ class WatchdogClient
       false
     end
   end
+
+  def remove_ve_counter(name, server_id)
+    begin
+      return @server.remove_ve_counter(name, server_id)
+    rescue
+      false
+    end
+  end
   
   def get_ve_counters_queue(name, server_id)
     begin

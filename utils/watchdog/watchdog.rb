@@ -25,6 +25,11 @@ class WatchdogService
     return false unless @ve_counters.has_key?(key)
     OpenStruct.new(@ve_counters[key].last)
   end
+
+  def remove_ve_counter(name, server_id)
+    key = server_id.to_s + name
+    @ve_counters.delete(key)
+  end
   
   def get_ve_counters_queue(name, server_id)
     key = server_id.to_s + name
@@ -47,6 +52,23 @@ class WatchdogService
       collect_diskspace(hardware_server)
       collect_cpu_usage(hardware_server)
       collect_hw_parameters(hardware_server)
+      collect_states(hardware_server)
+    end
+  end
+
+  def collect_states(hardware_server)
+    ves_on_server = hardware_server.rpc_client.exec('vzlist', '-a -H -o veid,status')['output'].split("\n")
+    # skip error lines
+    ves_on_server = ves_on_server.find_all { |item| item =~ /^\s+\d+/ }
+
+    ves_on_server.each do |vzlist_entry|
+      ve_id, ve_state = vzlist_entry.split
+      current_ve = hardware_server.virtual_servers.find_by_identity(ve_id)
+      add_ve_counter({
+        :name => 'state',
+        :virtual_server_id => current_ve.id,
+        :state => ve_state,
+      })
     end
   end
   

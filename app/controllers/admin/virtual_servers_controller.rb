@@ -95,7 +95,7 @@ class Admin::VirtualServersController < Admin::Base
     @up_level = '/admin/virtual-servers/show?id=' + @virtual_server.id.to_s
     
     @virtual_server_stats = []
-    is_running = 'running' == @virtual_server.state
+    is_running = 'running' == @virtual_server.real_state
     
     %w( kmemsize lockedpages privvmpages shmpages numproc physpages vmguarpages 
         oomguarpages numtcpsock numflock numpty numsiginfo tcpsndbuf tcprcvbuf 
@@ -266,7 +266,7 @@ class Admin::VirtualServersController < Admin::Base
           :value => virtual_server.identity,
         }, {
           :parameter => t('admin.virtual_servers.form.create_server.field.status'),
-          :value => '<img src="/images/' + (('running' == virtual_server.state) ? 'run' : 'stop') + '.png"/>',
+          :value => '<img src="/images/' + (('running' == virtual_server.real_state) ? 'run' : 'stop') + '.png"/>',
         }, {
           :parameter => t('admin.virtual_servers.form.create_server.field.os_template'),
           :value => virtual_server.orig_os_template,
@@ -306,7 +306,7 @@ class Admin::VirtualServersController < Admin::Base
     end
   
     def get_usage_stats(virtual_server)
-      is_running = 'running' == virtual_server.state
+      is_running = 'running' == virtual_server.real_state
       
       stats = []
 
