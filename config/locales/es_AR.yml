@@ -519,7 +519,7 @@ es_AR:
               soft_limit: "Barrera"
               hard_limit: "Límite"
     backups:
-      title: "Respaldos del servidor virtual #{{identity}}"
+      title: "Respaldos del servidor virtual {{name}}"
       grid:
         title: "Respaldos"
         button:

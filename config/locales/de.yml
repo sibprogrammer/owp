@@ -510,7 +510,7 @@ de:
               soft_limit: "Soft-Grenze"
               hard_limit: "Hard-Grenze"
     backups:
-      title: "Backups von virtuellem Server #{{identity}}"
+      title: "Backups von virtuellem Server {{name}}"
       grid:
         title: "Backups"
         button:

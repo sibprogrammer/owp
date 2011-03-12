@@ -1,6 +1,5 @@
 <%
-  @page_title = t('admin.virtual_servers.show.title', 
-    :name => @virtual_server.host_name.blank? ? "#" + @virtual_server.identity.to_s : @virtual_server.host_name )
+  @page_title = t('admin.virtual_servers.show.title', :name => @virtual_server.screen_name)
 %>
 <% @page_icon = 'server.png' %>
 

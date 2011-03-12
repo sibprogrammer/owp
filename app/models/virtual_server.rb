@@ -262,6 +262,10 @@ class VirtualServer < ActiveRecord::Base
 
     state
   end
+
+  def screen_name
+    host_name.blank? ? "#" + identity.to_s : host_name
+  end
   
   private
 

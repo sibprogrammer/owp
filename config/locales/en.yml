@@ -519,7 +519,7 @@ en:
               soft_limit: "Barrier"
               hard_limit: "Limit"
     backups:
-      title: "Backups for virtual server #{{identity}}"
+      title: "Backups for virtual server {{name}}"
       grid:
         title: "Backups"
         button:

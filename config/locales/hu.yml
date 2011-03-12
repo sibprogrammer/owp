@@ -510,7 +510,7 @@ hu:
               soft_limit: "Barrier"
               hard_limit: "Limit"
     backups:
-      title: "A #{{identity}} virtuális szerver mentése"
+      title: "A {{name}} virtuális szerver mentése"
       grid:
         title: "Mentések"
         button:

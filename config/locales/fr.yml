@@ -510,7 +510,7 @@ fr:
               soft_limit: "Barrière"
               hard_limit: "Limite"
     backups:
-      title: "Sauvegardes du serveur virtuel #{{identity}}"
+      title: "Sauvegardes du serveur virtuel {{name}}"
       grid:
         title: "Sauvegardes"
         button:

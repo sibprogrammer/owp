@@ -519,7 +519,7 @@ ru:
               soft_limit: "Барьер"
               hard_limit: "Лимит"
     backups:
-      title: "Резервные копии для виртуального сервера #{{identity}}"
+      title: "Резервные копии для виртуального сервера {{name}}"
       grid:
         title: "Резервные копии"
         button:

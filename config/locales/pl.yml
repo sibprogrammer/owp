@@ -510,7 +510,7 @@ pl:
               soft_limit: "Limit miękki"
               hard_limit: "Limit twardy"
     backups:
-      title: "Kopie bezpieczeństwa serwerów wirtualnych #{{identity}}"
+      title: "Kopie bezpieczeństwa serwerów wirtualnych {{name}}"
       grid:
         title: "Backupy"
         button:

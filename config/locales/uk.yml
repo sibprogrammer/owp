@@ -510,7 +510,7 @@ uk:
               soft_limit: "Бар'єр"
               hard_limit: "Ліміт"
     backups:
-      title: "Резервні копії для віртуального сервера #{{identity}}"
+      title: "Резервні копії для віртуального сервера {{name}}"
       grid:
         title: "Резервні копії"
         button:

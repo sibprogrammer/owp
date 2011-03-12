@@ -510,7 +510,7 @@ pt_BR:
               soft_limit: "Barreira"
               hard_limit: "Limite"
     backups:
-      title: "Backups do servidor virtual #{{identity}}"
+      title: "Backups do servidor virtual {{name}}"
       grid:
         title: "Backups"
         button:

@@ -519,7 +519,7 @@ ro:
               soft_limit: "Bariera"
               hard_limit: "Limita"
     backups:
-      title: "Copii de siguranta pentru serverul virtual #{{identity}}"
+      title: "Copii de siguranta pentru serverul virtual {{name}}"
       grid:
         title: "Copii de siguranta"
         button:

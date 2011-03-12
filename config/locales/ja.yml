@@ -510,7 +510,7 @@ ja:
               soft_limit: "境界"
               hard_limit: "制限"
     backups:
-      title: "仮想サーバー #{{identity}} のバックアップ"
+      title: "仮想サーバー {{name}} のバックアップ"
       grid:
         title: "バックアップ"
         button:

@@ -510,7 +510,7 @@ nl:
               soft_limit: "Barri&euml;re"
               hard_limit: "Limiet"
     backups:
-      title: "Backups voor virtuele server #{{identity}}"
+      title: "Backups voor virtuele server {{name}}"
       grid:
         title: "Backups"
         button:
