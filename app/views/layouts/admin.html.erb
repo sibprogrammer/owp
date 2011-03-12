@@ -108,6 +108,12 @@
             expandable: false,
             expanded: true,
             children: <%= @servers_list.to_json %>
+          }, {
+            cls: 'menu-item',
+            text: '<%= tjs('admin.menu.general.ip_addresses') %>',
+            href: '/admin/ip-addresses/list',
+            icon: '/images/network_adapter.png',
+            leaf: true
           }, <% else %> {
             cls: 'menu-item',
             text: '<%= tjs('admin.menu.general.virtual_servers') %>',

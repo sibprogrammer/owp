@@ -1,0 +1,73 @@
+<% @page_title = t('admin.ip_addresses.title') %>
+<% @page_icon = 'network_adapter.png' %>
+
+<% javascript_tag do -%>
+Ext.onReady(function() {
+
+  var store = new Ext.data.JsonStore({
+    url: '/admin/ip-addresses/list_data',
+    root: 'data',
+    autoLoad: true,
+    data: <%= { :data => @ip_addresses_list }.to_json %>,
+    sortInfo: { field: 'name', direction: 'ASC' },
+    fields: [
+      { name: 'name' },
+      { name: 'virtual_server' },
+      { name: 'virtual_server_id' },
+      { name: 'hardware_server' },
+      { name: 'hardware_server_id' }
+    ]
+  });
+
+  var selectionModel = new Ext.grid.RowSelectionModel();
+
+  var ipAddressesGrid = new Ext.grid.GridPanel({
+    id: 'ipAddressesGrid',
+    store: store,
+    title: '<%= tjs('admin.ip_addresses.grid.title') %>',
+    loadMask: true,
+    tools: [{
+      id: 'refresh',
+      handler: function() {
+        ipAddressesGrid.getStore().reload();
+      }
+    }],
+    cm: new Ext.grid.ColumnModel([
+      {
+        id: 'name',
+        header: '<%= tjs('admin.ip_addresses.grid.column.name') %>',
+        sortable: true,
+        width: 150,
+        dataIndex: 'name'
+      }, {
+        id: 'virtual_server',
+        header: '<%= tjs('admin.ip_addresses.grid.column.virtual_server') %>',
+        sortable: true,
+        width: 150,
+        dataIndex: 'virtual_server',
+        renderer: function(field, metadata, record) {
+          return "<a href='/admin/virtual-servers/show?id=" + record.data.virtual_server_id + "'>" + field + "</a>";
+        }
+      }, {
+        id: 'hardware_server',
+        header: '<%= tjs('admin.ip_addresses.grid.column.hardware_server') %>',
+        sortable: true,
+        dataIndex: 'hardware_server',
+        renderer: function(field, metadata, record) {
+          return "<a href='/admin/hardware-servers/show?id=" + record.data.hardware_server_id + "'>" + field + "</a>";
+        }
+      }
+    ]),
+    sm: selectionModel,
+    stripeRows: true,
+    autoExpandColumn: 'hardware_server',
+    autoWidth: true,
+    stripeRows: true,
+    frame: true,
+    iconCls: 'icon-items-list'
+  });
+
+  Owp.layout.addToCenter(ipAddressesGrid);
+
+});
+<% end -%>

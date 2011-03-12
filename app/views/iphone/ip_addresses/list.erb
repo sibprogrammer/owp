@@ -1,0 +1,9 @@
+<ul class="pageitem">
+  <% @ip_addresses_list.each do |item| %>
+    <li class="textbox">
+        <span class="header"><%= '<img class="inline" src="/images/network_adapter.png"/>' %> <%= h(item[:name]) %></span>
+        <%= link_to h(item[:virtual_server]), { :controller => 'virtual_servers', :action => 'show', :id => item[:virtual_server_id] } %> -
+        <%= link_to h(item[:hardware_server]), { :controller => 'hardware_servers', :action => 'show', :id => item[:hardware_server_id] } %>
+    </li>
+  <% end %>
+</ul>

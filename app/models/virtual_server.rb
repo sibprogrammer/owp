@@ -19,6 +19,20 @@ class VirtualServer < ActiveRecord::Base
   validates_format_of :host_name, :with => /^[a-z0-9\-\.]*$/i
   validates_format_of :description, :with => /^[a-z0-9\-\.\s]*$/i if AppConfig.vzctl.save_descriptions
 
+  def self.ip_addresses
+    result = []
+    VirtualServer.all.each { |virtual_server| virtual_server.ip_address.split.each { |ip_address|
+      result << {
+        :name => ip_address,
+        :virtual_server => virtual_server.screen_name,
+        :virtual_server_id => virtual_server.id,
+        :hardware_server => virtual_server.hardware_server.host,
+        :hardware_server_id => virtual_server.hardware_server.id,
+      }
+    }}
+    result
+  end
+
   def expiration_date=(date)
     write_attribute(:expiration_date, date.gsub('.', '-'))
   end

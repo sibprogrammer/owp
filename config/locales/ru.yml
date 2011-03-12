@@ -99,8 +99,9 @@ ru:
       general:
         title: "Общее"
         dashboard: "Рабочий стол"
-        hardware_servers: "Физические сервера"
-        virtual_servers: "Виртуальные сервера"
+        hardware_servers: "Физические серверы"
+        ip_addresses: "IP адреса"
+        virtual_servers: "Виртуальные серверы"
         my_profile: "Мой профиль"
         users: "Пользователи"
         requests: "Запросы"
@@ -632,3 +633,11 @@ ru:
           limits:
             unlimited: "неограничено"
             limit_backups: "Количество резервных копий"
+    ip_addresses:
+      title: "IP адреса"
+      grid:
+        title: "Список IP адресов"
+        column:
+          name: "IP адрес"
+          virtual_server: "Виртуальный сервер"
+          hardware_server: "Физический сервер"

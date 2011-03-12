@@ -99,13 +99,14 @@ en:
       general:
         title: "General"
         dashboard: "Dashboard"
-        hardware_servers: "Physical servers"
-        virtual_servers: "Virtual servers"
-        my_profile: "My profile"
+        hardware_servers: "Physical Servers"
+        ip_addresses: "IP Addresses"
+        virtual_servers: "Virtual Servers"
+        my_profile: "My Profile"
         users: "Users"
         requests: "Requests"
         tasks: "Tasks"
-        event_log: "Events log"
+        event_log: "Events Log"
         logout: "Logout"
       help:
         title: "Help"
@@ -632,3 +633,11 @@ en:
           limits:
             unlimited: "unlimited"
             limit_backups: "Number of backups"
+    ip_addresses:
+      title: "IP Addresses"
+      grid:
+        title: "IP addresses list"
+        column:
+          name: "IP Address"
+          virtual_server: "Virtual Server"
+          hardware_server: "Physical Server"

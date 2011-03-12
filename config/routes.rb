@@ -7,11 +7,9 @@ ActionController::Routing::Routes.draw do |map|
   map.resource :session
 
   map.namespace :admin do |admin|
-    admin.connect '/hardware-servers/:action', :controller => 'hardware_servers'
-    admin.connect '/virtual-servers/:action', :controller => 'virtual_servers'
-    admin.connect '/server-templates/:action', :controller => 'server_templates'
-    admin.connect '/os-templates/:action', :controller => 'os_templates'
-    admin.connect '/event-log/:action', :controller => 'event_log'
+    %w{ hardware_servers virtual_servers server_templates os_templates event_log ip_addresses }.each do |controller|
+      admin.connect "/#{controller.sub('_', '-')}/:action", :controller => controller
+    end
   end
   
   map.connect ':controller/:action'

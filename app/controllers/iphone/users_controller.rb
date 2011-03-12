@@ -1,5 +1,5 @@
 class Iphone::UsersController < Iphone::Base
-  before_filter :is_allowed
+  before_filter :is_allowed, :except => [ :profile ]
   
   def profile
     @page_title = t('admin.my_profile.title')

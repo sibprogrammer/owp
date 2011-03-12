@@ -1,4 +1,5 @@
 class Iphone::OsTemplatesController < Iphone::Base
+  before_filter :superadmin_required
 
   def list
     @page_title = t('admin.hardware_servers.top_toolbar.os_templates')

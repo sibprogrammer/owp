@@ -2,6 +2,7 @@
   <% if @current_user.superadmin? %>
     <%= imenu_link_to(t('admin.dashboard.stats_grid.title'), { :controller => "dashboard", :action => "stats" }, '/images/big-icons/application_view_list.png') %>
     <%= imenu_link_to(t('admin.menu.general.hardware_servers'), { :controller => "hardware_servers", :action => "list" }, '/images/big-icons/server.png') %>
+    <%= imenu_link_to(t('admin.menu.general.ip_addresses'), { :controller => "ip_addresses", :action => "list" }, '/images/big-icons/network_adapter.png') %>
   <% else %>
     <%= imenu_link_to(t('admin.menu.general.virtual_servers'), { :controller => "virtual_servers", :action => "list" }, '/images/big-icons/server.png') %>
   <% end %>
