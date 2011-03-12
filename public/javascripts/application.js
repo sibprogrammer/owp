@@ -303,6 +303,8 @@ Owp.grid.GridPanel = Ext.extend(Ext.grid.GridPanel, {
 Ext.ns('Owp.statusUpdater');
 
 Owp.statusUpdater = {
+  isRunning: false,
+
   task: {
     run: function() {
       Ext.Ajax.request({
@@ -312,9 +314,20 @@ Owp.statusUpdater = {
           var statusbar = Ext.get('statusbar');
           if (result.message) {
             statusbar.update('<img src="/images/spinner.gif" class="icon-inline"> ' + result.message);
+            Owp.statusUpdater.isRunning = true;
           } else {
             statusbar.update('');
             Ext.TaskMgr.stop(Owp.statusUpdater.task);
+
+            if (Owp.statusUpdater.isRunning) {
+              Ext.each(['backupsGrid', 'tasksGrid', 'osTemplatesGrid'], function(gridName) {
+                if (Ext.getCmp(gridName)) {
+                  Ext.getCmp(gridName).getStore().reload();
+                }
+              });
+            }
+
+            Owp.statusUpdater.isRunning = false;
           }
         }
       });
