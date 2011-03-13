@@ -10,10 +10,10 @@
 
 ### BEGIN INIT INFO
 # Provides: owp
-# required-start: $network $vz
-# required-stop:
-# Default-Start: 3 4 5
-# Default-Stop: 0 1 2 6
+# Required-Start: vz
+# Required-Stop:
+# Default-Start: 2 3 4 5
+# Default-Stop: 0 1 6
 # Short-Description: OpenVZ Web Panel startup script
 # Description: OpenVZ Web Panel startup script
 ### END INIT INFO
@@ -45,12 +45,12 @@ start() {
     echo "OpenVZ Web Panel is already running!"
   else
     echo  "Starting OpenVZ Web Panel"
+    ruby $INSTALL_DIR/utils/watchdog/watchdog.rb start
     if [ "x$SSL" = "xon" ]; then
       ruby $INSTALL_DIR/script/server_ssl webrick -e production -p $PORT -b $IP -d
     else
       ruby $INSTALL_DIR/script/server webrick -e production -p $PORT -b $IP -d
     fi
-    ruby $INSTALL_DIR/utils/watchdog/watchdog.rb start
     [ "$ENVIRONMENT" = "HW-NODE" ] && ruby $INSTALL_DIR/utils/hw-daemon/hw-daemon.rb start
     touch $LOCK_FILE
     sleep 1 # wait a little for forked processes

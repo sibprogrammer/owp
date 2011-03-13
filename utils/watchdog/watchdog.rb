@@ -8,6 +8,7 @@ CURRENT_DIR = File.expand_path(File.dirname(__FILE__)) + '/'
 PID_FILE = CURRENT_DIR + 'watchdog.pid';
 LOG_FILE = CURRENT_DIR + 'watchdog.log'
 SERVER_URI = "druby://localhost:7787"
+WATCHDOG_DAEMON = true
 
 class WatchdogService
 

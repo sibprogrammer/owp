@@ -23,4 +23,4 @@ end
 PRODUCT_NAME = 'OpenVZ Web Panel'
 PRODUCT_VERSION = '2.0'
 
-Watchdog = WatchdogClient.new
+Watchdog = WatchdogClient.new unless defined? WATCHDOG_DAEMON
