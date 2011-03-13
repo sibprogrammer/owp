@@ -3,7 +3,7 @@ class WatchdogClient
   SERVER_URI = "druby://localhost:7787"
   
   def initialize
-    DRb.start_service
+    DRb.start_service('druby://localhost:0')
     @server = DRbObject.new_with_uri(SERVER_URI)
   end
   
