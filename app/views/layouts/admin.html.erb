@@ -194,7 +194,7 @@
       function getTopBar() {
         var upLevelLink = '<%= @up_level %>';
       
-        var topBar = [{ 
+        var items = [{
           xtype: 'tbfill'
         }, <% if @current_user.superadmin? %> {
           text: '<%= tjs('admin.operations.search') %>',
@@ -214,6 +214,11 @@
           cls: 'x-btn-text-icon',
           icon: '/images/arrow_up.png'
         }];
+
+        var topBar = new Ext.Toolbar({
+          enableOverflow: true,
+          items: items
+        });
       
         return topBar;
       }
@@ -281,7 +286,7 @@
             cls: 'main-content-center-panel',
             id: 'mainContentCenterPanel',
             bodyStyle: 'background: #FFFFFF url(/images/openvz-big-logo.gif) no-repeat scroll right bottom',
-            tbar: getTopBar(), 
+            tbar: getTopBar(),
             bbar: [{
               xtype: 'box',
               height: 22,
