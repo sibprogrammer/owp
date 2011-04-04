@@ -60,6 +60,13 @@ class Admin::HardwareServersController < Admin::Base
     redirect_to :action => 'list' if !hardware_server and return
     render :json => { :success => true, :data => get_usage_stats(hardware_server) }
   end
+
+  def free_ips_list_data
+    hardware_server = HardwareServer.find_by_id(params[:id])
+    redirect_to :action => 'list' if !hardware_server and return
+    list = hardware_server.free_ips.map { |item| { :address => item }}
+    render :json => { :data => list }
+  end
   
   private
   

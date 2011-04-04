@@ -38,5 +38,17 @@ class Admin::Base < ApplicationController
 
       render :json => { :success => success }
     end
+
+    def ip_pools_list
+      IpPool.all.collect{ |ip_pool| {
+          :id => ip_pool.id,
+          :first_ip => ip_pool.first_ip,
+          :last_ip => ip_pool.last_ip,
+          :free_ips => ip_pool.free_ips,
+          :used_ips => ip_pool.used_ips,
+          :total_ips => ip_pool.total_ips,
+          :server => ip_pool.hardware_server ? ip_pool.hardware_server.host : t('admin.ip_pools.form.create.field.all_servers'),
+      } }
+    end
     
 end

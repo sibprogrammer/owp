@@ -49,6 +49,7 @@ ru:
             ip_address:
               invalid: "Неверный IP адрес."
               taken: "IP адрес уже присвоен другому серверу."
+              not_found_in_pool: "IP адрес не найден в доступных IP пулах."
             identity:
               taken: "Такой идентификатор уже принадлежит другому серверу."
             password:
@@ -69,6 +70,13 @@ ru:
           attributes:
             name:
               taken: "Роль с таким именем уже существует."
+        ip_pool:
+          attributes:
+            first_ip:
+              invalid: "Неверный IP адрес."
+              bad_range: "Неверный диапазон IP адресов."
+            last_ip:
+              invalid: "Неверный IP адрес."
   api:
     error:
       access_denied: "Доступ запрещен."
@@ -641,3 +649,30 @@ ru:
           name: "IP адрес"
           virtual_server: "Виртуальный сервер"
           hardware_server: "Физический сервер"
+    ip_pools:
+      grid:
+        title: "Список IP пулов"
+        column:
+          first_ip: "Певрый IP адрес"
+          last_ip: "Последний IP адрес"
+          free_ips: "Свободные IP"
+          used_ips: "Занятые IP"
+          total_ips: "Всего IP"
+          server: "Сервер"
+        button:
+          create: "Создать IP пул"
+          destroy: "Удалить IP пул"
+          edit: "Редактировать IP пул"
+      form:
+        remove_pool:
+          sure_to_remove: "Вы действительно хотите удалить выбранные IP пулы?"
+          deletion_failed: "Не удалось удалить некоторые IP пулы."
+        create:
+          title: "Создать новый IP пул"
+          edit_title: "Редактировать IP пул"
+          field:
+            first_ip: "Первый IP адрес"
+            last_ip: "Последний IP адрес"
+            limit_server: "Сервер"
+            all_servers: "все"
+          button_create: "Создать"

@@ -3,6 +3,7 @@ RAILS_GEM_VERSION = '2.2.2' unless defined? RAILS_GEM_VERSION
 
 # Bootstrap the Rails environment, frameworks, and default configuration
 require File.join(File.dirname(__FILE__), 'boot')
+require 'validations'
 
 Rails::Initializer.run do |config|
   # Make Time.zone default to the specified zone, and make Active Record store time values

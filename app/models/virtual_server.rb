@@ -280,6 +280,28 @@ class VirtualServer < ActiveRecord::Base
   def screen_name
     host_name.blank? ? "#" + identity.to_s : host_name
   end
+
+  def validate
+    return if 0 == IpPool.count or ip_address.blank? or !ip_address_changed?
+
+    old_ips = ip_address_was.blank? ? [] : ip_address_was.split(' ')
+
+    ip_address.split(' ').each do |ip|
+      begin
+        ip = IPAddr.new(ip).to_s
+      rescue
+        msg = I18n.t('activerecord.errors.models.virtual_server.attributes.ip_address.invalid')
+        errors.add(:ip_address, msg)
+        return
+      end
+
+      if !old_ips.include?(ip) and !hardware_server.free_ips.include?(ip)
+        msg = I18n.t('activerecord.errors.models.virtual_server.attributes.ip_address.not_found_in_pool')
+        errors.add(:ip_address, msg)
+        return
+      end
+    end
+  end
   
   private
 

@@ -19,15 +19,15 @@ class VirtualServerTest < ActiveSupport::TestCase
     @server_101.ip_address = "2001:db8:85a3::8a2e:370:7334 192.168.100.101"
     assert_valid @server_101
     
-    @server_101.ip_address = "2001:db8:85a3::8a2e:370:7334 fe80::208:a1ff:fe59:4831"
+    @server_101.ip_address = "2001:db8:85a3::8a2e:370:7334 2001:0db8:85a3:0000:0000:8a2e:0370:7301"
     assert_valid @server_101
   end
   
   test "IPv4 address assignment" do
-    @server_101.ip_address = "192.168.100.101"
+    @server_101.ip_address = "192.168.100.1"
     assert_valid @server_101
     
-    @server_101.ip_address = "192.168.100.101 192.168.100.201"
+    @server_101.ip_address = "192.168.100.1 192.168.100.2"
     assert_valid @server_101
   end
   

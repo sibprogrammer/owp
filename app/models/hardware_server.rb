@@ -261,6 +261,14 @@ class HardwareServer < ActiveRecord::Base
   def os_version
     Watchdog.get_hw_param('os_version', id).to_s
   end
+
+  def free_ips
+    list = []
+    IpPool.find(:all, :conditions => ["hardware_server_id is null OR hardware_server_id = ?", id]).each do |ip_pool|
+      list |= ip_pool.free_list
+    end
+    list
+  end
   
   private
   

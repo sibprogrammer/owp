@@ -7,7 +7,15 @@ ActionController::Routing::Routes.draw do |map|
   map.resource :session
 
   map.namespace :admin do |admin|
-    %w{ hardware_servers virtual_servers server_templates os_templates event_log ip_addresses }.each do |controller|
+    %w{
+      hardware_servers
+      virtual_servers
+      server_templates
+      os_templates
+      event_log
+      ip_addresses
+      ip_pools
+    }.each do |controller|
       admin.connect "/#{controller.sub('_', '-')}/:action", :controller => controller
     end
   end

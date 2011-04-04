@@ -49,6 +49,7 @@ en:
             ip_address:
               invalid: "Incorrect IP address."
               taken: "IP address was assigned already to the other server."
+              not_found_in_pool: "IP address not found in available IP pools."
             identity:
               taken: "Such identity belongs to the other server."
             password:
@@ -69,6 +70,13 @@ en:
           attributes:
             name:
               taken: "Role with such name is already exist."
+        ip_pool:
+          attributes:
+            first_ip:
+              invalid: "Incorrect IP address."
+              bad_range: "Incorrect IP addresses range."
+            last_ip:
+              invalid: "Incorrect IP address."
   api:
     error:
       access_denied: "Access denied."
@@ -641,3 +649,30 @@ en:
           name: "IP Address"
           virtual_server: "Virtual Server"
           hardware_server: "Physical Server"
+    ip_pools:
+      grid:
+        title: "IP pools list"
+        column:
+          first_ip: "First IP Address"
+          last_ip: "Last IP Address"
+          free_ips: "Free IPs"
+          used_ips: "Used IPs"
+          total_ips: "Total IPs"
+          server: "Server"
+        button:
+          create: "Create IP Pool"
+          destroy: "Remove IP Pool"
+          edit: "Edit IP Pool"
+      form:
+        remove_pool:
+          sure_to_remove: "Are you sure you want to remove selected IP pools?"
+          deletion_failed: "Unable to delete some IP pools."
+        create:
+          title: "Create new IP pool"
+          edit_title: "Edit IP pool"
+          field:
+            first_ip: "First IP address"
+            last_ip: "Last IP address"
+            limit_server: "Server"
+            all_servers: "all"
+          button_create: "Create"

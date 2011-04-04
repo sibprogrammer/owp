@@ -25,6 +25,7 @@ Ext.onReady(function() {
     id: 'ipAddressesGrid',
     store: store,
     title: '<%= tjs('admin.ip_addresses.grid.title') %>',
+    region: 'center',
     loadMask: true,
     tools: [{
       id: 'refresh',
@@ -67,7 +68,266 @@ Ext.onReady(function() {
     iconCls: 'icon-items-list'
   });
 
-  Owp.layout.addToCenter(ipAddressesGrid);
+  var hardwareServersStore = new Ext.data.JsonStore({
+    sortInfo: { field: 'host', direction: 'ASC' },
+    fields: [
+      { name: 'id' },
+      { name: 'host' }
+    ],
+    data: <%= @hardware_servers.to_json %>
+  });
+
+  var ipPoolsStore = new Ext.data.JsonStore({
+    url: '/admin/ip-pools/list_data',
+    root: 'data',
+    data: <%= { :data => @ip_pools_list }.to_json %>,
+    autoLoad: true,
+    sortInfo: { field: 'first_ip', direction: 'ASC' },
+    fields: [
+      { name: 'id' },
+      { name: 'first_ip' },
+      { name: 'last_ip' },
+      { name: 'free_ips' },
+      { name: 'used_ips' },
+      { name: 'total_ips' },
+      { name: 'server' }
+    ]
+  });
+
+  function showIpPoolEditForm(mode) {
+    var formEditIpPool = new Owp.form.BasicForm({
+      labelWidth: 150,
+      waitMsgTarget: true,
+      url: '/admin/ip-pools/update',
+      autoHeight: true,
+      defaults: { width: 200 },
+      keys: [{
+        key: Ext.EventObject.ENTER,
+        fn: function() {
+          windowEditIpPool.submitButton.handler();
+        }
+      }],
+      items: [{
+        name: 'id',
+        xtype: 'hidden'
+      }, {
+        fieldLabel: '<%= tjs('admin.ip_pools.form.create.field.first_ip') %>',
+        name: 'first_ip',
+        xtype: 'textfield',
+        allowBlank: false
+      }, {
+        fieldLabel: '<%= tjs('admin.ip_pools.form.create.field.last_ip') %>',
+        name: 'last_ip',
+        allowBlank: false
+      }, {
+        fieldLabel: '<%= tjs('admin.ip_pools.form.create.field.limit_server') %>',
+        xtype: 'combo',
+        mode: 'local',
+        editable: false,
+        forceSelection: true,
+        triggerAction: 'all',
+        hiddenName: 'hardware_server_id',
+        valueField: 'id',
+        displayField: 'host',
+        name: 'hardware_server_id',
+        store: hardwareServersStore
+      }]
+    });
+
+    var windowEditIpPool = new Owp.form.BasicFormWindow({
+      title: ('add' == mode)
+        ? '<%= tjs('admin.ip_pools.form.create.title') %>'
+        : '<%= tjs('admin.ip_pools.form.create.edit_title') %>',
+      iconCls: ('add' == mode) ? 'icon-window-add' : 'icon-window-edit',
+      width: 410,
+      autoHeight: true,
+      modal: true,
+      layout: 'fit',
+      plain: true,
+      bodyStyle: 'padding: 5px;',
+      resizable: false,
+      items: formEditIpPool,
+      buttons: [{
+        text: ('add' == mode)
+          ? '<%= tjs('admin.ip_pools.form.create.button_create') %>'
+          : '<%= tjs('form.button.save') %>',
+        iconCls: ('add' == mode) ? 'icon-button-add' : 'icon-button-save',
+        ref: '../submitButton',
+        handler: function() {
+          formEditIpPool.form.submit({
+            waitMsg: '<%= tjs('form.loading') %>',
+            success: function() {
+              ipPoolsGrid.store.reload();
+              windowEditIpPool.close();
+              ipPoolsGrid.getSelectionModel().clearSelections();
+            },
+            failure: function(form, action) {
+              Owp.form.errorHandler(form, action);
+            }
+          });
+        }
+      }, {
+        text: '<%= tjs('form.button.cancel') %>',
+        iconCls: 'icon-button-cancel',
+        handler: function() {
+          windowEditIpPool.close();
+        }
+      }]
+    });
+
+    windowEditIpPool.on('show', function() {
+      if ('add' == mode) {
+        formEditIpPool.getForm().reset();
+        windowEditIpPool.focus();
+      } else {
+        var selectedNode = Ext.getCmp('ipPoolsGrid').getSelectionModel().getSelected();
+        formEditIpPool.getForm().load({
+          waitMsg: '<%= tjs('form.loading') %>',
+          success: function() {
+            windowEditIpPool.focus();
+          },
+          url: '/admin/ip-pools/load_data',
+          params: {
+            id: selectedNode.id
+          }
+        });
+        formEditIpPool.getForm().findField('id').setValue(selectedNode.id);
+      }
+    });
+
+    windowEditIpPool.show();
+  }
+
+  function addIpPool() {
+    showIpPoolEditForm('add');
+  }
+
+  function editIpPool() {
+    showIpPoolEditForm('edit');
+  }
+
+  function removeIpPool() {
+    Ext.MessageBox.confirm(
+      '<%= tjs('form.confirmation') %>',
+      '<%= tjs('admin.ip_pools.form.remove_pool.sure_to_remove') %>',
+      function(button, text) {
+        if ('yes' == button) {
+          Owp.list.groupAction({
+            gridName: 'ipPoolsGrid',
+            url: '/admin/ip-pools/delete',
+            waitMsg: '<%= tjs('form.performing_task') %>',
+            failure: {
+              title: '<%= tjs('form.error.title') %>',
+              msg: '<%= tjs('admin.ip_pools.form.remove_pool.deletion_failed') %>'
+            }
+          });
+        }
+      }
+    );
+  }
+
+  var selectionModel = new Ext.grid.CheckboxSelectionModel({
+    listeners: {
+      selectionchange: function(selectionModel) {
+        if (selectionModel.getCount()) {
+          ipPoolsGrid.removeButton.enable();
+        } else {
+          ipPoolsGrid.removeButton.disable();
+        }
+
+        if (1 == selectionModel.getCount()) {
+          ipPoolsGrid.editButton.enable();
+        } else {
+          ipPoolsGrid.editButton.disable();
+        }
+      }
+    }
+  });
+
+  var ipPoolsGrid = new Ext.grid.GridPanel({
+    id: 'ipPoolsGrid',
+    title: '<%= tjs('admin.ip_pools.grid.title') %>',
+    region: 'north',
+    loadMask: true,
+    collapsible: true,
+    autoWidth: true,
+    height: 200,
+    autoExpandColumn: 'servers',
+    stateId: 'ipPoolsGrid',
+    iconCls: 'icon-items-list',
+    split: true,
+    store: ipPoolsStore,
+    tools: [{
+      id: 'refresh',
+      handler: function() {
+        ipPoolsGrid.getStore().reload();
+      }
+    }],
+    sm: selectionModel,
+    cm: new Ext.grid.ColumnModel([
+      selectionModel,
+    {
+      id: 'first_ip',
+      header: '<%= tjs('admin.ip_pools.grid.column.first_ip') %>',
+      width: 150,
+      dataIndex: 'first_ip'
+    }, {
+      id: 'last_ip',
+      header: '<%= tjs('admin.ip_pools.grid.column.last_ip') %>',
+      width: 150,
+      dataIndex: 'last_ip'
+    }, {
+      id: 'free_ips',
+      header: '<%= tjs('admin.ip_pools.grid.column.free_ips') %>',
+      width: 100,
+      dataIndex: 'free_ips'
+    }, {
+      id: 'used_ips',
+      header: '<%= tjs('admin.ip_pools.grid.column.used_ips') %>',
+      width: 100,
+      dataIndex: 'used_ips'
+    }, {
+      id: 'total_ips',
+      header: '<%= tjs('admin.ip_pools.grid.column.total_ips') %>',
+      width: 100,
+      dataIndex: 'total_ips'
+    }, {
+      id: 'servers',
+      header: '<%= tjs('admin.ip_pools.grid.column.server') %>',
+      dataIndex: 'server'
+    }]),
+    tbar: [{
+      text: '<%= tjs('admin.ip_pools.grid.button.create') %>',
+      cls: 'x-btn-text-icon',
+      icon: '/images/add.png',
+      handler: addIpPool
+    }, {
+      text: '<%= tjs('admin.ip_pools.grid.button.destroy') %>',
+      cls: 'x-btn-text-icon',
+      icon: '/images/delete.png',
+      handler: removeIpPool,
+      ref: '../removeButton',
+      disabled: true
+    }, {
+      text: '<%= tjs('admin.ip_pools.grid.button.edit') %>',
+      handler: editIpPool,
+      cls: 'x-btn-text-icon',
+      icon: '/images/wrench.png',
+      ref: '../editButton',
+      disabled: true
+    }]
+  });
+
+  var panelsWrapper = new Ext.Panel({
+    layout: 'border',
+    border: false,
+    items: [ ipPoolsGrid, ipAddressesGrid ]
+  });
+
+  Owp.layout.addToCenter(panelsWrapper);
+
+  var mainContentCenterPanel = Ext.getCmp('mainContentCenterPanel');
+  mainContentCenterPanel.doLayout();
 
 });
 <% end -%>

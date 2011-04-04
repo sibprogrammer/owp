@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110206111020) do
+ActiveRecord::Schema.define(:version => 20110327133050) do
 
   create_table "background_jobs", :force => true do |t|
     t.string  "description"
@@ -67,6 +67,12 @@ ActiveRecord::Schema.define(:version => 20110206111020) do
   end
 
   add_index "hardware_servers", ["host"], :name => "index_hardware_servers_on_host", :unique => true
+
+  create_table "ip_pools", :force => true do |t|
+    t.string  "first_ip"
+    t.string  "last_ip"
+    t.integer "hardware_server_id"
+  end
 
   create_table "os_templates", :force => true do |t|
     t.string  "name"

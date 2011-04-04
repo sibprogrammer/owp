@@ -32,6 +32,16 @@ var showVirtualServerEditForm = function(mode, grid, statsGrid) {
     data: <%= @virtual_servers_owners.to_json %>
   });
 
+  var ipAddressesStore = new Ext.data.JsonStore({
+    url: '/admin/hardware-servers/free_ips_list_data?id=<%= @hardware_server.id %>',
+    root: 'data',
+    autoLoad: true,
+    sortInfo: { field: 'address', direction: 'ASC' },
+    fields: [
+      { name: 'address' }
+    ]
+  });
+
   var formEditVirtualServer = new Owp.form.BasicForm({
     labelWidth: 180,
     waitMsgTarget: true,
@@ -131,7 +141,14 @@ var showVirtualServerEditForm = function(mode, grid, statsGrid) {
           defaultType: 'textfield',
           items: [{
             fieldLabel: '<%= tjs('admin.virtual_servers.form.create_server.field.ip_address') %>',
-            name: 'ip_address'
+            xtype: 'combo',
+            valueField: 'address',
+            displayField: 'address',
+            name: 'ip_address',
+            triggerAction: 'all',
+            mode: 'remote',
+            editable: true,
+            store: ipAddressesStore
           }, {
             fieldLabel: '<%= tjs('admin.virtual_servers.form.create_server.field.host_name') %>',
             name: 'host_name'
