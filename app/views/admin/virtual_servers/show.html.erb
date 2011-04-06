@@ -631,45 +631,150 @@ Ext.onReady(function() {
     windowClone.show();
   }
 
+  var migrateAction = function() {
+    var hwServersStore = new Ext.data.JsonStore({
+      sortInfo: { field: 'host', direction: 'ASC' },
+      fields: [
+        { name: 'id' },
+        { name: 'host' }
+      ],
+      data: <%= @migration_targets.to_json %>
+    });
+
+    var formMigrate = new Owp.form.BasicForm({
+      labelWidth: 180,
+      waitMsgTarget: true,
+      url: '/admin/virtual-servers/migrate?id=<%= @virtual_server.id %>',
+      keys: [{
+        key: Ext.EventObject.ENTER,
+        fn: function() {
+          windowMigrate.submitButton.handler();
+        }
+      }],
+      autoHeight: true,
+      layout: 'form',
+      items: [{
+        xtype: 'displayfield',
+        hideLabel: true,
+        anchor: '100%',
+        value: '<%= tjs('admin.virtual_servers.form.migrate.note') %>'
+      }, {
+        fieldLabel: '<%= tjs('admin.virtual_servers.form.migrate.field.target') %>',
+        xtype: 'combo',
+        forceSelection: true,
+        triggerAction: 'all',
+        mode: 'local',
+        editable: false,
+        hiddenName: 'target_id',
+        valueField: 'id',
+        displayField: 'host',
+        name: 'target_id',
+        allowBlank: false,
+        value: '<%= @migration_targets.length > 0 ? @migration_targets.first[:id] : 0 %>',
+        store: hwServersStore
+      }]
+    });
+
+    var windowMigrate = new Owp.form.BasicFormWindow({
+      title: '<%= tjs('admin.virtual_servers.form.migrate.title') %>',
+      iconCls: 'icon-window-migrate',
+      width: 410,
+      autoHeight: true,
+      modal: true,
+      layout: 'fit',
+      plain: true,
+      bodyStyle: 'padding: 5px;',
+      resizable: false,
+      items: formMigrate,
+
+      buttons: [{
+        text: '<%= tjs('admin.virtual_servers.form.migrate.button_migrate') %>',
+        iconCls: 'icon-button-migrate',
+        ref: '../submitButton',
+        handler: function() {
+          formMigrate.form.submit({
+            waitMsg: '<%= tjs('form.loading') %>',
+            success: function() {
+              var target_id = formMigrate.getForm().findField('target_id').value;
+              windowMigrate.close();
+              document.location.href = '/admin/hardware-servers/show?id=' + target_id;
+            },
+            failure: function(form, action) {
+              Owp.form.errorHandler(form, action);
+              windowMigrate.focus();
+            }
+          });
+        }
+      }, {
+        text: '<%= tjs('form.button.cancel') %>',
+        iconCls: 'icon-button-cancel',
+        handler: function() {
+          windowMigrate.close();
+        }
+      }]
+    });
+
+    windowMigrate.show();
+  }
+
   var mainContentCenterPanel = Ext.getCmp('mainContentCenterPanel');
-  
-  <% if @current_user.can_use_ve_console? %>
-    mainContentCenterPanel.getTopToolbar().insertButton(0, {
-      text: '<%= tjs('admin.virtual_servers.grid.button.console') %>',
-      iconCls: 'icon-button-console',
-      ref: '../consoleButton',
-      handler: consoleAction
-    });
-  <% end %>
-    
-  <% if @current_user.superadmin? %>
-    mainContentCenterPanel.getTopToolbar().insertButton(0, {
-      text: '<%= tjs('admin.virtual_servers.grid.button.clone') %>',
-      iconCls: 'icon-button-clone',
-      ref: '../cloneButton',
-      handler: cloneAction
-    });
-  <% end -%>
-  
-  <% if AppConfig.backups.allow_for_users and @current_user.can_backup_ve? %>
-    mainContentCenterPanel.getTopToolbar().insertButton(0, {
-      text: '<%= tjs('admin.virtual_servers.grid.button.backup') %>',
-      iconCls: 'icon-button-backup',
-      ref: '../backupButton',
-      handler: backupAction
-    });
-  <% end -%>
-  
+
+  var toolsButtons = [];
+
   <% if @current_user.can_reinstall_ve? %>
-    mainContentCenterPanel.getTopToolbar().insertButton(0, {
+    toolsButtons.push({
       text: '<%= tjs('admin.virtual_servers.grid.button.reinstall') %>',
       iconCls: 'icon-button-reinstall',
       ref: '../reinstallButton',
       handler: reinstallAction
     });
   <% end -%>
+
+  <% if AppConfig.backups.allow_for_users and @current_user.can_backup_ve? %>
+    toolsButtons.push({
+      text: '<%= tjs('admin.virtual_servers.grid.button.backup') %>',
+      iconCls: 'icon-button-backup',
+      ref: '../backupButton',
+      handler: backupAction
+    });
+  <% end -%>
+
+  <% if @current_user.superadmin? %>
+    toolsButtons.push({
+      text: '<%= tjs('admin.virtual_servers.grid.button.clone') %>',
+      iconCls: 'icon-button-clone',
+      ref: '../cloneButton',
+      handler: cloneAction
+    });
+  <% end -%>
+
+  <% if @current_user.superadmin? and @migration_targets.length > 0 %>
+    toolsButtons.push({
+      text: '<%= tjs('admin.virtual_servers.grid.button.migrate') %>',
+      iconCls: 'icon-button-migrate',
+      ref: '../migrateButton',
+      handler: migrateAction
+    });
+  <% end -%>
   
-  mainContentCenterPanel.getTopToolbar().insertButton(0, '-');
+  <% if @current_user.can_use_ve_console? %>
+    toolsButtons.push({
+      text: '<%= tjs('admin.virtual_servers.grid.button.console') %>',
+      iconCls: 'icon-button-console',
+      ref: '../consoleButton',
+      handler: consoleAction
+    });
+  <% end %>
+
+  if (toolsButtons.length > 0) {
+    mainContentCenterPanel.getTopToolbar().insertButton(0, {
+      text: '<%= tjs('admin.virtual_servers.grid.button.tools') %>',
+      iconCls: 'icon-button-tools',
+      menu: toolsButtons
+    });
+
+    mainContentCenterPanel.getTopToolbar().insertButton(0, '-');
+  }
   
   mainContentCenterPanel.getTopToolbar().insertButton(0, {
     text: '<%= tjs('admin.virtual_servers.grid.button.limits') %>',

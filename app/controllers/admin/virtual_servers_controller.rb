@@ -1,5 +1,5 @@
 class Admin::VirtualServersController < Admin::Base
-  before_filter :superadmin_required, :only => [:list_data, :delete, :create, :clone]
+  before_filter :superadmin_required, :only => [:list_data, :delete, :create, :clone, :migrate]
   
   def list
     @up_level = '/admin/dashboard'
@@ -86,6 +86,9 @@ class Admin::VirtualServersController < Admin::Base
     
     @virtual_server_properties = virtual_server_properties(@virtual_server)
     @virtual_server_stats = get_usage_stats(@virtual_server)
+    @migration_targets = HardwareServer.find(:all, :conditions => ["id != ?", @virtual_server.hardware_server.id]).map do |server|
+      { :id => server.id, :host => server.host }
+    end
   end
   
   def stat_details
@@ -255,6 +258,15 @@ class Admin::VirtualServersController < Admin::Base
     else
       render :json => { :success => false, :form_errors => new_server.errors }
     end
+  end
+
+  def migrate
+    virtual_server = VirtualServer.find_by_id(params[:id])
+    target_hardware_server = HardwareServer.find_by_id(params[:target_id])
+    redirect_to :controller => 'dashboard' and return if !virtual_server or !target_hardware_server
+
+    virtual_server.migrate(target_hardware_server)
+    render :json => { :success => true }
   end
   
   private

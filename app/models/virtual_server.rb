@@ -264,6 +264,12 @@ class VirtualServer < ActiveRecord::Base
     true
   end
 
+  def migrate(target_hardware_server)
+    hardware_server.rpc_client.exec('vzmigrate', "#{target_hardware_server.host} #{identity}")
+    target_hardware_server.sync_virtual_servers
+    destroy
+  end
+
   def real_state
     counter = Watchdog.get_ve_counter('state', id)
     if counter

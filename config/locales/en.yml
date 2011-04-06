@@ -289,6 +289,8 @@ en:
           change_settings: "Change settings"
           console: "Console"
           backup: "Backup"
+          tools: "Tools"
+          migrate: "Migrate"
       form:
         change_settings:
           title: "Change settings of virtual server"
@@ -358,6 +360,12 @@ en:
             run: "Run"
         clone:
           title: "Clone virtual server"
+        migrate:
+          title: "Migrate virtual server"
+          field:
+            target: "Target server"
+          button_migrate: "Migrate"
+          note: "Before migration need to generate SSH public key for root user on source physical server and copy it to destination physical server. Also need check/install rsync utility to destination physical server."
       show:
         title: "Virtual server {{name}}"
         grid:
