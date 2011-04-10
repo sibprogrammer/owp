@@ -291,6 +291,7 @@ en:
           backup: "Backup"
           tools: "Tools"
           migrate: "Migrate"
+          create_template: "Create Template"
       form:
         change_settings:
           title: "Change settings of virtual server"
@@ -342,6 +343,14 @@ en:
           tab:
             main_settings: "Main Settings"
             additional_settings: "Additional Settings"
+        create_template:
+          title: "Create template based on virtual server"
+          button_create: "Create"
+          field:
+            name: "Name"
+          error:
+            invalid_name: "Only digits and English letters are allowed."
+            template_exists: "OS template with same name already exists."
         limits:
           title: "Limits"
           grid:

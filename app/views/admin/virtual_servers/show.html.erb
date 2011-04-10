@@ -717,6 +717,78 @@ Ext.onReady(function() {
     windowMigrate.show();
   }
 
+  var createTemplateAction = function() {
+    var formCreateTemplate = new Owp.form.BasicForm({
+      labelWidth: 100,
+      waitMsgTarget: true,
+      url: '/admin/virtual-servers/create_template?id=<%= @virtual_server.id %>',
+      keys: [{
+        key: Ext.EventObject.ENTER,
+        fn: function() {
+          windowCreateTemplate.submitButton.handler();
+        }
+      }],
+      autoHeight: true,
+      layout: 'form',
+      defaults: { width: 235 },
+      defaultType: 'textfield',
+      items: [{
+        xtype: 'compositefield',
+        fieldLabel: '<%= tjs('admin.virtual_servers.form.create_template.field.name') %>',
+        name: 'template_name',
+        items: [{
+          xtype: 'displayfield',
+          value: '<%= escape_javascript(@virtual_server.orig_os_template) %>-'
+        }, {
+          xtype: 'textfield',
+          name: 'template_name',
+          allowBlank: false,
+          flex: 1
+        }]
+      }]
+    });
+
+    var windowCreateTemplate = new Owp.form.BasicFormWindow({
+      title: '<%= tjs('admin.virtual_servers.form.create_template.title') %>',
+      iconCls: 'icon-window-create-template',
+      width: 410,
+      autoHeight: true,
+      modal: true,
+      layout: 'fit',
+      plain: true,
+      bodyStyle: 'padding: 5px;',
+      resizable: false,
+      items: formCreateTemplate,
+
+      buttons: [{
+        text: '<%= tjs('admin.virtual_servers.form.create_template.button_create') %>',
+        iconCls: 'icon-button-create-template',
+        ref: '../submitButton',
+        handler: function() {
+          formCreateTemplate.form.submit({
+            waitMsg: '<%= tjs('form.loading') %>',
+            success: function() {
+              windowCreateTemplate.close();
+              document.location.href = '/admin/os-templates/list?hardware_server_id=' + <%= @virtual_server.hardware_server_id %>;
+            },
+            failure: function(form, action) {
+              Owp.form.errorHandler(form, action);
+              windowCreateTemplate.focus();
+            }
+          });
+        }
+      }, {
+        text: '<%= tjs('form.button.cancel') %>',
+        iconCls: 'icon-button-cancel',
+        handler: function() {
+          windowCreateTemplate.close();
+        }
+      }]
+    });
+
+    windowCreateTemplate.show();
+  }
+
   var mainContentCenterPanel = Ext.getCmp('mainContentCenterPanel');
 
   var toolsButtons = [];
@@ -756,7 +828,16 @@ Ext.onReady(function() {
       handler: migrateAction
     });
   <% end -%>
-  
+
+  <% if @current_user.superadmin? %>
+    toolsButtons.push({
+      text: '<%= tjs('admin.virtual_servers.grid.button.create_template') %>',
+      iconCls: 'icon-button-create-template',
+      ref: '../createTemplateButton',
+      handler: createTemplateAction
+    });
+  <% end -%>
+
   <% if @current_user.can_use_ve_console? %>
     toolsButtons.push({
       text: '<%= tjs('admin.virtual_servers.grid.button.console') %>',

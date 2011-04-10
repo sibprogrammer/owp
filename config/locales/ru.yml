@@ -291,6 +291,7 @@ ru:
           backup: "Резервное копирование"
           tools: "Инструменты"
           migrate: "Миграция"
+          create_template: "Создать шаблон"
       form:
         change_settings:
           title: "Изменить настройки виртуального сервера"
@@ -342,6 +343,14 @@ ru:
           tab:
             main_settings: "Основные настройки"
             additional_settings: "Дополнительные настройки"
+        create_template:
+          title: "Создать шаблон на основе виртуального сервера"
+          button_create: "Создать"
+          field:
+            name: "Имя"
+          error:
+            invalid_name: "Только цифры и английские буквы допустимы."
+            template_exists: "Шаблон OS с таким именен уже существует."
         limits:
           title: "Ограничения"
           grid:

@@ -1,5 +1,6 @@
 class Admin::VirtualServersController < Admin::Base
   before_filter :superadmin_required, :only => [:list_data, :delete, :create, :clone, :migrate]
+  before_filter :set_server_by_id, :only => [ :clone, :migrate, :create_template, :get_properties, :get_stats, :get_limits ]
   
   def list
     @up_level = '/admin/dashboard'
@@ -144,26 +145,15 @@ class Admin::VirtualServersController < Admin::Base
   end
   
   def get_properties
-    virtual_server = VirtualServer.find_by_id(params[:id])
-    redirect_to :controller => 'dashboard' and return if !virtual_server or !@current_user.can_control(virtual_server)
-
-    render :json => { :success => true, :data => virtual_server_properties(virtual_server) }
+    render :json => { :success => true, :data => virtual_server_properties(@virtual_server) }
   end
   
   def get_stats
-    virtual_server = VirtualServer.find_by_id(params[:id])
-    redirect_to :controller => 'dashboard' and return if !virtual_server or !@current_user.can_control(virtual_server)
-
-    stats = get_usage_stats(virtual_server)
-
-    render :json => { :success => true, :data => stats }
+    render :json => { :success => true, :data => get_usage_stats(@virtual_server) }
   end
   
   def get_limits
-    virtual_server = VirtualServer.find_by_id(params[:id])
-    redirect_to :controller => 'dashboard' and return if !virtual_server or !@current_user.can_control(virtual_server)
-    
-    render :json => { :success => true, :data => virtual_server.get_limits }
+    render :json => { :success => true, :data => @virtual_server.get_limits }
   end
   
   def save_limits
@@ -247,13 +237,10 @@ class Admin::VirtualServersController < Admin::Base
   end
   
   def clone
-    virtual_server = VirtualServer.find_by_id(params[:id])
-    redirect_to :controller => 'dashboard' and return if !virtual_server or !@current_user.can_control(virtual_server)
-    
-    new_server = virtual_server.clone
+    new_server = @virtual_server.clone
     new_server.attributes = params
     
-    if new_server.clone_physically(virtual_server)
+    if new_server.clone_physically(@virtual_server)
       render :json => { :success => true }  
     else
       render :json => { :success => false, :form_errors => new_server.errors }
@@ -261,15 +248,35 @@ class Admin::VirtualServersController < Admin::Base
   end
 
   def migrate
-    virtual_server = VirtualServer.find_by_id(params[:id])
     target_hardware_server = HardwareServer.find_by_id(params[:target_id])
-    redirect_to :controller => 'dashboard' and return if !virtual_server or !target_hardware_server
+    redirect_to :controller => 'dashboard' and return if !target_hardware_server
 
-    virtual_server.migrate(target_hardware_server)
+    @virtual_server.migrate(target_hardware_server)
     render :json => { :success => true }
+  end
+
+  def create_template
+    form_errors = []
+    template_name = params[:template_name]
+    locale_section = 'admin.virtual_servers.form.create_template.error'
+
+    form_errors << ['template_name', t("#{locale_section}.invalid_name")] if !template_name.match(/^[a-z0-9]+$/i)
+    form_errors << ['template_name', t("#{locale_section}.template_exists")] if @virtual_server.hardware_server.os_templates.find_by_name(template_name)
+
+    if !form_errors.empty?
+      render :json => { :success => false, :form_errors => form_errors }
+    else
+      @virtual_server.create_template(template_name)
+      render :json => { :success => true }
+    end
   end
   
   private
+
+    def set_server_by_id
+      @virtual_server = VirtualServer.find_by_id(params[:id])
+      redirect_to :controller => 'dashboard' and return if !@virtual_server or !@current_user.can_control(@virtual_server)
+    end
   
     def virtual_server_properties(virtual_server)
       params = [

@@ -1,0 +1,8 @@
+.bash_history
+lost+found
+/dev/*
+/mnt/*
+/tmp/*
+/proc/*
+/sys/*
+/usr/src/*

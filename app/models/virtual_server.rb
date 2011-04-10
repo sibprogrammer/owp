@@ -308,7 +308,29 @@ class VirtualServer < ActiveRecord::Base
       end
     end
   end
-  
+
+  def create_template(template_name)
+    template_name = orig_os_template + '-' + template_name + '.tar.gz'
+    templates_path = "#{hardware_server.templates_dir}/cache"
+    template_exclude_list = File.read("#{Rails.root}/config/template_exclude.list")
+    is_running = 'running' == real_state
+    hardware_server.rpc_client.write_file("/tmp/owp-template-exclude.list", template_exclude_list)
+
+    suspend if is_running
+
+    begin
+      hardware_server.rpc_client.exec("tar --numeric-owner -czf #{templates_path}/#{template_name} -X /tmp/owp-template-exclude.list -C #{private_dir} .")
+    rescue => e
+      resume if is_running
+      raise e
+    end
+
+    resume if is_running
+
+    hardware_server.rpc_client.exec("rm /tmp/owp-template-exclude.list")
+    hardware_server.sync_os_templates
+  end
+
   private
 
     def vzctl_set(param)
