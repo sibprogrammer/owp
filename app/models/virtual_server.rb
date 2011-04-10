@@ -47,6 +47,8 @@ class VirtualServer < ActiveRecord::Base
       'DGRAMRCVBUF', 'NUMOTHERSOCK', 'DCACHESIZE', 'NUMFILE',
       'AVNUMPROC', 'NUMIPTENT', 'DISKINODES'
     ]
+
+    limits << 'SWAPPAGES' if (hardware_server.vzctl_version.split('.').map(&:to_i) <=> [3, 0, 24]) >= 0
     
     result = []
     
