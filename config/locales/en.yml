@@ -14,6 +14,7 @@ en:
       save: "Save"
       cancel: "Cancel"
       create: "Create"
+      back: "Back"
   activerecord:
     errors:
       models:
@@ -98,9 +99,29 @@ en:
     password: "Password"
     remember_me: "Remember me"
     button_login: "Log in"
+    button_restore_password: "Restore password"
     locale: "Language"
     bad_login: "Invalid login or password."
     locked_user: "User is locked."
+  restore_password:
+    page_title: "Password Recovery"
+    window_title: "Restore password"
+    username: "User name"
+    button_restore: "Restore"
+    restore_link_sent: "Password recovery email was sent."
+    error:
+      user_not_found: "User not found."
+      no_email: "Impossible to restore password, because user have no email address."
+    mail:
+      restore_link:
+        subject: "Password Recovery"
+        body: "To restore the password follow the link: {{link}}"
+  reset_password:
+    page_title: "Reset Password"
+    window_title: "Reset Password"
+    new_password: "New Password"
+    confirm_password: "Confirm Password"
+    password_changed: "Password was changed."
   admin:
     menu:
       title: "Menu"

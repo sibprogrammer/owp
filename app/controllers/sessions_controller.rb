@@ -61,6 +61,41 @@ class SessionsController < ApplicationController
     logout_killing_session!
     redirect_back_or_default('/')
   end
+
+  def restore_password
+    if request.post?
+      user = User.find_by_login(params[:login])
+      render(:json => { :success => false, :message => t('restore_password.error.user_not_found') }) and return if !user
+      render(:json => { :success => false, :message => t('restore_password.error.no_email') }) and return if user.email.blank?
+
+      UserMailer.deliver_restore_password_email(user, request.url.sub('/restore-password', '/reset-password'))
+      render :json => { :success => true, :message => t('restore_password.restore_link_sent') }
+    end
+  end
+
+  def reset_password
+    if params.key?(:user_id) and params.key?(:hash)
+      user = User.find(params[:user_id])
+      if user
+        hash = Digest::SHA1.hexdigest(user.crypted_password + user.login)
+        @user = user if hash == params[:hash]
+        @hash = hash
+      end
+    end
+
+    redirect_to '/' and return if !@user
+
+    if request.post?
+      @user.password = params[:password]
+      @user.password_confirmation = params[:password_confirmation]
+
+      if @user.save
+        render :json => { :success => true, :message => t('reset_password.password_changed') }
+      else
+        render :json => { :success => false, :form_errors => @user.errors }
+      end
+    end
+  end
   
   private
   

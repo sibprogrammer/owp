@@ -31,6 +31,8 @@ td.x-grid3-td-checker, td.x-grid3-td-state { vertical-align: middle; }
 .icon-items-list { background-image: url(/images/table.png) !important; }
 .icon-items-chart { background-image: url(/images/chart_bar.png) !important; }
 .icon-window-login { background-image: url(/images/key.png) !important; }
+.icon-window-restore-password { background-image: url(/images/key.png) !important; }
+.icon-window-reset-password { background-image: url(/images/key.png) !important; }
 .icon-window-my-profile { background-image: url(/images/vcard.png) !important; }
 .icon-window-add { background-image: url(/images/add.png) !important; }
 .icon-window-edit { background-image: url(/images/wrench.png) !important; }
@@ -41,6 +43,9 @@ td.x-grid3-td-checker, td.x-grid3-td-state { vertical-align: middle; }
 .icon-window-migrate { background-image: url(/images/server_go.png) !important; }
 .icon-window-create-template { background-image: url(/images/server_compressed.png) !important; }
 .icon-button-login { background-image: url(/images/arrow_right.png) !important; }
+.icon-button-back { background-image: url(/images/arrow_left.png) !important; }
+.icon-button-login { background-image: url(/images/arrow_right.png) !important; }
+.icon-button-restore-password { background-image: url(/images/key.png) !important; }
 .icon-button-save { background-image: url(/images/accept.png) !important; }
 .icon-button-add { background-image: url(/images/add.png) !important; }
 .icon-button-cancel { background-image: url(/images/cancel.png) !important; }
@@ -64,6 +69,7 @@ td.x-grid3-td-checker, td.x-grid3-td-state { vertical-align: middle; }
 .icon-inline-big { height: 32px; width: 32px; padding-right: 5px; vertical-align: middle; }
 
 .panel-dashboard { margin: 10px; }
+.button-restore-password { align: right }
 
 .no-wrap { white-space: nowrap; }
 

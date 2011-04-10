@@ -14,6 +14,7 @@ ru:
       save: "Сохранить"
       cancel: "Отмена"
       create: "Создать"
+      back: "Назад"
   activerecord:
     errors:
       models:
@@ -98,9 +99,29 @@ ru:
     password: "Пароль"
     remember_me: "Запомнить"
     button_login: "Вход"
+    button_restore_password: "Восстановление пароля"
     locale: "Язык"
     bad_login: "Неверный логин или пароль."
     locked_user: "Пользователь заблокирован."
+  restore_password:
+    page_title: "Восстановление пароля"
+    window_title: "Восстановление пароля"
+    username: "Логин"
+    button_restore: "Восстановить"
+    restore_link_sent: "Письмо с инструкциями по восстановлению пароля было отправлено."
+    error:
+      user_not_found: "Пользователь не найден."
+      no_email: "Невозможно восстановить пароль, потому что пользователь не имеет email-адреса."
+    mail:
+      restore_link:
+        subject: "Восстановление пароля"
+        body: "Для восстановления пароля проследуйте по ссылке: {{link}}"
+  reset_password:
+    page_title: "Сброс пароля"
+    window_title: "Сброс пароля"
+    new_password: "Новый пароль"
+    confirm_password: "Подтверждение пароля"
+    password_changed: "Пароль был изменен."
   admin:
     menu:
       title: "Меню"  
