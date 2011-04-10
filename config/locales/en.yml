@@ -193,6 +193,12 @@ en:
         removed: "Role {{name}} was removed."
         created: "Role {{name}} was created."
         updated: "Role {{name}} was updated."
+      request:
+        created: "Request #{{id}} was created."
+        updated: "Request #{{id}} was updated."
+        removed: "Request #{{id}} was removed."
+      comment:
+        created: "Comment on request #{{request_id}} was created."
     tasks:
       os_templates:
         install: "OS templates installation on the server {{host}}."
@@ -640,6 +646,13 @@ en:
             button_add: "Add"
             field:
               content: "Message"
+      mail:
+        new_request:
+          subject: "New request #{{id}}"
+          body: "New request #{{id}} was created by {{login}}."
+        new_comment:
+          subject: "New comment on request #{{request_id}}"
+          body: "New comment on request #{{request_id}} was added by {{login}}."
     roles:
       title: "Roles"
       grid:

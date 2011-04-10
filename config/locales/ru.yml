@@ -193,6 +193,12 @@ ru:
         removed: "Роль {{name}} была удалена."
         created: "Роль {{name}} была создана."
         updated: "Роль {{name}} была обновлена."
+      request:
+        created: "Запрос #{{id}} был создан."
+        updated: "Запрос #{{id}} был обновлен."
+        removed: "Запрос #{{id}} был удален."
+      comment:
+        created: "Комментарий на запрос #{{request_id}} был создан."
     tasks:
       os_templates:
         install: "Установка шаблонов ОС на сервер {{host}}."
@@ -640,6 +646,13 @@ ru:
             button_add: "Добавить"
             field:
               content: "Сообщение"
+      mail:
+        new_request:
+          subject: "Новый запрос #{{id}}"
+          body: "Новый запрос #{{id}} был создан пользователем {{login}}."
+        new_comment:
+          subject: "Новый комментарий на запрос #{{request_id}}"
+          body: "Новый комментарий на запрос #{{request_id}} был добавлен пользователем {{login}}."
     roles:
       title: "Роли"
       grid:
