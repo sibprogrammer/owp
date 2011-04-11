@@ -14,6 +14,7 @@ ja:
       save: "保存"
       cancel: "キャンセル"
       create: "作成"
+      back: "戻る"
   activerecord:
     errors:
       models:
@@ -33,8 +34,8 @@ ja:
               taken: "その名前のサーバーはすでに存在します。"
               connection: "接続に失敗しました。daemon が動作していない可能性があります。"
               ssh_connection: "SSH 接続が確立できません。"
-              openvz_not_found: "サーバー上に OpenVZ 仮想化が見つかりませんでした。"
-              ruby_not_found: "サーバー上に Ruby インタプリタが見つかりませんでした。"
+              openvz_not_found: "サーバー上に OpenVZ 仮想化がみつかりませんでした。"
+              ruby_not_found: "サーバー上に Ruby インタプリタがみつかりませんでした。"
             auth_key:
               bad_auth: "認証できません。おそらく認証キーが無効です。"
             daemon_port:
@@ -49,6 +50,7 @@ ja:
             ip_address:
               invalid: "不正な IP アドレス。"
               taken: "IP アドレスはすでに他のサーバーにアサインされています。"
+              not_found_in_pool: "IP アドレスは、利用可能な IP プール内でみつかりません。"
             identity:
               taken: "その ID は他のサーバーに属しています。"
             password:
@@ -69,6 +71,19 @@ ja:
           attributes:
             name:
               taken: "その名前のロールはすでに存在します。"
+        ip_pool:
+          attributes:
+            first_ip:
+              invalid: "不正な IP アドレス。"
+              bad_range: "不正な IP アドレスレンジ。"
+            last_ip:
+              invalid: "不正な IP アドレス。"
+  api:
+    error:
+      access_denied: "アクセスは拒否されました。"
+      object_not_found: "オブジェクトはみつかりません。"
+      unknown_error: "原因不明のエラー。"
+      internal_error: "内部エラー。"
   about:
     copyright: "Copyright 2008-2011 SoftUnity."
     right_reserved: "All Rights Reserved."
@@ -84,9 +99,29 @@ ja:
     password: "パスワード"
     remember_me: "記憶させる"
     button_login: "ログイン"
+    button_restore_password: "パスワードリストア"
     locale: "言語"
-    bad_login: "無効なログイン名、またはパスワード"
+    bad_login: "無効なログイン名、またはパスワード。"
     locked_user: "ユーザーはロックされています。"
+  restore_password:
+    page_title: "パスワードリカバリ"
+    window_title: "パスワードリストア"
+    username: "ユーザー名"
+    button_restore: "リストア"
+    restore_link_sent: "パスワードリカバリメールが送信されました。"
+    error:
+      user_not_found: "ユーザーがみつかりません。"
+      no_email: "ユーザーはメールアドレスを持たないため、パスワードをリストアできません。"
+    mail:
+      restore_link:
+        subject: "パスワードリカバリ"
+        body: "パスワードをリストアするには、次のリンクに移動します: {{link}}"
+  reset_password:
+    page_title: "パスワードのリセット"
+    window_title: "パスワードのリセット"
+    new_password: "新しいパスワード"
+    confirm_password: "確認用パスワード"
+    password_changed: "パスワードは変更されました。"
   admin:
     menu:
       title: "メニュー"
@@ -94,6 +129,7 @@ ja:
         title: "一般"
         dashboard: "ダッシュボード"
         hardware_servers: "物理サーバー"
+        ip_addresses: "IP アドレス"
         virtual_servers: "仮想サーバー"
         my_profile: "プロファイル"
         users: "ユーザー"
@@ -128,40 +164,47 @@ ja:
     events:
       internal_error: "内部エラー: {{message}}"
       hardware_server:
-        connect: "物理サーバー {{host}} は接続されています。"
-        disconnect: "物理サーバー {{host}} は切断されています。"
+        connect: "物理サーバー {{host}} は接続されました。"
+        disconnect: "物理サーバー {{host}} は切断されました。"
         sync: "サーバー {{host}} のステータスは同期されました。"
+        sync_failed: "サーバー {{host}} のステータス同期に失敗しました。"
         reboot: "サーバー {{host}} のリブートの開始。"
       virtual_server:
         created: "仮想サーバー {{identity}} は作成されました。"
         removed: "仮想サーバー {{identity}} は削除されました。"
-        change_state_failed: "仮想サーバー {{identity}} ステータス変更に失敗; ステータス: {{state}}; コード: {{code}} 。"
+        change_state_failed: "仮想サーバー {{identity}} のステータス変更に失敗; ステータス: {{state}}; コード: {{code}}."
         updated: "仮想サーバー {{identity}} の設定はアップデートされました。"
         cloned: "仮想サーバー {{identity}} は、複製されました。"
-        counter_reached: "リミット {{name}} は、物理サーバー {{host}} 上の仮想サーバー {{identity}} に到達しました。"
+        counter_reached: "物理サーバー {{host}} 上の仮想サーバー {{identity}} が、リミット {{name}} に到達しました。"
       user:
         login:
-          ok: "ユーザー {{login}} がログイン。"
-          bad_password: "ユーザー {{login}} が無効なパスワードによりログインに失敗しました。"
+          ok: "ユーザー {{login}} がログインしました。"
+          bad_password: "ユーザー {{login}} が、不正なパスワードによりログインに失敗しました。"
           bad_login: "不明なログイン名でログインが試行されました。"
           locked_user: "ロックされたユーザー {{login}} がログインを試行しました。"
         logout: "ユーザー {{login}} がログアウトしました。"
         removed: "ユーザー {{login}} が削除されました。"
-        enabled: "ユーザー {{login}} が有効になりました。"
-        disabled: "ユーザー {{login}} が無効になりました。"
+        enabled: "ユーザー {{login}} が有効化されました。"
+        disabled: "ユーザー {{login}} が無効化されました。"
         created: "ユーザー {{login}} が作成されました。"
         updated: "ユーザー {{login}} が更新されました。"
-        profile_updated: "ユーザー {{login}} プロファイルがアップデートされました。"
+        profile_updated: "ユーザー {{login}} のプロファイルが更新されました。"
       role:
         removed: "ロール {{name}} が削除されました。"
         created: "ロール {{name}} が作成されました。"
         updated: "ロール {{name}} が更新されました。"
+      request:
+        created: "リクエスト #{{id}} が作成されました。"
+        updated: "リクエスト #{{id}} が更新されました。"
+        removed: "リクエスト #{{id}} が削除されました。"
+      comment:
+        created: "リクエスト #{{request_id}} のコメントが作成されました。"
     tasks:
       os_templates:
-        install: "サーバー {{host}} に OS テンプレートのインストール。"
+        install: "サーバー {{host}} への OS テンプレートのインストール。"
       backups:
-        create: "仮想サーバー #{{identity}} を物理サーバー {{host}} にバックアップ。"
-        restore: "仮想サーバー #{{identity}} を物理サーバー {{host}} にレストア。"
+        create: "物理サーバー {{host}} 上の仮想サーバー #{{identity}} のバックアップ。"
+        restore: "物理サーバー {{host}} 上の仮想サーバー #{{identity}} のリストア。"
     dashboard:
       title: "ダッシュボード"
       intro:
@@ -185,7 +228,7 @@ ja:
           virtual_servers_running: "動作中の仮想サーバー"
           virtual_servers_stopped: "停止中の仮想サーバー"
           virtual_servers_expired: "期限切れの仮想サーバー"
-          opened_requests: "オープンされたリクエスト"
+          opened_requests: "オープン中のリクエスト"
     hardware_servers:
       title: "物理サーバー"
       grid:
@@ -200,7 +243,7 @@ ja:
           disconnect: "サーバーを切断"   
           details: "詳細" 
           sync: "同期"
-          edit: "設定を変更"
+          edit: "設定の変更"
           reboot: "リブート"
       form:
         connect_server:
@@ -213,15 +256,16 @@ ja:
             description: "説明"
             daemon_port: "サービスポート"
             root_password: "Root パスワード"
+            use_ssl: "SSL を使用"
           fieldset:
             additional_settings: "追加設定"
         disconnect_server:
           sure_to_disconnect: "選択したサーバーを切断してよろしいですか?"
-          deletion_failed: "サーバー切断リクエストに失敗しました。"
+          deletion_failed: "サーバー切断リクエストが失敗しました。"
         sync:
           sync_failed: "いくつかの物理サーバーに関する情報を同期できません。"
         reboot_server:
-          sure_to_reboot: "選択されたサーバーはリブートのあいだ、利用できません。それらをリブートしてよろしいですか?"
+          sure_to_reboot: "選択されたサーバーはリブートのあいだ利用できません。それらをリブートしてよろしいですか?"
           reboot_failed: "いくつかのサーバーのリブートを開始できません。"
       show:
         title: "物理サーバー {{name}}"
@@ -229,7 +273,7 @@ ja:
         os_templates: "OS テンプレート"
         server_templates: "サーバーテンプレート"
       stats:
-        title: "物理サーバー統計情報"
+        title: "物理サーバー統計"
         column:
           parameter: "パラメータ"
           value: "値"
@@ -239,8 +283,8 @@ ja:
           disk_usage: "ディスク使用量、パーティション {{partition}}"
           memory_usage: "メモリ使用量"
         value:
-          disk_usage: "{{percent}}% 、{{total}} 中 {{used}} / {{free}} フリー"
-          memory_usage: "{{percent}}% 、{{total}} 中 {{used}} / {{free}} フリー"
+          disk_usage: "{{percent}}% 、{{total}} 中 {{used}} 使用 / {{free}} フリー"
+          memory_usage: "{{percent}}% 、{{total}} 中 {{used}} 使用 / {{free}} フリー"
     virtual_servers:
       title: "仮想サーバー"
       limits:
@@ -261,17 +305,20 @@ ja:
         button:
           create: "仮想サーバーの作成"
           destroy: "仮想サーバーの削除"
-          change_state: "ステータス変更"
+          change_state: "ステータスの変更"
           start: "スタート"
           restart: "リスタート"
           stop: "ストップ"
           edit: "設定を変更"
-          limits: "制限"
+          limits: "リミット"
           reinstall: "再インストール"
           clone: "クローン"
           change_settings: "設定を変更"
           console: "コンソール"
           backup: "バックアップ"
+          tools: "ツール"
+          migrate: "マイグレーション`"
+          create_template: "テンプレートの作成"
       form:
         change_settings:
           title: "仮想サーバーの設定を変更"
@@ -286,7 +333,7 @@ ja:
           deletion_failed: "いくつかの仮想サーバーを削除できません。"
         create_server:
           title: "新規仮想サーバーの作成"
-          edit_title: "仮想サーバー設定の変更"
+          edit_title: "仮想サーバーの設定変更"
           button_create: "作成"
           field:
             identity: "サーバー ID (VEID)"
@@ -310,21 +357,29 @@ ja:
             select_server_template: "サーバーテンプレートの選択"
             description: "説明"
             cpu_units: "CPU ユニット"
-            cpus: "CPU の設定"
-            cpu_limit: "CPU 制限、%"
+            cpus: "CPU の数"
+            cpu_limit: "CPU リミット、%"
             expiration_date: "有効期限"
           fieldset:
             general: "一般"
             network: "ネットワーク"
             system_access: "システムアクセス"
             start_options: "スタートオプション"
-            dns_settings: "DNS 設定"
-            limits: "制限"
+            dns_settings: "DNS 設定　"
+            limits: "リミット"
           tab:
             main_settings: "メイン設定"
             additional_settings: "追加設定"
+        create_template:
+          title: "仮想サーバーにもとづくテンプレートの作成"
+          button_create: "作成"
+          field:
+            name: "名前"
+          error:
+            invalid_name: "英数字のみが使用可能です。"
+            template_exists: "同じ名前の OS テンプレートがすでに存在します。"
         limits:
-          title: "設定"
+          title: "リミット"
           grid:
             column:
               name: "名前"
@@ -341,6 +396,12 @@ ja:
             run: "実行"
         clone:
           title: "仮想サーバーのクローン"
+        migrate:
+          title: "仮想サーバーのマイグレーション"
+          field:
+            target: "ターゲットサーバー"
+          button_migrate: "マイグレーション"
+          note: "マイグレーションの前に、ソース物理サーバー上の root ユーザーで SSH 公開鍵を生成して、移行先物理サーバーにこれをコピーする必要があります。また、移行先物理サーバーで rsync ユーティリティのインストールを確認します。"
       show:
         title: "仮想サーバー {{name}}"
         grid:
@@ -349,26 +410,26 @@ ja:
             parameter: "パラメータ"
             value: "値"
       stats:
-        title: "仮想サーバー統計情報"
+        title: "仮想サーバー統計"
         field:
           cpu_load_average: "CPU ロードアベレージ"
           disk_usage: "ディスク使用量"
           memory_usage: "メモリ使用量"
         value:
-          disk_usage: "{{percent}}% 、{{total}} 中 {{used}} / {{free}} フリー"
-          memory_usage: "{{percent}}% 、{{total}} 中 {{used}} / {{free}} フリー"
+          disk_usage: "{{percent}}% 、{{total}} 中 {{used}} 使用 / {{free}} フリー"
+          memory_usage: "{{percent}}% 、{{total}} 中 {{used}} 使用 / {{free}} フリー"
         button:
           stat_details: "詳細"
       stat_details:
-        title: "仮想サーバー {{name}} 統計情報"
+        title: "仮想サーバー {{name}} の統計情報"
         grid:
-          title: "仮想サーバー制限"
+          title: "仮想サーバーリミット"
           column:
             parameter: "パラメータ"
             current: "現在の使用量"
             max: "最大の使用量"
             barrier: "境界"
-            limit: "制限"
+            limit: "リミット"
             failcnt: "フェール値"
         chart:
           cpu_usage:
@@ -412,6 +473,7 @@ ja:
         column:
           level: "ステータス"
           created_at: "日付"
+          ip_address: "IP アドレス"
           message: "メッセージ"
           id: "ID"
         button:
@@ -423,7 +485,7 @@ ja:
     users:
       role:
         infrastructure_admin: "インフラストラクチャ管理者"
-        virtual_server_owner: "仮想サーバー所有者"
+        virtual_server_owner: "仮想サーバー管理者"
       title: "ユーザー"
       top_toolbar:
         roles: "ロール"
@@ -467,7 +529,7 @@ ja:
           id: "ID"
           description: "説明"
     server_templates:
-      title: "物理サーバー {{name}} のサーバーテンプレート"
+      title: "物理サーバー {{name}} 上のサーバーテンプレート"
       grid:
         title: "利用可能なサーバーテンプレート"
         column:
@@ -491,7 +553,7 @@ ja:
             advanced_settings: "詳細な設定"
           fieldset:
             general: "一般"
-            limits: "制限"
+            limits: "リミット"
             dns_settings: "DNS 設定"
             start_options: "スタートオプション"
           field:
@@ -502,8 +564,8 @@ ja:
             nameserver: "DNS サーバー"
             search_domain: "サーチドメイン"
             cpu_units: "CPU ユニット"
-            cpus: "CPU の数"
-            cpu_limit: "CPU 制限、%"
+            cpus: "CPU 数"
+            cpu_limit: "CPU リミット、%"
           grid:
             column:
               name: "名前"
@@ -515,7 +577,7 @@ ja:
         title: "バックアップ"
         button:
           create: "バックアップ"
-          restore: "レストア"
+          restore: "リストア"
           destroy: "削除"
         column:
           archive_date: "日付"
@@ -528,6 +590,7 @@ ja:
         create:
           title: "新規バックアップを作成"
           scheduled: "バックアップ行程が開始しました。相当な時間を要します。"
+          limit_reached: "バックアップ数の制限に到達しました。"
           field:
             description: "説明"
             ve_state:
@@ -537,9 +600,9 @@ ja:
               live: "動作中を維持"
           button_create: "作成"
         restore:
-          sure_to_restore: "選択されたバックアップからレストアしますか? サーバーはレストアのあいだ、利用できなくなります。"
-          failed: "レストア行程は失敗しました。"
-          scheduled: "レストア行程が開始しました。相当な時間を要します。"
+          sure_to_restore: "作成されたバックアップからリストアしますか? サーバーはリストアのあいだ、利用できなくなります。"
+          failed: "リストア行程が失敗しました。"
+          scheduled: "リストア行程が開始しました。相当な時間を要します。"
     requests:
       title: "リクエスト"
       grid:
@@ -560,7 +623,7 @@ ja:
       form:
         remove_request:
           sure_to_remove: "選択されたリクエストを削除してよろしいですか?"
-          deletion_failed: "いくつかのリクエストは削除できません。"
+          deletion_failed: "いくつかのリクエストを削除できません。"
         create:
           title: "リクエストを作成"
           button_create: "作成"
@@ -583,6 +646,13 @@ ja:
             button_add: "追加"
             field:
               content: "メッセージ"
+      mail:
+        new_request:
+          subject: "新規リクエスト #{{id}}"
+          body: "{{login}} により新規リクエスト #{{id}} が作成されました。"
+        new_comment:
+          subject: "リクエスト #{{request_id}} の新規コメント"
+          body: "{{login}} によりリクエスト #{{request_id}} の新規コメントが追加されました。"
     roles:
       title: "ロール"
       grid:
@@ -605,6 +675,7 @@ ja:
             name: "名前"
           fieldset:
             permissions: "パーミッション"
+            limits: "リミット"
           button_create: "作成"
           permissions:
             manage_hardware_servers: "物理サーバー管理者"
@@ -618,3 +689,41 @@ ja:
             manage_logs: "イベントログ管理者"
             manage_users: "ユーザー管理者"
             select_os_on_reinstall: "再インストール時の OS 選択"
+          limits:
+            unlimited: "無制限"
+            limit_backups: "バックアップの数"
+    ip_addresses:
+      title: "IP アドレス"
+      grid:
+        title: "IP アドレスリスト"
+        column:
+          name: "IP アドレス"
+          virtual_server: "仮想サーバー"
+          hardware_server: "物理サーバー"
+    ip_pools:
+      grid:
+        title: "IP プールリスト"
+        column:
+          first_ip: "開始 IP アドレス"
+          last_ip: "終了 IP アドレス"
+          free_ips: "フリー IP"
+          used_ips: "使用中 IP"
+          total_ips: "トータル IP"
+          server: "サーバー"
+        button:
+          create: "IP プールを作成"
+          destroy: "IP プールを削除"
+          edit: "IP プールを編集"
+      form:
+        remove_pool:
+          sure_to_remove: "選択された IP プールを削除してよろしいですか?"
+          deletion_failed: "いくつかの IP プールを削除できません。"
+        create:
+          title: "新規 IP プール"
+          edit_title: "IP プールの編集"
+          field:
+            first_ip: "開始 IP アドレス"
+            last_ip: "終了 IP アドレス"
+            limit_server: "サーバー"
+            all_servers: "すべて"
+          button_create: "作成"
