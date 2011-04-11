@@ -14,6 +14,7 @@ es_AR:
       save: "Guardar"
       cancel: "Cancelar"
       create: "Crear"
+      back: "Atrás"
   activerecord:
     errors:
       models:
@@ -49,6 +50,7 @@ es_AR:
             ip_address:
               invalid: "Dirección IP incorrecta."
               taken: "La dirección IP ya fue asignada a otro servidor."
+              not_found_in_pool: "Dirección IP no encontrada en los rangos de IPs disponibles."
             identity:
               taken: "Esa identidad ya pertenece a otro servidor."
             password:
@@ -69,6 +71,13 @@ es_AR:
           attributes:
             name:
               taken: "Ese nombre de rol ya existe."
+        ip_pool:
+          attributes:
+            first_ip:
+              invalid: "Dirección IP incorrecta."
+              bad_range: "Rango de IPs incorrecto."
+            last_ip:
+              invalid: "Dirección IP incorrecta."
   api:
     error:
       access_denied: "Acceso denegado."
@@ -90,9 +99,29 @@ es_AR:
     password: "Clave"
     remember_me: "Recordarme"
     button_login: "Ingresar"
+    button_restore_password: "Recuperar clave"
     locale: "Lenguaje"
     bad_login: "Usuario o clave inválido."
     locked_user: "El usuario esta bloqueado."
+  restore_password:
+    page_title: "Recuperación de Clave"
+    window_title: "Recuperar clave"
+    username: "Usuario"
+    button_restore: "Recuperar"
+    restore_link_sent: "Se envió un correo de recuperación de clave."
+    error:
+      user_not_found: "Usuario no encontrado."
+      no_email: "Imposible recuperar la clave, el usuario no tiene una dirección de correo."
+    mail:
+      restore_link:
+        subject: "Recuperacion de Clave"
+        body: "Para recuperar la clave, ingrese al siguiente vinculo: {{link}}"
+  reset_password:
+    page_title: "Reinicializar Clave"
+    window_title: "Reiniciar Clave"
+    new_password: "Nueva Clave"
+    confirm_password: "Confirmar Clave"
+    password_changed: "La clave fue cambiada."
   admin:
     menu:
       title: "Menu"
@@ -100,6 +129,7 @@ es_AR:
         title: "General"
         dashboard: "Pizarrón"
         hardware_servers: "Servidores reales"
+        ip_addresses: "Direcciones IP"
         virtual_servers: "Servidores virtuales"
         my_profile: "Mi perfil"
         users: "Usuarios"
@@ -163,6 +193,12 @@ es_AR:
         removed: "El rol {{name}} fue borrado."
         created: "El rol {{name}} fue creado."
         updated: "El rol {{name}} fue actualizado."
+      request:
+        created: "El pedido #{{id}} fue creado."
+        updated: "El pedido #{{id}} fue actualizado."
+        removed: "El pedido #{{id}} fue borrado."
+      comment:
+        created: "El comentario en el pedido #{{request_id}} fue creado."
     tasks:
       os_templates:
         install: "Plantillas de instalación de SO en el servidor {{host}}."
@@ -280,6 +316,9 @@ es_AR:
           change_settings: "Cambiar configuraciones"
           console: "Consola"
           backup: "Respaldo"
+          tools: "Herramientas"
+          migrate: "Migrar"
+          create_template: "Crear Plantilla"
       form:
         change_settings:
           title: "Cambiar configuraciones del servidor virtual"
@@ -331,6 +370,14 @@ es_AR:
           tab:
             main_settings: "Configuraciones Principales"
             additional_settings: "Configuraciones Adicionales"
+        create_template:
+          title: "Crear una plantilla basado en un servidor virtual"
+          button_create: "Crear"
+          field:
+            name: "Nombre"
+          error:
+            invalid_name: "Solo dígitos y letras occidentales sin tildes son permitidas."
+            template_exists: "Ya existe una plantilla de SO con el mismo nombre."
         limits:
           title: "Límites"
           grid:
@@ -349,6 +396,12 @@ es_AR:
             run: "Ejecutar"
         clone:
           title: "Clonar servidor virtual"
+        migrate:
+          title: "Migrar servidor virtual"
+          field:
+            target: "Servidor destino"
+          button_migrate: "Migrar"
+          note: "Antes de la migración es necesario generar una llave pública SSH para el usuario root en el servidor real de origen y copiarla al servidor real destino. También es necesario verificar/instalar la utilidad rsync en el servidor real destino."
       show:
         title: "Servidor virtual {{name}}"
         grid:
@@ -519,7 +572,7 @@ es_AR:
               soft_limit: "Barrera"
               hard_limit: "Límite"
     backups:
-      title: "Respaldos del servidor virtual {{name}}"
+      title: "Respaldos del servidor virtual #{{identity}}"
       grid:
         title: "Respaldos"
         button:
@@ -593,6 +646,13 @@ es_AR:
             button_add: "Agregar"
             field:
               content: "Mensaje"
+      mail:
+        new_request:
+          subject: "Nuevo pedido #{{id}}"
+          body: "El pedido nuevo #{{id}} fue creado por {{login}}."
+        new_comment:
+          subject: "Nuevo comentario en el pedido #{{request_id}}"
+          body: "El comentario nuevo en el pedido #{{request_id}} fue creado por {{login}}."
     roles:
       title: "Roles"
       grid:
@@ -632,3 +692,38 @@ es_AR:
           limits:
             unlimited: "ilimitado"
             limit_backups: "Número de respaldos"
+    ip_addresses:
+      title: "Direcciones IP"
+      grid:
+        title: "Lista de direcciones IP"
+        column:
+          name: "Dirección IP"
+          virtual_server: "Servidor Virtual"
+          hardware_server: "Servidor Real"
+    ip_pools:
+      grid:
+        title: "Lista de rangos IPs"
+        column:
+          first_ip: "Primera Dirección IP"
+          last_ip: "Última Dirección IP"
+          free_ips: "IPs Libres"
+          used_ips: "IPs Usadas"
+          total_ips: "IPs Totales"
+          server: "Servidor"
+        button:
+          create: "Crear Rango IP"
+          destroy: "Borrar Rango IP"
+          edit: "Editar Rango IP"
+      form:
+        remove_pool:
+          sure_to_remove: "¿Está seguro que quiere borrar los rangos IP seleccionados?"
+          deletion_failed: "Imposible borrar algunos rangos IP."
+        create:
+          title: "Crear nuevo rango IP"
+          edit_title: "Editar rango IP"
+          field:
+            first_ip: "Primera Dirección IP"
+            last_ip: "Última Dirección IP"
+            limit_server: "Servidor"
+            all_servers: "todos"
+          button_create: "Crear"
