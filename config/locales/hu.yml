@@ -14,6 +14,7 @@ hu:
       save: "Mentés"
       cancel: "Mégsem"
       create: "Létrehozás"
+      back: "Vissza"
   activerecord:
     errors:
       models:
@@ -49,6 +50,7 @@ hu:
             ip_address:
               invalid: "Helytelen IP cím."
               taken: "Az IP már hozzá van rendelve egy másik szervehez."
+              not_found_in_pool: "Az IP nem található a rendelkezésre álló IP készletben."
             identity:
               taken: "Az ilyen azaonosító a másik szerverhez tartozik."
             password:
@@ -69,6 +71,19 @@ hu:
           attributes:
             name:
               taken: "Már létezik jogkör ilyen néven."
+        ip_pool:
+          attributes:
+            first_ip:
+              invalid: "Hibás IP cím."
+              bad_range: "Hibás IP tartomány."
+            last_ip:
+              invalid: "Hibás IP cím."
+  api:
+    error:
+      access_denied: "Hozzáférés megtagadva."
+      object_not_found: "Az objektum nem található."
+      unknown_error: "Ismeretlen hiba."
+      internal_error: "Belső hiba."
   about:
     copyright: "Copyright 2008-2011 SoftUnity."
     right_reserved: "Minden jog fenntartva."
@@ -84,9 +99,29 @@ hu:
     password: "Jelszó"
     remember_me: "Jegyezz meg"
     button_login: "Belépés"
+    button_restore_password: "Jelszó visszaállítása"
     locale: "Nyelv"
     bad_login: "Érvénytelen név vagy jelszó."
     locked_user: "A felhasználó le van zárva."
+  restore_password:
+    page_title: "Jelszó helyreállító"
+    window_title: "Jelszó visszaállítás"
+    username: "Felhasználónév"
+    button_restore: "Visszaállít"
+    restore_link_sent: "Jelszó helyreállító e-mail elküldve."
+    error:
+      user_not_found: "Felhasználó nem található."
+      no_email: "Nem lehet helyreállítani a jelszót, mert a felhasználónak nincs megadva az e-mail címe."
+    mail:
+      restore_link:
+        subject: "Jelszó visszaállító"
+        body: "A jelszó visszaállításához kattintson a következő linkre: {{link}}"
+  reset_password:
+    page_title: "Jelszó alaphelyzetbe állítása"
+    window_title: "Jelszó alaphelyzetbe állítása"
+    new_password: "Új jelszó"
+    confirm_password: "Jelszó megerősítése"
+    password_changed: "A jelszó megváltozott."
   admin:
     menu:
       title: "Menü"
@@ -94,6 +129,7 @@ hu:
         title: "Általános"
         dashboard: "Műszerfal"
         hardware_servers: "Fizikai szerverek"
+        ip_addresses: "IP címek"
         virtual_servers: "Virtuális szerverek"
         my_profile: "Profilom"
         users: "Felhasználók"
@@ -131,6 +167,7 @@ hu:
         connect: "Fizikai szerver {{host}} csatlakoztatva."
         disconnect: "Fizikai szerver {{host}} szétkapcsolva."
         sync: "A(z) {{host}} státusza szinkronizált."
+        sync_failed: "Nem sikerült szinkronizálni a(z) {{host}} szerver állapotát."
         reboot: "A(z) {{host}} fizikai szerver újraindítása."
       virtual_server:
         created: "Virtuális szerver {{identity}} létrehozva."
@@ -156,6 +193,12 @@ hu:
         removed: "A(z) {{name}} jogkör eltávolítva."
         created: "A(z) {{name}} jogkör létrehozva."
         updated: "A(z) {{name}} jogkör frissítve."
+      request:
+        created: "A(z) #{{id}} számú kérelem létrejött."
+        updated: "A(z) #{{id}} számú kérelem frissítve."
+        removed: "A(z) #{{id}} számú kérelem letörölve."
+      comment:
+        created: "Hozzászólás a(z) #{{request_id}} kéréshez létrejött."
     tasks:
       os_templates:
         install: "Rendszer sablonok telepítése a(z) {{host}} szerverre."
@@ -213,6 +256,7 @@ hu:
             description: "Leírás"
             daemon_port: "Szolgáltatás port"
             root_password: "Root jelszó"
+            use_ssl: "SSL titkosítás használata"
           fieldset:
             additional_settings: "További beállítások"
         disconnect_server:
@@ -272,6 +316,9 @@ hu:
           change_settings: "Beállítások módosítása"
           console: "Konzol"
           backup: "Mentés"
+          tools: "Eszközök"
+          migrate: "Migrálás"
+          create_template: "Sablon létrehozása"
       form:
         change_settings:
           title: "A virtuális szerver beállításaina megváltoztatása"     
@@ -323,6 +370,14 @@ hu:
           tab:
             main_settings: "Fő beállítások"
             additional_settings: "További beállítások"
+        create_template:
+          title: "Sablon létrehozása a jelenlegi virtuális szerver alapján"
+          button_create: "Létrehozás"
+          field:
+            name: "Név"
+          error:
+            invalid_name: "Csak számok és az angol abc betűi megengedettek."
+            template_exists: "Már létezik rendszer sablon ezen a néven."
         limits:
           title: "Korlátozások"
           grid:
@@ -341,6 +396,12 @@ hu:
             run: "Futtatás"
         clone:
           title: "Virtuális szerver klónozása"
+        migrate:
+          title: "Virtuális szerver migrálása"
+          field:
+            target: "Cél server"
+          button_migrate: "Migrálás"
+          note: "A költöztetés előtt létre kell hozni a root felhasználó nyílvános SSH kulcsát a forrás fizikai szerveren, és ezt a kulcsot kell átmásolni a cél fizikai szerverre. Szükséges ellenőrizni / telepíteni az rsync segédprogramot a forrás és a cél fizikai szervereken a költöztetéshez."
       show:
         title: "Virtuális szerver {{name}}"
         grid:
@@ -412,6 +473,7 @@ hu:
         column:
           level: "Státusz"
           created_at: "Dátum"
+          ip_address: "IP cím"
           message: "Üzenet"
           id: "ID"
         button:
@@ -528,6 +590,7 @@ hu:
         create:
           title: "Új mentés készítése"
           scheduled: "A mentési eljárás elindult és időbe telik a lefutása."
+          limit_reached: "A biztonsági mentések számának korlátja betelt."
           field:
             description: "Leírás"
             ve_state:
@@ -583,6 +646,13 @@ hu:
             button_add: "Hozzáadás"
             field:
               content: "Üzenet"
+      mail:
+        new_request:
+          subject: "Új kérelem #{{id}}"
+          body: "Az új kérelmet #{{id}} létrehozta {{login}}."
+        new_comment:
+          subject: "Új hozzászólás a #{{request_id}} kérelemhez"
+          body: "Új hozzászólást adott {{login}} a kérelemhez #{{request_id}}."
     roles:
       title: "Jogkörök"
       grid:
@@ -605,6 +675,7 @@ hu:
             name: "Név"
           fieldset:
             permissions: "Hozzáférések"
+            limits: "Korlátozások"
           button_create: "Létrehozás"
           permissions:
             manage_hardware_servers: "Fizikai szerverek kezelése"
@@ -618,3 +689,41 @@ hu:
             manage_logs: "Eseménynaplók kezelése"
             manage_users: "Felhasználók kezelése"
             select_os_on_reinstall: "Operációs rendszer kiválasztása újratelepítésre"
+          limits:
+            unlimited: "korlátlan"
+            limit_backups: "Biztonsági mentések száma"
+    ip_addresses:
+      title: "IP címek"
+      grid:
+        title: "IP címek listája"
+        column:
+          name: "IP cím"
+          virtual_server: "Virtuális szerver"
+          hardware_server: "Fizikai szerver"
+    ip_pools:
+      grid:
+        title: "IP tartományok listája"
+        column:
+          first_ip: "Első IP cím"
+          last_ip: "Utlsó IP cím"
+          free_ips: "Szabad IP-k"
+          used_ips: "Használt IP-k"
+          total_ips: "Összes IP"
+          server: "Szerver"
+        button:
+          create: "IP tartomány létrehozása"
+          destroy: "IP tartomány törlése"
+          edit: "IP tartomány szerkesztése"
+      form:
+        remove_pool:
+          sure_to_remove: "Biztosan el kívánja távolítani a kiválasztott IP tartományt?"
+          deletion_failed: "Nem sikerült törölni néhány IP tartományt."
+        create:
+          title: "Új IP tartomány létrehozása"
+          edit_title: "IP tartomány szerkesztése"
+          field:
+            first_ip: "Első IP cím"
+            last_ip: "Utolsó IP cím"
+            limit_server: "Szerver"
+            all_servers: "összes"
+          button_create: "Létrehozás"
