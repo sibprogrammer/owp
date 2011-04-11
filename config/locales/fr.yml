@@ -14,6 +14,7 @@ fr:
       save: "Enregistrer"
       cancel: "Annuler"
       create: "Créer"
+      back: "Retour"
   activerecord:
     errors:
       models:
@@ -49,6 +50,7 @@ fr:
             ip_address:
               invalid: "Adresse IP incorrecte."
               taken: "L'adresse IP a déjà été attribuée à un autre serveur."
+              not_found_in_pool: "L'adresse IP n'a pas été trouvée dans les groupes d'IP disponible"
             identity:
               taken: "Cette identité appartient à un autre serveur."
             password:
@@ -69,6 +71,19 @@ fr:
           attributes:
             name:
               taken: "Un rôle possedant le même nom existe déjà"
+        ip_pool:
+          attributes:
+            first_ip:
+              invalid: "Adresse IP incorrecte."
+              bad_range: "Plage d'adresse IP incorrecte."
+            last_ip:
+              invalid: "Adresse IP incorrecte."
+  api:
+    error:
+      access_denied: "Accès refusé."
+      object_not_found: "Objet introuvable."
+      unknown_error: "Erreur inconnue."
+      internal_error: "Erreur interne."
   about:
     copyright: "Copyright 2008-2011 SoftUnity."
     right_reserved: "Tous droits réservés."
@@ -84,9 +99,29 @@ fr:
     password: "Mot de passe"
     remember_me: "Se souvenir de moi"
     button_login: "Connexion"
+    button_restore_password: "Restaurer le mot de passe"
     locale: "Langage"
     bad_login: "Nom d'utilisateur ou mot de passe invalide."
     locked_user: "L'utilisateur est bloqué."
+  restore_password:
+    page_title: "Récupération de mot de passe"
+    window_title: "Restaurer le mot de passe"
+    username: "Nom d'utilisateur"
+    button_restore: "Restaurer"
+    restore_link_sent: "L'email de récupération de mot de passe a été envoyé."
+    error:
+      user_not_found: "Utilisateur introuvable."
+      no_email: "Restauration du mot de passe impossible, car l'utilisateur ne dispose pas d'adresse email."
+    mail:
+      restore_link:
+        subject: "Récupération de mot de passe"
+        body: "Pour restaurer le mot de passe, suivez le lien: {{link}}"
+  reset_password:
+    page_title: "Réinitialisation du mot de passe"
+    window_title: "Réinitialisation du mot de passe"
+    new_password: "Nouveau mot de passe"
+    confirm_password: "Confirmez le mot de passe"
+    password_changed: "Le mot de passe a été changé."
   admin:
     menu:
       title: "Menu"
@@ -94,6 +129,7 @@ fr:
         title: "Général"
         dashboard: "Tableau de bord"
         hardware_servers: "Serveurs physiques"
+        ip_addresses: "Adresses IP"
         virtual_servers: "Serveurs virtuels"
         my_profile: "Mon profil"
         users: "Utilisateurs"
@@ -131,6 +167,7 @@ fr:
         connect: "Le serveur physique {{host}} a été connecté."
         disconnect: "Le serveur physique {{host}} a été déconnecté."
         sync: "L'état du serveur {{host}} a été synchronisé."
+        sync_failed: "La synchronisation de l'état du serveur {{host}} a échouée."
         reboot: "Début du redémarrage du serveur {{host}}."
       virtual_server:
         created: "Le serveur virtuel {{identity}} a été créé."
@@ -156,6 +193,12 @@ fr:
         removed: "Le rôle {{name}} a été supprimé."
         created: "Le rôle {{name}} a été créé."
         updated: "Le rôle {{name}} a été mis à jour."
+      request:
+        created: "La requête #{{id}} a été créée."
+        updated: "La requête #{{id}} a été mise à jour."
+        removed: "La requête #{{id}} a été supprimée."
+      comment:
+        created: "Le commentaire de la requête #{{request_id}} a été créé."
     tasks:
       os_templates:
         install: "Installation des gabarits d'OS sur le serveur {{host}}."
@@ -213,6 +256,7 @@ fr:
             description: "Description"
             daemon_port: "Port du service"
             root_password: "Mot de passe Root"
+            use_ssl: "Utiliser SSL"
           fieldset:
             additional_settings: "Options complémentaires"
         disconnect_server:
@@ -272,6 +316,9 @@ fr:
           change_settings: "Modifier les options"
           console: "Console"
           backup: "Sauvegarde"
+          tools: "Outils"
+          migrate: "Migration"
+          create_template: "Créer le gabarit"
       form:
         change_settings:
           title: "Modifier les options du serveur virtuel"
@@ -323,6 +370,14 @@ fr:
           tab:
             main_settings: "Options Principales"
             additional_settings: "Options Supplémentaires"
+        create_template:
+          title: "Créer un gabarit sur base du serveur virtuel"
+          button_create: "Créer"
+          field:
+            name: "Nom"
+          error:
+            invalid_name: "Seul des chiffres et des lettres sont autorisés."
+            template_exists: "OS template with same name already exists."
         limits:
           title: "Limites"
           grid:
@@ -341,6 +396,12 @@ fr:
             run: "Exécuter"
         clone:
           title: "Cloner un serveur virtuel"
+        migrate:
+          title: "Migrer un serveur virtuel"
+          field:
+            target: "Serveur de destination"
+          button_migrate: "Migrer"
+          note: "Avant la migration, il est nécessaire de générer une clé publique SSH pour l'utilisateur root du serveur physique source et de le copier sur le serveur physique de destination. Vous devez aussi vérifier/installer l'utilitaire rsync sur le serveur physique de destination."
       show:
         title: "Serveur virtuel {{name}}"
         grid:
@@ -412,6 +473,7 @@ fr:
         column:
           level: "Statut"
           created_at: "Date"
+          ip_address: "Adresse IP"
           message: "Message"
           id: "ID"
         button:
@@ -528,6 +590,7 @@ fr:
         create:
           title: "Créer une nouvelle sauvegarde"
           scheduled: "Une procédure de sauvegarde a été démarrée et prendra quelques temps."
+          limit_reached: "La limite du nombre de sauvegardes a été atteinte"
           field:
             description: "Description"
             ve_state:
@@ -583,6 +646,13 @@ fr:
             button_add: "Ajouter"
             field:
               content: "Message"
+      mail:
+        new_request:
+          subject: "Nouvelle requête #{{id}}"
+          body: "La nouvelle requête #{{id}} a été créée par {{login}}."
+        new_comment:
+          subject: "Nouveau commentaire sur la requête #{{request_id}}"
+          body: "Un nouveau commentaire de la requête #{{request_id}} a été ajouté par {{login}}."
     roles:
       title: "Rôles"
       grid:
@@ -605,6 +675,7 @@ fr:
             name: "Nom"
           fieldset:
             permissions: "Permissions"
+            limits: "Limites"
           button_create: "Créer"
           permissions:
             manage_hardware_servers: "Gérer les serveurs physiques"
@@ -618,3 +689,41 @@ fr:
             manage_logs: "Gérer les journaux d'évènement"
             manage_users: "Gérer les utilisateurs"
             select_os_on_reinstall: "Choisir le gabarit d'OS à la réinstallation"
+          limits:
+            unlimited: "illimité"
+            limit_backups: "Nombre de sauvegardes"
+    ip_addresses:
+      title: "Adresses IP"
+      grid:
+        title: "Liste des adresses IP"
+        column:
+          name: "Adresse IP"
+          virtual_server: "Serveur virtuel"
+          hardware_server: "Serveur physique"
+    ip_pools:
+      grid:
+        title: "Liste des plages d'IP"
+        column:
+          first_ip: "Première adresse IP"
+          last_ip: "Dernière adresse IP"
+          free_ips: "IPs libres"
+          used_ips: "IPs utilisées"
+          total_ips: "IPs totales"
+          server: "Serveur"
+        button:
+          create: "Créer une plage d'IP"
+          destroy: "Supprimer une plage d'IP"
+          edit: "Modifier une plage d'IP"
+      form:
+        remove_pool:
+          sure_to_remove: "Êtes-vous sûr de vouloir supprimer les plages d'IP sélectionnées ?"
+          deletion_failed: "Impossible de supprimer certaines plages d'IP."
+        create:
+          title: "Créer une nouvelle plage d'IP"
+          edit_title: "Modifier la plage d'IP"
+          field:
+            first_ip: "Première adresse IP"
+            last_ip: "Dernière adresse IP"
+            limit_server: "Serveur"
+            all_servers: "Tous"
+          button_create: "Créer"
