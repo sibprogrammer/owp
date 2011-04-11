@@ -66,14 +66,14 @@ Ext.onReady(function() {
       name: 'remember_me',
       xtype: 'checkbox',
       checked: true
-    }, {
+    } <% if !external_auth? %>, {
       xtype: 'displayfield',
       hideLabel: true,
       style: {
         marginBottom: '10px'
       },
       html: '<a href="#" onclick="document.location.href = \'/restore-password\'"><%= tjs('login.button_restore_password') %></a>'
-    }]
+    }<% end -%>]
   });
   
   var loginWindow = new Owp.form.BasicFormWindow({
