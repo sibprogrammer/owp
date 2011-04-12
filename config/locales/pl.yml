@@ -14,6 +14,7 @@ pl:
       save: "Zapisz"
       cancel: "Anuluj"
       create: "Utwórz"
+      back: "Wstecz"
   activerecord:
     errors:
       models:
@@ -49,6 +50,7 @@ pl:
             ip_address:
               invalid: "Niewłaściwy adres IP."
               taken: "Ten adres IP został już przydzieony do innego serwera."
+              not_found_in_pool: "Adres IP nie znajduje się w dostępnej puli"
             identity:
               taken: "Ta tożsamość należy do innego serwera."
             password:
@@ -69,6 +71,19 @@ pl:
           attributes:
             name:
               taken: "Rola o takiej nazwie już występuje w systemie."
+        ip_pool:
+          attributes:
+            first_ip:
+              invalid: "Nieprawidłowy adres IP."
+              bad_range: "Nieprawidłowy zakres adresów IP."
+            last_ip:
+              invalid: "Nieprawidłowy adres IP"
+  api:
+    error:
+      access_denied: "Dostęp zabroniony."
+      object_not_found: "Objekt nie znaleziony."
+      unknown_error: "Nieznany błąd."
+      internal_error: "Błąd wewnętrzny."
   about:
     copyright: "Copyright 2008-2011 SoftUnity."
     right_reserved: "Wszystkie prawa zastrzeżone."
@@ -84,9 +99,29 @@ pl:
     password: "Hasło"
     remember_me: "Pamiętaj mnie"
     button_login: "Zaloguj"
+    button_restore_password: "Odzyskaj hasło"
     locale: "Język"
     bad_login: "Niewłaściwy login lub hasło."
     locked_user: "Użytkownik jest zablokowany."
+  restore_password:
+    page_title: "Odzyskiwanie hasła"
+    window_title: "Odzyskaj hasło"
+    username: "Nazwa użytkownika"
+    button_restore: "Odzyskaj"
+    restore_link_sent: "Link aktywujący hasło został wysłany."
+    error:
+      user_not_found: "Użytkownik nie znaleziony."
+      no_email: "Użytkownik nie posiada adresu email, odzyskanie hasła nie jest możliwe."
+    mail:
+      restore_link:
+        subject: "Odzyskiwanie hasła"
+        body: "Aby odzyskać hasło, kliknij na link: {{link}}"
+  reset_password:
+    page_title: "Resetowanie hasła"
+    window_title: "Resetuj hasło"
+    new_password: "Nowe hasło"
+    confirm_password: "Powtórz hasło"
+    password_changed: "Hasło zostało zmienione."
   admin:
     menu:
       title: "Menu"
@@ -94,6 +129,7 @@ pl:
         title: "Główne"
         dashboard: "Panel"
         hardware_servers: "Serwery fizyczne"
+        ip_addresses: "Adresy IP"
         virtual_servers: "Serwery wirtualne"
         my_profile: "Mój profil"
         users: "Użytkownicy"
@@ -131,7 +167,8 @@ pl:
         connect: "Serwer fizyczny {{host}} został podłączony."
         disconnect: "Serwer fizyczny {{host}} został odłączony."
         sync: "Stan serwera {{host}} zsynchronizowany."
-        reboot: "Start restartu serwera {{host}}."
+        sync_failed: "Nieudana synchronizacja statusu serwera {{host}} "
+        reboot: "Rozpoczynam procedurę restartu serwera {{host}}."
       virtual_server:
         created: "Serwer wirtualny {{identity}} został utworzony."
         removed: "Serwer wirtualny {{identity}} został usunięty."
@@ -156,9 +193,15 @@ pl:
         removed: "Rola {{name}} została usunięta."
         created: "Rola {{name}} została utworzona."
         updated: "Rola {{name}} została uaktualniona."
+      request:
+        created: "Żądanie #{{id}} zostało utworzone."
+        updated: "Żądanie #{{id}} zostało uaktualnione"
+        removed: "Żądanie #{{id}} zostało usunięte."
+      comment:
+        created: "Komentarz do żądania #{{request_id}} został dodany."
     tasks:
       os_templates:
-        install: "Instalacja szablonów OS na serwerze {{host}}."
+        install: "Instalacja szablonów systemów operacyjnych na serwerze {{host}}."
       backups:
         create: "Backup serwera wirtualnego #{{identity}} na serwerze fizycznym {{host}}."
         restore: "Odtworzenie backupu serwera wirtualnego #{{identity}} na serwerze fizycznym {{host}}."
@@ -212,7 +255,8 @@ pl:
             auth_key: "Klucz autoryzacji"
             description: "Opis"
             daemon_port: "Port serwisowy"
-            root_password: "Hasło root-a"
+            root_password: "Hasło roota"
+            use_ssl: "Używaj SSL"
           fieldset:
             additional_settings: "Dodatkowe ustawienia"
         disconnect_server:
@@ -272,6 +316,9 @@ pl:
           change_settings: "Zmiana ustawień"
           console: "Konsola"
           backup: "Kopia bezpieczeństwa"
+          tools: "Narzędzia"
+          migrate: "Migracja"
+          create_template: "Utwórz szablon"
       form:
         change_settings:
           title: "Zmień ustawienia serwera wirtualnego"
@@ -294,7 +341,7 @@ pl:
             select_os_template: "Wybierz szablon systemu"
             ip_address: "Adres IP"
             host_name: "Nazwa hosta"
-            password: "Hasło root-a"
+            password: "Hasło roota"
             confirm_password: "Potwierdź hasło"
             start_on_boot: "Uruchamiaj na starcie"
             start_after_creation: "Uruchom po utworzeniu"
@@ -323,6 +370,14 @@ pl:
           tab:
             main_settings: "Głowne ustawienia"
             additional_settings: "Dodatkowe ustawienia"
+        create_template:
+          title: "Tworzenie szablonu w oparciu o serwer wirtualny"
+          button_create: "Utwórz"
+          field:
+            name: "Nazwa"
+          error:
+            invalid_name: "Tylko cyfry i litery bez znaków diakrytycznych są dozwolone."
+            template_exists: "Szablon o takiej nazwie już istnieje."
         limits:
           title: "Limity"
           grid:
@@ -341,6 +396,12 @@ pl:
             run: "Uruchom"
         clone:
           title: "Klonuj serwer wirtualny"
+        migrate:
+          title: "Migracja serwera wirtualnego"
+          field:
+            target: "Serwer docelowy"
+          button_migrate: "Migruj"
+          note: "Przed migracją musisz wygenerować klucz publiczny SSH dla uzytkownika root na fizycznym serwerze źródłowym, i przekopiować go na fizyczny serwer docelowy. Dodatkowo musisz mieć zainstalowane rsync na serwerze docelowym."
       show:
         title: "Serwer wirtualny {{name}}"
         grid:
@@ -398,7 +459,7 @@ pl:
           button_install: "Instaluj"
           load_failed: "Nie mogę załadować listy szablonów systemów."
           failed: "Uruchomienie instalacji szablonów systemów nie powiodło się."
-          scheduled: "Instalacja szablonów systemów zaplanowana. Nowe szablony pojawią się za niedługo."
+          scheduled: "Instalacja szablonów systemów w toku. Nowe szablony wkrótce się pojawią."
           field:
             url: "URL Szablonu"
           invalid_url: "Wprowadź prowidłowy URL do archiwum szablonów systemów."
@@ -412,6 +473,7 @@ pl:
         column:
           level: "Status"
           created_at: "Data"
+          ip_address: "Adres IP"
           message: "Wiadomość"
           id: "ID"
         button:
@@ -528,6 +590,7 @@ pl:
         create:
           title: "Utwórz nową kopię bezpieczeństwa"
           scheduled: "Proces kopii został zainicjowany i chwilę potrwa."
+          limit_reached: "Osiągnięto limit liczby kopii"
           field:
             description: "Opis"
             ve_state:
@@ -576,13 +639,20 @@ pl:
             author: "Autor"
             content: "Wiadomość"
           button:
-            add: "Dodaj komentarz"
+            add: "Dodaj wiadomość"
         form:
           add:
-            title: "Dodaj komentarz"
+            title: "Dodaj wiadomość"
             button_add: "Dodaj"
             field:
               content: "Wiadomość"
+      mail:
+        new_request:
+          subject: "Nowe żądanie #{{id}}"
+          body: "Nowe żądanie #{{id}} zostało utworzone przez {{login}}."
+        new_comment:
+          subject: "Nowy komentarz do żądania #{{request_id}}"
+          body: "Nowy komentarz do żądania #{{request_id}} został dodany przez {{login}}."
     roles:
       title: "Role"
       grid:
@@ -605,6 +675,7 @@ pl:
             name: "Nazwa"
           fieldset:
             permissions: "Uprawnienia"
+            limits: "Limity"
           button_create: "Utwórz"
           permissions:
             manage_hardware_servers: "Zarządzanie serwerami fizycznymi"
@@ -618,3 +689,41 @@ pl:
             manage_logs: "Zarządzanie logami zdarzeń"
             manage_users: "Zarządzanie użytkownikami"
             select_os_on_reinstall: "Wybór systemu przy reinstalacji"
+          limits:
+            unlimited: "Bez ograniczeń"
+            limit_backups: "Liczba kopii"
+    ip_addresses:
+      title: "Adresy IP"
+      grid:
+        title: "Lista adresów IP"
+        column:
+          name: "Adres IP"
+          virtual_server: "Serwer wirtualny"
+          hardware_server: "Serwer fizyczny"
+    ip_pools:
+      grid:
+        title: "Pula adresów IP"
+        column:
+          first_ip: "Pierwszy adres IP"
+          last_ip: "Ostatni adres IP"
+          free_ips: "Wolne adresy IP"
+          used_ips: "Używane adresy IP"
+          total_ips: "Wszystkich IP"
+          server: "Serwer"
+        button:
+          create: "Utwórz pulę adresów IP"
+          destroy: "Usuń pulę IP"
+          edit: "Edytuj pulę IP"
+      form:
+        remove_pool:
+          sure_to_remove: "Czy jesteś pewien że chcesz usunąć wybraną pulę IP?"
+          deletion_failed: "Nie mogę usunąć puli adresów IP"
+        create:
+          title: "Utwórz nową pulę adresów IP"
+          edit_title: "Edytuj pulę IP"
+          field:
+            first_ip: "Pierwszy adres IP"
+            last_ip: "Ostatni adres IP"
+            limit_server: "Serwer"
+            all_servers: "wszystkie"
+          button_create: "Utwórz"
