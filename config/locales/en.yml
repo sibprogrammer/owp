@@ -401,7 +401,7 @@ en:
           field:
             target: "Target server"
           button_migrate: "Migrate"
-          note: "Before migration need to generate SSH public key for root user on source physical server and copy it to destination physical server. Also need check/install rsync utility to destination physical server."
+          note: "Before migration need to generate SSH public key for root user on source physical server and copy it to destination physical server. Also need to check/install rsync utility to destination physical server."
       show:
         title: "Virtual server {{name}}"
         grid:
