@@ -14,6 +14,7 @@ uk:
       save: "Зберегти"
       cancel: "Скасувати"
       create: "Створити"
+      back: "Назад"
   activerecord:
     errors:
       models:
@@ -49,6 +50,7 @@ uk:
             ip_address:
               invalid: "Невірна IP адреса."
               taken: "Таку IP адресу вже присвоєно іншому серверу."
+              not_found_in_pool: "IP адресу не знайдено в доступних IP пулах."
             identity:
               taken: "Такий ідентифікатор вже належить іншому серверу."
             password:
@@ -69,6 +71,19 @@ uk:
           attributes:
             name:
               taken: "Роль з таким іменем вже існує."
+        ip_pool:
+          attributes:
+            first_ip:
+              invalid: "Невірна IP адреса."
+              bad_range: "Невірний діапазон IP адрес."
+            last_ip:
+              invalid: "Невірна IP адреса."
+  api:
+    error:
+      access_denied: "Доступ заборонено."
+      object_not_found: "Об'єкт не знайдено."
+      unknown_error: "Невідома помилка."
+      internal_error: "Внутрішня помилка."
   about:
     copyright: "Авторське право 2008-2011 SoftUnity."
     right_reserved: "Всі права застережено."
@@ -84,9 +99,29 @@ uk:
     password: "Пароль"
     remember_me: "Запам'ятати"
     button_login: "Вхід"
+    button_restore_password: "Відновлення пароля"
     locale: "Мова"
     bad_login: "Невірний логін або пароль."
     locked_user: "Користувача заблоковано."
+  restore_password:
+    page_title: "Відновлення пароля"
+    window_title: "Відновлення пароля"
+    username: "Логін"
+    button_restore: "Відновити"
+    restore_link_sent: "Листа з інструкціями по відновленню пароля було відправлено."
+    error:
+      user_not_found: "Користувача не знайдено."
+      no_email: "Неможливо відновити пароль, тому що користувач не має email-адреси."
+    mail:
+      restore_link:
+        subject: "Відновлення пароля"
+        body: "Для відновлення пароля перейдіть за посиланням: {{link}}"
+  reset_password:
+    page_title: "Скинути пароль"
+    window_title: "Скинути пароль"
+    new_password: "Новий пароль"
+    confirm_password: "Підтвердження пароля"
+    password_changed: "Пароль було змінено."
   admin:
     menu:
       title: "Меню"  
@@ -94,6 +129,7 @@ uk:
         title: "Загальне"
         dashboard: "Стільниця"
         hardware_servers: "Фізичні сервери"
+        ip_addresses: "IP адреси"
         virtual_servers: "Віртуальні сервери"
         my_profile: "Мій профіль"
         users: "Користувачі"
@@ -131,6 +167,7 @@ uk:
         connect: "Фізичний сервер {{host}} було підключено."
         disconnect: "Фізичний сервер {{host}} було відключено."
         sync: "Стан сервера {{host}} було синхронізовано."
+        sync_failed: "Не вдалося синхронізувати стан сервера {{host}}."
         reboot: "Перезавантаження сервера {{host}}."
       virtual_server:
         created: "Віртуальний сервер {{identity}} було створено."
@@ -156,6 +193,12 @@ uk:
         removed: "Роль {{name}} було видалено."
         created: "Роль {{name}} було створено."
         updated: "Роль {{name}} було оновлено."
+      request:
+        created: "Запит #{{id}} було створено."
+        updated: "Запит #{{id}} було оновлено."
+        removed: "Запит #{{id}} було видалено."
+      comment:
+        created: "Коментар до запиту #{{request_id}} було створено."
     tasks:
       os_templates:
         install: "Встановлення шаблонів ОС на сервер {{host}}."
@@ -213,6 +256,7 @@ uk:
             description: "Опис"
             daemon_port: "Порт сервісу"
             root_password: "Пароль root'а"
+            use_ssl: "Використовувати SSL"
           fieldset:
             additional_settings: "Додаткові налаштування"
         disconnect_server:
@@ -272,6 +316,9 @@ uk:
           change_settings: "Змінити налаштування"
           console: "Консоль"
           backup: "Резервне копіювання"
+          tools: "Інструменти"
+          migrate: "Міграція"
+          create_template: "Створити шаблон"
       form:
         change_settings:
           title: "Змінити налаштування віртуального сервера"
@@ -323,6 +370,14 @@ uk:
           tab:
             main_settings: "Основні налаштування"
             additional_settings: "Додаткові налаштування"
+        create_template:
+          title: "Створити шаблон на основі віртуального сервера"
+          button_create: "Створити"
+          field:
+            name: "Ім'я"
+          error:
+            invalid_name: "Дозволено використовувати тільки цифри та англійскі літери."
+            template_exists: "Шаблон OS з таким ім'ям вже існує."
         limits:
           title: "Обмеження"
           grid:
@@ -341,6 +396,12 @@ uk:
             run: "Виконати"
         clone:
           title: "Клонувати віртуальний сервер"
+        migrate:
+          title: "Мігрувати віртуальний сервер"
+          field:
+            target: "Цільовий сервер"
+          button_migrate: "Мігрувати"
+          note: "До міграції потрібно згенерувати публічний ключ SSH для користувача root на вихідному фізичному сервері та скопіювати його на фізичний сервер призначення. Також необхідно встановити утіліту rsync на цільовому фізичному сервері."
       show:
         title: "Віртуальний сервер {{name}}"
         grid:
@@ -412,6 +473,7 @@ uk:
         column:
           level: "Статус"
           created_at: "Дата"
+          ip_address: "IP адреса"
           message: "Повідомлення"
           id: "ID"
         button:
@@ -528,10 +590,11 @@ uk:
         create:
           title: "Створити нову резервну копію"
           scheduled: "Процедуру резервного копіювання розпочато. Це триватиме деякий час."
+          limit_reached: "Досягнуто ліміт на кількість резервних копій."
           field:
             description: "Опис"
             ve_state:
-              title: "Стан серверу"
+              title: "Стан сервера"
               suspend: "заморозити (рекомендовано)"
               stop: "зупинити"
               live: "залишити працюючим"
@@ -583,6 +646,13 @@ uk:
             button_add: "Додати"
             field:
               content: "Повідомлення"
+      mail:
+        new_request:
+          subject: "Новий запит #{{id}}"
+          body: "Новий запит #{{id}} було створено користувачем {{login}}."
+        new_comment:
+          subject: "Новий коментар до запиту #{{request_id}}"
+          body: "Новий коментар до запиту #{{request_id}} було додано користувачем {{login}}."
     roles:
       title: "Ролі"
       grid:
@@ -605,6 +675,7 @@ uk:
             name: "Ім'я"
           fieldset:
             permissions: "Права"
+            limits: "Ліміти"
           button_create: "Створити"
           permissions:
             manage_hardware_servers: "Керування фізичними серверами"
@@ -618,3 +689,41 @@ uk:
             manage_logs: "Керування журналом подій"
             manage_users: "Керування користувачами"
             select_os_on_reinstall: "Вибір OS при перевстановленні"
+          limits:
+            unlimited: "необмежено"
+            limit_backups: "Клькість резервних копій"
+    ip_addresses:
+      title: "IP адреси"
+      grid:
+        title: "Список IP адрес"
+        column:
+          name: "IP адреса"
+          virtual_server: "Віртуальний сервер"
+          hardware_server: "Фізичний сервер"
+    ip_pools:
+      grid:
+        title: "Список IP пулів"
+        column:
+          first_ip: "Перша IP адреса"
+          last_ip: "Остання IP адреса"
+          free_ips: "Вільні IP"
+          used_ips: "Зайняті IP"
+          total_ips: "Усього IP"
+          server: "Сервер"
+        button:
+          create: "Створити IP пул"
+          destroy: "Видалити IP пул"
+          edit: "Редагувати IP пул"
+      form:
+        remove_pool:
+          sure_to_remove: "Ви дійсно бажаєте видалити обрані IP пули?"
+          deletion_failed: "Не вдалося видалити деякі IP пули."
+        create:
+          title: "Створити новий IP пул"
+          edit_title: "Редагувати IP пул"
+          field:
+            first_ip: "Перша IP адреса"
+            last_ip: "Остання IP адреса"
+            limit_server: "Сервер"
+            all_servers: "усі"
+          button_create: "Створити"
