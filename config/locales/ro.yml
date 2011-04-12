@@ -68,7 +68,14 @@ ro:
         role:
           attributes:
             name:
-              taken: "Exista deja un tip de utilizator cu acest nume"
+              taken: "Role with such name is already exist."
+        ip_pool:
+          attributes:
+            first_ip:
+              invalid: "Adresa IP incorecta."
+              bad_range: "Incorrect IP addresses range."
+            last_ip:
+              invalid: "Adresa IP incorecta."
   api:
     error:
       access_denied: "Acces refuzat."
@@ -84,15 +91,35 @@ ro:
     contributors_list: "lista"
     web_site: "Web site"
   login:
-    page_title: "Autentificare"
+    page_title: "Login"
     window_title: "Autentificare pe {{product}}"
     username: "Utilizator"
     password: "Parola"
-    remember_me: "Tine minte"
-    button_login: "Autentifica"
+    remember_me: "Tine-ma minte"
+    button_login: "Autentificare"
+    button_restore_password: "Restaureaza parola"
     locale: "Limba"
-    bad_login: "Utilizator sau parola incorecte."
+    bad_login: "Utilizator sau parola invalide."
     locked_user: "Utilizatorul este blocat."
+  restore_password:
+    page_title: "Recuperare parola"
+    window_title: "Restaurare parola"
+    username: "Utilizator"
+    button_restore: "Restaureaza"
+    restore_link_sent: "E-mail pentru restaurarea parolei a fost trimis."
+    error:
+      user_not_found: "Utilizator inexistent."
+      no_email: "Parola imposibil de restaurat deoarece utilizatorul nu are o adresa de e-mail."
+    mail:
+      restore_link:
+        subject: "Recuperare parola"
+        body: "Pentru a recupera parola urmati urmatorul link: {{link}}"
+  reset_password:
+    page_title: "Resetare parola"
+    window_title: "Resetare parola"
+    new_password: "Parola noua"
+    confirm_password: "Confirmare parola"
+    password_changed: "Parola a fost modificata."
   admin:
     menu:
       title: "Meniu"
@@ -161,8 +188,14 @@ ro:
         profile_updated: "Profilul utilizatorului {{login}} a fost actualizat."
       role:
         removed: "Rolul {{name}} a fost sters."
-        created: "Rolul {{name}} a fost adaugat."
+        created: "Rolul {{name}} a fost creat."
         updated: "Rolul {{name}} a fost actualizat."
+      request:
+        created: "Cererea #{{id}} a fost creata."
+        updated: "Cererea #{{id}} a fost actualizata."
+        removed: "Cererea #{{id}} a fost stearsa."
+      comment:
+        created: "Comentariul in cererea #{{request_id}} a fost creat."
     tasks:
       os_templates:
         install: "Sabloane SO pe serverul {{host}}."
@@ -280,6 +313,9 @@ ro:
           change_settings: "Modifica setari"
           console: "Consola"
           backup: "Copie de siguranta"
+          tools: "Instrumente"
+          migrate: "Migrare"
+          create_template: "Creare sablon"
       form:
         change_settings:
           title: "Modifica setarile serverului virtual"
@@ -331,6 +367,14 @@ ro:
           tab:
             main_settings: "Setari principare"
             additional_settings: "Setari aditionale"
+        create_template:
+          title: "Creaza sablon bazat de serverul virtual"
+          button_create: "Creaza"
+          field:
+            name: "Nume"
+          error:
+            invalid_name: "Numai caractere alfanumerice sunt permise."
+            template_exists: "Un sablon de SO cu acelasi nume exista deja."
         limits:
           title: "Limite"
           grid:
@@ -349,6 +393,12 @@ ro:
             run: "Executa"
         clone:
           title: "Cloneaza serverul virtual"
+        migrate:
+          title: "Migrate virtual server"
+          field:
+            target: "Target server"
+          button_migrate: "Migrate"
+          note: "Inainte de migrare trebuie sa generati o cheie publica SSH pentru utilizatorul root pe server sursa fizic si sa o copiati pe serverul de destinatie. De asemenea verificati ca aplicatia rsync este prezenta pe serverul de destinatie."
       show:
         title: "Server virtual {{name}}"
         grid:
@@ -593,6 +643,13 @@ ro:
             button_add: "Adauga"
             field:
               content: "Mesaj"
+      mail:
+        new_request:
+          subject: "Cerere noua #{{id}}"
+          body: "Cererea #{{id}} a fost creata de {{login}}."
+        new_comment:
+          subject: "Comentariu nou in cererea #{{request_id}}"
+          body: "Comentariul nou in cererea #{{request_id}} a fost adaugat de {login}}."
     roles:
       title: "Roluri utilizatori"
       grid:
@@ -631,5 +688,39 @@ ro:
             select_os_on_reinstall: "Selectare SO la reinstalare"
           limits:
             unlimited: "nelimitat"
-            limit_backups: "Numarul copiilor de rezerva"
-                                  
+            limit_backups: "Numar de backup-uri"
+    ip_addresses:
+      title: "Adrese IP"
+      grid:
+        title: "Lista adrese IP"
+        column:
+          name: "Adresa IP"
+          virtual_server: "Server virtual"
+          hardware_server: "Server fizic"
+    ip_pools:
+      grid:
+        title: "Lista spatii IP"
+        column:
+          first_ip: "Prima adresa IP"
+          last_ip: "Ultima adresa IP"
+          free_ips: "IP-uri libere"
+          used_ips: "IP-uri folosite"
+          total_ips: "Total IP-uri"
+          server: "Server"
+        button:
+          create: "Creaza spatiu IP"
+          destroy: "Sterge spatiu IP"
+          edit: "Modifica spatiu IP"
+      form:
+        remove_pool:
+          sure_to_remove: "Sunteti sigur ca doriti sa stergeti spatiile IP selectate?"
+          deletion_failed: "Nu s-au putut sterge anumte spatii IP."
+        create:
+          title: "Creaza spatiu IP"
+          edit_title: "Modifica spatiu IP"
+          field:
+            first_ip: "Prima adresa IP"
+            last_ip: "Ultima adresa IP"
+            limit_server: "Server"
+            all_servers: "toate"
+          button_create: "Creaza"
