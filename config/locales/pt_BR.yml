@@ -14,6 +14,7 @@ pt_BR:
       save: "Salvar"
       cancel: "Cancelar"
       create: "Criar"
+      back: "Voltar"
   activerecord:
     errors:
       models:
@@ -49,6 +50,7 @@ pt_BR:
             ip_address:
               invalid: "Endereço IP incorreto."
               taken: "Endereço IP já foi designado para outro servidor"
+              not_found_in_pool: "Endereço IP não está disponível na RANGE (POOL) informada."
             identity:
               taken: "Esta identificação (id) já foi designada para outro servidor."
             password:
@@ -69,6 +71,19 @@ pt_BR:
           attributes:
             name:
               taken: "Regra com este nome já existe."
+        ip_pool:
+          attributes:
+            first_ip:
+              invalid: "Endereço IP incorreto."
+              bad_range: "Range de endereço IP incorreto."
+            last_ip:
+              invalid: "Endereço IP incorreto."
+  api:
+    error:
+      access_denied: "Acesso negado."
+      object_not_found: "Objeto não encontrado."
+      unknown_error: "Erro desconhecido."
+      internal_error: "Erro interno."
   about:
     copyright: "Copyright 2008-2011 SoftUnity."
     right_reserved: "Todos os direitos reservados."
@@ -84,9 +99,29 @@ pt_BR:
     password: "Senha"
     remember_me: "Lembre-me"
     button_login: "Acessar"
+    button_restore_password: "Recuperar senha"
     locale: "Idioma"
     bad_login: "Usuário ou senha inválido."
     locked_user: "Usuário bloqueado."
+  restore_password:
+    page_title: "Recuperação de senha"
+    window_title: "Recuperação de senha"
+    username: "Nome de usuário"
+    button_restore: "Recuperar"
+    restore_link_sent: "E-mail para recuperação de senha enviado."
+    error:
+      user_not_found: "Usuário não encontrado."
+      no_email: "Impossível recuperar senha, usuário não possui e-mail."
+    mail:
+      restore_link:
+        subject: "Recuperação de senha"
+        body: "Para recuperar sua senha siga o link: {{link}}"
+  reset_password:
+    page_title: "Resetar Senha"
+    window_title: "Resetar Senha"
+    new_password: "Nova Senha"
+    confirm_password: "Confirme a Senha"
+    password_changed: "Senha modificada."
   admin:
     menu:
       title: "Menu"
@@ -94,6 +129,7 @@ pt_BR:
         title: "Principal"
         dashboard: "Painel"
         hardware_servers: "Servidores Físicos"
+        ip_addresses: "Endereço IP"
         virtual_servers: "Servidores Virtuais"
         my_profile: "Meu perfil"
         users: "Usuários"
@@ -131,6 +167,7 @@ pt_BR:
         connect: "Servidor físico {{host}} foi conectado."
         disconnect: "Servidor físico {{host}} foi desconectado."
         sync: "Servidores {{host}} estão sinconizados."
+        sync_failed: "Falha ao sincronizar o estado do host {{host}}."
         reboot: "Reinicializando o servidor {{host}}."
       virtual_server:
         created: "Servidor virtual {{identity}} foi criado."
@@ -156,6 +193,12 @@ pt_BR:
         removed: "Regra {{name}} removida."
         created: "Regra {{name}} criada."
         updated: "Regra {{name}} atualizada."
+      request:
+        created: "Request #{{id}} criada."
+        updated: "Request #{{id}} atualizada."
+        removed: "Request #{{id}} removida."
+      comment:
+        created: "Comentário  para requisição #{{request_id}} criado."
     tasks:
       os_templates:
         install: "Instalação de template no servidor {{host}}."
@@ -213,6 +256,7 @@ pt_BR:
             description: "Descrição"
             daemon_port: "Porta de conexão"
             root_password: "Senha do  usuário root"
+            use_ssl: "Usar SSL"
           fieldset:
             additional_settings: "Configurações adicionais"
         disconnect_server:
@@ -272,6 +316,9 @@ pt_BR:
           change_settings: "Alterar configurações"
           console: "Terminal"
           backup: "Backup"
+          tools: "Ferramentas"
+          migrate: "Migração"
+          create_template: "Criar template"
       form:
         change_settings:
           title: "Alterar configurações do servidor virtual"
@@ -323,6 +370,14 @@ pt_BR:
           tab:
             main_settings: "Configurações básicas"
             additional_settings: "Configurações adicionais"
+        create_template:
+          title: "Criar template baseado no servidor virtual"
+          button_create: "Criar"
+          field:
+            name: "Nome"
+          error:
+            invalid_name: "Somente números e caracteres simples são permitidos."
+            template_exists: "Template de OS com este nome já existe."
         limits:
           title: "Limites"
           grid:
@@ -341,6 +396,12 @@ pt_BR:
             run: "Executar"
         clone:
           title: "Clonar servidor virtual"
+        migrate:
+          title: "Migrar servidor virtual"
+          field:
+            target: "Servidor destino"
+          button_migrate: "Migrar"
+          note: "Antes da migração, é necessário a criação de uma chave pública para o usuário root no servidor físico de origem e copiar esta chave para o servidor físico de destino. Também é necessário verificar se o utilitário rsync esta instalado no servidor de destino."
       show:
         title: "Servidor virtual {{name}}"
         grid:
@@ -378,7 +439,7 @@ pt_BR:
           disk_usage:
             title: "Uso de disco"
     os_templates:
-      title: "Template de SO {{name}}"
+      title: "Template de SO disponíveis em{{name}}"
       grid:
         title: "Templates de SO disponíveis"
         column:
@@ -412,6 +473,7 @@ pt_BR:
         column:
           level: "Status"
           created_at: "Data"
+          ip_address: "Endereço IP"
           message: "Mensagem"
           id: "ID"
         button:
@@ -528,6 +590,7 @@ pt_BR:
         create:
           title: "Criar novo backup"
           scheduled: "Procedimento do backup iniciado e poderá levar alguns minutos para finalizar."
+          limit_reached: "Limite máximo de backups atingido."
           field:
             description: "Descrição"
             ve_state:
@@ -583,6 +646,13 @@ pt_BR:
             button_add: "Adicionar"
             field:
               content: "Mensagem"
+      mail:
+        new_request:
+          subject: "Nova requisição #{{id}}"
+          body: "Nova requisição código #{{id}} criada pelo usuário {{login}}."
+        new_comment:
+          subject: "Novo comentário na requisição de código #{{request_id}}"
+          body: "Novo comentário na requisição de código #{{request_id}} foi adicionada pelo usuário {{login}}."
     roles:
       title: "Regras"
       grid:
@@ -605,6 +675,7 @@ pt_BR:
             name: "Nome"
           fieldset:
             permissions: "Permissão"
+            limits: "Limites"
           button_create: "Criar"
           permissions:
             manage_hardware_servers: "Gerenciamento de servidores físicos"
@@ -618,3 +689,41 @@ pt_BR:
             manage_logs: "Gerenciamento de log de eventos"
             manage_users: "Gerenciamento de usuários"
             select_os_on_reinstall: "Seleção de SO para reinstalação"
+          limits:
+            unlimited: "Ilimitado"
+            limit_backups: "Número de backups"
+    ip_addresses:
+      title: "Endereço IP"
+      grid:
+        title: "Lista de endereços IP"
+        column:
+          name: "Endereço IP"
+          virtual_server: "Servidor Virtual"
+          hardware_server: "Servidor Físico"
+    ip_pools:
+      grid:
+        title: "Range (Pool) de endereços IP"
+        column:
+          first_ip: "Primeiro endereço IP"
+          last_ip: "Último endereço IP"
+          free_ips: "Endereços IP livres"
+          used_ips: "Endereços IP utilizados"
+          total_ips: "Total de endereços IP"
+          server: "Servidor"
+        button:
+          create: "Criar range (pool) de endereços IP"
+          destroy: "Remover range (pool) de endereços IP"
+          edit: "Editar range (pool) de endereços IP"
+      form:
+        remove_pool:
+          sure_to_remove: "Você tem certeza que deseja remover essa range (pool) de endereços IP?"
+          deletion_failed: "Não foi possível remover algumas range (pool) de endereços IP."
+        create:
+          title: "Criar nova range (pool) de endereços IP"
+          edit_title: "Editar range (pool) de endereços IP"
+          field:
+            first_ip: "Pirmeiro endereço IP"
+            last_ip: "Último endereço IP"
+            limit_server: "Servidor"
+            all_servers: "Todos"
+          button_create: "Criar"
