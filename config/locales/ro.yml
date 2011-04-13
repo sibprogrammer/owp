@@ -14,6 +14,7 @@ ro:
       save: "Salveaza"
       cancel: "Anuleaza"
       create: "Creeaza"
+      back: "Inapoi"
   activerecord:
     errors:
       models:
@@ -49,6 +50,7 @@ ro:
             ip_address:
               invalid: "Adresa IP incorecta."
               taken: "Adresa IP a fost deja alocata unui alt server."
+              not_found_in_pool: "Adresa IP nu a fost gasita in spatiile IP disponibile."
             identity:
               taken: "Aceasta identitate apartine unui alt server."
             password:
@@ -68,12 +70,12 @@ ro:
         role:
           attributes:
             name:
-              taken: "Role with such name is already exist."
+              taken: "Un rol cu acelasi nume deja exista."
         ip_pool:
           attributes:
             first_ip:
               invalid: "Adresa IP incorecta."
-              bad_range: "Incorrect IP addresses range."
+              bad_range: "Spatiu adrese IP incorect."
             last_ip:
               invalid: "Adresa IP incorecta."
   api:
@@ -127,6 +129,7 @@ ro:
         title: "General"
         dashboard: "Vedere generala"
         hardware_servers: "Servere fizice"
+        ip_addresses: "Adrese IP"        
         virtual_servers: "Servere virtuale"
         my_profile: "Profil"
         users: "Utilizatori"
@@ -394,10 +397,10 @@ ro:
         clone:
           title: "Cloneaza serverul virtual"
         migrate:
-          title: "Migrate virtual server"
+          title: "Migrare server virtual"
           field:
-            target: "Target server"
-          button_migrate: "Migrate"
+            target: "Server destinatie"
+          button_migrate: "Migrare"
           note: "Inainte de migrare trebuie sa generati o cheie publica SSH pentru utilizatorul root pe server sursa fizic si sa o copiati pe serverul de destinatie. De asemenea verificati ca aplicatia rsync este prezenta pe serverul de destinatie."
       show:
         title: "Server virtual {{name}}"
