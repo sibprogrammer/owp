@@ -1,3 +1,32 @@
+= OpenVZ Web Panel 2.0 (2011-04-??) =
+
+This version is a major release. The following items were fixed and/or added:
+
+  * Ability to control using Remote API (issue 191).
+  * WHMCS (billing system) support (issue 249).
+  * IP addresses management (issue 132).
+  * Automatic sync of virtual server state (issue 262).
+  * Virtual server migration between physical servers (issue 99).
+  * Ability to create template based on virtual server (issue 125).
+  * Fixed FloatDomainError on virtual server details screen (issue 254).
+  * Spanish language support (issue 252).
+  * Ukraine language support.
+  * Android OS basic support (issue 243).
+  * Avoid writing plains passwords to production.log (issue 238).
+  * Ability to set swappages (issue 237).
+  * Ability to limit number of backups (issue 236).
+  * Preserve SSL certificates on upgrade (issue 229).
+  * Ability to see more than 15 connected physical servers (issue 225).
+  * Show free RAM including buffers/cache (issue 221).
+  * IP address field was added to events log (issue 210).
+  * E-mail notifications on requests (issue 206).
+  * Offline installer (issue 204).
+  * Optional root password for virtual server (issue 196).
+  * Ability to restore user password (issue 189).
+  * LDAP authentication support (issue 176).
+  * Ability to see OS template size (issue 46).
+  * Ability to use SSL for communication with physical servers (issue 22).
+
 = OpenVZ Web Panel 1.7 (2010-11-23) =
 
 This version is a maintenance release. The following items were fixed and/or
