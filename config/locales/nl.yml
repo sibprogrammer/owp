@@ -4,16 +4,17 @@ nl:
   form:
     loading: "Even geduld..."
     confirmation: "Bevestig"
-    performing_task: "Even wachten. Voert taak uit..."
+    performing_task: "Even wachten. Taak wordt uitgevoerd..."
     error:
       title: "Fout"
-      fill_form: "Alstublieft, vul het formulier."
+      fill_form: "Vul alstublieft het formulier."
     info:
       title: "Informatie"
     button:
       save: "Opslaan"
       cancel: "Annuleren"
       create: "Cre&euml;er"
+      back: "Terug"
   activerecord:
     errors:
       models:
@@ -21,34 +22,35 @@ nl:
           attributes:
             password:
               confirmation: "Wachtwoord en bevestiging zijn niet gelijk."
-              too_short: "Wachtwoord is te kort (minimum tekens: {{count}})."
+              too_short: "Het wachtwoord is te kort (minimum aantal tekens: {{count}})."
             password_confirmation:
               blank: "Wachtwoord bevestiging is verplicht."
             login:
               taken: "Deze gebruikersnaam bestaat al."
-              too_short: "Gebruikersnaam is te kort (minimum tekens: {{count}})."
+              too_short: "Gebruikersnaam is te kort (minimum aantal tekens: {{count}})."
         hardware_server:
           attributes:
             host:
-              taken: "Server met deze naam bestaat al."
-              connection: "Connectie mislukt. Daemon draait mogelijk niet."
-              ssh_connection: "SSH connectie maken is mislukt."
-              openvz_not_found: "OpenVZ virtualisatie is niet gevonden op de server."
-              ruby_not_found: "Ruby interperter is niet gevonden op de server."
+              taken: "Een server met deze naam bestaat al."
+              connection: "Connectie is mislukt. De daemon draait mogelijk niet."
+              ssh_connection: "Een SSH connectie maken is mislukt."
+              openvz_not_found: "OpenVZ virtualisatie software is niet gevonden op de server."
+              ruby_not_found: "Ruby is niet gevonden op de server."
             auth_key:
-              bad_auth: "Kan niet authenticeren. Mogelijk onjuiste authorisatie sleutel."
+              bad_auth: "Kan niet authenticeren. Mogelijk onjuiste autorisatie sleutel."
             daemon_port:
               not_a_number: "Onjuist port nummer."
               greater_than: "Port nummer moet groter zijn dan {{count}}."
-              less_than: "Port nummer mnoet kleiner zijn dan {{count}}."
+              less_than: "Port nummer moet kleiner zijn dan {{count}}."
             root_password:
-              ssh_bad_auth: "SSH authorisatie is mislukt."
+              ssh_bad_auth: "SSH autorisatie is mislukt."
               empty: "Dit veld is verplicht."
         virtual_server:
           attributes:
             ip_address:
               invalid: "Onjuist IP adres."
-              taken: "IP adres is al ingebruik door een andere server."
+              taken: "Het IP adres is al ingebruik door een andere server."
+              not_found_in_pool: "Het IP adres is niet gevonden in de beschikbare IP pool."
             identity:
               taken: "Deze identiteit is al ingebruik door een andere server."
             password:
@@ -60,7 +62,7 @@ nl:
             search_domain:
               invalid: "Search domains is onjuist."
             description:
-              invalid: "Omschrijving bevat ongeldige characters."
+              invalid: "De omschrijving bevat ongeldige characters."
         server_template:
           attributes:
             name:
@@ -69,14 +71,27 @@ nl:
           attributes:
             name:
               taken: "Een rol met deze naam bestaat al."
+        ip_pool:
+          attributes:
+            first_ip:
+              invalid: "Onjuist IP adres."
+              bad_range: "Onjuiste IP adres pool."
+            last_ip:
+              invalid: "Onjuist IP adres."
+  api:
+    error:
+      access_denied: "Toegang verboden."
+      object_not_found: "Object niet gevonden."
+      unknown_error: "Onbekende error."
+      internal_error: "Interne error."
   about:
     copyright: "Copyright 2008-2011 SoftUnity."
     right_reserved: "All Rights Reserved."
     about_program: "About program"
-    author: "Main developer"
-    contributors: "Contributors"
-    contributors_list: "list"
-    web_site: "Web site"
+    author: "Hoofd ontwikkelaar"
+    contributors: "Mede ontwikkelaars"
+    contributors_list: "lijst"
+    web_site: "Website"
   login:
     page_title: "Login"
     window_title: "Inloggen op {{product}}"
@@ -84,9 +99,29 @@ nl:
     password: "Wachtwoord"
     remember_me: "Onthoudt mij"
     button_login: "Inloggen"
+    button_restore_password: "Herstel wachtwoord"
     locale: "Taal"
     bad_login: "Onjuiste gebruikersnaam of wachtwoord."
     locked_user: "Gebruiker is geblokkeerd."
+  restore_password:
+    page_title: "Wachtwoord herstel"
+    window_title: "Herstel wachtwoord"
+    username: "Gebruikersnaam"
+    button_restore: "Herstel"
+    restore_link_sent: "Wachtwoord herstel email is verstuurd."
+    error:
+      user_not_found: "Gebruiker is niet gevonden."
+      no_email: "Het is niet mogelijk het wachtwoord te herstellen, omdat de gebruiker geen e-mailadres heeft ingesteld."
+    mail:
+      restore_link:
+        subject: "Wachtwoord herstel"
+        body: "Om het wachtwoord te herstellen klik op de volgende link: {{link}}"
+  reset_password:
+    page_title: "Reset wachtwoord"
+    window_title: "Reset wachtwoord"
+    new_password: "New wachtwoord"
+    confirm_password: "Bevestig wachtwoord"
+    password_changed: "Wachtwoord is veranderd."
   admin:
     menu:
       title: "Menu"
@@ -94,6 +129,7 @@ nl:
         title: "Generiek"
         dashboard: "Dashboard"
         hardware_servers: "Fysieke servers"
+        ip_addresses: "IP adressen"
         virtual_servers: "Virtuele servers"
         my_profile: "Mijn profiel"
         users: "Gebruikers"
@@ -130,7 +166,8 @@ nl:
       hardware_server:
         connect: "Fysieke server {{host}} verbonden."
         disconnect: "Fysieke server {{host}} is niet verbonden."
-        sync: "Server's {{host}} status is gesynchroniseerd."
+        sync: "Servers {{host}} status is gesynchroniseerd."
+        sync_failed: "Status synchronisatie mislukt: {{host}}."
         reboot: "Herstarten van de server {{host}}."
       virtual_server:
         created: "Virtuele server {{identity}} is aangemaakt."
@@ -155,7 +192,13 @@ nl:
       role:
         removed: "Rol {{name}} is verwijderd."
         created: "Rol {{name}} is gecre&euml;erd."
-        updated: "Rol {{name}} is vernieuwd."
+        updated: "Rol {{name}} is veranderd."
+      request:
+        created: "Verzoek #{{id}} is gecre&euml;erd."
+        updated: "Verzoek #{{id}} is veranderd."
+        removed: "Verzoek #{{id}} is verwijderd."
+      comment:
+        created: "Commentaar op verzoek #{{request_id}} is gecre&euml;erd."
     tasks:
       os_templates:
         install: "OS templates installatie op de server {{host}}."
@@ -213,6 +256,7 @@ nl:
             description: "Omschrijving"
             daemon_port: "Service port"
             root_password: "Root wachtwoord"
+            use_ssl: "Gebruik SSL"
           fieldset:
             additional_settings: "Additionle instellingen"
         disconnect_server:
@@ -272,6 +316,9 @@ nl:
           change_settings: "Verander instellingen"
           console: "Console"
           backup: "Backup"
+          tools: "Tools"
+          migrate: "Migreren"
+          create_template: "Cre&euml;er Template"
       form:
         change_settings:
           title: "Verander instellingen van virtuele server"
@@ -323,6 +370,14 @@ nl:
           tab:
             main_settings: "Hoofd instellingen"
             additional_settings: "Extra instellingen"
+        create_template:
+          title: "Cre&euml;er Template gebaseerd op virtuele server"
+          button_create: "Cre&euml;er"
+          field:
+            name: "Naam"
+          error:
+            invalid_name: "Alleen alphanumerieke karakters zijn toegestaan."
+            template_exists: "OS template met deze naam bestaat al."
         limits:
           title: "Limieten"
           grid:
@@ -341,6 +396,12 @@ nl:
             run: "Uitvoeren"
         clone:
           title: "Clone virtuele server"
+        migrate:
+          title: "Migreer virtuele server"
+          field:
+            target: "Doel server"
+          button_migrate: "Migreer"
+          note: "Voor de migratie moet de SSH public key van de root gebruiker van deze server gekopieerd worden naar de doelserver. Ook moet rsync op de doel server geinstalleerd staan."
       show:
         title: "Virtuele server {{name}}"
         grid:
@@ -412,6 +473,7 @@ nl:
         column:
           level: "Status"
           created_at: "Datum"
+          ip_address: "IP Adres"
           message: "Boodschap"
           id: "ID"
         button:
@@ -528,6 +590,7 @@ nl:
         create:
           title: "Cre&euml;er een nieuwe backup"
           scheduled: "Backup procedure is gestart en duurt even."
+          limit_reached: "Limiet van eht aantal backups is bereikt."
           field:
             description: "Omschrijving"
             ve_state:
@@ -583,6 +646,13 @@ nl:
             button_add: "Toevoegen"
             field:
               content: "Bericht"
+      mail:
+        new_request:
+          subject: "Nieuw verzoek #{{id}}"
+          body: "Nieuw verzoek #{{id}} is gemaakt door {{login}}."
+        new_comment:
+          subject: "Nieuw commentaar op verzoek #{{request_id}}"
+          body: "Nieuw commentaar op verzoek #{{request_id}} is toegevoegd door {{login}}."
     roles:
       title: "Rollen"
       grid:
@@ -605,9 +675,10 @@ nl:
             name: "Naam"
           fieldset:
             permissions: "Permissies"
+            limits: "Limieten"
           button_create: "Cre&uml;en"
           permissions:
-            manage_hardware_servers: "Physieke servers management"
+            manage_hardware_servers: "Fysieke servers management"
             use_ve_console: "Virtuele server console"
             backup_ve: "Virtuele server backups"
             reinstall_ve: "Virtuele server herinstallatie"
@@ -618,3 +689,41 @@ nl:
             manage_logs: "Gebeurtenis logs management"
             manage_users: "Gebruiker management"
             select_os_on_reinstall: "OS selectie bij herinstallatie"
+          limits:
+            unlimited: "onbeperkt"
+            limit_backups: "Aantal backups"
+    ip_addresses:
+      title: "IP adressen"
+      grid: 
+        title: "IP adres lijst"
+        column:
+          name: "IP adres"
+          virtual_server: "Virtuele Server"
+          hardware_server: "Fysieke Server"
+    ip_pools:
+      grid: 
+        title: "IP pool lijst"
+        column:
+          first_ip: "Eerste IP adres"
+          last_ip: "Laatste IP adres"
+          free_ips: "Vrije IPs"
+          used_ips: "Gebruikte IPs"
+          total_ips: "Totaal IPs"
+          server: "Server"
+        button:
+          create: "Cre&euml;er IP Pool"
+          destroy: "Verwijder IP Pool"
+          edit: "Verander IP Pool"
+      form: 
+        remove_pool:
+          sure_to_remove: "Weet u zeker dat u de geselecteeerd IP pools wilt verwijderen?"
+          deletion_failed: "Het is niet mogelijk sommige IP pools te verwijderen."
+        create:
+          title: "Cre&euml;er nieuwe IP pool"
+          edit_title: "Verander IP pool"
+          field:
+            first_ip: "Eerste IP adres"
+            last_ip: "Laatste IP adres"
+            limit_server: "Server"
+            all_servers: "allemaal"
+          button_create: "Cre&euml;er"
