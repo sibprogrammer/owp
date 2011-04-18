@@ -705,7 +705,7 @@ hu:
         title: "IP tartományok listája"
         column:
           first_ip: "Első IP cím"
-          last_ip: "Utlsó IP cím"
+          last_ip: "Utolsó IP cím"
           free_ips: "Szabad IP-k"
           used_ips: "Használt IP-k"
           total_ips: "Összes IP"
