@@ -21,7 +21,7 @@ class VirtualServer < ActiveRecord::Base
 
   def self.ip_addresses
     result = []
-    VirtualServer.all.each { |virtual_server| virtual_server.ip_address.split.each { |ip_address|
+    VirtualServer.all.each { |virtual_server| virtual_server.ip_address.to_s.split.each { |ip_address|
       result << {
         :name => ip_address,
         :virtual_server => virtual_server.screen_name,
