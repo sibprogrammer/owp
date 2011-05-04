@@ -423,7 +423,7 @@ fr:
       stat_details:
         title: "Statistique du serveur virtuel {{name}}"
         grid:
-          title: "Limites du du serveur virtuel"
+          title: "Limites du serveur virtuel"
           column:
             parameter: "Paramètre"
             current: "Utilisation actuelle"
