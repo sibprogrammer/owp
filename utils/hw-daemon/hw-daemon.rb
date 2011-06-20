@@ -6,7 +6,7 @@ require 'xmlrpc/server.rb'
 # workaround for clients with incorrect DNS records
 Socket.do_not_reverse_lookup = true
 
-ENV['PATH'] += ':/usr/sbin'
+ENV['PATH'] += ':/usr/sbin:/usr/local/sbin'
 
 DAEMON_VERSION = '1.3'
 CURRENT_DIR = File.expand_path(File.dirname(__FILE__)) + '/'
