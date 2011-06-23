@@ -1,3 +1,5 @@
+include ActionView::Helpers::TextHelper
+
 class Admin::VirtualServersController < Admin::Base
   before_filter :superadmin_required, :only => [:list_data, :delete, :create, :clone, :migrate]
   before_filter :set_server_by_id, :only => [ :clone, :migrate, :create_template, :get_properties, :get_stats, :get_limits ]
@@ -342,9 +344,9 @@ class Admin::VirtualServersController < Admin::Base
       else
         stats << { :parameter => t('admin.virtual_servers.stats.field.cpu_load_average'), :value => '-' }
       end
-      
+
       helper = Object.new.extend(ActionView::Helpers::NumberHelper)
-      
+
       counter = Watchdog.get_ve_counter('_diskspace', virtual_server.id)
   
       if counter and is_running and (counter.limit.to_i > 0)

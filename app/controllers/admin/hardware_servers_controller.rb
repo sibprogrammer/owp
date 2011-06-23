@@ -1,3 +1,5 @@
+include ActionView::Helpers::TextHelper
+
 class Admin::HardwareServersController < Admin::Base
   before_filter :superadmin_required
   
@@ -94,10 +96,10 @@ class Admin::HardwareServersController < Admin::Base
         :parameter => t('admin.hardware_servers.stats.field.cpu_load_average'),
         :value => cpu_load_average.blank? ? '-' : cpu_load_average.join(', '),
       }
-      
+
       helper = Object.new.extend(ActionView::Helpers::NumberHelper)
       disk_usage = hardware_server.disk_usage
-      
+
       if !disk_usage.blank?
         disk_usage.each { |partition|
           stats << {
