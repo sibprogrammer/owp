@@ -53,7 +53,26 @@ class Api::VirtualServersController < Api::Base
     end
 
     def create_or_update_server
-      @virtual_server = VirtualServer.new unless @virtual_server
+      if !@virtual_server
+        template_params = {}
+        server_template = ServerTemplate.find_by_name(params[:orig_server_template])
+
+        if server_template
+          template_params = {
+            :nameserver => server_template.get_nameserver,
+            :search_domain => server_template.get_search_domain,
+            :start_on_boot => server_template.get_start_on_boot,
+            :diskspace => server_template.get_diskspace,
+            :memory => server_template.get_memory,
+            :cpu_units => server_template.get_cpu_units,
+            :cpus => server_template.get_cpus,
+            :cpu_limit => server_template.get_cpu_limit,
+          }
+        end
+
+        @virtual_server = VirtualServer.new(template_params)
+      end
+      
       @virtual_server.attributes = params
       render_object_save_result(@virtual_server.save_physically, @virtual_server)
     end
