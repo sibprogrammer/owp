@@ -65,11 +65,13 @@ class WatchdogService
     ves_on_server.each do |vzlist_entry|
       ve_id, ve_state = vzlist_entry.split
       current_ve = hardware_server.virtual_servers.find_by_identity(ve_id)
-      add_ve_counter({
-        :name => 'state',
-        :virtual_server_id => current_ve.id,
-        :state => ve_state,
-      })
+      if current_ve
+        add_ve_counter({
+          :name => 'state',
+          :virtual_server_id => current_ve.id,
+          :state => ve_state,
+        })
+      end
     end
   end
   
