@@ -8,25 +8,18 @@ cd `dirname $0`
 
 {
   PROJECT="ovz-web-panel"
-  SVN_REPO="http://ovz-web-panel.googlecode.com/svn/trunk/"
+  REPO="git://github.com/sibprogrammer/owp.git"
   
   [ -d $PROJECT ] && rm -rf ovz-web-panel
   
-  REVISION=`svn info $SVN_REPO | grep "Revision:" | sed "s/Revision: //g"`
-  
-  if [ -d $PROJECT.r$REVISION ]; then
-    mkdir $PROJECT
-    cp -R $PROJECT.r$REVISION/* $PROJECT/
-  else
-    svn export $SVN_REPO $PROJECT
+  git clone $REPO $PROJECT
 
-    echo $REVISION > $PROJECT/revision
-
-    mkdir $PROJECT.r$REVISION
-    cp -R $PROJECT/* $PROJECT.r$REVISION/
-  fi
+  echo $REVISION > $PROJECT/revision
   
   cd $PROJECT
+    REVISION=`git show | egrep '^commit' | awk '{ print $2 }'`
+    echo $REVISION > revision
+
     VERSION=`grep "PRODUCT_VERSION" config/environment.rb | sed -e 's/[^0-9.]//g'`
     echo $VERSION > version
 
@@ -35,6 +28,8 @@ cd `dirname $0`
     
     # minimize distribution size
     rm -rf build vendor/rails/railties/doc/guides vendor/rails/activerecord/test
+    
+    rm -rf .git
   cd ..
   
   [ -f $PROJECT-$VERSION.tgz ] && rm $PROJECT-$VERSION.tgz || true

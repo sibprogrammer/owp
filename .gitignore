@@ -8,3 +8,6 @@ utils/watchdog/watchdog.pid
 utils/hw-daemon/hw-daemon.log
 utils/hw-daemon/hw-daemon.pid
 utils/hw-daemon/hw-daemon.ini
+build/build.log
+build/ovz-web-panel-*.tgz
+build/ovz-web-panel
