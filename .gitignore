@@ -1,0 +1,10 @@
+log/*.log
+tmp/**/*
+db/*.sqlite3
+config/database.yml
+.idea
+utils/watchdog/watchdog.log
+utils/watchdog/watchdog.pid
+utils/hw-daemon/hw-daemon.log
+utils/hw-daemon/hw-daemon.pid
+utils/hw-daemon/hw-daemon.ini
