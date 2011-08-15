@@ -3,7 +3,7 @@ class Request < ActiveRecord::Base
   has_many :comments, :dependent => :destroy
 
   validates_presence_of :subject, :content
-  
+
   attr_accessible :subject, :content
 
   after_create { |record| EventLog.info("request.created", { :id => record.id }) }

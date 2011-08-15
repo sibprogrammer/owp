@@ -16,7 +16,7 @@ class WatchdogService
     @ve_counters = {}
     @hw_params = {}
   end
-  
+
   def alive
     true
   end
@@ -31,19 +31,19 @@ class WatchdogService
     key = server_id.to_s + name
     @ve_counters.delete(key)
   end
-  
+
   def get_ve_counters_queue(name, server_id)
     key = server_id.to_s + name
     return [] unless @ve_counters.has_key?(key)
     @ve_counters[key]
   end
-  
+
   def get_hw_param(name, server_id)
     key = server_id.to_s + name
     return nil unless @hw_params.has_key?(key)
     @hw_params[key]
   end
-  
+
   def collect_data
     HardwareServer.all.each do |hardware_server|
       next unless hardware_server.rpc_client.ping
@@ -74,15 +74,15 @@ class WatchdogService
       end
     end
   end
-  
+
   def collect_beancounters(hardware_server)
     counters = hardware_server.rpc_client.exec('cat', "/proc/user_beancounters")['output'].split("\n")
-      
+
     # remove table titles
     counters.shift; counters.shift
-    
+
     current_ve_id = current_ve = nil
-    
+
     counters.each do |record|
       counter_info = record.split
       if counter_info[0] =~ /^\d+:$/
@@ -90,7 +90,7 @@ class WatchdogService
         current_ve = @virtual_servers.find { |ve| ve.identity == current_ve_id }
         counter_info.shift
       end
-      
+
       if current_ve and current_ve_id == current_ve.identity and 'dummy' != counter_info[0]
         params = {
           :name => counter_info[0],
@@ -101,7 +101,7 @@ class WatchdogService
           :limit => counter_info[4],
           :failcnt => counter_info[5],
         }
-        
+
         counter = get_ve_counter(params[:name], current_ve.id)
         counter = add_ve_counter(params) if !counter
         params[:alert] = (params[:failcnt].to_i > counter.failcnt.to_i)
@@ -110,21 +110,21 @@ class WatchdogService
       end
     end
   end
-  
+
   def collect_memory_usage(hardware_server)
     ve_list = hardware_server.virtual_servers.find_all_by_state('running').map(&:identity).join(' ')
     command = "for VE in #{ve_list}; do echo $VE `vzctl exec $VE 'free -bo | sed \"1d;3d\"'`; done"
     counters = hardware_server.rpc_client.exec(command)['output'].split("\n")
-    
+
     current_ve_id = current_ve = nil
-    
+
     counters.each do |record|
       counter_info = record.split
       next if counter_info.size < 5
-      
+
       current_ve_id = counter_info[0].to_i
       current_ve = @virtual_servers.find { |ve| ve.identity == current_ve_id }
-      
+
       if current_ve and current_ve_id == current_ve.identity
         info = {}
         info['total_bytes'] = counter_info[2].to_i
@@ -139,21 +139,21 @@ class WatchdogService
       end
     end
   end
-  
+
   def collect_diskspace(hardware_server)
     ve_list = hardware_server.virtual_servers.find_all_by_state('running').map(&:identity).join(' ')
     command = "for VE in #{ve_list}; do echo $VE `vzctl exec $VE 'stat -c \"%s %b %a\" -f /'`; done"
     counters = hardware_server.rpc_client.exec(command)['output'].split("\n")
-    
+
     current_ve_id = current_ve = nil
-    
+
     counters.each do |record|
       counter_info = record.split
       next if counter_info.size < 4
-      
+
       current_ve_id = counter_info[0].to_i
       current_ve = @virtual_servers.find { |ve| ve.identity == current_ve_id }
-      
+
       if current_ve and current_ve_id == current_ve.identity
         info = {}
         info['block_size'] = counter_info[1].to_i
@@ -169,7 +169,7 @@ class WatchdogService
       end
     end
   end
-  
+
   def collect_cpu_usage(hardware_server)
     ve_list = hardware_server.virtual_servers.find_all_by_state('running').map(&:identity).join(' ')
     command = "for VE in #{ve_list}; do echo $VE `vzctl exec $VE 'cat /proc/stat | head -1'`; done"
@@ -184,14 +184,14 @@ class WatchdogService
 
       if current_ve and current_ve_id == current_ve.identity
         prev_counter = get_ve_counter('_cpu', current_ve.id)
-        
+
         counter = add_ve_counter({
           :name => '_cpu',
           :virtual_server_id => current_ve.id,
           :held => counter_info[5],
           :limit => counter_info[2,4].map(&:to_i).sum.to_s,
         })
-        
+
         if prev_counter
           add_ve_counter({
             :name => '_cpu_usage',
@@ -203,21 +203,21 @@ class WatchdogService
       end
     end
   end
-  
+
   def collect_hw_parameters(hardware_server)
     os_version = hardware_server.rpc_client.exec('uname', '-srm')['output']
     add_hw_parameter(hardware_server.id, 'os_version', os_version)
-    
+
     cpu_load_average = hardware_server.rpc_client.exec('cat', '/proc/loadavg')['output'].split[0..2]
     add_hw_parameter(hardware_server.id, 'cpu_load_average', cpu_load_average)
-    
+
     memory_usage = get_hw_memory_usage(hardware_server)
     add_hw_parameter(hardware_server.id, 'memory_usage', memory_usage)
-    
+
     disk_usage = get_hw_disk_usage(hardware_server)
     add_hw_parameter(hardware_server.id, 'disk_usage', disk_usage)
   end
-  
+
   def get_hw_memory_usage(hardware_server)
     raw_info = hardware_server.rpc_client.exec('free', '-bo')['output'].split("\n")[1].split
     info = {}
@@ -227,7 +227,7 @@ class WatchdogService
     info['usage_percent'] = (info['used_bytes'].to_f / info['total_bytes'].to_f * 100).to_i
     info
   end
-  
+
   def get_hw_disk_usage(hardware_server)
     raw_info = hardware_server.rpc_client.exec('df', '-lP -k')['output']
     raw_info.split("\n").find_all{ |item| item =~ /^\// }.map{ |item|
@@ -242,20 +242,20 @@ class WatchdogService
       }
     }
   end
-  
+
   def add_ve_counter(counter)
     counter[:created_at] = DateTime.now
-    
+
     key = counter[:virtual_server_id].to_s + counter[:name]
     @ve_counters[key] = [] unless @ve_counters.has_key?(key)
     @ve_counters[key] << counter
-    
+
     # store last 60 values
     @ve_counters[key].shift if @ve_counters[key].size > 60
-    
+
     OpenStruct.new(counter)
   end
-  
+
   def add_hw_parameter(server_id, name, value)
     key = server_id.to_s + name
     @hw_params[key] = value
@@ -264,12 +264,12 @@ class WatchdogService
 end
 
 class WatchdogDaemon
-  
+
   def initialize
     check_environment
-    
+
     do_help if (0 == ARGV.size)
-    
+
     case ARGV[0]
       when 'start' then do_start
       when 'stop' then do_stop
@@ -278,43 +278,43 @@ class WatchdogDaemon
       else do_help
     end
   end
-  
+
   def check_environment
     if RUBY_VERSION !~ /1\.8\..+/
       puts "Ruby #{RUBY_VERSION} is not supported."
       exit(1)
     end
-    
+
     @debug = '1' == ENV['WATCHDOG_DEBUG']
   end
-  
+
   def do_start
     puts "Starting watchdog daemon..."
-    
+
     raise 'Failed to fork child.' if (pid = fork) == -1
     exit unless pid.nil?
-    
+
     Process.setsid
     raise 'Failed to create daemon.' if (pid = fork) == -1
     exit unless pid.nil?
-    
+
     Signal.trap('HUP', 'IGNORE')
     ['INT', 'TERM'].each { |signal| trap(signal) { shutdown } }
-    
+
     STDIN.reopen '/dev/null'
     STDOUT.reopen LOG_FILE, 'a'
     STDERR.reopen STDOUT
-    
+
     write_pid_file
-    
+
     load_rails_env
     watchdog = WatchdogService.new
     DRb.start_service(SERVER_URI, watchdog)
     start_worker(watchdog)
-    
+
     delete_pid_file
   end
-  
+
   def do_stop
     if (File.exists?(PID_FILE))
       pid = File.read(PID_FILE)
@@ -324,15 +324,15 @@ class WatchdogDaemon
         delete_pid_file
       end
     end
-    
+
     puts "Watchdog daemon was stopped."
   end
-  
+
   def do_restart
     do_stop
     do_start
   end
-  
+
   def do_status
     if (File.exists?(PID_FILE))
       puts "Watchdog daemon is running."
@@ -341,24 +341,24 @@ class WatchdogDaemon
       exit(1)
     end
   end
-  
+
   def do_help
     puts "Usage: ruby watchdog.rb (start|stop|restart|status|help)"
     exit(1)
   end
-  
+
   def write_pid_file
     log "Daemon pid: #{Process.pid}"
-    open(PID_FILE, "w") { |file| file.write(Process.pid) } 
+    open(PID_FILE, "w") { |file| file.write(Process.pid) }
   end
-  
+
   def delete_pid_file
     File.unlink PID_FILE if File.exists?(PID_FILE)
   end
-  
+
   def start_worker(watchdog)
     @tick_counter = 1
-    
+
     loop do
       begin
         watchdog.collect_data
@@ -366,31 +366,31 @@ class WatchdogDaemon
         log "Exception: #{e.message}"
         log e.backtrace.inspect
       end
-      
+
       sleep 60
       @tick_counter += 1
     end
   end
-  
+
   def shutdown
     log "Daemon shutdown."
     delete_pid_file
     exit(0)
   end
-  
+
   def log(message)
     puts DateTime.now.to_s + ' ' + message
     STDOUT.flush
   end
-  
+
   def load_rails_env
     environment = (2 == ARGV.size) ? ARGV[1] : 'production'
-    
+
     require File.dirname(__FILE__) + '/../../config/boot'
     ENV["RAILS_ENV"] = environment
     RAILS_ENV.replace(environment) if defined?(RAILS_ENV)
     require RAILS_ROOT + '/config/environment'
-    
+
     ActiveRecord::Base.logger.level = Logger::ERROR if @debug
   end
 
