@@ -36,7 +36,7 @@ class OsTemplate < ActiveRecord::Base
     ftp.passive = true if AppConfig.os_templates.passive_ftp
     ftp.chdir(dir)
     ftp.list('-a').map{ |file| 
-      { 'name' => file.split.last, 'size' => file.split[4] } if file =~ /tar.gz$/ 
+      { 'name' => file.split.last, 'size' => file.split[4] } if file =~ /tar\.gz$/ 
     }.compact
   end
   
