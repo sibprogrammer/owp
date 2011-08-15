@@ -1,6 +1,9 @@
 # installation directory
 INSTALL_DIR=/opt/ovz-web-panel/
 
+# web server software
+WEB_SERVER=webrick
+
 # web server port
 PORT=3000
 
