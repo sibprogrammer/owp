@@ -96,7 +96,7 @@ class HardwareServer < ActiveRecord::Base
     
     os_templates_on_server.each { |template_record|
       size, template_name = template_record.split
-      template_name.sub!(/\.tar.\gz/, '')
+      template_name.sub!(/\.tar\.gz/, '')
 
       os_template = OsTemplate.find_or_create_by_name_and_hardware_server_id(template_name, self.id)
       os_template.size = size.to_i
