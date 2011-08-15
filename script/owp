@@ -25,6 +25,7 @@ else
   INSTALL_DIR="/opt/ovz-web-panel/"
 fi
 
+WEB_SERVER=webrick
 PORT=3000
 IP=0.0.0.0
 SSL=off
@@ -47,9 +48,9 @@ start() {
     echo  "Starting OpenVZ Web Panel"
     ruby $INSTALL_DIR/utils/watchdog/watchdog.rb start
     if [ "x$SSL" = "xon" ]; then
-      ruby $INSTALL_DIR/script/server_ssl webrick -e production -p $PORT -b $IP -d
+      ruby $INSTALL_DIR/script/server_ssl $WEB_SERVER -e production -p $PORT -b $IP -d
     else
-      ruby $INSTALL_DIR/script/server webrick -e production -p $PORT -b $IP -d
+      ruby $INSTALL_DIR/script/server $WEB_SERVER -e production -p $PORT -b $IP -d
     fi
     [ "$ENVIRONMENT" = "HW-NODE" ] && ruby $INSTALL_DIR/utils/hw-daemon/hw-daemon.rb start
     touch $LOCK_FILE
@@ -90,7 +91,7 @@ case "$1" in
     stop
     ;;
   status)
-    status 
+    status
     ;;
   restart|reload|condrestart)
     stop
