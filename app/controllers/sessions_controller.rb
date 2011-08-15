@@ -2,10 +2,10 @@ class SessionsController < ApplicationController
   layout :app_layout
 
   def new
-    @available_locales = I18n.available_locales.map { 
+    @available_locales = I18n.available_locales.map {
       |locale| [locale.to_s, I18n.t('language.title', :locale => locale) + " (#{locale})"]
     }.sort
-      
+
     if request.post?
       logout_keeping_session!
       user = User.authenticate(params[:login], params[:password])
@@ -52,7 +52,7 @@ class SessionsController < ApplicationController
         end
       end
     end
-    
+
     @page_title = t('login.page_title') if iphone?
   end
 
@@ -96,11 +96,11 @@ class SessionsController < ApplicationController
       end
     end
   end
-  
+
   private
-  
+
     def app_layout
       iphone? ? 'iphone' : 'application'
     end
-  
+
 end

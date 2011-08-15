@@ -3,10 +3,10 @@ class Iphone::ServerTemplatesController < Iphone::Base
 
   def list
     @page_title = t('admin.hardware_servers.top_toolbar.server_templates')
-    
+
     hardware_server = HardwareServer.find_by_id(params[:hardware_server_id])
     redirect_to(:controller => 'hardware_servers', :action => 'list') and return if !hardware_server
-    
+
     @server_templates = hardware_server.server_templates
     @server_templates.map! { |item| {
       :id => item.id,
@@ -15,5 +15,5 @@ class Iphone::ServerTemplatesController < Iphone::Base
       :virtual_servers => VirtualServer.count(:conditions => ["hardware_server_id = ? AND orig_server_template = ?", hardware_server.id, item.name]),
     }}
   end
-  
+
 end

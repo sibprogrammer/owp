@@ -3,7 +3,7 @@ class CreatePermissions < ActiveRecord::Migration
     create_table :permissions do |t|
       t.string :name
     end
-    
+
     Permission.create({ :name => 'manage_hardware_servers' })
     Permission.create({ :name => 'use_ve_console' })
     Permission.create({ :name => 'backup_ve' })

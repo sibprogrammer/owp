@@ -51,5 +51,5 @@ class Api::Base < ApplicationController
       log_error(exception) if logger
       render_error :reason => 'internal_error', :details => exception
     end
-  
+
 end

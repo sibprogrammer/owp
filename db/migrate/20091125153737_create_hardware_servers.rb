@@ -5,7 +5,7 @@ class CreateHardwareServers < ActiveRecord::Migration
       t.column :auth_key, :string, :limit => 255
       t.column :description, :string, :limit => 255
     end
-    
+
     add_index :hardware_servers, :host, :unique => true
   end
 
