@@ -4,7 +4,7 @@ class CreateRoles < ActiveRecord::Migration
       t.string :name
       t.boolean :built_in
     end
-    
+
     Role.create({ :name => 'superadmin', :built_in => true, :limit_backups => -1 })
     Role.create({ :name => 've_admin', :built_in => true, :limit_backups => -1 })
   end

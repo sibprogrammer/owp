@@ -1,5 +1,5 @@
 module I18n
-  
+
   module Backend
     class Simple
       def available_locales
@@ -9,11 +9,11 @@ module I18n
     end
   end
 
-  class << self    
+  class << self
     def available_locales
       backend.available_locales
     end
-    
+
     def fallback(exception, locale, key, options)
       if (MissingTranslationData === exception) && (locale != self.default_locale)
         begin
@@ -21,11 +21,11 @@ module I18n
         rescue MissingTranslationData
         end
       end
-      
+
       send :default_exception_handler, exception, locale, key, options
     end
   end
-  
+
 end
 
 I18n.default_locale = AppConfig.locale.default

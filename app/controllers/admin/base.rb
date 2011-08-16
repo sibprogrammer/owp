@@ -1,13 +1,13 @@
 class Admin::Base < ApplicationController
-  layout 'admin'  
+  layout 'admin'
   before_filter :login_required, :servers_list
-  
+
   protected
-  
+
     def superadmin_required
       redirect_to :controller => 'admin/dashboard' if !@current_user.superadmin?
     end
-  
+
     def get_virtual_servers_map(virtual_servers)
       virtual_servers = virtual_servers.map { |virtual_server| {
         :id => virtual_server.id,
@@ -22,12 +22,12 @@ class Admin::Base < ApplicationController
         :is_expired => !virtual_server.expiration_date.blank? && Date.today > virtual_server.expiration_date,
         :owner => virtual_server.user ? virtual_server.user.login : '',
         :description => virtual_server.description.to_s,
-      }} 
+      }}
     end
 
     def objects_group_operation(model, operation, &access)
       success = true
-      
+
       params[:ids].split(',').each do |id|
         object = model.find(id)
         if block_given?
@@ -50,5 +50,5 @@ class Admin::Base < ApplicationController
           :server => ip_pool.hardware_server ? ip_pool.hardware_server.host : t('admin.ip_pools.form.create.field.all_servers'),
       } }
     end
-    
+
 end

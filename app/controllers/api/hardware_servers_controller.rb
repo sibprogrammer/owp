@@ -27,7 +27,7 @@ class Api::HardwareServersController < Api::Base
 
   def disconnect
     render_scalar_result(@hardware_server.disconnect)
-  end  
+  end
 
   def sync
     render_scalar_result(@hardware_server.sync)
