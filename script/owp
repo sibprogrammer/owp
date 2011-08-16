@@ -71,7 +71,7 @@ stop() {
 
 status() {
   ruby $INSTALL_DIR/utils/watchdog/watchdog.rb status
-  
+
   if [ -f $LOCK_FILE ]; then
     echo "OpenVZ Web Panel is running!"
     exit 0

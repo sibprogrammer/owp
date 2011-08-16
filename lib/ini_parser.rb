@@ -1,8 +1,8 @@
 class IniParser
-  
+
   def initialize(content)
     @ini_hash = {}
-    
+
     content.split("\n").each { |line|
       if /^\s*[A-Z\d_]+\s*=.*$/ =~ line
         name, value = line.split('=', 2)
@@ -10,9 +10,9 @@ class IniParser
       end
     }
   end
-  
+
   def get(name)
     @ini_hash[name]
   end
-  
+
 end

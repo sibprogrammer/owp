@@ -3,7 +3,7 @@ class Comment < ActiveRecord::Base
   belongs_to :user
 
   validates_presence_of :content
-  
+
   attr_accessible :content
 
   after_create { |record| EventLog.info("comment.created", { :request_id => record.request_id }) }
