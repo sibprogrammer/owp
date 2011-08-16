@@ -11,3 +11,4 @@ utils/hw-daemon/hw-daemon.ini
 build/build.log
 build/ovz-web-panel-*.tgz
 build/ovz-web-panel
+*.sw?

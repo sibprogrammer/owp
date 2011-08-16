@@ -26,6 +26,8 @@ cd `dirname $0`
     # prepare database
     rake db:migrate RAILS_ENV="production"
 
+    mkdir -p tmp log
+
     # minimize distribution size
     rm -rf build vendor/rails/railties/doc/guides vendor/rails/activerecord/test
 
