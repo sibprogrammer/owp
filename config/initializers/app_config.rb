@@ -12,7 +12,7 @@ config_defaults = {
       'host' => 'download.openvz.org',
       'path' => '/template/',
     },
-    'passive_ftp' => true, 
+    'passive_ftp' => true,
   },
   'backups' => {
     'allow_for_users' => true,

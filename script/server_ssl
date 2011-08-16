@@ -1,5 +1,5 @@
 #!/usr/bin/env ruby
- 
+
 require File.dirname(__FILE__) + '/../config/boot'
 
 require 'webrick'
@@ -35,20 +35,20 @@ ARGV.clone.options do |opts|
 
   opts.parse!
 end
- 
+
 ENV["RAILS_ENV"] = OPTIONS[:environment]
 RAILS_ENV.replace(OPTIONS[:environment]) if defined?(RAILS_ENV)
- 
+
 puts "=> Booting WEBrick..."
 
 require RAILS_ROOT + "/config/environment"
 require 'webrick_server'
 OPTIONS['working_directory'] = File.expand_path(RAILS_ROOT)
- 
+
 class SSLDispatchServlet < DispatchServlet
   def self.dispatch(options)
     WEBrick::Daemon.start if options[:detach]
-  
+
     Socket.do_not_reverse_lookup = true
     server = WEBrick::HTTPServer.new(
       :Port => options[:port].to_i,
@@ -60,16 +60,16 @@ class SSLDispatchServlet < DispatchServlet
       :SSLPrivateKey => options[:pkey],
       :SSLCertName => [ [ "CN", WEBrick::Utils::getservername ] ]
     )
- 
+
     server.mount('/', DispatchServlet, options)
     trap("INT") { server.shutdown; exit! }
     trap("TERM") { server.shutdown; exit! }
- 
+
     server.start
   end
 end
- 
+
 puts "=> Rails application starting on https://#{OPTIONS[:ip]}:#{OPTIONS[:port]}"
 puts "=> Ctrl-C to shutdown server"
- 
+
 SSLDispatchServlet.dispatch(OPTIONS)

@@ -5,7 +5,7 @@ class HardwareServer < ActiveRecord::Base
   has_many :os_templates, :dependent => :destroy
   has_many :server_templates, :dependent => :destroy
   has_many :virtual_servers, :dependent => :destroy
-  
+
   def connect(root_password = '')
     if !auth_key.blank?
       begin
@@ -21,22 +21,22 @@ class HardwareServer < ActiveRecord::Base
       self.auth_key = generate_id
       return false if !install_daemon(root_password)
     end
-    
+
     result = save
     sync if result
     EventLog.info("hardware_server.connect", { :host => self.host })
     result
   end
-  
+
   def install_daemon(root_password)
     if root_password.blank?
       self.errors.add :root_password, :empty
       return false
     end
-    
+
     require 'net/ssh'
     require 'net/sftp'
-    
+
     begin
       Net::SSH.start(host, 'root', :password => root_password) do |ssh|
         ssh.sftp.connect do |sftp|
@@ -44,14 +44,14 @@ class HardwareServer < ActiveRecord::Base
             self.errors.add :host, :openvz_not_found
             return false
           end
-          
+
           if !sftp_file_readable(sftp, '/usr/bin/ruby')
             self.errors.add :host, :ruby_not_found
             return false
           end
-          
+
           daemon_dir = '/opt/ovz-web-panel/utils/hw-daemon'
-          
+
           sftp_mkdir_recursive(sftp, daemon_dir)
           sftp_mkdir_recursive(sftp, "#{daemon_dir}/certs")
           sftp.upload!(Rails.root + '/utils/hw-daemon/hw-daemon.rb', daemon_dir + '/hw-daemon.rb')
@@ -68,32 +68,32 @@ class HardwareServer < ActiveRecord::Base
       self.errors.add :host, :ssh_connection
       return false
     end
-    
+
     true
   end
-  
+
   def disconnect
     destroy
     EventLog.info("hardware_server.disconnect", { :host => self.host })
   end
-  
+
   def rpc_client
     HwDaemonClient.new(host, auth_key, daemon_port, AppConfig.hw_daemon.timeout, use_ssl)
   end
-      
+
   def sync_os_templates
     os_templates_on_server = rpc_client.exec('ls', "--block-size=M -s #{self.templates_dir}/cache")['output'].split("\n")
     # remove totals line
     os_templates_on_server.shift
 
-    os_templates_list = os_templates_on_server.collect { |item| item.split[1] }   
+    os_templates_list = os_templates_on_server.collect { |item| item.split[1] }
 
     os_templates.each { |template|
       if !os_templates_list.include?(template.name + '.tar.gz')
         template.destroy
       end
     }
-    
+
     os_templates_on_server.each { |template_record|
       size, template_name = template_record.split
       template_name.sub!(/\.tar\.gz/, '')
@@ -103,17 +103,17 @@ class HardwareServer < ActiveRecord::Base
       os_template.save
     }
   end
-  
+
   def sync_server_templates
     path = '/etc/vz/conf';
     server_templates_on_server = rpc_client.exec('ls', "#{path}/ve-*.conf-sample")['output'].split
-    
+
     server_templates.each { |template|
       if !server_templates_on_server.include?("#{path}/ve-" + template.name + '.conf-sample')
         template.destroy
       end
     }
-    
+
     server_templates_on_server.each { |template_name|
       template_name.sub!(/\/etc\/vz\/conf\/ve\-(.*)\.conf\-sample/, '\1')
       if !ServerTemplate.find_by_name_and_hardware_server_id(template_name, self.id)
@@ -123,12 +123,12 @@ class HardwareServer < ActiveRecord::Base
       end
     }
   end
-  
+
   def sync_virtual_servers
     ves_on_server = rpc_client.exec('vzlist', '-a -H -o veid,hostname,ip,status')['output'].split("\n")
     # skip error lines
     ves_on_server = ves_on_server.find_all { |item| item =~ /^\s+\d+/ }
-    
+
     ves_ids_on_server = ves_on_server.map { |vzlist_entry|
       vzlist_entry = vzlist_entry.split.first
     }
@@ -138,17 +138,17 @@ class HardwareServer < ActiveRecord::Base
         virtual_server.destroy
       end
     }
-    
+
     ves_on_server.each { |vzlist_entry|
       ve_id, host_name, ip_address, ve_state = vzlist_entry.split
-      
+
       virtual_server = virtual_servers.find_by_identity(ve_id)
       virtual_server = VirtualServer.new(:identity => ve_id) unless virtual_server
-      
+
       virtual_server.state = ve_state
-        
+
       parser = IniParser.new(rpc_client.exec('cat', "/etc/vz/conf/#{ve_id}.conf")['output'])
-      
+
       virtual_server.orig_os_template = parser.get('OSTEMPLATE')
       virtual_server.orig_server_template = parser.get('ORIGIN_SAMPLE')
       virtual_server.start_on_boot = ('yes' == parser.get('ONBOOT'))
@@ -161,51 +161,51 @@ class HardwareServer < ActiveRecord::Base
       virtual_server.cpus = parser.get('CPUS')
       virtual_server.cpu_limit = parser.get('CPULIMIT')
       virtual_server.hardware_server = self
-      
+
       diskspace = parser.get('DISKSPACE')
       if unlimited_limit?(diskspace)
         virtual_server.diskspace = 0
       else
         virtual_server.diskspace = diskspace.split(":").last.to_i / 1024
       end
-      
+
       memory = parser.get('PRIVVMPAGES')
       if unlimited_limit?(memory)
         virtual_server.memory = 0
       else
         virtual_server.memory = memory.split(":").last.to_i * 4 / 1024
       end
-      
+
       virtual_server.save(false)
     }
   end
-  
+
   def sync_backups
     backups_list = rpc_client.exec('ls', "--block-size=M -s #{backups_dir}")['output']
     backups_list = backups_list.split("\n")
     # remove totals line
     backups_list.shift
-    
+
     backups_list.each { |backup_record|
       size, filename = backup_record.split
       next unless match = filename.match(/^ve-dump\.(\d+)\.\d+.tar$/)
-      
+
       ve_id = match[1]
       virtual_server = VirtualServer.find_by_identity(ve_id.to_i)
       next unless virtual_server
-      
+
       backup = Backup.find_by_name(filename)
       if backup
         backup.size = size.to_i
         backup.save
         next
       end
-      
+
       backup = Backup.new(:name => filename, :size => size.to_i, :virtual_server_id => virtual_server.id)
       backup.save
     }
   end
-  
+
   def sync_config
     parser = IniParser.new(rpc_client.exec('cat', "/etc/vz/vz.conf")['output'])
     self.default_os_template = parser.get('DEF_OSTEMPLATE')
@@ -215,13 +215,13 @@ class HardwareServer < ActiveRecord::Base
     self.ve_private = parser.get('VE_PRIVATE')
     save
   end
-  
+
   def sync_server_info
     self.vzctl_version = rpc_client.exec('vzctl --version')['output'].split[2]
     sync_config
     save
   end
-  
+
   def sync
     if !rpc_client.ping
       EventLog.error("hardware_server.sync_failed", { :host => self.host })
@@ -236,28 +236,28 @@ class HardwareServer < ActiveRecord::Base
 
     EventLog.info("hardware_server.sync", { :host => self.host })
   end
-  
+
   def ve_descriptions_supported?
     AppConfig.vzctl.save_descriptions and ((vzctl_version.split('.').map(&:to_i) <=> "3.0.23".split('.').map(&:to_i)) >= 0)
   end
-  
+
   def reboot
     EventLog.info("hardware_server.reboot", { :host => self.host })
     rpc_client.exec('reboot &')
   end
-  
+
   def disk_usage
     Watchdog.get_hw_param('disk_usage', id)
   end
-  
+
   def cpu_load_average
     Watchdog.get_hw_param('cpu_load_average', id)
   end
-  
+
   def memory_usage
     Watchdog.get_hw_param('memory_usage', id)
   end
-  
+
   def os_version
     Watchdog.get_hw_param('os_version', id).to_s
   end
@@ -269,31 +269,31 @@ class HardwareServer < ActiveRecord::Base
     end
     list
   end
-  
+
   private
-  
+
     def generate_id
       symbols = [('0'..'9'),('a'..'f')].map{ |i| i.to_a }.flatten
       (1..32).map{ symbols[rand(symbols.length)] }.join
     end
-  
+
     def sftp_file_readable(sftp, file)
       sftp.stat!(file) do |response|
         return response.ok?
       end
     end
-  
+
     def sftp_mkdir_recursive(sftp, directory)
       parts = directory.split('/')
       parts.shift
       current_dir = ''
-      
+
       parts.each do |part|
         current_dir += "/" + part
         sftp.mkdir!(current_dir) unless sftp_file_readable(sftp, current_dir)
       end
     end
-  
+
     def prepare_daemon_config(sftp, config_file)
       if !sftp_file_readable(sftp, config_file)
         upload_daemon_config(sftp, config_file)
@@ -301,7 +301,7 @@ class HardwareServer < ActiveRecord::Base
         sftp.file.open(config_file, "r") do |file|
           while (line = file.gets)
             key, value = line.split('=', 2).each { |v| v.strip! }
-            
+
             case key
               when 'port' then self.daemon_port = value.to_i
               when 'key' then self.auth_key = value
@@ -309,11 +309,11 @@ class HardwareServer < ActiveRecord::Base
             end
           end
         end
-        
+
         upload_daemon_config(sftp, config_file)
       end
     end
-    
+
     def upload_daemon_config(sftp, config_file)
       sftp.file.open(config_file, "w") do |file|
         file.puts "address = 0.0.0.0"
@@ -322,11 +322,11 @@ class HardwareServer < ActiveRecord::Base
         file.puts "ssl = #{use_ssl ? 'on' : 'off'}"
       end
     end
-  
+
     def unlimited_limit?(limit)
       return true if limit.blank? || 'unlimited' == limit
       limit = limit.include?(':') ? limit.split(":").last : limit
       return ('unlimited' == limit || (2 ** 31 - 1) == limit.to_i || (2 ** 63 - 1) == limit.to_i)
     end
-    
+
 end

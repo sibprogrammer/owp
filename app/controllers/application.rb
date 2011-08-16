@@ -6,22 +6,22 @@ class ApplicationController < ActionController::Base
   filter_parameter_logging :password
 
   helper :all # include all helpers, all the time
-  
+
   include AuthenticatedSystem
 
   # See ActionController::RequestForgeryProtection for details
   # Uncomment the :secret if you're not using the cookie session store
   #protect_from_forgery # :secret => 'ca592873eb4aeaa58effb6b48920e979'
-  
-  # See ActionController::Base for details 
+
+  # See ActionController::Base for details
   # Uncomment this to filter the contents of submitted sensitive data parameters
-  # from your application log (in this case, all fields with names like "password"). 
+  # from your application log (in this case, all fields with names like "password").
   # filter_parameter_logging :password
-    
+
   before_filter :set_locale, :set_product_name, :set_response_format, :set_extjs_base, :set_remote_ip
-    
-  protected  
-  
+
+  protected
+
     def set_locale
       if AppConfig.locale.single
         I18n.locale = I18n.default_locale
@@ -32,12 +32,12 @@ class ApplicationController < ActionController::Base
         I18n.locale = cookies['locale'].to_sym
       end
     end
-    
+
     def set_product_name
       @product_name = PRODUCT_NAME
       @product_name += AppConfig.branding.show_version ? (' ' + PRODUCT_VERSION) : ''
     end
-    
+
     def set_extjs_base
       @extjs_base_url = AppConfig.extjs.cdn.enabled ? AppConfig.extjs.cdn.base_url : '/ext'
     end
@@ -45,12 +45,12 @@ class ApplicationController < ActionController::Base
     def set_remote_ip
       EventLog.remote_ip = request.remote_ip
     end
-  
+
     def log_error(exception)
       super
       EventLog.error("internal_error", { :message => exception.message })
     end
-  
+
     def rescue_action_locally(exception)
       if request.xhr?
         ajax_request_handler(exception)
@@ -58,7 +58,7 @@ class ApplicationController < ActionController::Base
         super
       end
     end
-    
+
     def rescue_action_in_public(exception)
       if request.xhr?
         ajax_request_handler(exception)
@@ -66,21 +66,21 @@ class ApplicationController < ActionController::Base
         super
       end
     end
-  
+
     def ajax_request_handler(exception)
       message = t("admin.events.internal_error", { :message => exception.message })
       render :json => { :success => false, :message => message.gsub(/\n/, '<br />') }
     end
-  
+
     def iphone?
       agent = request.env["HTTP_USER_AGENT"]
       agent && (agent[/(Mobile\/.+Safari)/] || agent[/Android/])
     end
-    
+
     def set_response_format
       request.format = 'iphone'.to_sym if iphone?
     end
-  
+
     def get_stats
       [
         [
@@ -114,7 +114,7 @@ class ApplicationController < ActionController::Base
         ]
       ]
     end
-  
+
     def servers_list
       if @current_user.superadmin?
         @servers_list = HardwareServer.all
@@ -142,11 +142,11 @@ class ApplicationController < ActionController::Base
     def local_datetime(datetime)
       datetime.localtime.strftime("%Y.%m.%d %H:%M:%S")
     end
-  
+
     def local_date(datetime)
       datetime.localtime.strftime("%Y.%m.%d")
     end
-  
+
     def format_date(date)
       date.strftime("%Y.%m.%d")
     end
