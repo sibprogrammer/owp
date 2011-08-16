@@ -1,5 +1,5 @@
-log/*.log
-tmp/**/*
+log/
+tmp/
 db/*.sqlite3
 config/database.yml
 .idea
