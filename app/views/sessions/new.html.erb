@@ -34,6 +34,7 @@ Ext.onReady(function() {
       name: 'login',
       id: 'login',
       width: 210,
+      autoCreate: { tag: 'input', type: 'text', size: '20', 'autocomplete': 'on' },
       validationEvent: false,
       allowBlank: false
     }, {
@@ -42,6 +43,7 @@ Ext.onReady(function() {
       id: 'password',
       width: 210,
       inputType: 'password',
+      autoCreate: { tag: 'input', type: 'password', size: '20', 'autocomplete': 'on' },
       validationEvent: false,
       allowBlank: false
     }, <% if !AppConfig.locale.single %> {
