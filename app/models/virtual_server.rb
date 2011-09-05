@@ -1,5 +1,3 @@
-require 'shellwords'
-
 class VirtualServer < ActiveRecord::Base
   attr_accessible :identity, :ip_address, :host_name, :hardware_server_id,
     :orig_os_template, :password, :start_on_boot, :start_after_creation, :state,
@@ -122,23 +120,23 @@ class VirtualServer < ActiveRecord::Base
     end
 
     begin
-      vzctl_set("--hostname #{Shellwords.shellescape(host_name)} --save") if !host_name.blank? and host_name_changed?
-      vzctl_set("--userpasswd root:#{Shellwords.shellescape(password)}") if password and !password.blank?
+      vzctl_set("--hostname #{shellescape(host_name)} --save") if !host_name.blank? and host_name_changed?
+      vzctl_set("--userpasswd root:#{shellescape(password)}") if password and !password.blank?
       vzctl_set("--onboot " + (start_on_boot ? "yes" : "no") + " --save") if start_on_boot_changed?
-      vzctl_set(nameserver.split.map { |ip| "--nameserver #{Shellwords.shellescape(ip)} " }.join + "--save") if !nameserver.blank? and nameserver_changed?
-      vzctl_set("--searchdomain #{Shellwords.shellescape(search_domain)} --save") if !search_domain.blank? and search_domain_changed?
-      vzctl_set("--cpuunits #{Shellwords.shellescape(cpu_units)} --save") if !cpu_units.blank? and cpu_units_changed?
-      vzctl_set("--cpus #{Shellwords.shellescape(cpus)} --save") if !cpus.blank? and cpus_changed?
-      vzctl_set("--cpulimit #{Shellwords.shellescape(cpu_limit)} --save") if !cpu_limit.blank? and cpu_limit_changed?
-      vzctl_set("--description #{Shellwords.shellescape(description)} --save") if hardware_server.ve_descriptions_supported? and !description.empty? and description_changed?
+      vzctl_set(nameserver.split.map { |ip| "--nameserver #{shellescape(ip)} " }.join + "--save") if !nameserver.blank? and nameserver_changed?
+      vzctl_set("--searchdomain #{shellescape(search_domain)} --save") if !search_domain.blank? and search_domain_changed?
+      vzctl_set("--cpuunits #{shellescape(cpu_units.to_s)} --save") if !cpu_units.blank? and cpu_units_changed?
+      vzctl_set("--cpus #{shellescape(cpus.to_s)} --save") if !cpus.blank? and cpus_changed?
+      vzctl_set("--cpulimit #{shellescape(cpu_limit.to_s)} --save") if !cpu_limit.blank? and cpu_limit_changed?
+      vzctl_set("--description #{shellescape(description)} --save") if hardware_server.ve_descriptions_supported? and !description.empty? and description_changed?
 
       vzctl_set("--ipdel all --save") if !ip_address_was.blank? and ip_address_changed?
       vzctl_set(ip_address.split.map { |ip| "--ipadd #{ip} " }.join + "--save") if !ip_address.blank? and ip_address_changed?
 
       privvmpages = 0 == memory.to_i ? 'unlimited' : memory.to_i * 1024 / 4
-      vzctl_set("--privvmpages #{Shellwords.shellescape(privvmpages)} --save") if memory_changed?
+      vzctl_set("--privvmpages #{shellescape(privvmpages.to_s)} --save") if memory_changed?
       disk = 0 == diskspace.to_i ? 'unlimited' : diskspace.to_i * 1024
-      vzctl_set("--diskspace #{Shellwords.shellescape(disk)} --save") if diskspace_changed?
+      vzctl_set("--diskspace #{shellescape(disk.to_s)} --save") if diskspace_changed?
     rescue HwDaemonExecException => exception
       delete_physically if is_new
       raise exception
@@ -168,10 +166,10 @@ class VirtualServer < ActiveRecord::Base
 
     hardware_server.rpc_client.exec("cp #{path}/#{self.identity}.conf #{path}/ve-#{tmp_template}.conf-sample")
     stop
-    hardware_server.rpc_client.exec('vzctl', "destroy #{Shellwords.shellescape(identity.to_s)}")
-    hardware_server.rpc_client.exec('vzctl', "create #{Shellwords.shellescape(identity.to_s)} #{Shellwords.shellescape(new_os_template)} --config #{Shellwords.shellescape(tmp_template)}")
+    hardware_server.rpc_client.exec('vzctl', "destroy #{shellescape(identity.to_s)}")
+    hardware_server.rpc_client.exec('vzctl', "create #{shellescape(identity.to_s)} #{shellescape(new_os_template)} --config #{shellescape(tmp_template)}")
     change_state('start', 'running') if was_running
-    hardware_server.rpc_client.exec("rm #{path}/ve-#{Shellwords.shellescape(tmp_template)}.conf-sample")
+    hardware_server.rpc_client.exec("rm #{path}/ve-#{shellescape(tmp_template)}.conf-sample")
 
     true
   end
@@ -182,12 +180,12 @@ class VirtualServer < ActiveRecord::Base
     hardware_server.rpc_client.write_file(filename, content)
 
     begin
-      result = hardware_server.rpc_client.exec('vzctl', "runscript #{Shellwords.shellescape(identity.to_s)} #{Shellwords.shellescape(filename)}")
+      result = hardware_server.rpc_client.exec('vzctl', "runscript #{shellescape(identity.to_s)} #{shellescape(filename)}")
     rescue HwDaemonExecException => e
       result = { 'error' => e }
     end
 
-    hardware_server.rpc_client.exec("rm #{Shellwords.shellescape(filename)}")
+    hardware_server.rpc_client.exec("rm #{shellescape(filename)}")
     result
   end
 
@@ -244,17 +242,17 @@ class VirtualServer < ActiveRecord::Base
     return false if !valid?
 
     path = '/etc/vz/conf'
-    hardware_server.rpc_client.exec("cp #{Shellwords.shellescape(path)}/#{Shellwords.shellescape(orig_server.identity)}.conf #{Shellwords.shellescape(path)}/#{Shellwords.shellescape(identity.to_s)}.conf")
+    hardware_server.rpc_client.exec("cp #{shellescape(path)}/#{shellescape(orig_server.identity.to_s)}.conf #{shellescape(path)}/#{shellescape(identity.to_s)}.conf")
 
     orig_server.suspend
-    hardware_server.rpc_client.exec("cp -a #{Shellwords.shellescape(orig_server.private_dir)} #{Shellwords.shellescape(self.private_dir)}")
+    hardware_server.rpc_client.exec("cp -a #{shellescape(orig_server.private_dir)} #{shellescape(self.private_dir)}")
     orig_server.resume
 
     begin
-      vzctl_set("--userpasswd root:#{Shellwords.shellescape(password)}") if password and !password.blank?
-      vzctl_set("--hostname #{Shellwords.shellescape(host_name)} --save") if !host_name.blank? and host_name_changed?
+      vzctl_set("--userpasswd root:#{shellescape(password)}") if password and !password.blank?
+      vzctl_set("--hostname #{shellescape(host_name)} --save") if !host_name.blank? and host_name_changed?
       vzctl_set("--ipdel all --save") if !ip_address_was.blank?
-      vzctl_set(ip_address.split.map { |ip| "--ipadd #{Shellwords.shellescape(ip)} " }.join + "--save") if !ip_address.blank? and ip_address_changed?
+      vzctl_set(ip_address.split.map { |ip| "--ipadd #{shellescape(ip)} " }.join + "--save") if !ip_address.blank? and ip_address_changed?
     rescue HwDaemonExecException => exception
       raise exception
     end
@@ -269,7 +267,7 @@ class VirtualServer < ActiveRecord::Base
   end
 
   def migrate(target_hardware_server)
-    hardware_server.rpc_client.exec('vzmigrate', "#{Shellwords.shellescape(target_hardware_server.host)} #{Shellwords.shellescape(identity)}")
+    hardware_server.rpc_client.exec('vzmigrate', "#{shellescape(target_hardware_server.host)} #{shellescape(identity.to_s)}")
     target_hardware_server.sync_virtual_servers
     destroy
   end
@@ -323,7 +321,7 @@ class VirtualServer < ActiveRecord::Base
     suspend if is_running
 
     begin
-      hardware_server.rpc_client.exec("tar --numeric-owner -czf #{Shellwords.shellescape(templates_path)}/#{Shellwords.shellescape(template_name)} -X /tmp/owp-template-exclude.list -C #{Shellwords.shellescape(private_dir)} .")
+      hardware_server.rpc_client.exec("tar --numeric-owner -czf #{shellescape(templates_path)}/#{shellescape(template_name)} -X /tmp/owp-template-exclude.list -C #{Shellwords.shellescape(private_dir)} .")
     rescue => e
       resume if is_running
       raise e
@@ -338,12 +336,12 @@ class VirtualServer < ActiveRecord::Base
   private
 
     def vzctl_set(param)
-      hardware_server.rpc_client.exec('vzctl', "set #{Shellwords.shellescape(identity.to_s)} #{param}")
+      hardware_server.rpc_client.exec('vzctl', "set #{shellescape(identity.to_s)} #{param}")
     end
 
     def change_state(state, status)
       begin
-        hardware_server.rpc_client.exec('vzctl', Shellwords.shellescape(state) + ' ' + Shellwords.shellescape(identity.to_s))
+        hardware_server.rpc_client.exec('vzctl', shellescape(state) + ' ' + shellescape(identity.to_s))
       rescue HwDaemonExecException => e
         EventLog.error("virtual_server.change_state_failed", {
           :identity => identity, :state => state, :code => e.code.to_s
@@ -360,6 +358,24 @@ class VirtualServer < ActiveRecord::Base
     def generate_id
       symbols = [('0'..'9'),('a'..'f')].map{ |i| i.to_a }.flatten
       (1..32).map{ symbols[rand(symbols.length)] }.join
+    end
+
+    # compatibility with old Ruby versions
+    def shellescape(str)
+      # An empty argument will be skipped, so return empty quotes.
+      return "''" if str.empty?
+
+      str = str.dup
+
+      # Process as a single byte sequence because not all shell
+      # implementations are multibyte aware.
+      str.gsub!(/([^A-Za-z0-9_\-.,:\/@\n])/n, "\\\\\\1")
+
+      # A LF cannot be escaped with a backslash because a backslash + LF
+      # combo is regarded as line continuation and simply ignored.
+      str.gsub!(/\n/, "'\n'")
+
+      return str
     end
 
 end
