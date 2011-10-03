@@ -74,7 +74,7 @@ class ApplicationController < ActionController::Base
 
     def iphone?
       agent = request.env["HTTP_USER_AGENT"]
-      agent && (agent[/(Mobile\/.+Safari)/] || agent[/Android/])
+      agent && !agent[/iPad/] && (agent[/(Mobile\/.+Safari)/] || agent[/Android/])
     end
 
     def set_response_format
