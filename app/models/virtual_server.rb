@@ -160,14 +160,14 @@ class VirtualServer < ActiveRecord::Base
 
     new_os_template = ""
     if orig_os_template_changed?
-      new_os_template = " --ostemplate #{orig_os_template} "
+      new_os_template = " --ostemplate #{shellescape(orig_os_template)} "
       save
     end
 
     hardware_server.rpc_client.exec("cp #{path}/#{self.identity}.conf #{path}/ve-#{tmp_template}.conf-sample")
     stop
     hardware_server.rpc_client.exec('vzctl', "destroy #{shellescape(identity.to_s)}")
-    hardware_server.rpc_client.exec('vzctl', "create #{shellescape(identity.to_s)} #{shellescape(new_os_template)} --config #{shellescape(tmp_template)}")
+    hardware_server.rpc_client.exec('vzctl', "create #{shellescape(identity.to_s)} #{new_os_template} --config #{shellescape(tmp_template)}")
     change_state('start', 'running') if was_running
     hardware_server.rpc_client.exec("rm #{path}/ve-#{shellescape(tmp_template)}.conf-sample")
 
