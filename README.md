@@ -4,6 +4,7 @@
 Copyright (c) 2008-2011 SoftUnity, Alexei Yuzhakov <sibprogrammer@gmail.com>
 
 Table of contents:
+
 1. License
 2. Description
 3. Features
@@ -15,7 +16,7 @@ Table of contents:
 ## 1. License
 
 This software is licensed under the terms of the GPL 2.0 license. 
-Additional information can be found in {file:LICENSE}.
+Additional information can be found in [LICENSE](LICENSE) file.
 
 
 ## 2. Description
@@ -35,7 +36,7 @@ and virtual servers with the OpenVZ virtualization technology.
 
 ## 4. Installation
 
-See {file:INSTALL.md} for installation instructions.
+See [INSTALL](INSTALL.md) file for installation instructions.
 
 
 ## 5. Usage
