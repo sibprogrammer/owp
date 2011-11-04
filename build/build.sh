@@ -23,6 +23,10 @@ cd `dirname $0`
     VERSION=`grep "PRODUCT_VERSION" config/environment.rb | sed -e 's/[^0-9.]//g'`
     echo $VERSION > version
 
+    for TEXT_FILE in README INSTALL CHANGELOG; do
+      mv $TEXT_FILE.md $TEXT_FILE
+    done
+
     # prepare database
     rake db:migrate RAILS_ENV="production"
 
