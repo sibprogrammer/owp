@@ -16,7 +16,7 @@ Table of contents:
 ## 1. License
 
 This software is licensed under the terms of the GPL 2.0 license. 
-Additional information can be found in [LICENSE](LICENSE) file.
+Additional information can be found in LICENSE file.
 
 
 ## 2. Description
@@ -36,18 +36,19 @@ and virtual servers with the OpenVZ virtualization technology.
 
 ## 4. Installation
 
-See [INSTALL](INSTALL.md) file for installation instructions.
+See INSTALL file for installation instructions.
 
 
 ## 5. Usage
 
-By default you can visit http://&lt;you-host&gt;:3000 to see the web panel. Login 
+By default you can visit http://your-host-or-ip:3000 to see the web panel. Login 
 page should be shown.  
-Default administrator's login and password are: admin/admin. Don't forget to
-change default password after login (using "My Profile" link).
+Default administrator's login and password are: admin/admin. Do not forget to
+change default password after the first login (using "My Profile" link).
 
 
 ## 6. Additional information
 
-Additional information can be found on the [project's website](http://code.google.com/p/ovz-web-panel/).
+Additional information can be found on the project's website:
+http://code.google.com/p/ovz-web-panel/
 
