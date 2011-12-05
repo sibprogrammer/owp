@@ -69,6 +69,19 @@ de:
           attributes:
             name:
               taken: "Es existiert bereits eine Rolle mit diesem Namen."
+        ip_pool:
+          attributes:
+            first_ip:
+              invalid: "Falsche IP-Adresse."
+              bad_range: "Falscher IP-Adress-Bereich."
+            last_ip:
+              invalid: "Falsche IP-Adresse."
+  api:
+    error:
+      access_denied: "Zugriff verweigert."
+      object_not_found: "Objekt nicht gefunden."
+      unknown_error: "Unbekannter Fehler."
+      internal_error: "Interner Fehler."
   about:
     copyright: "Copyright 2008-2011 SoftUnity."
     right_reserved: "Alle Rechte vorbehalten."
@@ -84,9 +97,29 @@ de:
     password: "Passwort"
     remember_me: "Angemeldet bleiben"
     button_login: "Anmelden"
+    button_restore_password: "Passwort zur&uuml;cksetzen"
     locale: "Sprache"
     bad_login: "Ung&uuml;ltiger Benutzername oder Passwort."
     locked_user: "Benutzer ist gesperrt."
+  restore_password:
+    page_title: "Passwort wiederherstellen"
+    window_title: "Passwort wiederherstellen"
+    username: "Benutzername"
+    button_restore: "wiederherstellen"
+    restore_link_sent: "Passwort Wiederherstellungs-eMail wurde versendet."
+    error:
+      user_not_found: "Benutzer nicht gefunden."
+      no_email: "Wiederherstellung des Passwortes nicht m&ouml;glich, da keine eMail-Adresse hinterlegt ist."
+    mail:
+      restore_link:
+        subject: "Passwort Wiederherstellung"
+        body: "Zur Wiederherstellung Ihres Passwortes folgen Sie folgenden Link: {{link}}"
+  reset_password:
+    page_title: "Passwort zur&uuml;cksetzen"
+    window_title: "Passwort zur&uuml;cksetzen"
+    new_password: "Neues passwort"
+    confirm_password: "Passwort wiederholen"
+    password_changed: "Password wurde ge&auml;ndert."
   admin:
     menu:
       title: "Men&uuml;"
@@ -94,6 +127,7 @@ de:
         title: "Allgemein"
         dashboard: "&Uuml;bersicht"
         hardware_servers: "Physische Server"
+        ip_addresses: "IP-Adressen"
         virtual_servers: "Virtuelle Server"
         my_profile: "Mein Profil"
         users: "Benutzer"
@@ -131,6 +165,7 @@ de:
         connect: "Physischen Server {{host}} eingebunden."
         disconnect: "Physischen Server {{host}} entfernt."
         sync: "Server's {{host}} Status wurde synchronisiert."
+        sync_failed: "Fehler beim Syncronisieren des Servers {{host}}."
         reboot: "Neustart des Servers {{host}} wird durchgef&uuml;hrt."
       virtual_server:
         created: "Virtuellen Server {{identity}} erstellt."
@@ -156,6 +191,12 @@ de:
         removed: "Rolle {{name}} wurde gel&ouml;scht."
         created: "Rolle {{name}} wurde erstellt."
         updated: "Rolle {{name}} wurde ge&auml;ndert."
+      request:
+        created: "Request #{{id}} wurde erstellt."
+        updated: "Request #{{id}} wurde aktualisiert."
+        removed: "Request #{{id}} wurde gelöscht."
+      comment:
+        created: "Kommentar im Request #{{request_id}} wurde generiert."
     tasks:
       os_templates:
         install: "Installation der Betriebssystem-Vorlage auf dem Server {{host}}."
@@ -213,6 +254,7 @@ de:
             description: "Beschreibung"
             daemon_port: "Service Port"
             root_password: "Root Passwort"
+            use_ssl: "SSL benutzen"
           fieldset:
             additional_settings: "Weitere Einstellungen"
         disconnect_server:
@@ -272,6 +314,9 @@ de:
           change_settings: "Einstellungen &auml;ndern"
           console: "Konsole"
           backup: "Backup"
+          tools: "Tools"
+          migrate: "Migrieren"
+          create_template: "Template erstellt"
       form:
         change_settings:
           title: "Einstellungen des virtuellen Servers &auml;ndern"
@@ -323,6 +368,14 @@ de:
           tab:
             main_settings: "Haupt-Einstellungen"
             additional_settings: "Weitere Einstellungen"
+        create_template:
+          title: "Ein Template basierend auf diesem virtuellen Servers anlegen"
+          button_create: "erstellt"
+          field:
+            name: "Name"
+          error:
+            invalid_name: "Nur Ziffern und englische Zeichen sind erlaubt."
+            template_exists: "Ein Betriebssystem-Template mit dem selben Namen existiert bereits."
         limits:
           title: "Grenzen"
           grid:
@@ -341,6 +394,12 @@ de:
             run: "Ausf&uuml;hren"
         clone:
           title: "Virtuellen Server klonen"
+        migrate:
+          title: "Virtuellen Server migrieren"
+          field:
+            target: "Zielserver"
+          button_migrate: "migrieren"
+          note: "Vor der Migration muss ein &ouml;ffentlicher SSH-Key f&uuml;r den root Benutzer auf dem physischen Quellserver angelegt werden und anschlie&szlig;end auf den physischen zielserver kopiert werden. Pr&uuml;fe bzw. installiere daher vorher das Programm rsync auf dem Zielserver."
       show:
         title: "Virtueller Server {{name}}"
         grid:
@@ -412,6 +471,7 @@ de:
         column:
           level: "Status"
           created_at: "Datum"
+          ip_address: "IP-Adresse"
           message: "Ereignis"
           id: "ID"
         button:
@@ -528,6 +588,7 @@ de:
         create:
           title: "Neues Backup erstellen"
           scheduled: "Backup-Prozedur wurde gestartet und wird einige zeit in Anspruch nehmen."
+          limit_reached: "Das Limit der m&ouml;glichen Backups wurde erreicht."
           field:
             description: "Beschreibung"
             ve_state:
@@ -583,6 +644,13 @@ de:
             button_add: "Hinzuf&uuml;gen"
             field:
               content: "Nachricht"
+      mail:
+        new_request:
+          subject: "Neuer Request #{{id}}"
+          body: "Neuer Request #{{id}} wurde erstellt von {{login}}."
+        new_comment:
+          subject: "Neuer Kommentar im Request #{{request_id}}"
+          body: "Neuer Kommentar im Request #{{request_id}} wurde hinzugef&uuml;gt von {{login}}."
     roles:
       title: "Rollen"
       grid:
@@ -605,6 +673,7 @@ de:
             name: "Name"
           fieldset:
             permissions: "Rechte"
+            limits: "Limits"
           button_create: "Erstellen"
           permissions:
             manage_hardware_servers: "Physische Server managen"
@@ -618,3 +687,41 @@ de:
             manage_logs: "Erignisanzeige Management"
             manage_users: "Benutzer Management"
             select_os_on_reinstall: "Betriebssystemauswahl bei Neuinstallation"
+          limits:
+            unlimited: "unbegrenzt"
+            limit_backups: "Anzahl der Backups"
+    ip_addresses:
+      title: "IP-Adressen"
+      grid:
+        title: "IP-Adress-Liste"
+        column:
+          name: "IP-Adresse"
+          virtual_server: "virtueller Server"
+          hardware_server: "physischer Server"
+    ip_pools:
+      grid:
+        title: "IP-Bereichs Anzeige"
+        column:
+          first_ip: "erste IP-Adresse"
+          last_ip: "letzte IP-Adresse"
+          free_ips: "freie IPs"
+          used_ips: "benutzte IPs"
+          total_ips: "gesamt IPs"
+          server: "Server"
+        button:
+          create: "generiere IP-Bereich"
+          destroy: "l&ouml;sche IP-Bereich"
+          edit: "bearbeite IP-Bereich"
+      form:
+        remove_pool:
+          sure_to_remove: "Sind Sie sicher, die ausgew&auml;hlten IP-Bereiche zu löschen?"
+          deletion_failed: "einige IP-Bereiche konnten nicht gel&ouml;scht werden."
+        create:
+          title: "generiere einen neuen IP-Bereich"
+          edit_title: "bearbeite IP-Bereich"
+          field:
+            first_ip: "erste IP-Adresse"
+            last_ip: "letzte IP-Adresse"
+            limit_server: "Server"
+            all_servers: "alle"
+          button_create: "generieren"
