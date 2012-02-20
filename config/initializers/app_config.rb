@@ -54,6 +54,9 @@ config_defaults = {
     'host' => 'example.com',
     'login_pattern' => 'uid=<login>,ou=people,dc=example,dc=com',
   },
+  'email' => {
+    'from' => '',
+  },
 }
 
 def hashes2ostruct(object)
