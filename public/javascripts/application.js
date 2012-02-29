@@ -1,4 +1,8 @@
-Ext.BLANK_IMAGE_URL = '/images/blank.gif';
+if (typeof(ROOT) == "undefined") {
+    ROOT="";
+}
+
+Ext.BLANK_IMAGE_URL = ROOT + '/images/blank.gif';
 Ext.state.Manager.setProvider(new Ext.state.CookieProvider());
 Ext.QuickTips.init();
 Ext.form.Field.prototype.msgTarget = 'side';
@@ -308,12 +312,12 @@ Owp.statusUpdater = {
   task: {
     run: function() {
       Ext.Ajax.request({
-        url: '/admin/tasks/status',
+        url: ROOT + '/admin/tasks/status',
         success: function(response) {
           var result = Ext.util.JSON.decode(response.responseText);
           var statusbar = Ext.get('statusbar');
           if (result.message) {
-            statusbar.update('<img src="/images/spinner.gif" class="icon-inline"> ' + result.message);
+            statusbar.update('<img src="' + ROOT + '/images/spinner.gif" class="icon-inline"> ' + result.message);
             Owp.statusUpdater.isRunning = true;
           } else {
             statusbar.update('');

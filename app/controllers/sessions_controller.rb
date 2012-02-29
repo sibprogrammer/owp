@@ -83,7 +83,7 @@ class SessionsController < ApplicationController
       end
     end
 
-    redirect_to '/' and return if !@user
+    redirect_to rr('/') and return if !@user
 
     if request.post?
       @user.password = params[:password]

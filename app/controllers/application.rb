@@ -121,8 +121,8 @@ class ApplicationController < ActionController::Base
         @servers_list.map! { |server| {
           :cls => 'menu-item',
           :text => server.host,
-          :href => '/admin/hardware-servers/show?id=' + server.id.to_s,
-          :icon => '/images/server.png',
+          :href => rr('/admin/hardware-servers/show?id=') + server.id.to_s,
+          :icon => rr('/images/server.png'),
           :leaf => true,
           :server_id => server.id.to_s,
         }}
@@ -131,8 +131,8 @@ class ApplicationController < ActionController::Base
         @servers_list = @servers_list.map { |server| {
           :cls => 'menu-item',
           :text => ('#' + server.identity.to_s) + (server.host_name.blank? ? '' : (' - ' + server.host_name)),
-          :href => '/admin/virtual-servers/show?id=' + server.id.to_s,
-          :icon => '/images/server.png',
+          :href => rr('/admin/virtual-servers/show?id=') + server.id.to_s,
+          :icon => rr('/images/server.png'),
           :leaf => true,
           :server_id => server.id.to_s,
         }}
@@ -149,6 +149,10 @@ class ApplicationController < ActionController::Base
 
     def format_date(date)
       date.strftime("%Y.%m.%d")
+    end
+
+    def rr(url)
+      Rails.configuration.action_controller[:relative_url_root] + url
     end
 
 end

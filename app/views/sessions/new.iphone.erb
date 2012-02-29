@@ -1,4 +1,4 @@
-<form action="/sessions/new" method="post">
+<form action="<%=rr('/sessions/new')%>" method="post">
   <fieldset>
     <span class="graytitle"><%= h(t('login.window_title', :product => @product_name)) %></span>
     <ul class="pageitem">

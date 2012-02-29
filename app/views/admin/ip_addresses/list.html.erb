@@ -5,7 +5,7 @@
 Ext.onReady(function() {
 
   var store = new Ext.data.JsonStore({
-    url: '/admin/ip-addresses/list_data',
+    url: '<%=rr('/admin/ip-addresses/list_data')%>',
     root: 'data',
     autoLoad: true,
     data: <%= { :data => @ip_addresses_list }.to_json %>,
@@ -47,7 +47,7 @@ Ext.onReady(function() {
         width: 150,
         dataIndex: 'virtual_server',
         renderer: function(field, metadata, record) {
-          return "<a href='/admin/virtual-servers/show?id=" + record.data.virtual_server_id + "'>" + field + "</a>";
+          return "<a href='<%=rr('/admin/virtual-servers/show?id=')%>" + record.data.virtual_server_id + "'>" + field + "</a>";
         }
       }, {
         id: 'hardware_server',
@@ -55,7 +55,7 @@ Ext.onReady(function() {
         sortable: true,
         dataIndex: 'hardware_server',
         renderer: function(field, metadata, record) {
-          return "<a href='/admin/hardware-servers/show?id=" + record.data.hardware_server_id + "'>" + field + "</a>";
+          return "<a href='<%=rr('/admin/hardware-servers/show?id=')%>" + record.data.hardware_server_id + "'>" + field + "</a>";
         }
       }
     ]),
@@ -78,7 +78,7 @@ Ext.onReady(function() {
   });
 
   var ipPoolsStore = new Ext.data.JsonStore({
-    url: '/admin/ip-pools/list_data',
+    url: '<%=rr('/admin/ip-pools/list_data')%>',
     root: 'data',
     data: <%= { :data => @ip_pools_list }.to_json %>,
     autoLoad: true,
@@ -98,7 +98,7 @@ Ext.onReady(function() {
     var formEditIpPool = new Owp.form.BasicForm({
       labelWidth: 150,
       waitMsgTarget: true,
-      url: '/admin/ip-pools/update',
+      url: '<%=rr('/admin/ip-pools/update')%>',
       autoHeight: true,
       defaults: { width: 200 },
       keys: [{
@@ -186,7 +186,7 @@ Ext.onReady(function() {
           success: function() {
             windowEditIpPool.focus();
           },
-          url: '/admin/ip-pools/load_data',
+          url: '<%=rr('/admin/ip-pools/load_data')%>',
           params: {
             id: selectedNode.id
           }
@@ -214,7 +214,7 @@ Ext.onReady(function() {
         if ('yes' == button) {
           Owp.list.groupAction({
             gridName: 'ipPoolsGrid',
-            url: '/admin/ip-pools/delete',
+            url: '<%=rr('/admin/ip-pools/delete')%>',
             waitMsg: '<%= tjs('form.performing_task') %>',
             failure: {
               title: '<%= tjs('form.error.title') %>',
@@ -299,12 +299,12 @@ Ext.onReady(function() {
     tbar: [{
       text: '<%= tjs('admin.ip_pools.grid.button.create') %>',
       cls: 'x-btn-text-icon',
-      icon: '/images/add.png',
+      icon: '<%=rr('/images/add.png')%>',
       handler: addIpPool
     }, {
       text: '<%= tjs('admin.ip_pools.grid.button.destroy') %>',
       cls: 'x-btn-text-icon',
-      icon: '/images/delete.png',
+      icon: '<%=rr('/images/delete.png')%>',
       handler: removeIpPool,
       ref: '../removeButton',
       disabled: true
@@ -312,7 +312,7 @@ Ext.onReady(function() {
       text: '<%= tjs('admin.ip_pools.grid.button.edit') %>',
       handler: editIpPool,
       cls: 'x-btn-text-icon',
-      icon: '/images/wrench.png',
+      icon: '<%=rr('/images/wrench.png')%>',
       ref: '../editButton',
       disabled: true
     }]

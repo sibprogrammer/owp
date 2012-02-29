@@ -13,7 +13,7 @@ Ext.onReady(function() {
     var watchdogPanel = new Ext.Panel({
       header: false,
       cls: 'panel-dashboard',
-      html: '<p><img src="/images/exclamation.png" class="icon-inline"/>' 
+      html: '<p><img src="<%=rr('/images/exclamation.png')%>" class="icon-inline"/>'
         + 'Unable to connect to watchdog daemon. Probably it is not running. '
         + '</p>'
     });
@@ -25,7 +25,7 @@ Ext.onReady(function() {
     var updatesPanel = new Ext.Panel({
       header: false,
       cls: 'panel-dashboard',
-      html: '<p><img src="/images/information.png" class="icon-inline"/>' 
+      html: '<p><img src="<%=rr('/images/information.png')%>" class="icon-inline"/>'
         + '<%= tjs('admin.dashboard.updates.text', :product => '<b>' + PRODUCT_NAME + ' ' + @updates[:version] + '</b>') %> '
         + '<%= tjs('admin.dashboard.updates.update_command', :command => '<span class="no-wrap">' + @updates[:update_command] + '</span>') %>'
         + '</p>'
@@ -85,7 +85,7 @@ Ext.onReady(function() {
         width: 250,
         dataIndex: 'parameter',
         renderer: function(value, metaData, record) {
-          return '<img src="/images/' + record.data.icon + '" class="icon-inline"/>' + value;
+          return '<img src="<%=rr('/images/')%>' + record.data.icon + '" class="icon-inline"/>' + value;
         }
       }, {
         id: 'value',

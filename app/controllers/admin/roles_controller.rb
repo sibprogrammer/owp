@@ -2,7 +2,7 @@ class Admin::RolesController < Admin::Base
   before_filter :is_allowed
 
   def list
-    @up_level = '/admin/users/list'
+    @up_level = rr('/admin/users/list')
     @roles_list = roles_list
     @permissions = Permission.all.map(&:name)
     @limits = { 'limit_backups' => '' }
