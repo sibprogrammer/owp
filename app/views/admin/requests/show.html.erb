@@ -9,7 +9,7 @@ Ext.onReady(function() {
       labelWidth: 100,
       autoHeight: true,
       waitMsgTarget: true,
-      url: '/admin/requests/add_comment?request_id=<%= @request.id %>',
+      url: '<%=rr('/admin/requests/add_comment?request_id=')%><%= @request.id %>',
       defaults: { width: 300 },
       items: [{
         fieldLabel: '<%= tjs('admin.requests.comments.form.add.field.content') %>',
@@ -59,7 +59,7 @@ Ext.onReady(function() {
   }
 
   var store = new Ext.data.JsonStore({
-    url: '/admin/requests/comments_list_data?id=<%= @request.id %>',
+    url: '<%=rr('/admin/requests/comments_list_data?id=')%><%= @request.id %>',
     root: 'data',
     autoLoad: true,
     data: <%= { :data => @comments }.to_json %>,
@@ -119,7 +119,7 @@ Ext.onReady(function() {
       text: '<%= tjs('admin.requests.comments.grid.button.add') %>',
       handler: addComment,
       cls: 'x-btn-text-icon',
-      icon: '/images/add.png'
+      icon: '<%=rr('/images/add.png')%>'
     }]
   });
   
@@ -132,7 +132,7 @@ Ext.onReady(function() {
       text: '<%= tjs('admin.requests.grid.button.' + (@request.opened ? 'solve' : 'reopen')) %>',
       iconCls: 'icon-button-<%= @request.opened ? 'solve' : 'reopen' %>',
       handler: function() {
-        document.location.href = '/admin/requests/toggle?request_id=<%= @request.id %>';
+        document.location.href = '<%=rr('/admin/requests/toggle?request_id=')%><%= @request.id %>';
       }
     });
   <% end -%>

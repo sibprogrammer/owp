@@ -5,7 +5,7 @@ class Admin::VirtualServersController < Admin::Base
   before_filter :set_server_by_id, :only => [ :clone, :migrate, :create_template, :get_properties, :get_stats, :get_limits ]
 
   def list
-    @up_level = '/admin/dashboard'
+    @up_level = rr('/admin/dashboard')
     @virtual_servers_list = get_virtual_servers_map(@current_user.virtual_servers)
   end
 
@@ -82,9 +82,9 @@ class Admin::VirtualServersController < Admin::Base
     redirect_to :controller => 'dashboard' and return if !@virtual_server or !@current_user.can_control(@virtual_server)
 
     if @current_user.superadmin?
-      @up_level = '/admin/hardware-servers/show?id=' + @virtual_server.hardware_server.id.to_s
+      @up_level = rr('/admin/hardware-servers/show?id=' + @virtual_server.hardware_server.id.to_s)
     else
-      @up_level = '/admin/virtual-servers/list'
+      @up_level = rr('/admin/virtual-servers/list')
     end
 
     @virtual_server_properties = virtual_server_properties(@virtual_server)
@@ -98,7 +98,7 @@ class Admin::VirtualServersController < Admin::Base
     @virtual_server = VirtualServer.find_by_id(params[:id])
     redirect_to :controller => 'dashboard' and return if !@virtual_server or !@current_user.can_control(@virtual_server)
 
-    @up_level = '/admin/virtual-servers/show?id=' + @virtual_server.id.to_s
+    @up_level = rr('/admin/virtual-servers/show?id=' + @virtual_server.id.to_s)
 
     @virtual_server_stats = []
     is_running = 'running' == @virtual_server.real_state
@@ -287,7 +287,7 @@ class Admin::VirtualServersController < Admin::Base
           :value => virtual_server.identity,
         }, {
           :parameter => t('admin.virtual_servers.form.create_server.field.status'),
-          :value => '<img src="/images/' + (('running' == virtual_server.real_state) ? 'run' : 'stop') + '.png"/>',
+          :value => '<img src="' + rr('/images/' + (('running' == virtual_server.real_state) ? 'run' : 'stop') + '.png') + '"/>',
         }, {
           :parameter => t('admin.virtual_servers.form.create_server.field.os_template'),
           :value => virtual_server.orig_os_template,

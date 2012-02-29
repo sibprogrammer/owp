@@ -10,6 +10,16 @@ module ApplicationHelper
     escape_javascript t(key, options)
   end
 
+  if Rails.configuration.action_controller[:relative_url_root]
+    def rr(url)
+      Rails.configuration.action_controller[:relative_url_root] + url
+    end
+  else
+    def rr(url)
+      url
+    end
+  end
+
   def imenu_link_to(title, options = {}, icon = '')
     icon = '<img alt="" src="' + icon + ' " />' if !icon.empty?
     title = icon + '<span class="name">' + h(title) + '</span><span class="arrow"></span>'
