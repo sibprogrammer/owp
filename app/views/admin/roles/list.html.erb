@@ -8,7 +8,7 @@ Ext.onReady(function() {
     var formEditRole = new Owp.form.BasicForm({
       labelWidth: 150,
       waitMsgTarget: true,
-      url: '/admin/roles/update',
+      url: '<%=rr('/admin/roles/update')%>',
       autoHeight: true,
       defaults: { width: 200 },
       keys: [{
@@ -115,7 +115,7 @@ Ext.onReady(function() {
             }
             windowEditRole.focus();
           },
-          url: '/admin/roles/load_data',
+          url: '<%=rr('/admin/roles/load_data')%>',
           params: {
             id: selectedNode.id
           }
@@ -143,7 +143,7 @@ Ext.onReady(function() {
         if ('yes' == button) { 
           Owp.list.groupAction({
             gridName: 'rolesGrid',
-            url: '/admin/roles/delete',
+            url: '<%=rr('/admin/roles/delete')%>',
             waitMsg: '<%= tjs('form.performing_task') %>',
             failure: {
               title: '<%= tjs('form.error.title') %>',
@@ -156,7 +156,7 @@ Ext.onReady(function() {
   }
   
   var store = new Ext.data.JsonStore({
-    url: '/admin/roles/list_data',
+    url: '<%=rr('/admin/roles/list_data')%>',
     root: 'data',
     data: <%= { :data => @roles_list }.to_json %>,
     autoLoad: true,
@@ -224,19 +224,19 @@ Ext.onReady(function() {
       text: '<%= tjs('admin.roles.grid.button.add') %>',
       handler: addRole,
       cls: 'x-btn-text-icon',
-      icon: '/images/add.png'
+      icon: '<%=rr('/images/add.png')%>'
     }, {
       text: '<%= tjs('admin.roles.grid.button.remove') %>',
       handler: removeRole,
       cls: 'x-btn-text-icon',
-      icon: '/images/delete.png',
+      icon: '<%=rr('/images/delete.png')%>',
       ref: '../removeButton',
       disabled: true
     }, {
       text: '<%= tjs('admin.roles.grid.button.edit') %>',
       handler: editRole,
       cls: 'x-btn-text-icon',
-      icon: '/images/wrench.png',
+      icon: '<%=rr('/images/wrench.png')%>',
       ref: '../editButton',
       disabled: true
     }]

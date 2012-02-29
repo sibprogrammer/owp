@@ -3,7 +3,7 @@ class Admin::EventLogController < Admin::Base
   before_filter :get_events, :only => [ :list, :list_data ]
 
   def list
-    @up_level = '/admin/dashboard'
+    @up_level = rr('/admin/dashboard')
   end
 
   def list_data

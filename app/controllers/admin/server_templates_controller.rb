@@ -4,7 +4,7 @@ class Admin::ServerTemplatesController < Admin::Base
   def list
     @hardware_server = HardwareServer.find_by_id(params[:hardware_server_id])
     redirect_to(:controller => 'hardware_servers', :action => 'list') and return if !@hardware_server
-    @up_level = "/admin/hardware-servers/show?id=#{@hardware_server.id}"
+    @up_level = rr("/admin/hardware-servers/show?id=#{@hardware_server.id}")
 
     server_template = @hardware_server.server_templates.find_by_name(@hardware_server.default_server_template)
     server_template ||= @hardware_server.server_templates.first

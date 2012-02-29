@@ -23,7 +23,7 @@ class Admin::UsersController < Admin::Base
   end
 
   def list
-    @up_level = '/admin/dashboard'
+    @up_level = rr('/admin/dashboard')
     @users_list = users_list
   end
 

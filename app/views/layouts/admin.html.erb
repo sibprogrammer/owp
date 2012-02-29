@@ -5,7 +5,7 @@
       var formMyProfile = new Owp.form.BasicForm({
         labelWidth: 150,
         waitMsgTarget: true,
-        url: '/admin/users/save_profile',
+        url: '<%=rr('/admin/users/save_profile')%>',
         autoHeight: true,
         defaults: { width: 200 },
         keys: [{
@@ -97,35 +97,35 @@
           children: [{
             cls: 'menu-item',
             text: '<%= tjs('admin.menu.general.dashboard') %>',
-            href: '/admin/dashboard',
-            icon: '/images/application_view_tile.png',
+            href: '<%=rr('/admin/dashboard')%>',
+            icon: '<%=rr('/images/application_view_tile.png')%>',
             leaf: true
           }, <% if @current_user.superadmin? %> {
             cls: 'menu-item',
             text: '<%= tjs('admin.menu.general.hardware_servers') %>',
-            href: '/admin/hardware-servers/list',
-            icon: '/images/server.png',
+            href: '<%=rr('/admin/hardware-servers/list')%>',
+            icon: '<%=rr('/images/server.png')%>',
             expandable: false,
             expanded: true,
             children: <%= @servers_list.to_json %>
           }, {
             cls: 'menu-item',
             text: '<%= tjs('admin.menu.general.ip_addresses') %>',
-            href: '/admin/ip-addresses/list',
-            icon: '/images/network_adapter.png',
+            href: '<%=rr('/admin/ip-addresses/list')%>',
+            icon: '<%=rr('/images/network_adapter.png')%>',
             leaf: true
           }, <% else %> {
             cls: 'menu-item',
             text: '<%= tjs('admin.menu.general.virtual_servers') %>',
-            href: '/admin/virtual-servers/list',
-            icon: '/images/server.png',
+            href: '<%=rr('/admin/virtual-servers/list')%>',
+            icon: '<%=rr('/images/server.png')%>',
             expandable: false,
             expanded: true,
             children: <%= @servers_list.to_json %>
           }, <% end -%> {
             cls: 'menu-item',
             text: '<%= tjs('admin.menu.general.my_profile') %>',
-            icon: '/images/vcard.png',
+            icon: '<%=rr('/images/vcard.png')%>',
             leaf: true,
             listeners: {
               click: function() {
@@ -135,34 +135,34 @@
           }, <% if @current_user.can_manage_users? %> {
             cls: 'menu-item',
             text: '<%= tjs('admin.menu.general.users') %>',
-            href: '/admin/users/list',
-            icon: '/images/user.png',
+            href: '<%=rr('/admin/users/list')%>',
+            icon: '<%=rr('/images/user.png')%>',
             leaf: true
           }, <% end -%> <% if @current_user.can_create_requests? || @current_user.can_handle_requests? %> {
             cls: 'menu-item',
             text: '<%= tjs('admin.menu.general.requests') %>',
-            href: '/admin/requests/list',
-            icon: '/images/comment_edit.png'
+            href: '<%=rr('/admin/requests/list')%>',
+            icon: '<%=rr('/images/comment_edit.png')%>'
           }, <% end -%> <% if @current_user.can_view_tasks? %> {
             cls: 'menu-item',
             text: '<%= tjs('admin.menu.general.tasks') %>',
-            href: '/admin/tasks/list',
-            icon: '/images/cog.png'
+            href: '<%=rr('/admin/tasks/list')%>',
+            icon: '<%=rr('/images/cog.png')%>'
           }, <% end -%> <% if @current_user.can_view_logs? || @current_user.can_manage_logs? %> {
             cls: 'menu-item',
             text: '<%= tjs('admin.menu.general.event_log') %>',
-            href: '/admin/event-log/list',
-            icon: '/images/book.png'
+            href: '<%=rr('/admin/event-log/list')%>',
+            icon: '<%=rr('/images/book.png')%>'
           }, <% end -%> {
             cls: 'menu-item',
             text: '<%= tjs('admin.menu.general.logout') %>',
-            icon: '/images/key_go.png',
+            icon: '<%=rr('/images/key_go.png')%>',
             leaf: true,
             listeners: {
               click: function() {
                 Ext.MessageBox.confirm('<%= tjs('form.confirmation') %>', '<%= tjs('admin.logout') %>', function(button, text) {
                   if ('yes' == button) {
-                    window.location.href = '/logout';
+                    window.location.href = '<%=rr('/logout')%>';
                   }
                 });
               }
@@ -177,13 +177,13 @@
             cls: 'menu-item',
             text: '<%= tjs('admin.menu.help.documentation') %>',
             href: '<%= escape_javascript(@current_user.superadmin? ? AppConfig.help.admin_doc_url : AppConfig.help.user_doc_url) %>',
-            icon: '/images/help.png',
+            icon: '<%=rr('/images/help.png')%>',
             leaf: true
           }, {
             cls: 'menu-item',
             text: '<%= tjs('admin.menu.help.support') %>',
             href: '<%= escape_javascript(AppConfig.help.support_url) %>',
-            icon: '/images/bug.png',
+            icon: '<%=rr('/images/bug.png')%>',
             leaf: true
           }]
         }]
@@ -204,7 +204,7 @@
             windowSearch.show();
           },
           cls: 'x-btn-text-icon',
-          icon: '/images/zoom.png'
+          icon: '<%=rr('/images/zoom.png')%>'
         }, <% end -%> {
           text: '<%= tjs('admin.operations.up_level') %>',
           handler: function() {
@@ -212,7 +212,7 @@
           },
           disabled: ('' == upLevelLink),
           cls: 'x-btn-text-icon',
-          icon: '/images/arrow_up.png'
+          icon: '<%=rr('/images/arrow_up.png')%>'
         }];
 
         var topBar = new Ext.Toolbar({
@@ -282,10 +282,10 @@
             layout: 'fit',
             contentEl: 'main-content',
             xtype: 'panel',
-            title: '<img class="icon-inline-big" src="/images/big-icons/<%= @page_icon %>"><%= escape_javascript(@page_title) %>',
+            title: '<img class="icon-inline-big" src="<%=rr('/images/big-icons/')%><%= @page_icon %>"><%= escape_javascript(@page_title) %>',
             cls: 'main-content-center-panel',
             id: 'mainContentCenterPanel',
-            bodyStyle: 'background: #FFFFFF url(/images/openvz-big-logo.gif) no-repeat scroll right bottom',
+            bodyStyle: 'background: #FFFFFF url(<%=rr('/images/openvz-big-logo.gif')%>) no-repeat scroll right bottom',
             tbar: getTopBar(),
             bbar: [{
               xtype: 'box',
