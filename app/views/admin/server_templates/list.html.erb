@@ -18,7 +18,7 @@ Ext.onReady(function() {
     var formEditServerTemplate = new Owp.form.BasicForm({
       labelWidth: 180,
       waitMsgTarget: true,
-      url: '/admin/server-templates/save?hardware_server_id=<%= @hardware_server.id %>',
+      url: '<%=rr('/admin/server-templates/save?hardware_server_id=')%><%= @hardware_server.id %>',
       autoHeight: true,
       keys: [{
         key: Ext.EventObject.ENTER,
@@ -230,7 +230,7 @@ Ext.onReady(function() {
             
             windowEditServerTemplate.focus();
           },
-          url: '/admin/server-templates/load_data',
+          url: '<%=rr('/admin/server-templates/load_data')%>',
           params: {
             id: selectedNode.id
           }
@@ -258,7 +258,7 @@ Ext.onReady(function() {
         if ('yes' == button) { 
           Owp.list.groupAction({
             gridName: 'serverTemplatesGrid',
-            url: '/admin/server-templates/delete',
+            url: '<%=rr('/admin/server-templates/delete')%>',
             waitMsg: '<%= tjs('form.performing_task') %>',
             failure: {
               title: '<%= tjs('form.error.title') %>',
@@ -271,7 +271,7 @@ Ext.onReady(function() {
   }
   
   var store = new Ext.data.JsonStore({
-    url: '/admin/server-templates/list_data?hardware_server_id=' + <%= @hardware_server.id %>,
+    url: '<%=rr('/admin/server-templates/list_data?hardware_server_id=')%>' + <%= @hardware_server.id %>,
     root: 'data',
     autoLoad: true,
     data: <%= { :data => @server_templates_list }.to_json %>,
@@ -345,19 +345,19 @@ Ext.onReady(function() {
       text: '<%= tjs('admin.server_templates.grid.button.add') %>',
       handler: addTemplate,
       cls: 'x-btn-text-icon',
-      icon: '/images/add.png'
+      icon: '<%=rr('/images/add.png')%>'
     }, {
       text: '<%= tjs('admin.server_templates.grid.button.remove') %>',
       handler: removeTemplate,
       cls: 'x-btn-text-icon',
-      icon: '/images/delete.png',
+      icon: '<%=rr('/images/delete.png')%>',
       ref: '../removeButton',
       disabled: true
     }, {
       text: '<%= tjs('admin.server_templates.grid.button.edit') %>',
       handler: editTemplate,
       cls: 'x-btn-text-icon',
-      icon: '/images/wrench.png',
+      icon: '<%=rr('/images/wrench.png')%>',
       ref: '../editButton',
       disabled: true
     }]

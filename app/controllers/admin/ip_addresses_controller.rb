@@ -2,7 +2,7 @@ class Admin::IpAddressesController < Admin::Base
   before_filter :superadmin_required
 
   def list
-    @up_level = '/admin/dashboard'
+    @up_level = rr('/admin/dashboard')
     @ip_addresses_list = VirtualServer.ip_addresses
     @ip_pools_list = ip_pools_list
     @hardware_servers = HardwareServer.all.map{ |server| { :id => server.id, :host => server.host, }}

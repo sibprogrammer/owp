@@ -4,7 +4,7 @@ class Admin::HardwareServersController < Admin::Base
   before_filter :superadmin_required
 
   def list
-    @up_level = '/admin/dashboard'
+    @up_level = rr('/admin/dashboard')
     @hardware_servers_list = hardware_servers_list
   end
 
@@ -33,7 +33,7 @@ class Admin::HardwareServersController < Admin::Base
     @hardware_server = HardwareServer.find_by_id(params[:id])
     redirect_to :action => 'list' if !@hardware_server and return
 
-    @up_level = '/admin/hardware-servers/list'
+    @up_level = rr('/admin/hardware-servers/list')
     @virtual_servers_list = get_virtual_servers_map(@hardware_server.virtual_servers)
     @hardware_server_stats = get_usage_stats(@hardware_server)
   end

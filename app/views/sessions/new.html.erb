@@ -7,7 +7,7 @@ Ext.onReady(function() {
     loginForm.getForm().submit({
       waitMsg: '<%= tjs('form.loading') %>',
       success: function() {
-        document.location.href = '/admin/dashboard';
+        document.location.href = '<%=rr('/admin/dashboard')%>';
       },
       failure: function(form, action) { 
         Owp.form.errorHandler(form, action, { 
@@ -23,7 +23,7 @@ Ext.onReady(function() {
   var loginForm = new Owp.form.BasicForm({
     labelWidth: 100,
     waitMsgTarget: true,
-    url: '/login',
+    url: '<%=rr('/login')%>',
     bodyStyle: 'padding: 15px 15px 0',
     keys: [{
       key: Ext.EventObject.ENTER,

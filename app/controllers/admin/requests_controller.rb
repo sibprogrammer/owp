@@ -2,7 +2,7 @@ class Admin::RequestsController < Admin::Base
   before_filter :is_allowed
 
   def list
-    @up_level = '/admin/dashboard'
+    @up_level = rr('/admin/dashboard')
     @requests_list = requests_list
   end
 
@@ -18,7 +18,7 @@ class Admin::RequestsController < Admin::Base
   def show
     @request = Request.find_by_id(params[:id])
     redirect_to :controller => 'dashboard' and return if !@request or (!@current_user.can_handle_requests? and (@request.user.id != @current_user.id))
-    @up_level = '/admin/requests/list'
+    @up_level = rr('/admin/requests/list')
     @comments = request_comments_list(@request)
   end
 

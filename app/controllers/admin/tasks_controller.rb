@@ -8,7 +8,7 @@ class Admin::TasksController < Admin::Base
   end
 
   def list
-    @up_level = '/admin/dashboard'
+    @up_level = rr('/admin/dashboard')
   end
 
   def list_data

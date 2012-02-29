@@ -1,19 +1,19 @@
 <ul class="pageitem">
   <% if @current_user.superadmin? %>
-    <%= imenu_link_to(t('admin.dashboard.stats_grid.title'), { :controller => "dashboard", :action => "stats" }, '/images/big-icons/application_view_list.png') %>
-    <%= imenu_link_to(t('admin.menu.general.hardware_servers'), { :controller => "hardware_servers", :action => "list" }, '/images/big-icons/server.png') %>
-    <%= imenu_link_to(t('admin.menu.general.ip_addresses'), { :controller => "ip_addresses", :action => "list" }, '/images/big-icons/network_adapter.png') %>
+    <%= imenu_link_to(t('admin.dashboard.stats_grid.title'), { :controller => "dashboard", :action => "stats" }, rr('/images/big-icons/application_view_list.png')) %>
+    <%= imenu_link_to(t('admin.menu.general.hardware_servers'), { :controller => "hardware_servers", :action => "list" }, rr('/images/big-icons/server.png')) %>
+    <%= imenu_link_to(t('admin.menu.general.ip_addresses'), { :controller => "ip_addresses", :action => "list" }, rr('/images/big-icons/network_adapter.png')) %>
   <% else %>
-    <%= imenu_link_to(t('admin.menu.general.virtual_servers'), { :controller => "virtual_servers", :action => "list" }, '/images/big-icons/server.png') %>
+    <%= imenu_link_to(t('admin.menu.general.virtual_servers'), { :controller => "virtual_servers", :action => "list" }, rr('/images/big-icons/server.png')) %>
   <% end %>
-  <%= imenu_link_to(t('admin.menu.general.my_profile'), { :controller => "users", :action => "profile" }, '/images/big-icons/vcard.png') %>
+  <%= imenu_link_to(t('admin.menu.general.my_profile'), { :controller => "users", :action => "profile" }, rr('/images/big-icons/vcard.png')) %>
   <% if @current_user.can_manage_users? %>
-    <%= imenu_link_to(t('admin.menu.general.users'), { :controller => "users", :action => "list" }, '/images/big-icons/user.png') %>
+    <%= imenu_link_to(t('admin.menu.general.users'), { :controller => "users", :action => "list" }, rr('/images/big-icons/user.png')) %>
   <% end %>
   <% if @current_user.can_view_tasks? %>
-    <%= imenu_link_to(t('admin.menu.general.tasks'), { :controller => "tasks", :action => "list" }, '/images/big-icons/cog.png') %>
+    <%= imenu_link_to(t('admin.menu.general.tasks'), { :controller => "tasks", :action => "list" }, rr('/images/big-icons/cog.png')) %>
   <% end %>
   <% if @current_user.can_view_logs? || @current_user.can_manage_logs? %>
-    <%= imenu_link_to(t('admin.menu.general.event_log'), { :controller => "event_log", :action => "list" }, '/images/big-icons/book.png') %>
+    <%= imenu_link_to(t('admin.menu.general.event_log'), { :controller => "event_log", :action => "list" }, rr('/images/big-icons/book.png')) %>
   <% end %>
 </ul> 

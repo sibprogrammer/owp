@@ -9,7 +9,7 @@ Ext.onReady(function() {
   <%= render :partial => 'edit_form' %>
 
   var store = new Ext.data.JsonStore({
-    url: '/admin/virtual-servers/get_properties?id=<%= @virtual_server.id %>',
+    url: '<%=rr('/admin/virtual-servers/get_properties?id=')%><%= @virtual_server.id %>',
     root: 'data',
     autoLoad: true,
     data: <%= { :data => @virtual_server_properties }.to_json %>,
@@ -49,11 +49,11 @@ Ext.onReady(function() {
   });
   
   function viewStatDetails() {
-    document.location.href = '/admin/virtual-servers/stat_details?id=<%= @virtual_server.id %>';
+    document.location.href = '<%=rr('/admin/virtual-servers/stat_details?id=')%><%= @virtual_server.id %>';
   }
 
   var statsStore = new Ext.data.JsonStore({
-    url: '/admin/virtual-servers/get_stats?id=<%= @virtual_server.id %>',
+    url: '<%=rr('/admin/virtual-servers/get_stats?id=')%><%= @virtual_server.id %>',
     root: 'data',
     autoLoad: true,
     data: <%= { :data => @virtual_server_stats }.to_json %>,
@@ -111,7 +111,7 @@ Ext.onReady(function() {
     tbar: [{
       text: '<%= tjs('admin.virtual_servers.stats.button.stat_details') %>',
       cls: 'x-btn-text-icon',
-      icon: '/images/chart_bar.png',
+      icon: '<%=rr('/images/chart_bar.png')%>',
       handler: viewStatDetails
     }]
   });
@@ -127,7 +127,7 @@ Ext.onReady(function() {
   var changeStateAction = function(action) {
     Owp.list.groupAction({
       gridName: 'virtualServerInfoGrid',
-      url: '/admin/virtual-servers/' + action + '?ids=<%= @virtual_server.id %>',
+      url: '<%=rr('/admin/virtual-servers/')%>' + action + '?ids=<%= @virtual_server.id %>',
       command: action,
       waitMsg: '<%= tjs('form.performing_task') %>',
       failure: {
@@ -143,7 +143,7 @@ Ext.onReady(function() {
   var limitsAction = function() {
     var storeLimits = new Ext.data.JsonStore({
       id: 'storeLimits',
-      url: '/admin/virtual-servers/get_limits?id=<%= @virtual_server.id %>',
+      url: '<%=rr('/admin/virtual-servers/get_limits?id=')%><%= @virtual_server.id %>',
       root: 'data',
       autoLoad: true,
       fields: [
@@ -156,7 +156,7 @@ Ext.onReady(function() {
     var formLimits = new Owp.form.BasicForm({
       labelWidth: 180,
       waitMsgTarget: true,
-      url: '/admin/virtual-servers/save_limits?id=<%= @virtual_server.id %>',
+      url: '<%=rr('/admin/virtual-servers/save_limits?id=')%><%= @virtual_server.id %>',
       keys: [{
         key: Ext.EventObject.ENTER,
         fn: function() {
@@ -275,7 +275,7 @@ Ext.onReady(function() {
     var formReinstall = new Owp.form.BasicForm({
       labelWidth: 150,
       waitMsgTarget: true,
-      url: '/admin/virtual-servers/reinstall?id=<%= @virtual_server.id %>',
+      url: '<%=rr('/admin/virtual-servers/reinstall?id=')%><%= @virtual_server.id %>',
       defaults: { width: 200 },
       autoHeight: true,
       keys: [{
@@ -362,7 +362,7 @@ Ext.onReady(function() {
     var formChangeSettings = new Owp.form.BasicForm({
       labelWidth: 180,
       waitMsgTarget: true,
-      url: '/admin/virtual-servers/change_settings?id=<%= @virtual_server.id %>',
+      url: '<%=rr('/admin/virtual-servers/change_settings?id=')%><%= @virtual_server.id %>',
       keys: [{
         key: Ext.EventObject.ENTER,
         fn: function() {
@@ -450,7 +450,7 @@ Ext.onReady(function() {
         success: function() {
           windowChangeSettings.focus();
         },
-        url: '/admin/virtual-servers/load_data?id=<%= @virtual_server.id %>'
+        url: '<%=rr('/admin/virtual-servers/load_data?id=')%><%= @virtual_server.id %>'
       });
     });
     
@@ -465,7 +465,7 @@ Ext.onReady(function() {
     var formConsole = new Owp.form.BasicForm({
       labelWidth: 100,
       waitMsgTarget: true,
-      url: '/admin/virtual-servers/run_command?id=<%= @virtual_server.id %>',
+      url: '<%=rr('/admin/virtual-servers/run_command?id=')%><%= @virtual_server.id %>',
       keys: [{
         key: Ext.EventObject.ENTER,
         fn: function() {
@@ -532,14 +532,14 @@ Ext.onReady(function() {
   }
   
   var backupAction = function() {
-    document.location.href = '/admin/backups/list?virtual_server_id=<%= @virtual_server.id %>';
+    document.location.href = '<%=rr('/admin/backups/list?virtual_server_id=')%><%= @virtual_server.id %>';
   }
   
   var cloneAction = function() {
     var formClone = new Owp.form.BasicForm({
       labelWidth: 180,
       waitMsgTarget: true,
-      url: '/admin/virtual-servers/clone?id=<%= @virtual_server.id %>',
+      url: '<%=rr('/admin/virtual-servers/clone?id=')%><%= @virtual_server.id %>',
       keys: [{
         key: Ext.EventObject.ENTER,
         fn: function() {
@@ -644,7 +644,7 @@ Ext.onReady(function() {
     var formMigrate = new Owp.form.BasicForm({
       labelWidth: 180,
       waitMsgTarget: true,
-      url: '/admin/virtual-servers/migrate?id=<%= @virtual_server.id %>',
+      url: '<%=rr('/admin/virtual-servers/migrate?id=')%><%= @virtual_server.id %>',
       keys: [{
         key: Ext.EventObject.ENTER,
         fn: function() {
@@ -697,7 +697,7 @@ Ext.onReady(function() {
             success: function() {
               var target_id = formMigrate.getForm().findField('target_id').value;
               windowMigrate.close();
-              document.location.href = '/admin/hardware-servers/show?id=' + target_id;
+              document.location.href = '<%=rr('/admin/hardware-servers/show?id=')%>' + target_id;
             },
             failure: function(form, action) {
               Owp.form.errorHandler(form, action);
@@ -721,7 +721,7 @@ Ext.onReady(function() {
     var formCreateTemplate = new Owp.form.BasicForm({
       labelWidth: 100,
       waitMsgTarget: true,
-      url: '/admin/virtual-servers/create_template?id=<%= @virtual_server.id %>',
+      url: '<%=rr('/admin/virtual-servers/create_template?id=')%><%= @virtual_server.id %>',
       keys: [{
         key: Ext.EventObject.ENTER,
         fn: function() {
@@ -769,7 +769,7 @@ Ext.onReady(function() {
             waitMsg: '<%= tjs('form.loading') %>',
             success: function() {
               windowCreateTemplate.close();
-              document.location.href = '/admin/os-templates/list?hardware_server_id=' + <%= @virtual_server.hardware_server_id %>;
+              document.location.href = '<%=rr('/admin/os-templates/list?hardware_server_id=')%>' + <%= @virtual_server.hardware_server_id %>;
             },
             failure: function(form, action) {
               Owp.form.errorHandler(form, action);

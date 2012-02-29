@@ -12,7 +12,7 @@ class Iphone::Base < ApplicationController
       respond_to do |format|
         format.iphone do
           store_location
-          redirect_to '/session/new'
+          redirect_to rr('/session/new')
         end
       end
     end
