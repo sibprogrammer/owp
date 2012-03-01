@@ -60,7 +60,7 @@ Ext.onReady(function() {
     var progressBar = Ext.Msg.wait('<%= tjs('form.performing_task') %>');
   
     Ext.Ajax.request({
-      url: '/admin/os-templates/install?hardware_server_id=' + <%= @hardware_server.id %>,
+      url: '<%= url_for :controller => 'admin/os-templates', :action => 'install', :hardware_server_id => @hardware_server.id %>',
       success: function(response) {
         progressBar.hide();
            
@@ -112,7 +112,7 @@ Ext.onReady(function() {
         if ('yes' == button) { 
           Owp.list.groupAction({
             gridName: 'osTemplatesGrid',
-            url: '/admin/os-templates/delete',
+            url: '<%= url_for :controller => 'admin/os-templates', :action => 'delete' %>',
             waitMsg: '<%= tjs('form.performing_task') %>',
             failure: {
               title: '<%= tjs('form.error.title') %>',
@@ -136,7 +136,7 @@ Ext.onReady(function() {
   
     if (!windowInstallNewTemplate) {
       var storeOfficialTemplates = new Ext.data.JsonStore({
-        url: '/admin/os-templates/available_list_data?hardware_server_id=' + <%= @hardware_server.id %>,
+        url: '<%= url_for :controller => 'admin/os-templates', :action => 'available_list_data', :hardware_server_id => @hardware_server.id %>',
         root: 'data',
         autoLoad: true,
         sortInfo: { field: 'name', direction: 'ASC' },
@@ -160,7 +160,7 @@ Ext.onReady(function() {
       });
       
       var storeContributedTemplates = new Ext.data.JsonStore({
-        url: '/admin/os-templates/available_list_data?contributed=yes&hardware_server_id=' + <%= @hardware_server.id %>,
+        url: '<%= url_for :controller => 'admin/os-templates', :action => 'available_list_data', :hardware_server_id => @hardware_server.id %>' + '&contributed=yes',
         root: 'data',
         autoLoad: true,
         sortInfo: { field: 'name', direction: 'ASC' },
@@ -294,7 +294,7 @@ Ext.onReady(function() {
   }
 
   var store = new Ext.data.JsonStore({
-    url: '/admin/os-templates/list_data?hardware_server_id=' + <%= @hardware_server.id %>,
+    url: '<%= url_for :controller => 'admin/os-templates', :action => 'list_data', :hardware_server_id => @hardware_server.id %>',
     root: 'data',
     autoLoad: true,
     data: <%= { :data => @os_templates_list }.to_json %>,
@@ -361,11 +361,11 @@ Ext.onReady(function() {
       text: '<%= tjs('admin.os_templates.grid.button.install_new_template') %>',
       handler: installNewTemplate,
       cls: 'x-btn-text-icon',
-      icon: '/images/add.png'
+      icon: '<%= image_path 'add.png' %>'
     }, {
       text: '<%= tjs('admin.os_templates.grid.button.remove') %>', 
       cls: 'x-btn-text-icon',
-      icon: '/images/delete.png',     
+      icon: '<%= image_path 'delete.png' %>',     
       handler: removeOsTemplates,
       ref: '../removeButton',
       disabled: true

@@ -1,5 +1,5 @@
 var storeSearch = new Ext.data.JsonStore({
-  url: '/admin/search',
+  url: '<%= url_for :controller => 'admin/search' %>',
   root: 'data',
   fields: [
     { name: 'item' }

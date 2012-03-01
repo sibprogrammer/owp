@@ -5,7 +5,7 @@
       var formMyProfile = new Owp.form.BasicForm({
         labelWidth: 150,
         waitMsgTarget: true,
-        url: '/admin/users/save_profile',
+        url: '<%= url_for :controller => 'admin/users', :action => 'save_profile' %>',
         autoHeight: true,
         defaults: { width: 200 },
         keys: [{
@@ -97,35 +97,35 @@
           children: [{
             cls: 'menu-item',
             text: '<%= tjs('admin.menu.general.dashboard') %>',
-            href: '/admin/dashboard',
-            icon: '/images/application_view_tile.png',
+            href: '<%= url_for :controller => 'admin/dashboard' %>',
+            icon: '<%= image_path 'application_view_tile.png' %>',
             leaf: true
           }, <% if @current_user.superadmin? %> {
             cls: 'menu-item',
             text: '<%= tjs('admin.menu.general.hardware_servers') %>',
-            href: '/admin/hardware-servers/list',
-            icon: '/images/server.png',
+            href: '<%= url_for :controller => 'admin/hardware-servers/list' %>',
+            icon: '<%= image_path 'server.png' %>',
             expandable: false,
             expanded: true,
             children: <%= @servers_list.to_json %>
           }, {
             cls: 'menu-item',
             text: '<%= tjs('admin.menu.general.ip_addresses') %>',
-            href: '/admin/ip-addresses/list',
-            icon: '/images/network_adapter.png',
+            href: '<%= url_for :controller => 'admin/ip-addresses/list' %>',
+            icon: '<%= image_path 'network_adapter.png' %>',
             leaf: true
           }, <% else %> {
             cls: 'menu-item',
             text: '<%= tjs('admin.menu.general.virtual_servers') %>',
-            href: '/admin/virtual-servers/list',
-            icon: '/images/server.png',
+            href: '<%= url_for :controller => 'admin/virtual-servers/list' %>',
+            icon: '<%= image_path 'server.png' %>',
             expandable: false,
             expanded: true,
             children: <%= @servers_list.to_json %>
           }, <% end -%> {
             cls: 'menu-item',
             text: '<%= tjs('admin.menu.general.my_profile') %>',
-            icon: '/images/vcard.png',
+            icon: '<%= image_path 'vcard.png' %>',
             leaf: true,
             listeners: {
               click: function() {
@@ -135,34 +135,34 @@
           }, <% if @current_user.can_manage_users? %> {
             cls: 'menu-item',
             text: '<%= tjs('admin.menu.general.users') %>',
-            href: '/admin/users/list',
-            icon: '/images/user.png',
+            href: '<%= url_for :controller => 'admin/users/list' %>',
+            icon: '<%= image_path 'user.png' %>',
             leaf: true
           }, <% end -%> <% if @current_user.can_create_requests? || @current_user.can_handle_requests? %> {
             cls: 'menu-item',
             text: '<%= tjs('admin.menu.general.requests') %>',
-            href: '/admin/requests/list',
-            icon: '/images/comment_edit.png'
+            href: '<%= url_for :controller => 'admin/requests/list' %>',
+            icon: '<%= image_path 'comment_edit.png' %>'
           }, <% end -%> <% if @current_user.can_view_tasks? %> {
             cls: 'menu-item',
             text: '<%= tjs('admin.menu.general.tasks') %>',
-            href: '/admin/tasks/list',
-            icon: '/images/cog.png'
+            href: '<%= url_for :controller => 'admin/tasks/list' %>',
+            icon: '<%= image_path 'cog.png' %>'
           }, <% end -%> <% if @current_user.can_view_logs? || @current_user.can_manage_logs? %> {
             cls: 'menu-item',
             text: '<%= tjs('admin.menu.general.event_log') %>',
-            href: '/admin/event-log/list',
-            icon: '/images/book.png'
+            href: '<%= url_for :controller => 'admin/event-log/list' %>',
+            icon: '<%= image_path 'book.png' %>'
           }, <% end -%> {
             cls: 'menu-item',
             text: '<%= tjs('admin.menu.general.logout') %>',
-            icon: '/images/key_go.png',
+            icon: '<%= image_path 'key_go.png' %>',
             leaf: true,
             listeners: {
               click: function() {
                 Ext.MessageBox.confirm('<%= tjs('form.confirmation') %>', '<%= tjs('admin.logout') %>', function(button, text) {
                   if ('yes' == button) {
-                    window.location.href = '/logout';
+                    window.location.href = '<%= logout_path %>';
                   }
                 });
               }
@@ -177,13 +177,13 @@
             cls: 'menu-item',
             text: '<%= tjs('admin.menu.help.documentation') %>',
             href: '<%= escape_javascript(@current_user.superadmin? ? AppConfig.help.admin_doc_url : AppConfig.help.user_doc_url) %>',
-            icon: '/images/help.png',
+            icon: '<%= image_path 'help.png' %>',
             leaf: true
           }, {
             cls: 'menu-item',
             text: '<%= tjs('admin.menu.help.support') %>',
             href: '<%= escape_javascript(AppConfig.help.support_url) %>',
-            icon: '/images/bug.png',
+            icon: '<%= image_path 'bug.png' %>',
             leaf: true
           }]
         }]
@@ -204,15 +204,15 @@
             windowSearch.show();
           },
           cls: 'x-btn-text-icon',
-          icon: '/images/zoom.png'
+          icon: '<%= image_path 'zoom.png' %>'
         }, <% end -%> {
           text: '<%= tjs('admin.operations.up_level') %>',
           handler: function() {
-            document.location.href = upLevelLink;
+            document.location.href = BASE_URL + upLevelLink;
           },
           disabled: ('' == upLevelLink),
           cls: 'x-btn-text-icon',
-          icon: '/images/arrow_up.png'
+          icon: '<%= image_path 'arrow_up.png' %>'
         }];
 
         var topBar = new Ext.Toolbar({
@@ -282,10 +282,10 @@
             layout: 'fit',
             contentEl: 'main-content',
             xtype: 'panel',
-            title: '<img class="icon-inline-big" src="/images/big-icons/<%= @page_icon %>"><%= escape_javascript(@page_title) %>',
+            title: '<img class="icon-inline-big" src="<%= image_path "big-icons/#{@page_icon}" %>"><%= escape_javascript(@page_title) %>',
             cls: 'main-content-center-panel',
             id: 'mainContentCenterPanel',
-            bodyStyle: 'background: #FFFFFF url(/images/openvz-big-logo.gif) no-repeat scroll right bottom',
+            bodyStyle: 'background: #FFFFFF url(<%= image_path 'openvz-big-logo.gif' %>) no-repeat scroll right bottom',
             tbar: getTopBar(),
             bbar: [{
               xtype: 'box',

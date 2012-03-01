@@ -3,10 +3,11 @@
 <head>
   <title><%= @product_name %></title>
   <meta name="viewport" content="width=devicewidth; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;"/>
-  <link rel="apple-touch-icon" href="/images/logo-touch-icon.png" />
+  <link rel="apple-touch-icon" href="<%= image_path 'logo-touch-icon.png' %>" />
   <meta name="apple-touch-fullscreen" content="yes" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="format-detection" content="telephone=no" />
+  <%= javascript_tag "var BASE_URL = '#{base_url}';" %>
   <%= stylesheet_link_tag '/iwebkit/css/style.css' %>
   <%= javascript_include_tag '/iwebkit/javascript/functions.js' %>
   <%= stylesheet_link_tag '/stylesheets/iphone.css' %>
@@ -23,7 +24,7 @@
     <% if @show_home_button %>
       <div id="leftnav"> 
         <% link_to(:controller => 'dashboard') do %>
-          <img alt="home" src="/iwebkit/images/home.png" />
+          <img alt="home" src="<%= base_url + '/iwebkit/images/home.png' %>" />
         <% end %>
       </div>
     <% end %>

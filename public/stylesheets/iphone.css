@@ -1,6 +1,6 @@
 ul.error {
   color: #fff;
-  background: #8a1f11 url(/images/cancel.png) 8px 6px no-repeat;
+  background: #8a1f11 url(../images/cancel.png) 8px 6px no-repeat;
   padding-left: 18px;
 }
 

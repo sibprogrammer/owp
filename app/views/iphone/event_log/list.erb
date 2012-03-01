@@ -7,7 +7,7 @@
           icon = 'bug.png' if 0 == event.level
           icon = 'information.png' if 1 == event.level
         %>
-        <%= '<img class="inline" src="/images/' + icon + '"/>' %>
+        <%= image_tag icon, :class => 'inline' %>
         #<%= h(event.id) %> - <%= h(local_datetime(event.created_at)) %>
       </span>
       <%= event.html_message %><br/>

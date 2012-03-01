@@ -59,7 +59,7 @@ class SessionsController < ApplicationController
   def destroy
     EventLog.info("user.logout", { :login => current_user.login }) if current_user
     logout_killing_session!
-    redirect_back_or_default('/')
+    redirect_back_or_default login_path
   end
 
   def restore_password
@@ -83,7 +83,7 @@ class SessionsController < ApplicationController
       end
     end
 
-    redirect_to '/' and return if !@user
+    redirect_to login_path and return if !@user
 
     if request.post?
       @user.password = params[:password]

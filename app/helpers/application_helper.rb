@@ -11,7 +11,7 @@ module ApplicationHelper
   end
 
   def imenu_link_to(title, options = {}, icon = '')
-    icon = '<img alt="" src="' + icon + ' " />' if !icon.empty?
+    icon = '<img alt="" src="' + base_url + icon + ' " />' if !icon.empty?
     title = icon + '<span class="name">' + h(title) + '</span><span class="arrow"></span>'
     '<li class="menu">' + link_to(title, options) + '</li>'
   end
@@ -22,6 +22,10 @@ module ApplicationHelper
 
   def local_datetime(datetime)
     datetime.localtime.strftime("%Y.%m.%d %H:%M:%S")
+  end
+
+  def base_url
+    ActionController::Base.relative_url_root
   end
 
 end

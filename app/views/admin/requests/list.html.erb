@@ -9,7 +9,7 @@ Ext.onReady(function() {
       labelWidth: 100,
       autoHeight: true,
       waitMsgTarget: true,
-      url: '/admin/requests/create',
+      url: '<%= url_for :controller => 'admin/requests', :action => 'create' %>',
       defaults: { width: 300 },
       items: [{
         fieldLabel: '<%= tjs('admin.requests.form.create.field.subject') %>',
@@ -71,7 +71,7 @@ Ext.onReady(function() {
         if ('yes' == button) { 
           Owp.list.groupAction({
             gridName: 'requestsGrid',
-            url: '/admin/requests/delete',
+            url: '<%= url_for :controller => 'admin/requests', :action => 'delete' %>',
             waitMsg: '<%= tjs('form.performing_task') %>',
             failure: {
               title: '<%= tjs('form.error.title') %>',
@@ -85,11 +85,11 @@ Ext.onReady(function() {
   
   function seeDetails() {
     var selectedNode = Ext.getCmp('requestsGrid').getSelectionModel().getSelected();
-    document.location.href = '/admin/requests/show?id=' + selectedNode.id;
+    document.location.href = '<%= url_for :controller => 'admin/requests', :action => 'show' %>' + '?id=' + selectedNode.id;
   }
 
   var store = new Ext.data.JsonStore({
-    url: '/admin/requests/list_data',
+    url: '<%= url_for :controller => 'admin/requests', :action => 'list_data' %>',
     root: 'data',
     autoLoad: true,
     data: <%= { :data => @requests_list }.to_json %>,
@@ -154,7 +154,7 @@ Ext.onReady(function() {
         header: '<%= tjs('admin.requests.grid.column.opened') %>',
         renderer: function(value) {
           var image = 1 == value ? 'help.png' : 'accept.png';
-          return '<img src="/images/' + image + '"/>';
+          return '<img src="' + BASE_URL + '/images/' + image + '"/>';
         },
         width: 60,
         align: 'center',
@@ -167,7 +167,7 @@ Ext.onReady(function() {
         sortable: true,
         dataIndex: 'id',
         renderer: function(identity, metadata, record) {
-          return "<a href='/admin/requests/show?id=" + identity + "'>" + identity + "</a>";
+          return "<a href='" + BASE_URL + "/admin/requests/show?id=" + identity + "'>" + identity + "</a>";
         }
       }, { 
         id: 'subject',
@@ -204,26 +204,26 @@ Ext.onReady(function() {
     listeners: {
       celldblclick: function(grid, rowIndex, columnIndex, eventObject) {
         var selectedNode = grid.getSelectionModel().getSelected();
-        document.location.href = '/admin/requests/show?id=' + selectedNode.data.id;
+        document.location.href = '<%= url_for :controller => 'admin/requests', :action => 'show' %>' + '?id=' + selectedNode.data.id;
       }
     },
     tbar: [{
       text: '<%= tjs('admin.requests.grid.button.add') %>',
       handler: createRequest,
       cls: 'x-btn-text-icon',
-      icon: '/images/add.png'
+      icon: '<%= image_path 'add.png' %>'
     }, <% if @current_user.can_handle_requests? %> {
       text: '<%= tjs('admin.requests.grid.button.remove') %>',
       handler: removeRequest,
       cls: 'x-btn-text-icon',
-      icon: '/images/delete.png',
+      icon: '<%= image_path 'delete.png' %>',
       ref: '../removeButton',
       disabled: true
     }, <% end -%> '-', {
       text: '<%= tjs('admin.requests.grid.button.details') %>',
       handler: seeDetails,
       cls: 'x-btn-text-icon',
-      icon: '/images/table_go.png',
+      icon: '<%= image_path 'table_go.png' %>',
       ref: '../detailsButton',
       disabled: true
     }]

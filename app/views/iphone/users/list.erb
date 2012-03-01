@@ -3,7 +3,7 @@
     <li class="textbox">
       <span class="header">
         <% icon = user.enabled ? 'run.png' : 'stop.png' %>
-        <%= '<img class="inline" src="/images/' + icon + '"/>' %>
+        <%= image_tag icon, :class => 'inline' %>
         <%= h(user.full_name) %>
       </span>
       <% if !user.email.blank? %>

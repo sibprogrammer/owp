@@ -22,7 +22,7 @@ Ext.onReady(function() {
     items: {
       xtype: 'columnchart',
       store: cpuUsageStore,
-      url: '/ext/resources/charts.swf',
+      url: BASE_URL + '/ext/resources/charts.swf',
       xField: 'time',
       yField: 'usage',
       yAxis: new Ext.chart.NumericAxis({
@@ -50,7 +50,7 @@ Ext.onReady(function() {
     items: {
       xtype: 'columnchart',
       store: diskUsageStore,
-      url: '/ext/resources/charts.swf',
+      url: BASE_URL + '/ext/resources/charts.swf',
       xField: 'time',
       yField: 'usage',
       yAxis: new Ext.chart.NumericAxis({
@@ -78,7 +78,7 @@ Ext.onReady(function() {
     items: {
       xtype: 'columnchart',
       store: ramUsageStore,
-      url: '/ext/resources/charts.swf',
+      url: BASE_URL + '/ext/resources/charts.swf',
       xField: 'time',
       yField: 'usage',
       yAxis: new Ext.chart.NumericAxis({

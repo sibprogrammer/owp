@@ -8,7 +8,7 @@ Ext.onReady(function() {
     var formEditUser = new Owp.form.BasicForm({
       labelWidth: 150,
       waitMsgTarget: true,
-      url: '/admin/users/update',
+      url: '<%= url_for :controller => 'admin/users', :action => 'update' %>',
       autoHeight: true,
       defaults: { width: 200 },
       keys: [{
@@ -116,7 +116,7 @@ Ext.onReady(function() {
           success: function() {
             windowEditUser.focus();
           },
-          url: '/admin/users/load_data',
+          url: '<%= url_for :controller => 'admin/users', :action => 'load_data' %>',
           params: {
             id: selectedNode.id
           }
@@ -144,7 +144,7 @@ Ext.onReady(function() {
         if ('yes' == button) { 
           Owp.list.groupAction({
             gridName: 'usersGrid',
-            url: '/admin/users/delete',
+            url: '<%= url_for :controller => 'admin/users', :action => 'delete' %>',
             waitMsg: '<%= tjs('form.performing_task') %>',
             failure: {
               title: '<%= tjs('form.error.title') %>',
@@ -159,7 +159,7 @@ Ext.onReady(function() {
   var changeUserState = function(action) {
     Owp.list.groupAction({
       gridName: 'usersGrid',
-      url: '/admin/users/' + action,
+      url: BASE_URL + '/admin/users/' + action,
       command: action,
       waitMsg: '<%= tjs('form.performing_task') %>',
       failure: {
@@ -170,7 +170,7 @@ Ext.onReady(function() {
   }
 
   var store = new Ext.data.JsonStore({
-    url: '/admin/users/list_data',
+    url: '<%= url_for :controller => 'admin/users', :action => 'list_data' %>',
     root: 'data',
     data: <%= { :data => @users_list }.to_json %>,
     autoLoad: true,
@@ -237,7 +237,7 @@ Ext.onReady(function() {
         header: '<%= tjs('admin.users.grid.column.enabled') %>',
         renderer: function(value) {
           var image = value ? 'run.png' : 'stop.png';
-          return '<img src="/images/' + image + '"/>';
+          return '<img src="' + BASE_URL + '/images/' + image + '"/>';
         },
         width: 60,
         align: 'center',
@@ -289,33 +289,33 @@ Ext.onReady(function() {
       text: '<%= tjs('admin.users.grid.button.add') %>',
       handler: addUser,
       cls: 'x-btn-text-icon',
-      icon: '/images/add.png'
+      icon: '<%= image_path 'add.png' %>'
     }, {
       text: '<%= tjs('admin.users.grid.button.remove') %>',
       handler: removeUser,
       cls: 'x-btn-text-icon',
-      icon: '/images/delete.png',
+      icon: '<%= image_path 'delete.png' %>',
       ref: '../removeButton',
       disabled: true
     }, {
       text: '<%= tjs('admin.users.grid.button.edit') %>',
       handler: editUser,
       cls: 'x-btn-text-icon',
-      icon: '/images/wrench.png',
+      icon: '<%= image_path 'wrench.png' %>',
       ref: '../editButton',
       disabled: true
     }, '-', {
       text: '<%= tjs('admin.users.grid.button.enable') %>',
       handler: changeUserState.createCallback('enable'),
       cls: 'x-btn-text-icon',
-      icon: '/images/run.png',
+      icon: '<%= image_path 'run.png' %>',
       ref: '../enableButton',
       disabled: true
     }, {
       text: '<%= tjs('admin.users.grid.button.disable') %>',
       handler: changeUserState.createCallback('disable'),
       cls: 'x-btn-text-icon',
-      icon: '/images/stop.png',
+      icon: '<%= image_path 'stop.png' %>',
       ref: '../disableButton',
       disabled: true
     }]
@@ -327,9 +327,9 @@ Ext.onReady(function() {
   
   mainContentCenterPanel.getTopToolbar().insertButton(0, {
     text: '<%= tjs('admin.users.top_toolbar.roles') %>',
-    icon: '/images/user_suit.png',
+    icon: '<%= image_path 'user_suit.png' %>',
     handler: function() {
-      document.location.href = '/admin/roles/list';
+      document.location.href = '<%= url_for :controller => 'admin/roles', :action => 'list' %>';
     }
   });
   

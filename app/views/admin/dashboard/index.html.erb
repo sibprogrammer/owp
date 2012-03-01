@@ -13,7 +13,7 @@ Ext.onReady(function() {
     var watchdogPanel = new Ext.Panel({
       header: false,
       cls: 'panel-dashboard',
-      html: '<p><img src="/images/exclamation.png" class="icon-inline"/>' 
+      html: '<p><img src="' + BASE_URL + '/images/exclamation.png" class="icon-inline"/>' 
         + 'Unable to connect to watchdog daemon. Probably it is not running. '
         + '</p>'
     });
@@ -85,7 +85,7 @@ Ext.onReady(function() {
         width: 250,
         dataIndex: 'parameter',
         renderer: function(value, metaData, record) {
-          return '<img src="/images/' + record.data.icon + '" class="icon-inline"/>' + value;
+          return '<img src="' + BASE_URL + '/images/' + record.data.icon + '" class="icon-inline"/>' + value;
         }
       }, {
         id: 'value',

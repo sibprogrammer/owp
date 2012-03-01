@@ -54,7 +54,7 @@ Ext.onReady(function() {
       labelWidth: 150,
       autoHeight: true,
       waitMsgTarget: true,
-      url: '/admin/hardware-servers/save',
+      url: '<%= url_for :controller => 'admin/hardware-servers', :action => 'save' %>',
       defaults: { width: 200 },
       keys: [{
         key: Ext.EventObject.ENTER,
@@ -120,7 +120,7 @@ Ext.onReady(function() {
           success: function() {
             windowEditServer.focus();
           },
-          url: '/admin/hardware-servers/load_data',
+          url: '<%= url_for :controller => 'admin/hardware-servers', :action => 'load_data' %>',
           params: {
             id: selectedNode.id
           }
@@ -148,7 +148,7 @@ Ext.onReady(function() {
         if ('yes' == button) { 
           Owp.list.groupAction({
             gridName: 'hwServersGrid',
-            url: '/admin/hardware-servers/disconnect',
+            url: '<%= url_for :controller => 'admin/hardware-servers', :action => 'disconnect' %>',
             waitMsg: '<%= tjs('form.performing_task') %>',
             failure: {
               title: '<%= tjs('form.error.title') %>',
@@ -162,13 +162,13 @@ Ext.onReady(function() {
   
   function seeDetails() {
     var selectedNode = Ext.getCmp('hwServersGrid').getSelectionModel().getSelected();
-    document.location.href = '/admin/hardware-servers/show?id=' + selectedNode.id;
+    document.location.href = '<%= url_for :controller => 'admin/hardware-servers', :action => 'show' %>?id=' + selectedNode.id;
   }
   
   function syncHwServer() {
     Owp.list.groupAction({
       gridName: 'hwServersGrid',
-      url: '/admin/hardware-servers/sync',
+      url: '<%= url_for :controller => 'admin/hardware-servers', :action => 'sync' %>',
       waitMsg: '<%= tjs('form.performing_task') %>',
       failure: {
         title: '<%= tjs('form.error.title') %>',
@@ -185,7 +185,7 @@ Ext.onReady(function() {
         if ('yes' == button) { 
           Owp.list.groupAction({
             gridName: 'hwServersGrid',
-            url: '/admin/hardware-servers/reboot',
+            url: '<%= url_for :controller => 'admin/hardware-servers', :action => 'reboot' %>',
             waitMsg: '<%= tjs('form.performing_task') %>',
             failure: {
               title: '<%= tjs('form.error.title') %>',
@@ -198,7 +198,7 @@ Ext.onReady(function() {
   }
 
   var store = new Ext.data.JsonStore({
-    url: '/admin/hardware-servers/list_data',
+    url: '<%= url_for :controller => 'admin/hardware-servers', :action => 'list_data' %>',
     root: 'data',
     autoLoad: true,
     data: <%= { :data => @hardware_servers_list }.to_json %>,
@@ -252,7 +252,7 @@ Ext.onReady(function() {
         id: 'host',
         header: '<%= tjs('admin.hardware_servers.grid.column.host_name') %>',
         renderer: function(host, metadata, record) {
-          return "<a href='/admin/hardware-servers/show?id=" + record.data.id + "'>" + host + "</a>";
+          return "<a href='<%= url_for :controller => 'admin/hardware-servers', :action => 'show' %>?id=" + record.data.id + "'>" + host + "</a>";
         },
         sortable: true,
         dataIndex: 'host'
@@ -279,47 +279,47 @@ Ext.onReady(function() {
     listeners: {
       celldblclick: function(grid, rowIndex, columnIndex, eventObject) {
         var selectedNode = grid.getSelectionModel().getSelected();
-        document.location.href = '/admin/hardware-servers/show?id=' + selectedNode.data.id;
+        document.location.href = '<%= url_for :controller => 'admin/hardware-servers', :action => 'show' %>?id=' + selectedNode.data.id;
       }
     },
     tbar: [{
       text: '<%= tjs('admin.hardware_servers.grid.button.connect') %>',
       handler: addHwServer,
       cls: 'x-btn-text-icon',
-      icon: '/images/add.png'
+      icon: '<%= image_path 'add.png' %>'
     }, {
       text: '<%= tjs('admin.hardware_servers.grid.button.disconnect') %>',
       handler: removeHwServer,
       cls: 'x-btn-text-icon',
-      icon: '/images/delete.png',
+      icon: '<%= image_path 'delete.png' %>',
       ref: '../removeButton',
       disabled: true
     }, '-', {
       text: '<%= tjs('admin.hardware_servers.grid.button.sync') %>',
       handler: syncHwServer,
       cls: 'x-btn-text-icon',
-      icon: '/images/arrow_refresh.png',
+      icon: '<%= image_path 'arrow_refresh.png' %>',
       ref: '../syncButton',
       disabled: true
     }, {
       text: '<%= tjs('admin.hardware_servers.grid.button.edit') %>',
       handler: editHwServer,
       cls: 'x-btn-text-icon',
-      icon: '/images/wrench.png',
+      icon: '<%= image_path 'wrench.png' %>',
       ref: '../editButton',
       disabled: true
     }, {
       text: '<%= tjs('admin.hardware_servers.grid.button.details') %>',
       handler: seeDetails,
       cls: 'x-btn-text-icon',
-      icon: '/images/table_go.png',
+      icon: '<%= image_path 'table_go.png' %>',
       ref: '../detailsButton',
       disabled: true
     }, '-', {
       text: '<%= tjs('admin.hardware_servers.grid.button.reboot') %>',
       handler: rebootHwServer,
       cls: 'x-btn-text-icon',
-      icon: '/images/arrow_rotate_clockwise.png',
+      icon: '<%= image_path 'arrow_rotate_clockwise.png' %>',
       ref: '../rebootButton',
       disabled: true
     }]

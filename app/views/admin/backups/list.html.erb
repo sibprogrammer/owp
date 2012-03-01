@@ -8,7 +8,7 @@ Ext.onReady(function() {
     var formBackup = new Owp.form.BasicForm({
       labelWidth: 150,
       waitMsgTarget: true,
-      url: '/admin/backups/create?virtual_server_id=<%= @virtual_server.id %>',
+      url: '<%= url_for :controller => 'admin/backups', :action => 'create', :virtual_server_id => @virtual_server.id %>',
       autoHeight: true,
       defaults: { width: 200 },
       keys: [{
@@ -98,7 +98,7 @@ Ext.onReady(function() {
           var progressBar = Ext.Msg.wait('<%= tjs('form.performing_task') %>');
           
           Ext.Ajax.request({
-            url: '/admin/backups/restore',
+            url: '<%= url_for :controller => 'admin/backups', :action => 'restore' %>',
             success: function(response) {
               progressBar.hide();
               var result = Ext.util.JSON.decode(response.responseText);
@@ -148,7 +148,7 @@ Ext.onReady(function() {
         if ('yes' == button) { 
           Owp.list.groupAction({
             gridName: 'backupsGrid',
-            url: '/admin/backups/delete',
+            url: '<%= url_for :controller => 'admin/backups', :action => 'delete' %>',
             waitMsg: '<%= tjs('form.performing_task') %>',
             failure: {
               title: '<%= tjs('form.error.title') %>',
@@ -161,7 +161,7 @@ Ext.onReady(function() {
   }
 
   var store = new Ext.data.JsonStore({
-    url: '/admin/backups/list_data?virtual_server_id=<%= @virtual_server.id %>',
+    url: '<%= url_for :controller => 'admin/backups', :action => 'list_data', :virtual_server_id => @virtual_server.id %>',
     root: 'data',
     autoLoad: true,
     data: <%= { :data => @backups_list }.to_json %>,
@@ -236,19 +236,19 @@ Ext.onReady(function() {
     tbar: [{
       text: '<%= tjs('admin.backups.grid.button.create') %>',
       cls: 'x-btn-text-icon',
-      icon: '/images/add.png',
+      icon: '<%= image_path 'add.png' %>',
       handler: createBackup
     }, {
       text: '<%= tjs('admin.backups.grid.button.restore') %>',
       cls: 'x-btn-text-icon',
-      icon: '/images/disk.png',
+      icon: '<%= image_path 'disk.png' %>',
       handler: restoreServer,
       ref: '../restoreButton',
       disabled: true
     }, {
       text: '<%= tjs('admin.backups.grid.button.destroy') %>', 
       cls: 'x-btn-text-icon',
-      icon: '/images/delete.png',
+      icon: '<%= image_path 'delete.png' %>',
       handler: removeBackup,
       ref: '../removeButton',
       disabled: true

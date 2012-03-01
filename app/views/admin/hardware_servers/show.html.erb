@@ -9,7 +9,7 @@ Ext.onReady(function() {
   var changeStateAction = function(action) {
     Owp.list.groupAction({
       gridName: 'virtualServersGrid',
-      url: '/admin/virtual-servers/' + action,
+      url: '<%= url_for :controller => 'admin/virtual-servers' %>' + action,
       command: action,
       waitMsg: '<%= tjs('form.performing_task') %>',
       failure: {
@@ -48,7 +48,7 @@ Ext.onReady(function() {
   }
 
   var store = new Ext.data.JsonStore({
-    url: '/admin/virtual-servers/list_data?hardware_server_id=<%= @hardware_server.id %>',
+    url: '<%= url_for :controller => 'admin/virtual-servers', :action => 'list_data', :hardware_server_id => @hardware_server.id %>',
     root: 'data',
     autoLoad: true,
     data: <%= { :data => @virtual_servers_list }.to_json %>,
@@ -122,7 +122,7 @@ Ext.onReady(function() {
           renderer: function(value, metaData) {
             metaData.cellAttr = 'rowspan="2"';
             var image = ('running' == value) ? 'run.png' : 'stop.png';
-            return '<img src="/images/' + image + '"/>';
+            return '<img src="' + BASE_URL + '/images/' + image + '"/>';
           },
           width: 60,
           align: 'center',
@@ -135,7 +135,7 @@ Ext.onReady(function() {
           sortable: true,
           dataIndex: 'identity',
           renderer: function(identity, metadata, record) {
-            return "<a href='/admin/virtual-servers/show?id=" + record.data.id + "'>" + identity + "</a>";
+            return "<a href='<%= url_for :controller => 'admin/virtual-servers', :action => 'show' %>?id=" + record.data.id + "'>" + identity + "</a>";
           }
         }, {
           id: 'ip_address',
@@ -195,7 +195,7 @@ Ext.onReady(function() {
     listeners: {
       celldblclick: function(grid, rowIndex, columnIndex, eventObject) {
         var selectedNode = grid.getSelectionModel().getSelected();
-        document.location.href = '/admin/virtual-servers/show?id=' + selectedNode.data.id;
+        document.location.href = '<%= url_for :controller => 'admin/virtual-servers', :action => 'show' %>?id=' + selectedNode.data.id;
       }
     },
     viewConfig: {
@@ -217,12 +217,12 @@ Ext.onReady(function() {
     tbar: [{
       text: '<%= tjs('admin.virtual_servers.grid.button.create') %>',
       cls: 'x-btn-text-icon',
-      icon: '/images/add.png',
+      icon: '<%= image_path 'add.png' %>',
       handler: addVirtualServer
     }, {
       text: '<%= tjs('admin.virtual_servers.grid.button.destroy') %>', 
       cls: 'x-btn-text-icon',
-      icon: '/images/delete.png',     
+      icon: '<%= image_path 'delete.png' %>',     
       handler: removeVirtaulServer,
       ref: '../removeButton',
       disabled: true
@@ -230,7 +230,7 @@ Ext.onReady(function() {
       text: '<%= tjs('admin.virtual_servers.grid.button.edit') %>',
       handler: editVirtualServer,
       cls: 'x-btn-text-icon',
-      icon: '/images/wrench.png',
+      icon: '<%= image_path 'wrench.png' %>',
       ref: '../editButton',
       disabled: true
     }, '-', {      
@@ -255,7 +255,7 @@ Ext.onReady(function() {
   });
 
   var statsStore = new Ext.data.JsonStore({
-    url: '/admin/hardware-servers/get_stats?id=<%= @hardware_server.id %>',
+    url: '<%= url_for :controller => 'admin/hardware-servers', :action => 'get_stats', :id => @hardware_server.id %>',
     root: 'data',
     data: <%= { :data => @hardware_server_stats }.to_json %>,
     autoLoad: true,
@@ -325,17 +325,17 @@ Ext.onReady(function() {
   
   mainContentCenterPanel.getTopToolbar().insertButton(0, {
     text: '<%= tjs('admin.hardware_servers.top_toolbar.server_templates') %>',
-    icon: '/images/package.png',
+    icon: '<%= image_path 'package.png' %>',
     handler: function() {
-      document.location.href = '/admin/server-templates/list?hardware_server_id=<%= @hardware_server.id %>';
+      document.location.href = '<%= url_for :controller => 'admin/server-templates', :action => 'list', :hardware_server_id => @hardware_server.id %>';
     }
   });
   
   mainContentCenterPanel.getTopToolbar().insertButton(0, {
     text: '<%= tjs('admin.hardware_servers.top_toolbar.os_templates') %>',
-    icon: '/images/tux.png',
+    icon: '<%= image_path 'tux.png' %>',
     handler: function() {
-      document.location.href = '/admin/os-templates/list?hardware_server_id=<%= @hardware_server.id %>';
+      document.location.href = '<%= url_for :controller => 'admin/os-templates', :action => 'list', :hardware_server_id => @hardware_server.id %>';
     }
   });
   

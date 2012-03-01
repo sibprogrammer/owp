@@ -6,7 +6,7 @@
           icon = 'accept.png'
           icon = 'spinner.gif' if 1 == task.status
         %>
-        <%= '<img class="inline" src="/images/' + icon + '"/>' %>
+        <%= image_tag icon, :class => 'inline' %>
         #<%= h(task.id) %>
       </span>
       <%= h(task.t_description) %>

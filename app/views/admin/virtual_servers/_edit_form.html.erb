@@ -33,7 +33,7 @@ var showVirtualServerEditForm = function(mode, grid, statsGrid) {
   });
 
   var ipAddressesStore = new Ext.data.JsonStore({
-    url: '/admin/hardware-servers/free_ips_list_data?id=<%= @hardware_server.id %>',
+    url: '<%= url_for :controller => 'admin/hardware-servers', :action => 'free_ips_list_data', :id => @hardware_server.id %>',
     root: 'data',
     autoLoad: true,
     sortInfo: { field: 'address', direction: 'ASC' },
@@ -45,7 +45,7 @@ var showVirtualServerEditForm = function(mode, grid, statsGrid) {
   var formEditVirtualServer = new Owp.form.BasicForm({
     labelWidth: 180,
     waitMsgTarget: true,
-    url: '/admin/virtual-servers/create?hardware_server_id=<%= @hardware_server.id %>',
+    url: '<%= url_for :controller => 'admin/virtual-servers', :action => 'create', :hardware_server_id => @hardware_server.id %>',
     autoHeight: true,
     keys: [{
       key: Ext.EventObject.ENTER,
@@ -121,7 +121,7 @@ var showVirtualServerEditForm = function(mode, grid, statsGrid) {
                     success: function() {
                       windowEditVirtualServer.focus();
                     },
-                    url: '/admin/virtual-servers/load_template',
+                    url: '<%= url_for :controller => 'admin/virtual-servers', :action => 'load_template' %>',
                     params: {
                       id: record.data.id
                     }
@@ -344,7 +344,7 @@ var showVirtualServerEditForm = function(mode, grid, statsGrid) {
         success: function() {
           windowEditVirtualServer.focus();
         },
-        url: '/admin/virtual-servers/load_data?id=' + selectedNodeId
+        url: '<%= url_for :controller => 'admin/virtual-servers', :action => 'load_data' %>?id=' + selectedNodeId
       });
       formEditVirtualServer.getForm().findField('id').setValue(selectedNodeId);
     }

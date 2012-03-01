@@ -12,7 +12,7 @@ Ext.onReady(function() {
         if ('yes' == button) { 
           Owp.button.action({
             gridName: 'eventLogGrid',
-            url: '/admin/event-log/clear',
+            url: '<%= url_for :controller => 'admin/event-log', :action => 'clear' %>',
             waitMsg: '<%= tjs('form.performing_task') %>',
             failure: {
               title: '<%= tjs('form.error.title') %>',
@@ -25,7 +25,7 @@ Ext.onReady(function() {
   }
 
   var store = new Ext.data.JsonStore({
-    url: '/admin/event-log/list_data',
+    url: '<%= url_for :controller => 'admin/event-log', :action => 'list_data' %>',
     autoLoad: true,
     data: <%= @events %>,
     sortInfo: { field: 'id', direction: 'DESC' },
@@ -67,7 +67,7 @@ Ext.onReady(function() {
             icon = "error.png";
           }
           
-          return '<img src="/images/' + icon + '"/>';
+          return '<img src="' + BASE_URL + '/images/' + icon + '"/>';
         },
         align: 'center',
         sortable: true,
@@ -109,7 +109,7 @@ Ext.onReady(function() {
       text: '<%= tjs('admin.event_log.grid.button.clear') %>',
       handler: clearLog,
       cls: 'x-btn-text-icon',
-      icon: '/images/delete.png'
+      icon: '<%= image_path 'delete.png' %>'
     }] <% end -%>
   });
   

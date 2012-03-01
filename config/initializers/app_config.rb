@@ -57,6 +57,7 @@ config_defaults = {
   'email' => {
     'from' => '',
   },
+  'base_url' => '',
 }
 
 def hashes2ostruct(object)
@@ -78,3 +79,5 @@ end
 config_file_name = "#{Rails.root}/config/config.yml"
 config = File.exist?(config_file_name) ? (YAML.load_file(config_file_name) || {}) : {}
 AppConfig = hashes2ostruct(config_defaults.deep_merge(config))
+
+ActionController::Base.relative_url_root = AppConfig.base_url

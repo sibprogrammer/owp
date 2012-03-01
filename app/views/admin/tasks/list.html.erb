@@ -5,7 +5,7 @@
 Ext.onReady(function() {
 
   var store = new Ext.data.JsonStore({
-    url: '/admin/tasks/list_data',
+    url: '<%= url_for :controller => 'admin/tasks', :action => 'list_data' %>',
     autoLoad: true,
     data: <%= @tasks %>,
     sortInfo: { field: 'id', direction: 'DESC' },
@@ -39,7 +39,7 @@ Ext.onReady(function() {
           } else {
             var image = 'accept.png';
           }
-          return '<img src="/images/' + image + '"/>';
+          return '<img src="' + BASE_URL + '/images/' + image + '"/>';
         },
         width: 60,
         align: 'center',

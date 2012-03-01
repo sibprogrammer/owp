@@ -287,7 +287,7 @@ class Admin::VirtualServersController < Admin::Base
           :value => virtual_server.identity,
         }, {
           :parameter => t('admin.virtual_servers.form.create_server.field.status'),
-          :value => '<img src="/images/' + (('running' == virtual_server.real_state) ? 'run' : 'stop') + '.png"/>',
+          :value => "<img src=\"#{base_url}/images/" + (('running' == virtual_server.real_state) ? 'run' : 'stop') + '.png"/>',
         }, {
           :parameter => t('admin.virtual_servers.form.create_server.field.os_template'),
           :value => virtual_server.orig_os_template,
