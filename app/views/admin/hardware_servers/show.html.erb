@@ -35,7 +35,7 @@ Ext.onReady(function() {
         if ('yes' == button) { 
           Owp.list.groupAction({
             gridName: 'virtualServersGrid',
-            url: '/admin/virtual-servers/delete',
+            url: '<%= url_for :controller => 'admin/virtual-servers', :action => 'delete' %>',
             waitMsg: '<%= tjs('form.performing_task') %>',
             failure: {
               title: '<%= tjs('form.error.title') %>',
