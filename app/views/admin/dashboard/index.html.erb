@@ -25,7 +25,7 @@ Ext.onReady(function() {
     var updatesPanel = new Ext.Panel({
       header: false,
       cls: 'panel-dashboard',
-      html: '<p><img src="/images/information.png" class="icon-inline"/>' 
+      html: '<p><img src="' + BASE_URL + '/images/information.png" class="icon-inline"/>'
         + '<%= tjs('admin.dashboard.updates.text', :product => '<b>' + PRODUCT_NAME + ' ' + @updates[:version] + '</b>') %> '
         + '<%= tjs('admin.dashboard.updates.update_command', :command => '<span class="no-wrap">' + @updates[:update_command] + '</span>') %>'
         + '</p>'
