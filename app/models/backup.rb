@@ -28,4 +28,11 @@ class Backup < ActiveRecord::Base
     virtual_server.hardware_server.rpc_client.job('tar', "-xf #{backup_name} -C /")
   end
 
+  def sync_size
+    backup_file = virtual_server.hardware_server.backups_dir + '/' + name
+    file_info = virtual_server.hardware_server.rpc_client.exec('ls', "--block-size=M -s #{backup_file}")['output']
+    size, filename = file_info.split
+    self.size = size.to_i
+  end
+
 end

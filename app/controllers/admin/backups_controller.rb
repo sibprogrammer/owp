@@ -55,8 +55,8 @@ class Admin::BackupsController < Admin::Base
       end
 
       job.finish
+      backup.sync_size
       backup.save
-      hardware_server.sync_backups
 
       if 'running' == orig_ve_state
         case ve_state
