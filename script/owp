@@ -127,6 +127,7 @@ stop() {
       echo_fail "Unable to stop web server."
     else
       echo_ok "Web server was stopped."
+      ruby $INSTALL_DIR/script/runner -e production  "BackgroundJob.stop_running" > /dev/null 2>&1
     fi
   fi
 
