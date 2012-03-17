@@ -272,7 +272,7 @@ class WatchdogDaemon
 
     case ARGV[0]
       when 'start' then do_start
-      when 'stop' then do_stop
+      when 'stop' then exit do_stop
       when 'restart' then do_restart
       when 'status' then do_status
       else do_help
@@ -286,6 +286,14 @@ class WatchdogDaemon
     end
 
     @debug = '1' == ENV['WATCHDOG_DEBUG']
+  end
+
+  def puts_ok(message)
+    puts "\033[00;32m[OK]\033[00m " + message
+  end
+
+  def puts_fail(message)
+    puts "\033[00;31m[FAIL]\033[00m " + message
   end
 
   def do_start
@@ -317,15 +325,25 @@ class WatchdogDaemon
 
   def do_stop
     if (File.exists?(PID_FILE))
-      pid = File.read(PID_FILE)
+      pid = File.read(PID_FILE).to_i
+
       begin
-        Process.kill('TERM', pid.to_i)
+        Process.kill(0, pid)
       rescue
+        puts_fail "Watchdog daemon probably died."
         delete_pid_file
+        return 1
+      end
+
+      begin
+        Process.kill('TERM', pid)
+      rescue
+        puts_fail "Unable to stop watchdog daemon."
       end
     end
 
-    puts "Watchdog daemon was stopped."
+    puts_ok "Watchdog daemon was stopped."
+    return 0
   end
 
   def do_restart
@@ -335,16 +353,25 @@ class WatchdogDaemon
 
   def do_status
     if (File.exists?(PID_FILE))
-      puts "Watchdog daemon is running."
+      pid = File.read(PID_FILE).to_i
+
+      begin
+        Process.kill(0, pid)
+      rescue
+        puts_fail "Watchdog daemon probably died."
+        exit 1
+      end
+
+      puts_ok "Watchdog daemon is running."
     else
-      puts "Watchdog daemon is stopped."
-      exit(1)
+      puts_fail "Watchdog daemon is stopped."
+      exit 1
     end
   end
 
   def do_help
     puts "Usage: ruby watchdog.rb (start|stop|restart|status|help)"
-    exit(1)
+    exit 1
   end
 
   def write_pid_file
