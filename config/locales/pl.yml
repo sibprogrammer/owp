@@ -85,7 +85,7 @@ pl:
       unknown_error: "Nieznany błąd."
       internal_error: "Błąd wewnętrzny."
   about:
-    copyright: "Copyright 2008-2011 SoftUnity."
+    copyright: "Copyright 2008-2012 SoftUnity."
     right_reserved: "Wszystkie prawa zastrzeżone."
     about_program: "O programie..."
     author: "Główny projektant"
