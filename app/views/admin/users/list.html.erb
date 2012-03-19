@@ -7,7 +7,7 @@ Ext.onReady(function() {
   function showUserEditForm(mode) {
     var formEditUser = new Owp.form.BasicForm({
       labelWidth: 150,
-      waitMsgTarget: true,
+      waitMsgTarget: !Ext.isGecko,
       url: '<%= url_for :controller => 'admin/users', :action => 'update' %>',
       autoHeight: true,
       defaults: { width: 200 },

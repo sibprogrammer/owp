@@ -97,7 +97,7 @@ Ext.onReady(function() {
   function showIpPoolEditForm(mode) {
     var formEditIpPool = new Owp.form.BasicForm({
       labelWidth: 150,
-      waitMsgTarget: true,
+      waitMsgTarget: !Ext.isGecko,
       url: '<%= url_for :controller => 'admin/ip-pools', :action => 'update' %>',
       autoHeight: true,
       defaults: { width: 200 },

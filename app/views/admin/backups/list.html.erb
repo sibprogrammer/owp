@@ -7,7 +7,7 @@ Ext.onReady(function() {
   function createBackup() {
     var formBackup = new Owp.form.BasicForm({
       labelWidth: 150,
-      waitMsgTarget: true,
+      waitMsgTarget: !Ext.isGecko,
       url: '<%= url_for :controller => 'admin/backups', :action => 'create', :virtual_server_id => @virtual_server.id %>',
       autoHeight: true,
       defaults: { width: 200 },

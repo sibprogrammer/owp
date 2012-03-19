@@ -44,7 +44,7 @@ var showVirtualServerEditForm = function(mode, grid, statsGrid) {
 
   var formEditVirtualServer = new Owp.form.BasicForm({
     labelWidth: 180,
-    waitMsgTarget: true,
+    waitMsgTarget: !Ext.isGecko,
     url: '<%= url_for :controller => 'admin/virtual-servers', :action => 'create', :hardware_server_id => @hardware_server.id %>',
     autoHeight: true,
     keys: [{

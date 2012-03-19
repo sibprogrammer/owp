@@ -29,7 +29,7 @@ var searchGrid = new Ext.grid.GridPanel({
 
 var formSearch = new Owp.form.BasicForm({
   labelWidth: 100,
-  waitMsgTarget: true,
+  waitMsgTarget: !Ext.isGecko,
   autoHeight: true,
   keys: [{
     key: Ext.EventObject.ENTER,

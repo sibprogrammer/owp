@@ -7,7 +7,7 @@ Ext.onReady(function() {
   function showRoleEditForm(mode) {
     var formEditRole = new Owp.form.BasicForm({
       labelWidth: 150,
-      waitMsgTarget: true,
+      waitMsgTarget: !Ext.isGecko,
       url: '<%= url_for :controller => 'admin/roles', :action => 'update' %>',
       autoHeight: true,
       defaults: { width: 200 },

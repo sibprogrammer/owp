@@ -155,7 +155,7 @@ Ext.onReady(function() {
   
     var formLimits = new Owp.form.BasicForm({
       labelWidth: 180,
-      waitMsgTarget: true,
+      waitMsgTarget: !Ext.isGecko,
       url: '<%= url_for :controller => 'admin/virtual-servers', :action => 'save_limits', :id => @virtual_server.id %>',
       keys: [{
         key: Ext.EventObject.ENTER,
@@ -274,7 +274,7 @@ Ext.onReady(function() {
   
     var formReinstall = new Owp.form.BasicForm({
       labelWidth: 150,
-      waitMsgTarget: true,
+      waitMsgTarget: !Ext.isGecko,
       url: '<%= url_for :controller => 'admin/virtual-servers', :action => 'reinstall', :id => @virtual_server.id %>',
       defaults: { width: 200 },
       autoHeight: true,
@@ -361,7 +361,7 @@ Ext.onReady(function() {
   var changeSettingsAction = function() {
     var formChangeSettings = new Owp.form.BasicForm({
       labelWidth: 180,
-      waitMsgTarget: true,
+      waitMsgTarget: !Ext.isGecko,
       url: '<%= url_for :controller => 'admin/virtual-servers', :action => 'change_settings', :id => @virtual_server.id %>',
       keys: [{
         key: Ext.EventObject.ENTER,
@@ -464,7 +464,7 @@ Ext.onReady(function() {
   var consoleAction = function() {
     var formConsole = new Owp.form.BasicForm({
       labelWidth: 100,
-      waitMsgTarget: true,
+      waitMsgTarget: !Ext.isGecko,
       url: '<%= url_for :controller => 'admin/virtual-servers', :action => 'run_command', :id => @virtual_server.id %>',
       keys: [{
         key: Ext.EventObject.ENTER,
@@ -538,7 +538,7 @@ Ext.onReady(function() {
   var cloneAction = function() {
     var formClone = new Owp.form.BasicForm({
       labelWidth: 180,
-      waitMsgTarget: true,
+      waitMsgTarget: !Ext.isGecko,
       url: '<%= url_for :controller => 'admin/virtual-servers', :action => 'clone', :id => @virtual_server.id %>',
       keys: [{
         key: Ext.EventObject.ENTER,
@@ -643,7 +643,7 @@ Ext.onReady(function() {
 
     var formMigrate = new Owp.form.BasicForm({
       labelWidth: 180,
-      waitMsgTarget: true,
+      waitMsgTarget: !Ext.isGecko,
       url: '<%= url_for :controller => 'admin/virtual-servers', :action => 'migrate', :id => @virtual_server.id %>',
       keys: [{
         key: Ext.EventObject.ENTER,
@@ -720,7 +720,7 @@ Ext.onReady(function() {
   var createTemplateAction = function() {
     var formCreateTemplate = new Owp.form.BasicForm({
       labelWidth: 100,
-      waitMsgTarget: true,
+      waitMsgTarget: !Ext.isGecko,
       url: '<%= url_for :controller => 'admin/virtual-servers', :action => 'create_template', :id => @virtual_server.id %>',
       keys: [{
         key: Ext.EventObject.ENTER,

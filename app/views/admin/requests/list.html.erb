@@ -8,7 +8,7 @@ Ext.onReady(function() {
     var formCreateRequest = new Owp.form.BasicForm({
       labelWidth: 100,
       autoHeight: true,
-      waitMsgTarget: true,
+      waitMsgTarget: !Ext.isGecko,
       url: '<%= url_for :controller => 'admin/requests', :action => 'create' %>',
       defaults: { width: 300 },
       items: [{

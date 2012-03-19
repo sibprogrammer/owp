@@ -53,7 +53,7 @@ Ext.onReady(function() {
     var formEditServer = new Owp.form.BasicForm({
       labelWidth: 150,
       autoHeight: true,
-      waitMsgTarget: true,
+      waitMsgTarget: !Ext.isGecko,
       url: '<%= url_for :controller => 'admin/hardware-servers', :action => 'save' %>',
       defaults: { width: 200 },
       keys: [{

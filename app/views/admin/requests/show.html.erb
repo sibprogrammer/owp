@@ -8,7 +8,7 @@ Ext.onReady(function() {
     var formAddComment = new Owp.form.BasicForm({
       labelWidth: 100,
       autoHeight: true,
-      waitMsgTarget: true,
+      waitMsgTarget: !Ext.isGecko,
       url: '<%= url_for :controller => 'admin/requests', :action => 'add_comment', :request_id => @request.id %>',
       defaults: { width: 300 },
       items: [{

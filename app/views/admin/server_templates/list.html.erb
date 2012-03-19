@@ -17,7 +17,7 @@ Ext.onReady(function() {
   
     var formEditServerTemplate = new Owp.form.BasicForm({
       labelWidth: 180,
-      waitMsgTarget: true,
+      waitMsgTarget: !Ext.isGecko,
       url: '<%= url_for :controller => 'admin/server-templates', :action => 'save', :hardware_server_id => @hardware_server.id %>',
       autoHeight: true,
       keys: [{
