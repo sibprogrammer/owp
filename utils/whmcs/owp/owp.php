@@ -247,13 +247,13 @@ function _owp_apiCall($method, $params = '')
         $params = http_build_query($params);
     }
 
-    $context = stream_context_create(array(
-        'http' => array(
-            'header'  => "Authorization: Basic " . base64_encode("$user:$password")
-        )
-    ));
-
-    $result = file_get_contents("http://$host/api/$method?$params", false, $context);
+    $apicurl = curl_init();
+    curl_setopt($apicurl, CURLOPT_URL, "http://$host/api/$method?$params");
+    curl_setopt($apicurl, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($apicurl, CURLOPT_USERPWD, "$user:$password");
+    curl_setopt($apicurl, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
+    $result = curl_exec($apicurl);
+    curl_close($apicurl);
 
     $doc = simplexml_load_string($result);
 
