@@ -248,6 +248,7 @@ function _owp_apiCall($method, $params = '')
         $params = http_build_query($params);
     }
     
+    
 # Check if CURL is compiled with PHP, fall back to fopen if not.
 if (extension_loaded('curl')) {    
     $ch = curl_init();
@@ -264,6 +265,7 @@ if (extension_loaded('curl')) {
             'header'  => "Authorization: Basic " . base64_encode("$user:$password")
         )
     ));
+    
     $result = file_get_contents("http://$host/api/$method?$params", false, $context);
     
 }   
