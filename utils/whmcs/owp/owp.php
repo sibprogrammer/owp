@@ -225,6 +225,7 @@ function owp_LoginLink($params)
     echo "<a href=\"http://" . _owp_getHost($params) . "/login?login=".$params["username"]."\" target=\"_blank\" style=\"color:#cc0000\">login to control panel</a>";
 }
 
+
 /**
  * Module private methods
  */
@@ -246,15 +247,28 @@ function _owp_apiCall($method, $params = '')
     if (is_array($params)) {
         $params = http_build_query($params);
     }
-
+    
+    
+# Check if CURL is compiled with PHP, fall back to fopen if not.
+if (extension_loaded('curl')) {    
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, "http://$host/api/$method?$params");
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    # CURL provides the same base64 encoding as fopen below
+    curl_setopt($ch, CURLOPT_USERPWD, "$user:$password");
+    curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
+    $result = curl_exec($ch);
+    curl_close($ch);
+} else {    
     $context = stream_context_create(array(
         'http' => array(
             'header'  => "Authorization: Basic " . base64_encode("$user:$password")
         )
     ));
-
+    
     $result = file_get_contents("http://$host/api/$method?$params", false, $context);
-
+    
+}   
     $doc = simplexml_load_string($result);
 
     return $doc;
