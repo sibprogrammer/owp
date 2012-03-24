@@ -225,18 +225,25 @@ function owp_LoginLink($params)
     echo "<a href=\"http://" . _owp_getHost($params) . "/login?login=".$params["username"]."\" target=\"_blank\" style=\"color:#cc0000\">login to control panel</a>";
 }
 
+
 /**
  * Module private methods
  */
+
+function _owp_getHost($params) 
+{
+    return ('' != $params['serverhostname']) ? $params['serverhostname'] : $params['serverip'];
+}
 
 function _owp_apiCall($method, $params = '') 
 {
     $queryResult = mysql_query("SELECT * FROM `tblservers` WHERE `type` = 'owp' LIMIT 1");
     $serverInfo = mysql_fetch_array($queryResult);
+
     $host = $serverInfo['hostname'];
     $user = $serverInfo['username'];
     $password = decrypt($serverInfo['password']);
-
+    
     if (is_array($params)) {
         $params = http_build_query($params);
     }
