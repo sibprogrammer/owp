@@ -3,3 +3,4 @@ rvm:
   - 1.8.7
 before_install:
   - gem install sqlite3
+  - rake db:migrate
