@@ -1,5 +1,6 @@
 # OpenVZ Web Panel
 
+[![Build Status](https://secure.travis-ci.org/sibprogrammer/owp.png?branch=master)](http://travis-ci.org/sibprogrammer/owp)
 
 Copyright (c) 2008-2012 SoftUnity, Alexei Yuzhakov <sibprogrammer@gmail.com>
 
