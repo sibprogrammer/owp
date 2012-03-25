@@ -10,7 +10,7 @@ class VirtualServer < ActiveRecord::Base
   has_many :backups, :dependent => :destroy
   has_many :bean_counters, :dependent => :destroy
 
-  validates_format_of :ip_address, :with => /^((\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})|\s|(([\da-fA-F]{1,4}:?)|(::)){1,8})*$/
+  validates_format_of :ip_address, :with => /^(((\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})|\s|(([\da-fA-F]{1,4}:?)|(::)){1,8})*|auto)$/
   validates_uniqueness_of :ip_address, :allow_blank => true
   validates_uniqueness_of :identity, :scope => :hardware_server_id
   validates_confirmation_of :password
@@ -113,6 +113,11 @@ class VirtualServer < ActiveRecord::Base
       end
       hardware_server.rpc_client.exec('vzctl', "create #{identity.to_s} --ostemplate #{orig_os_template} --config #{orig_server_template}")
       self.state = 'stopped'
+
+      if 'auto' == ip_address
+        first_free_ip = hardware_server.free_ips.first
+        self.ip_address = first_free_ip ? first_free_ip : ''
+      end
     end
 
     if orig_server_template_changed?
@@ -291,6 +296,7 @@ class VirtualServer < ActiveRecord::Base
 
   def validate
     return if 0 == IpPool.count or ip_address.blank? or !ip_address_changed?
+    return if 'auto' == ip_address
 
     old_ips = ip_address_was.blank? ? [] : ip_address_was.split(' ')
 

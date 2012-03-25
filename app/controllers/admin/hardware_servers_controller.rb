@@ -67,6 +67,7 @@ class Admin::HardwareServersController < Admin::Base
     hardware_server = HardwareServer.find_by_id(params[:id])
     redirect_to :action => 'list' if !hardware_server and return
     list = hardware_server.free_ips.map { |item| { :address => item }}
+    list = [{ :address => 'auto' }] + list if !list.blank? and 'add' == params[:mode]
     render :json => { :data => list }
   end
 
