@@ -297,8 +297,8 @@ en:
           ip_address: "IP Address"
           host_name: "Host Name"
           os_template: "OS Template"
-          memory: "Memory, Mb"
-          diskspace: "Diskspace, Mb"
+          memory: "Memory, MB"
+          diskspace: "Diskspace, MB"
           expiration_date: "Expiration Date"
           owner: "Owner"
           description: "Description"
@@ -347,8 +347,8 @@ en:
             start_after_creation: "Start after Creation"
             nameserver: "DNS Server"
             search_domain: "Search Domain"
-            diskspace: "Disk Space, Mb"
-            memory: "RAM Memory, Mb"
+            diskspace: "Disk Space, MB"
+            memory: "RAM Memory, MB"
             status: "Status"
             owner: "Owner"
             select_owner: "Select an owner"
@@ -444,7 +444,7 @@ en:
         title: "Installed OS Templates"
         column:
           name: "Name"
-          size: "Size, Mb"
+          size: "Size, MB"
           virtual_servers: "Servers"
         button:
           install_new_template: "Install New OS Template"
@@ -558,8 +558,8 @@ en:
             start_options: "Start Options"
           field:
             name: "Name"
-            diskspace: "Diskspace, Mb"
-            memory: "Memory, Mb"
+            diskspace: "Diskspace, MB"
+            memory: "Memory, MB"
             start_on_boot: "Start on Boot"
             nameserver: "DNS Server"
             search_domain: "Search Domain"
@@ -582,7 +582,7 @@ en:
         column:
           archive_date: "Date"
           description: "Description"
-          size: "Size, Mb"
+          size: "Size, MB"
       form:
         remove_backup:
           sure_to_remove: "Are you sure you want to remove selected backups?"
