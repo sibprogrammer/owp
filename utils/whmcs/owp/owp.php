@@ -10,13 +10,13 @@
 
 function owp_ConfigOptions()
 {
-    # Check if mod_owp MySQL table exists inside WHMCS database
+    // Check if mod_owp MySQL table exists inside WHMCS database
     if (!mysql_num_rows(mysql_query("SHOW TABLES LIKE 'mod_owp'"))) {
     # Create table mod_owp with serviceid and vsid columns 
-    $query = "CREATE TABLE mod_owp(serviceid int, vsid int)";
-    $result = mysql_query($query);
-    # Output to WHMCS Activity Log File
-    logActivity('mod_owp table created');
+        $query = "CREATE TABLE mod_owp(serviceid int, vsid int)";
+        $result = mysql_query($query);
+    // Output to WHMCS Activity Log File
+        logActivity('mod_owp table created');
     }
     
     $nodes = array();
@@ -122,7 +122,7 @@ function owp_CreateAccount($params)
 
     $virtualServerId = (int)$result->details->id;
     
-    # Add new row to WHMCS DB for newly created VS to associate OWP VSID with WHMCS serviceid
+    // Add new row to WHMCS DB for newly created VS to associate OWP VSID with WHMCS serviceid
     insert_query("mod_owp", array("serviceid"=>$params['serviceid'], "vsid"=>$virtualServerId));
 
     $result = _owp_apiCall('virtual_servers/start', array('id' => $virtualServerId));
@@ -251,12 +251,12 @@ function _owp_apiCall($method, $params = '')
     if (is_array($params)) {
         $params = http_build_query($params);
     }
-# Check if CURL is compiled with PHP, fall back to fopen if not.
+    // Check if CURL is compiled with PHP, fall back to fopen if not.
     if (extension_loaded('curl')) {    
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, "http://$host/api/$method?$params");
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        # CURL provides the same base64 encoding as fopen below
+        // CURL provides the same base64 encoding as fopen below
         curl_setopt($ch, CURLOPT_USERPWD, "$user:$password");
         curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
         $result = curl_exec($ch);
@@ -276,7 +276,7 @@ function _owp_apiCall($method, $params = '')
 }
 function _owp_getVSID($params)
 {
-    # Fetch VSid from DB that corresponds with specific WHMCS serviceid
+    // Fetch VSid from DB that corresponds with specific WHMCS serviceid
     $result = select_query("mod_owp","vsid", array("serviceid"=>$params['serviceid']));
     $data = mysql_fetch_array($result);
     $virtualServerId = $data['vsid'];
@@ -293,6 +293,6 @@ function owp_AdminServicesTabFields($params)
  
 function owp_AdminServicesTabFieldsSave($params)
 {
-    # Manually update VSID from Admin Area
+    // Manually update VSID from Admin Area
     update_query("mod_owp", array("vsid"=>$_POST['vsid']), array("serviceid"=>$params['serviceid']));
 }
