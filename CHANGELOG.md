@@ -1,5 +1,30 @@
 # Changes
 
+## OpenVZ Web Panel 2.1 (2012-05-??)
+
+This version is a maintenance release. The following items were fixed and/or
+added:
+
+* Ability to auto-assign first free IP during VE creation.
+* Integration with Travis CI (more stable development builds).
+* Workaround for loading mask problem in Firefox (issue 415).
+* Stop running background tasks on panel stop (issue 203).
+* Init scripts output improvements.
+* Better process status control for watchdog.
+* Better process status control for hw-daemon.
+* Fix problem with running two backups in the same time (issue 412).
+* Ability to use panel inside subdirectory.
+* Ability to customize sender name in emails (issue 377).
+* All translations completeness.
+* Use native interface for iPad (issue 343).
+* Better escaping of shell parameters (issue 239).
+* Final migration to git repo on GitHub.
+* Fix problem with watchdog: do not fail if physical server have more VEs than
+  panel knows (issue 351).
+* Proper creation of VE from template via API.
+* Fix problem with VE stats fetching (undefined method pluralize, issue 298).
+* Detect vzctl utility path in case of compilation from sources (issue 305).
+
 ## OpenVZ Web Panel 2.0 (2011-04-17)
 
 This version is a major release. The following items were fixed and/or added:
