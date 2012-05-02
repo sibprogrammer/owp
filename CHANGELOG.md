@@ -1,6 +1,6 @@
 # Changes
 
-## OpenVZ Web Panel 2.1 (2012-05-??)
+## OpenVZ Web Panel 2.1 (2012-05-02)
 
 This version is a maintenance release. The following items were fixed and/or
 added:
