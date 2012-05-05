@@ -327,7 +327,7 @@ class VirtualServer < ActiveRecord::Base
     suspend if is_running
 
     begin
-      hardware_server.rpc_client.exec("tar --numeric-owner -czf #{shellescape(templates_path)}/#{shellescape(template_name)} -X /tmp/owp-template-exclude.list -C #{Shellwords.shellescape(private_dir)} .")
+      hardware_server.rpc_client.exec("tar --numeric-owner -czf #{shellescape(templates_path)}/#{shellescape(template_name)} -X /tmp/owp-template-exclude.list -C #{shellescape(private_dir)} .")
     rescue => e
       resume if is_running
       raise e
