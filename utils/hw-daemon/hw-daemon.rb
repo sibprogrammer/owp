@@ -69,6 +69,7 @@ class HwDaemonApiHandler < XMLRPC::WEBrickServlet
   def write_file(filename, content)
     File.open(filename, 'w') { |file| file.write(content) }
     $LOG.debug("Writing file: #{filename}")
+    File.exists?(filename)
   end
 
   def service(request, response)

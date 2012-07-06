@@ -2,8 +2,8 @@ Ext.BLANK_IMAGE_URL = BASE_URL + '/images/blank.gif';
 Ext.state.Manager.setProvider(new Ext.state.CookieProvider());
 Ext.QuickTips.init();
 Ext.form.Field.prototype.msgTarget = 'side';
-Ext.Ajax.timeout = 5 * 60 * 1000;
-Ext.form.BasicForm.prototype.timeout = 5 * 60;
+Ext.Ajax.timeout = 30 * 60 * 1000;
+Ext.form.BasicForm.prototype.timeout = 30 * 60;
 
 // workaround for proper Ext.ProgressBar rendering under IE
 Ext.override(Ext.Element, {
