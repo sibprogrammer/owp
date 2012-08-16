@@ -38,7 +38,7 @@ class SessionsController < ApplicationController
           end
         end
 
-        logger.warn "Failed login for '#{params[:login]}' from #{request.remote_ip} at #{Time.now.utc}"
+        logger.warn "Failed login for '#{params[:login]}' from #{request.remote_ip} at #{Time.now.strftime('%Y-%m-%d %H:%M:%S')}"
         respond_to do |format|
           format.html { render :json => { :success => false, :message => message } }
           format.iphone { flash.now[:error] = message }
