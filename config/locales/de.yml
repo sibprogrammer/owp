@@ -196,7 +196,7 @@ de:
       request:
         created: "Request #{{id}} wurde erstellt."
         updated: "Request #{{id}} wurde aktualisiert."
-        removed: "Request #{{id}} wurde gelöscht."
+        removed: "Request #{{id}} wurde gel&ouml;scht."
       comment:
         created: "Kommentar im Request #{{request_id}} wurde generiert."
     tasks:
@@ -602,7 +602,7 @@ de:
         restore:
           sure_to_restore: "M&ouml;chten Sie die ausgew&auml;hlten Backups wirklich wiederherstellen? Der Server wird w&auml;hrend der Wiederherstellungsprozedur nicht erreichbar sein."
           failed: "Wiederherstellungsprozedur fehlgeschlagen."
-          scheduled: "Wiederherstellungsprozedur wurde gestartet und wird einige zeit in Anspruch nehmen."
+          scheduled: "Wiederherstellungsprozedur wurde gestartet und wird einige Zeit in Anspruch nehmen."
     requests:
       title: "Anfragen"
       grid:
@@ -716,7 +716,7 @@ de:
           edit: "bearbeite IP-Bereich"
       form:
         remove_pool:
-          sure_to_remove: "Sind Sie sicher, die ausgew&auml;hlten IP-Bereiche zu löschen?"
+          sure_to_remove: "Sind Sie sicher, die ausgew&auml;hlten IP-Bereiche zu l&ouml;schen?"
           deletion_failed: "einige IP-Bereiche konnten nicht gel&ouml;scht werden."
         create:
           title: "generiere einen neuen IP-Bereich"
