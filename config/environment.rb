@@ -21,6 +21,8 @@ Rails::Initializer.run do |config|
   }
 end
 
+ActionController::Base.param_parsers.delete(Mime::XML)
+
 PRODUCT_NAME = 'OpenVZ Web Panel'
 PRODUCT_VERSION = '2.5'
 
