@@ -89,6 +89,15 @@ class User < ActiveRecord::Base
     allowed <= usage
   end
 
+  def ip_restriction?(remote_ip)
+    allowed_ips = AppConfig.ip_restriction.admin_ips
+    return false unless superadmin? or allowed_ips.blank?
+    allowed_ips.split(/[\s,;]+/).each do |ip|
+      return false if remote_ip == ip
+    end
+    true
+  end
+
   private
 
     def matches_dynamic_perm_check?(method_id)

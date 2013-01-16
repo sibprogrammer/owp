@@ -103,6 +103,7 @@ en:
     locale: "Language"
     bad_login: "Invalid login or password."
     locked_user: "User is locked."
+    ip_restricted: "IP restriction is in effect."
   restore_password:
     page_title: "Password Recovery"
     window_title: "Restore password"
@@ -182,6 +183,7 @@ en:
           bad_password: "User {{login}} failed to login with incorrect password."
           bad_login: "Attempt to login with unknown login name."
           locked_user: "Locked user {{login}} tried to login."
+          ip_restricted: "IP restriction is in effect for user with login {{login}}."
         logout: "User {{login}} is logged out."
         removed: "User {{login}} was removed."
         enabled: "User {{login}} was enabled."

@@ -58,6 +58,9 @@ config_defaults = {
     'from' => '',
   },
   'base_url' => '',
+  'ip_restriction' => {
+    'admin_ips' => '',
+  }
 }
 
 def hashes2ostruct(object)
