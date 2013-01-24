@@ -91,7 +91,7 @@ class User < ActiveRecord::Base
 
   def ip_restriction?(remote_ip)
     allowed_ips = AppConfig.ip_restriction.admin_ips
-    return false unless superadmin? or allowed_ips.blank?
+    return false if !superadmin? or allowed_ips.blank?
     allowed_ips.split(/[\s,;]+/).each do |ip|
       return false if remote_ip == ip
     end
