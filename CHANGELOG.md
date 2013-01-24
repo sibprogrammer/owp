@@ -1,5 +1,15 @@
 # Changes
 
+## OpenVZ Web Panel 2.2 (2013-??-??)
+
+This version is a maintenance release. The following items were fixed and/or
+added:
+
+* Ability to restrict admin access by IP (issue 327).
+* Protection against Rails vulnerabilities (issue 485).
+* Errors during big server template creation (issue 453).
+* Fix an ability to create OS template based on virtual server.
+
 ## OpenVZ Web Panel 2.1 (2012-05-02)
 
 This version is a maintenance release. The following items were fixed and/or
