@@ -5,6 +5,7 @@
 This version is a maintenance release. The following items were fixed and/or
 added:
 
+* Ability to use native UI on mobile devices (issue 487).
 * Ability to restrict admin access by IP (issue 327).
 * Protection against Rails vulnerabilities (issue 485).
 * Errors during big server template creation (issue 453).

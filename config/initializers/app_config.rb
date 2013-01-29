@@ -60,6 +60,9 @@ config_defaults = {
   'base_url' => '',
   'ip_restriction' => {
     'admin_ips' => '',
+  },
+  'mobile' => {
+    'special_ui' => true,
   }
 }
 

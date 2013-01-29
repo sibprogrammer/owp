@@ -73,6 +73,7 @@ class ApplicationController < ActionController::Base
     end
 
     def iphone?
+      return false unless AppConfig.mobile.special_ui
       agent = request.env["HTTP_USER_AGENT"]
       agent && !agent[/iPad/] && (agent[/(Mobile\/.+Safari)/] || agent[/Android/])
     end
