@@ -3,7 +3,7 @@ class VirtualServer < ActiveRecord::Base
     :orig_os_template, :password, :start_on_boot, :start_after_creation, :state,
     :nameserver, :search_domain, :diskspace, :memory, :password_confirmation,
     :user_id, :orig_server_template, :description, :cpu_units, :cpus, :cpu_limit,
-    :expiration_date
+    :expiration_date, :vswap
   attr_accessor :password, :password_confirmation, :start_after_creation
   belongs_to :hardware_server
   belongs_to :user
@@ -44,13 +44,11 @@ class VirtualServer < ActiveRecord::Base
 
     limits = [
       'KMEMSIZE', 'LOCKEDPAGES', 'SHMPAGES', 'NUMPROC',
-      'PHYSPAGES', 'VMGUARPAGES', 'OOMGUARPAGES', 'NUMTCPSOCK', 'NUMFLOCK',
+      'VMGUARPAGES', 'OOMGUARPAGES', 'NUMTCPSOCK', 'NUMFLOCK',
       'NUMPTY', 'NUMSIGINFO', 'TCPSNDBUF', 'TCPRCVBUF', 'OTHERSOCKBUF',
       'DGRAMRCVBUF', 'NUMOTHERSOCK', 'DCACHESIZE', 'NUMFILE',
       'AVNUMPROC', 'NUMIPTENT', 'DISKINODES'
     ]
-
-    limits << 'SWAPPAGES' if (hardware_server.vzctl_version.split('.').map(&:to_i) <=> [3, 0, 24]) >= 0
 
     result = []
 
@@ -140,8 +138,20 @@ class VirtualServer < ActiveRecord::Base
       vzctl_set("--ipdel all --save") if !ip_address_was.blank? and ip_address_changed?
       vzctl_set(ip_address.split.map { |ip| "--ipadd #{ip} " }.join + "--save") if !ip_address.blank? and ip_address_changed?
 
-      privvmpages = 0 == memory.to_i ? 'unlimited' : memory.to_i * 1024 / 4
-      vzctl_set("--privvmpages #{shellescape(privvmpages.to_s)} --save") if memory_changed?
+      if memory_changed?
+        if vswap > 0 and hardware_server.vswap
+          vzctl_set("--ram #{shellescape(memory.to_s)}M --save")
+        else
+          privvmpages = 0 == memory.to_i ? 'unlimited' : memory.to_i * 1024 / 4
+          vzctl_set("--privvmpages #{shellescape(privvmpages.to_s)} --save")
+          vzctl_set("--physpages unlimited --save")
+        end
+      end
+
+      if vswap_changed? and vswap > 0 and hardware_server.vswap
+        vzctl_set("--swap #{shellescape(vswap.to_s)}M --save")
+      end
+
       disk = 0 == diskspace.to_i ? 'unlimited' : diskspace.to_i * 1024
       vzctl_set("--diskspace #{shellescape(disk.to_s)} --save") if diskspace_changed?
     rescue HwDaemonExecException => exception

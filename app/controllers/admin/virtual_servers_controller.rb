@@ -68,6 +68,7 @@ class Admin::VirtualServersController < Admin::Base
       :search_domain => virtual_server.search_domain,
       :diskspace => 0 == virtual_server.diskspace ? '' : virtual_server.diskspace,
       :memory => 0 == virtual_server.memory ? '' : virtual_server.memory,
+      :vswap => 0 == virtual_server.vswap ? '' : virtual_server.vswap,
       :cpu_units => virtual_server.cpu_units,
       :cpus => virtual_server.cpus,
       :cpu_limit => virtual_server.cpu_limit,
@@ -180,6 +181,8 @@ class Admin::VirtualServersController < Admin::Base
       :cpus => server_template.get_cpus,
       :cpu_limit => server_template.get_cpu_limit,
       :memory => server_template.get_memory,
+      :vswap => server_template.get_vswap,
+      :vswap_enabled => server_template.vswap_enabled?,
     }}
   end
 

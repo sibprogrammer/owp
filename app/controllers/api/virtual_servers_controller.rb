@@ -64,6 +64,7 @@ class Api::VirtualServersController < Api::Base
             :start_on_boot => server_template.get_start_on_boot,
             :diskspace => server_template.get_diskspace,
             :memory => server_template.get_memory,
+            :vswap => server_template.get_vswap,
             :cpu_units => server_template.get_cpu_units,
             :cpus => server_template.get_cpus,
             :cpu_limit => server_template.get_cpu_limit,

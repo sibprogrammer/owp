@@ -117,7 +117,14 @@ var showVirtualServerEditForm = function(mode, grid, statsGrid) {
                 if ('add' == mode) {
                   formEditVirtualServer.getForm().load({
                     waitMsg: '<%= tjs('form.loading') %>',
-                    success: function() {
+                    success: function(form, action) {
+                      <% if @hardware_server.vswap %>
+                        if (action.result.data.vswap_enabled) {
+                          form.findField('fieldVswap').enable();
+                        } else {
+                          form.findField('fieldVswap').disable();
+                        }
+                      <% end %>
                       windowEditVirtualServer.focus();
                     },
                     url: '<%= url_for :controller => 'admin/virtual-servers', :action => 'load_template' %>',
@@ -210,6 +217,12 @@ var showVirtualServerEditForm = function(mode, grid, statsGrid) {
             id: 'fieldMemory',
             emptyText: '<%= tjs('admin.virtual_servers.limits.unlimited') %>',
             name: 'memory'
+          <% if @hardware_server.vswap %>
+          }, {
+            fieldLabel: '<%= tjs('admin.virtual_servers.form.create_server.field.vswap') %>',
+            id: 'fieldVswap',
+            name: 'vswap'
+          <% end %>
           }, {
             fieldLabel: '<%= tjs('admin.virtual_servers.form.create_server.field.cpu_units') %>',
             id: 'fieldCpuUnits',

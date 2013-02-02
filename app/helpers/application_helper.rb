@@ -28,4 +28,40 @@ module ApplicationHelper
     ActionController::Base.relative_url_root
   end
 
+  def get_diskspace_mb(limit)
+    return 0 if limit.blank?
+    limit = limit.include?(':') ? limit.split(":").last : limit
+    return 0 if ('unlimited' == limit)
+
+    case limit[-1,1]
+      when 'K' then limit = limit.to_f
+      when 'M' then limit = limit.to_f * 1024
+      when 'G' then limit = limit.to_f * 1024 * 1024
+    end
+
+    return 0 if ((2 ** 31 - 1) == limit.to_i || (2 ** 63 - 1) == limit.to_i)
+
+    (limit.to_f / 1024).to_i
+  end
+
+  def get_ram_mb(limit)
+    return 0 if limit.blank?
+    limit = limit.include?(':') ? limit.split(":").last : limit
+    return 0 if ('unlimited' == limit)
+
+    units = /[BKMGP]$/.match(limit.upcase) ? limit[-1,1].upcase : 'B'
+    limit = limit.to_f
+
+    case units
+      when 'B' then limit /= 1024 * 1024
+      when 'K' then limit /= 1024
+      when 'P' then limit /= 256
+      when 'G' then limit *= 1024
+    end
+
+    return 0 if ((2 ** 31 - 1) == limit.to_i || (2 ** 63 - 1) == limit.to_i)
+
+    limit.to_i
+  end
+
 end

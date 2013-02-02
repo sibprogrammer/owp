@@ -31,6 +31,12 @@
     <span class="name"><%= t('admin.virtual_servers.form.create_server.field.memory') %></span>
     <span class="value"><%= h(@virtual_server.human_memory) %></span>
   </li>
+  <% if @virtual_server.vswap > 0 %>
+    <li class="smallfield textfield">
+      <span class="name"><%= t('admin.virtual_servers.form.create_server.field.vswap') %></span>
+      <span class="value"><%= h(@virtual_server.vswap) %></span>
+    </li>
+  <% end %>
   <li class="smallfield textfield">
     <span class="name"><%= t('admin.virtual_servers.form.create_server.field.cpu_units') %></span>
     <span class="value"><%= h(@virtual_server.cpu_units) %></span>

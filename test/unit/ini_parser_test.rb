@@ -13,9 +13,6 @@ NEIGHBOUR_DEVS = detect
 VZFASTBOOT = "no"
   VE0CPUUNITS=1000
 IPV6="no"
-DISKSPACE="2G:2.2G"
-DISKSPACE2="2048"
-DISKSPACE3="1153024:1153024"
     EOS
     @parser = IniParser.new(config)
   end
@@ -28,9 +25,6 @@ DISKSPACE3="1153024:1153024"
     assert_equal 'no', @parser.get('VZFASTBOOT')
     assert_equal 'no', @parser.get('IPV6')
     assert_equal 1000, @parser.get('VE0CPUUNITS').to_i
-    assert_equal 2252, @parser.get_mb('DISKSPACE')
-    assert_equal 2, @parser.get_mb('DISKSPACE2')
-    assert_equal 1126, @parser.get_mb('DISKSPACE3')
   end
 
   test "Read non-existent key" do

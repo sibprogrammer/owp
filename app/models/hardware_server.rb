@@ -1,4 +1,6 @@
 class HardwareServer < ActiveRecord::Base
+  include ApplicationHelper
+
   attr_accessible :host, :auth_key, :description, :daemon_port, :use_ssl
   validates_uniqueness_of :host
   validates_numericality_of :daemon_port, :only_integer => true, :greater_than => 1023, :less_than => 49152
@@ -153,13 +155,14 @@ class HardwareServer < ActiveRecord::Base
       virtual_server.cpus = parser.get('CPUS')
       virtual_server.cpu_limit = parser.get('CPULIMIT')
       virtual_server.hardware_server = self
-      virtual_server.diskspace = parser.get_mb('DISKSPACE')
+      virtual_server.diskspace = get_diskspace_mb(parser.get('DISKSPACE'))
+      virtual_server.vswap = get_ram_mb(parser.get('SWAPPAGES'))
 
-      memory = parser.get('PRIVVMPAGES')
-      if unlimited_limit?(memory)
-        virtual_server.memory = 0
+      if virtual_server.vswap > 0
+        virtual_server.memory = get_ram_mb(parser.get('PHYSPAGES'))
       else
-        virtual_server.memory = memory.split(":").last.to_i * 4 / 1024
+        memory = parser.get('PRIVVMPAGES')
+        virtual_server.memory = unlimited_limit?(memory) ? 0 : memory.split(":").last.to_i * 4 / 1024
       end
 
       virtual_server.save(false)
@@ -204,6 +207,14 @@ class HardwareServer < ActiveRecord::Base
 
   def sync_server_info
     self.vzctl_version = rpc_client.exec('vzctl --version')['output'].split[2]
+
+    begin
+      rpc_client.exec('ls /proc/vz/vswap')
+      self.vswap = true
+    rescue HwDaemonExecException => e
+      self.vswap = false
+    end
+
     sync_config
     save
   end

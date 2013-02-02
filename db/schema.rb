@@ -1,4 +1,4 @@
-# This file is auto-generated from the current state of the database. Instead of editing this file,
+# This file is auto-generated from the current state of the database. Instead of editing this file, 
 # please use the migrations feature of Active Record to incrementally modify your database, and
 # then regenerate this schema definition.
 #
@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110327133050) do
+ActiveRecord::Schema.define(:version => 20130202075214) do
 
   create_table "background_jobs", :force => true do |t|
     t.string  "description"
@@ -64,6 +64,7 @@ ActiveRecord::Schema.define(:version => 20110327133050) do
     t.string  "backups_dir"
     t.string  "ve_private"
     t.boolean "use_ssl",                 :default => false
+    t.boolean "vswap",                   :default => false
   end
 
   add_index "hardware_servers", ["host"], :name => "index_hardware_servers_on_host", :unique => true
@@ -144,6 +145,7 @@ ActiveRecord::Schema.define(:version => 20110327133050) do
     t.integer "cpu_limit"
     t.integer "cpus"
     t.date    "expiration_date"
+    t.integer "vswap",                              :default => 0
   end
 
 end

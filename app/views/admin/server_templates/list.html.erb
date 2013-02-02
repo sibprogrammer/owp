@@ -76,6 +76,12 @@ Ext.onReady(function() {
               id: 'fieldMemory',
               emptyText: '<%= tjs('admin.virtual_servers.limits.unlimited') %>',
               name: 'memory'
+            <% if @hardware_server.vswap %>
+            }, {
+              fieldLabel: '<%= tjs('admin.server_templates.form.create_server.field.vswap') %>',
+              id: 'fieldVswap',
+              name: 'vswap'
+            <% end %>
             }, {
               fieldLabel: '<%= tjs('admin.server_templates.form.create_server.field.cpu_units') %>',
               id: 'fieldCpuUnits',
