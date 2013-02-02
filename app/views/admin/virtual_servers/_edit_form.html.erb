@@ -86,6 +86,7 @@ var showVirtualServerEditForm = function(mode, grid, statsGrid) {
           }, {
             fieldLabel: '<%= tjs('admin.virtual_servers.form.create_server.field.os_template') %>',
             xtype: ('add' == mode) ? 'combo' : 'displayfield',
+            resizable: true,
             hiddenName: 'orig_os_template',
             valueField: 'name',
             displayField: 'name',
@@ -101,6 +102,7 @@ var showVirtualServerEditForm = function(mode, grid, statsGrid) {
           }, {
             fieldLabel: '<%= tjs('admin.virtual_servers.form.create_server.field.server_template') %>',
             xtype: 'combo',
+            resizable: true,
             hiddenName: 'orig_server_template',
             valueField: 'name',
             displayField: 'name',
@@ -148,6 +150,7 @@ var showVirtualServerEditForm = function(mode, grid, statsGrid) {
           items: [{
             fieldLabel: '<%= tjs('admin.virtual_servers.form.create_server.field.ip_address') %>',
             xtype: 'combo',
+            resizable: true,
             valueField: 'address',
             displayField: 'address',
             name: 'ip_address',
@@ -178,6 +181,7 @@ var showVirtualServerEditForm = function(mode, grid, statsGrid) {
           }, {
             fieldLabel: '<%= tjs('admin.virtual_servers.form.create_server.field.owner') %>',
             xtype: 'combo',
+            resizable: true,
             mode: 'local',
             editable: false,
             forceSelection: true,

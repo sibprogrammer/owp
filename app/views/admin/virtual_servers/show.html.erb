@@ -297,6 +297,7 @@ Ext.onReady(function() {
       } <% if @current_user.can_select_os_on_reinstall? %>, {
         fieldLabel: '<%= tjs('admin.virtual_servers.form.create_server.field.os_template') %>',
         xtype: 'combo',
+        resizable: true,
         hiddenName: 'orig_os_template',
         valueField: 'name',
         displayField: 'name',
@@ -661,6 +662,7 @@ Ext.onReady(function() {
       }, {
         fieldLabel: '<%= tjs('admin.virtual_servers.form.migrate.field.target') %>',
         xtype: 'combo',
+        resizable: true,
         forceSelection: true,
         triggerAction: 'all',
         mode: 'local',
