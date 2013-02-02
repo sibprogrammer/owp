@@ -89,8 +89,8 @@ class ServerTemplate < ActiveRecord::Base
 
   def get_diskspace
     load_config
-    diskspace_limit = get_parsed_limit(@config.get("DISKSPACE"))
-    0 == diskspace_limit.last.to_i ? '' : (diskspace_limit.last.to_i / 1024)
+    diskspace_limit = @config.get_mb("DISKSPACE")
+    0 == diskspace_limit ? '' : diskspace_limit
   end
 
   def get_memory

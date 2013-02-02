@@ -161,13 +161,7 @@ class HardwareServer < ActiveRecord::Base
       virtual_server.cpus = parser.get('CPUS')
       virtual_server.cpu_limit = parser.get('CPULIMIT')
       virtual_server.hardware_server = self
-
-      diskspace = parser.get('DISKSPACE')
-      if unlimited_limit?(diskspace)
-        virtual_server.diskspace = 0
-      else
-        virtual_server.diskspace = diskspace.split(":").last.to_i / 1024
-      end
+      virtual_server.diskspace = parser.get_mb('DISKSPACE')
 
       memory = parser.get('PRIVVMPAGES')
       if unlimited_limit?(memory)
