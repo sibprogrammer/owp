@@ -1,0 +1,15 @@
+#!/bin/sh
+###
+# OpenVZ Web Panel cron script
+###
+
+# configuration defaults
+if [ -f `dirname $0`/../script/owp ]; then
+  INSTALL_DIR=`dirname $0`/../
+else
+  INSTALL_DIR="/opt/ovz-web-panel/"
+fi
+
+[ -f /etc/owp.conf ] && . /etc/owp.conf
+
+RAILS_ENV=production $INSTALL_DIR/script/cron_runner

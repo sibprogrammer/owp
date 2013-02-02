@@ -363,11 +363,12 @@ en:
             cpus: "Number of CPUs"
             cpu_limit: "CPU Limit, %"
             expiration_date: "Expiration date"
+            daily_backup: "Daily backup"
           fieldset:
             general: "General"
             network: "Network"
             system_access: "System Access"
-            start_options: "Start Options"
+            misc: "Miscellaneous"
             dns_settings: "DNS Settings"
             limits: "Limits"
           tab:

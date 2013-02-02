@@ -45,6 +45,7 @@ class Admin::VirtualServersController < Admin::Base
     end
     virtual_server.attributes = params
     virtual_server.start_on_boot = params.key?(:start_on_boot)
+    virtual_server.daily_backup = params.key?(:daily_backup)
 
     if virtual_server.save_physically
       render :json => { :success => true }
@@ -64,6 +65,7 @@ class Admin::VirtualServersController < Admin::Base
       :ip_address => virtual_server.ip_address,
       :host_name => virtual_server.host_name,
       :start_on_boot => virtual_server.start_on_boot,
+      :daily_backup => virtual_server.daily_backup,
       :nameserver => virtual_server.nameserver,
       :search_domain => virtual_server.search_domain,
       :diskspace => 0 == virtual_server.diskspace ? '' : virtual_server.diskspace,

@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130202075214) do
+ActiveRecord::Schema.define(:version => 20130202132959) do
 
   create_table "background_jobs", :force => true do |t|
     t.string  "description"
@@ -146,6 +146,7 @@ ActiveRecord::Schema.define(:version => 20130202075214) do
     t.integer "cpus"
     t.date    "expiration_date"
     t.integer "vswap",                              :default => 0
+    t.boolean "daily_backup",                       :default => false
   end
 
 end

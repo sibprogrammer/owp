@@ -3,7 +3,7 @@ class VirtualServer < ActiveRecord::Base
     :orig_os_template, :password, :start_on_boot, :start_after_creation, :state,
     :nameserver, :search_domain, :diskspace, :memory, :password_confirmation,
     :user_id, :orig_server_template, :description, :cpu_units, :cpus, :cpu_limit,
-    :expiration_date, :vswap
+    :expiration_date, :vswap, :daily_backup
   attr_accessor :password, :password_confirmation, :start_after_creation
   belongs_to :hardware_server
   belongs_to :user
@@ -18,6 +18,8 @@ class VirtualServer < ActiveRecord::Base
   validates_format_of :search_domain, :with => /^([a-z0-9\-\.]+\s*)*$/i
   validates_format_of :host_name, :with => /^[a-z0-9\-\.]*$/i
   validates_format_of :description, :with => /^[a-z0-9\-\.\s]*$/i if AppConfig.vzctl.save_descriptions
+
+  named_scope :daily_backed_up, :conditions => { :daily_backup => true }
 
   def self.ip_addresses
     result = []
@@ -139,7 +141,7 @@ class VirtualServer < ActiveRecord::Base
       vzctl_set(ip_address.split.map { |ip| "--ipadd #{ip} " }.join + "--save") if !ip_address.blank? and ip_address_changed?
 
       if memory_changed?
-        if vswap > 0 and hardware_server.vswap
+        if vswap and vswap > 0 and hardware_server.vswap
           vzctl_set("--ram #{shellescape(memory.to_s)}M --save")
         else
           privvmpages = 0 == memory.to_i ? 'unlimited' : memory.to_i * 1024 / 4
@@ -148,7 +150,7 @@ class VirtualServer < ActiveRecord::Base
         end
       end
 
-      if vswap_changed? and vswap > 0 and hardware_server.vswap
+      if vswap_changed? and vswap and vswap > 0 and hardware_server.vswap
         vzctl_set("--swap #{shellescape(vswap.to_s)}M --save")
       end
 
@@ -349,6 +351,21 @@ class VirtualServer < ActiveRecord::Base
 
     hardware_server.rpc_client.exec("rm /tmp/owp-template-exclude.list")
     hardware_server.sync_os_templates
+  end
+
+  def create_daily_backup
+    last_backup = backups.find_by_description('auto')
+    last_backup.delete_physically if last_backup
+
+    orig_ve_state = state
+    suspend if 'running' == orig_ve_state
+
+    backup_info = Backup.backup(self, false)
+    backup_info.description = 'auto'
+    backup_info.sync_size
+    backup_info.save
+
+    resume if 'running' == orig_ve_state
   end
 
   private

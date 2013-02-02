@@ -13,13 +13,19 @@ class Backup < ActiveRecord::Base
     destroy
   end
 
-  def self.backup(virtual_server)
+  def self.backup(virtual_server, async = true)
     veid = virtual_server.identity
     name = "ve-dump.#{veid}.#{Time.now.to_i}.tar"
     backup_name = "#{virtual_server.hardware_server.backups_dir}/#{name}"
-    job = virtual_server.hardware_server.rpc_client.job('tar', "-cf #{backup_name} #{virtual_server.private_dir}")
     server_backup = Backup.new(:name => name, :virtual_server_id => virtual_server.id)
-    { :job => job, :backup => server_backup }
+
+    if async
+      job = virtual_server.hardware_server.rpc_client.job('tar', "-cf #{backup_name} #{virtual_server.private_dir}")
+      { :job => job, :backup => server_backup }
+    else
+      virtual_server.hardware_server.rpc_client.exec('tar', "-cf #{backup_name} #{virtual_server.private_dir}")
+      server_backup
+    end
   end
 
   def restore

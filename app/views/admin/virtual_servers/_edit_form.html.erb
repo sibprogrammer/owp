@@ -257,7 +257,7 @@ var showVirtualServerEditForm = function(mode, grid, statsGrid) {
           }]
         }, {
           xtype: 'fieldset',
-          title: '<%= tjs('admin.virtual_servers.form.create_server.fieldset.start_options') %>',
+          title: '<%= tjs('admin.virtual_servers.form.create_server.fieldset.misc') %>',
           autoHeight: true,
           defaultType: 'checkbox',
           labelWidth: 180,
@@ -273,6 +273,12 @@ var showVirtualServerEditForm = function(mode, grid, statsGrid) {
             checked: true,
             name: 'start_after_creation',
             id: 'checkboxStartAfterCreation'
+          }, {
+            fieldLabel: '<%= tjs('admin.virtual_servers.form.create_server.field.daily_backup') %>',
+            xtype: 'checkbox',
+            checked: false,
+            name: 'daily_backup',
+            id: 'checkboxDailyBackup'
           }]
         }]
       }]
