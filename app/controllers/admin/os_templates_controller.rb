@@ -17,14 +17,14 @@ class Admin::OsTemplatesController < Admin::Base
     installed_templates = hardware_server.os_templates.map { |item| item.name }
 
     os_templates = params[:contributed] ? OsTemplate.get_available_contributed : OsTemplate.get_available_official
-    os_templates.map! { |file|
+    os_templates.map! do |file|
       template_name = file['name'].sub(/\.tar\.gz$/, '')
       if installed_templates.include?(template_name)
         nil
       else
         { :name => template_name, :size => file['size'].to_i / (1024 * 1024) }
       end
-    }.compact!
+    end.compact!
 
     render :json => { :data => os_templates }
   end
@@ -35,13 +35,13 @@ class Admin::OsTemplatesController < Admin::Base
 
     jobs_ids = []
 
-    params[:selected_official_templates].split(',').each { |name|
+    params[:selected_official_templates].split(',').each do |name|
       jobs_ids.push(OsTemplate.install_official(hardware_server, name)['job_id'])
-    }
+    end
 
-    params[:selected_contributed_templates].split(',').each { |name|
+    params[:selected_contributed_templates].split(',').each do |name|
       jobs_ids.push(OsTemplate.install_contributed(hardware_server, name)['job_id'])
-    }
+    end
 
     jobs_ids.push(OsTemplate.install_from_url(hardware_server, params[:template_url])['job_id']) unless params[:template_url].blank?
 
@@ -50,9 +50,7 @@ class Admin::OsTemplatesController < Admin::Base
 
       while true
         jobs_running = false
-        jobs_ids.each { |job_id|
-          jobs_running = true if hardware_server.rpc_client.job_status(job_id)['alive']
-        }
+        jobs_ids.each{ |job_id| jobs_running = true if hardware_server.rpc_client.job_status(job_id)['alive'] }
         break unless jobs_running
         sleep 10
       end
@@ -73,12 +71,14 @@ class Admin::OsTemplatesController < Admin::Base
 
     def os_templates_list(hardware_server)
       os_templates = hardware_server.os_templates
-      os_templates.map! { |item| {
-        :id => item.id,
-        :name => item.name,
-        :size => item.size,
-        :virtual_servers => VirtualServer.count(:conditions => ["hardware_server_id = ? AND orig_os_template = ?", hardware_server.id, item.name]),
-      }}
+      os_templates.map! do |item|
+        {
+          :id => item.id,
+          :name => item.name,
+          :size => item.size,
+          :virtual_servers => VirtualServer.count(:conditions => ["hardware_server_id = ? AND orig_os_template = ?", hardware_server.id, item.name]),
+        }
+      end
     end
 
 end

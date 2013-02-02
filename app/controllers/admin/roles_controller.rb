@@ -50,12 +50,14 @@ class Admin::RolesController < Admin::Base
 
     def roles_list
       roles = Role.all
-      roles.map! { |role| {
-        :id => role.id,
-        :name => role.display_name,
-        :built_in => role.built_in,
-        :users => role.users.count,
-      }}
+      roles.map! do |role|
+        {
+          :id => role.id,
+          :name => role.display_name,
+          :built_in => role.built_in,
+          :users => role.users.count,
+        }
+      end
     end
 
     def is_allowed

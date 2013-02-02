@@ -32,13 +32,13 @@ namespace :translate do
   def flat_keys(hash, keys = [], prefix = '')
     prefix << "." unless prefix.blank?
 
-    hash.each { |key, value|
+    hash.each do |key, value|
       if value.is_a?(Hash)
         keys + flat_keys(value, keys, prefix + key)
       else
         keys << (prefix + key)
       end
-    }
+    end
 
     return keys
   end

@@ -119,24 +119,28 @@ class ApplicationController < ActionController::Base
     def servers_list
       if @current_user.superadmin?
         @servers_list = HardwareServer.all
-        @servers_list.map! { |server| {
-          :cls => 'menu-item',
-          :text => server.host,
-          :href => base_url + '/admin/hardware-servers/show?id=' + server.id.to_s,
-          :icon => base_url + '/images/server.png',
-          :leaf => true,
-          :server_id => server.id.to_s,
-        }}
+        @servers_list.map! do |server|
+          {
+            :cls => 'menu-item',
+            :text => server.host,
+            :href => base_url + '/admin/hardware-servers/show?id=' + server.id.to_s,
+            :icon => base_url + '/images/server.png',
+            :leaf => true,
+            :server_id => server.id.to_s,
+          }
+        end
       else
         @servers_list = @current_user.virtual_servers
-        @servers_list = @servers_list.map { |server| {
-          :cls => 'menu-item',
-          :text => ('#' + server.identity.to_s) + (server.host_name.blank? ? '' : (' - ' + server.host_name)),
-          :href => base_url + '/admin/virtual-servers/show?id=' + server.id.to_s,
-          :icon => base_url + '/images/server.png',
-          :leaf => true,
-          :server_id => server.id.to_s,
-        }}
+        @servers_list = @servers_list.map do |server|
+          {
+            :cls => 'menu-item',
+            :text => ('#' + server.identity.to_s) + (server.host_name.blank? ? '' : (' - ' + server.host_name)),
+            :href => base_url + '/admin/virtual-servers/show?id=' + server.id.to_s,
+            :icon => base_url + '/images/server.png',
+            :leaf => true,
+            :server_id => server.id.to_s,
+          }
+        end
       end
     end
 

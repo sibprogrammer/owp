@@ -12,13 +12,15 @@ class Iphone::HardwareServersController < Iphone::Base
     @page_title = @hardware_server.host
 
     @virtual_servers = @hardware_server.virtual_servers
-    @virtual_servers.map! { |virtual_server| {
-      :id => virtual_server.id,
-      :identity => virtual_server.identity,
-      :ip_address => virtual_server.ip_address.blank? ? '' : virtual_server.ip_address.split.join(', '),
-      :host_name => virtual_server.host_name,
-      :description => virtual_server.description,
-    }}
+    @virtual_servers.map! do |virtual_server|
+      {
+        :id => virtual_server.id,
+        :identity => virtual_server.identity,
+        :ip_address => virtual_server.ip_address.blank? ? '' : virtual_server.ip_address.split.join(', '),
+        :host_name => virtual_server.host_name,
+        :description => virtual_server.description,
+      }
+    end
   end
 
 end

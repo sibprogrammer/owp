@@ -128,22 +128,22 @@ class Admin::VirtualServersController < Admin::Base
     end
 
     @ram_max = @virtual_server.memory
-    @ram_usage = !is_running ? [] : Watchdog.get_ve_counters_queue('_memory', @virtual_server.id).map { |counter|
+    @ram_usage = !is_running ? [] : Watchdog.get_ve_counters_queue('_memory', @virtual_server.id).map do |counter|
       ram = counter[:held].to_i / (1024 * 1024)
       @ram_max = ram if ram > @ram_max
       { 'time' => counter[:created_at].min, 'usage' => ram }
-    }
+    end
 
     @disk_max = @virtual_server.diskspace
-    @disk_usage = !is_running ? [] : Watchdog.get_ve_counters_queue('_diskspace', @virtual_server.id).map { |counter|
+    @disk_usage = !is_running ? [] : Watchdog.get_ve_counters_queue('_diskspace', @virtual_server.id).map do |counter|
       diskspace = counter[:held].to_i / (1024 * 1024)
       @disk_max = diskspace if diskspace > @disk_max
       { 'time' => counter[:created_at].min, 'usage' => diskspace }
-    }
+    end
 
-    @cpu_usage = !is_running ? [] : Watchdog.get_ve_counters_queue('_cpu_usage', @virtual_server.id).map { |counter|
+    @cpu_usage = !is_running ? [] : Watchdog.get_ve_counters_queue('_cpu_usage', @virtual_server.id).map do |counter|
       { 'time' => counter[:created_at].min, 'usage' => counter[:held].to_i }
-    }
+    end
   end
 
   def get_properties

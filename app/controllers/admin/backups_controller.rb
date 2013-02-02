@@ -106,13 +106,15 @@ class Admin::BackupsController < Admin::Base
 
     def backups_list(virtual_server)
       backups = virtual_server.backups
-      backups.map! { |backup| {
-        :id => backup.id,
-        :name => backup.name,
-        :description => backup.description,
-        :size => backup.size,
-        :archive_date => local_datetime(backup.date),
-      }}
+      backups.map! do |backup|
+        {
+          :id => backup.id,
+          :name => backup.name,
+          :description => backup.description,
+          :size => backup.size,
+          :archive_date => local_datetime(backup.date),
+        }
+      end
     end
 
 end

@@ -30,10 +30,10 @@ class ServerTemplate < ActiveRecord::Base
 
     result = []
 
-    limits.each { |limit|
+    limits.each do |limit|
       limit_values = get_parsed_limit(@config.get(limit))
       result.push({ :name => limit, :soft_limit => limit_values[0], :hard_limit => limit_values[1] })
-    }
+    end
 
     result
   end
@@ -57,7 +57,7 @@ class ServerTemplate < ActiveRecord::Base
     # some hard-coded values
     content << "QUOTATIME=\"0\"\n"
 
-    raw_limits.each { |limit|
+    raw_limits.each do |limit|
       limit['soft_limit'] = 'unlimited' if '' == limit['soft_limit']
       limit['hard_limit'] = 'unlimited' if '' == limit['hard_limit']
       if limit['soft_limit'] == limit['hard_limit']
@@ -65,7 +65,7 @@ class ServerTemplate < ActiveRecord::Base
       else
         content << limit['name'] + "=\"" + limit['soft_limit'].to_s + ":" + limit['hard_limit'].to_s + "\"\n"
       end
-    }
+    end
 
     hardware_server.rpc_client.write_file("/etc/vz/conf/ve-#{self.name}.conf-sample", content)
 

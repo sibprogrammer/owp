@@ -43,12 +43,14 @@ Ext.onReady(function() {
         autoWidth: true,
         defaultType: 'numberfield',
         defaults: { labelStyle: 'width: 260px', style: 'width: 80px' },
-        items: <%= @limits.map { |item,value| {
+        items: <%= @limits.map do |item, value|
+          {
             'fieldLabel' => t('admin.roles.form.create.limits.' + item),
             'name' => "limits[#{item}]",
             'value' => value,
             'emptyText' => tjs('admin.roles.form.create.limits.unlimited'),
-        } }.to_json %>
+          }
+        end.to_json %>
       }]
     });
     

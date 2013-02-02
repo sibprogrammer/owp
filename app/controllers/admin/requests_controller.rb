@@ -74,24 +74,28 @@ class Admin::RequestsController < Admin::Base
 
     def requests_list
       requests = @current_user.can_handle_requests? ? Request.all : @current_user.requests
-      requests.map! { |request| {
-        :id => request.id,
-        :opened => request.opened,
-        :subject => CGI.escapeHTML(request.subject),
-        :replies => request.comments.count,
-        :author => request.user ? request.user.login : '',
-        :updated_at => local_datetime(request.updated_at),
-      }}
+      requests.map! do |request|
+        {
+          :id => request.id,
+          :opened => request.opened,
+          :subject => CGI.escapeHTML(request.subject),
+          :replies => request.comments.count,
+          :author => request.user ? request.user.login : '',
+          :updated_at => local_datetime(request.updated_at),
+        }
+      end
     end
 
     def request_comments_list(request)
       comments = request.comments
-      comments.map! { |comment| {
-        :id => comment.id,
-        :content => CGI.escapeHTML(comment.content).gsub(/\n/, '<br />'),
-        :author => comment.user ? comment.user.login : '',
-        :created_at => local_datetime(comment.created_at),
-      }}
+      comments.map! do |comment|
+        {
+          :id => comment.id,
+          :content => CGI.escapeHTML(comment.content).gsub(/\n/, '<br />'),
+          :author => comment.user ? comment.user.login : '',
+          :created_at => local_datetime(comment.created_at),
+        }
+      end
 
       comments.insert(0, {
         :id => 0,

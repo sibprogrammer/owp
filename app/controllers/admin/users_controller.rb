@@ -70,15 +70,17 @@ class Admin::UsersController < Admin::Base
 
     def users_list
       users = User.all
-      users.map! { |user| {
-        :id => user.id,
-        :enabled => user.enabled,
-        :login => user.login,
-        :role => user.role.display_name,
-        :created_at => local_datetime(user.created_at),
-        :contact_name => user.contact_name,
-        :email => user.email,
-      }}
+      users.map! do |user|
+        {
+          :id => user.id,
+          :enabled => user.enabled,
+          :login => user.login,
+          :role => user.role.display_name,
+          :created_at => local_datetime(user.created_at),
+          :contact_name => user.contact_name,
+          :email => user.email,
+        }
+      end
     end
 
     def is_allowed

@@ -35,9 +35,9 @@ class OsTemplate < ActiveRecord::Base
     ftp.login('anonymous', 'anonymous')
     ftp.passive = true if AppConfig.os_templates.passive_ftp
     ftp.chdir(dir)
-    ftp.list('-a').map{ |file|
+    ftp.list('-a').map do |file|
       { 'name' => file.split.last, 'size' => file.split[4] } if file =~ /tar\.gz$/
-    }.compact
+    end.compact
   end
 
   def self.download(hardware_server, path, name)

@@ -21,15 +21,17 @@ class VirtualServer < ActiveRecord::Base
 
   def self.ip_addresses
     result = []
-    VirtualServer.all.each { |virtual_server| virtual_server.ip_address.to_s.split.each { |ip_address|
-      result << {
-        :name => ip_address,
-        :virtual_server => virtual_server.screen_name,
-        :virtual_server_id => virtual_server.id,
-        :hardware_server => virtual_server.hardware_server.host,
-        :hardware_server_id => virtual_server.hardware_server.id,
-      }
-    }}
+    VirtualServer.all.each do |virtual_server|
+      virtual_server.ip_address.to_s.split.each do |ip_address|
+        result << {
+          :name => ip_address,
+          :virtual_server => virtual_server.screen_name,
+          :virtual_server_id => virtual_server.id,
+          :hardware_server => virtual_server.hardware_server.host,
+          :hardware_server_id => virtual_server.hardware_server.id,
+        }
+      end
+    end
     result
   end
 
@@ -52,7 +54,7 @@ class VirtualServer < ActiveRecord::Base
 
     result = []
 
-    limits.each { |limit|
+    limits.each do |limit|
       raw_limit = parser.get(limit)
       raw_limit = 'unlimited' if raw_limit.blank?
       raw_limit = "#{raw_limit}:#{raw_limit}" if !raw_limit.include?(':')
@@ -60,7 +62,7 @@ class VirtualServer < ActiveRecord::Base
       limit_values[0] = '' if 'unlimited' == limit_values[0]
       limit_values[1] = '' if 'unlimited' == limit_values[1]
       result.push({ :name => limit, :soft_limit => limit_values[0], :hard_limit => limit_values[1] })
-    }
+    end
 
     result
   end
@@ -90,14 +92,14 @@ class VirtualServer < ActiveRecord::Base
   def save_limits(limits)
     orig_limits = get_limits
     vzctl_params = ''
-    limits.each { |limit|
+    limits.each do |limit|
       orig_limit = orig_limits.find { |item| item[:name] == limit['name'] }
       if orig_limit[:soft_limit] != limit['soft_limit'] || orig_limit[:hard_limit] != limit['hard_limit']
         limit['soft_limit'] = 'unlimited' if '' == limit['soft_limit']
         limit['hard_limit'] = 'unlimited' if '' == limit['hard_limit']
         vzctl_params << "--" + limit['name'].downcase + " " + limit['soft_limit'].to_s + ":" + limit['hard_limit'].to_s + " "
       end
-    }
+    end
 
     vzctl_set("#{vzctl_params} --save")
   end

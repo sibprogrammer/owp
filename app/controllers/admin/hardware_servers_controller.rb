@@ -75,12 +75,14 @@ class Admin::HardwareServersController < Admin::Base
 
     def hardware_servers_list
       hardware_servers = HardwareServer.all
-      hardware_servers.map! { |item| {
-        :id => item.id,
-        :host => item.host,
-        :virtual_servers => item.virtual_servers.count,
-        :description => item.description
-      }}
+      hardware_servers.map! do |item|
+        {
+          :id => item.id,
+          :host => item.host,
+          :virtual_servers => item.virtual_servers.count,
+          :description => item.description
+        }
+      end
     end
 
     def get_usage_stats(hardware_server)
@@ -102,7 +104,7 @@ class Admin::HardwareServersController < Admin::Base
       disk_usage = hardware_server.disk_usage
 
       if !disk_usage.blank?
-        disk_usage.each { |partition|
+        disk_usage.each do |partition|
           stats << {
             :parameter => t('admin.hardware_servers.stats.field.disk_usage', :partition => partition['mount_point']),
             :value => {
@@ -116,7 +118,7 @@ class Admin::HardwareServersController < Admin::Base
               'percent' => partition['usage_percent'].to_f / 100
             }
           }
-        }
+        end
       end
 
       memory_usage = hardware_server.memory_usage

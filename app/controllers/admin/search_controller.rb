@@ -9,7 +9,7 @@ class Admin::SearchController < Admin::Base
 
     result = []
 
-    virtual_servers.each { |virtual_server|
+    virtual_servers.each do |virtual_server|
       description =
         "<a href='#{base_url}/admin/virtual-servers/show?id=#{virtual_server.id}'>" +
         t("admin.virtual_servers.show.title", :name => "#" + virtual_server.identity.to_s) +
@@ -23,7 +23,7 @@ class Admin::SearchController < Admin::Base
           virtual_server.hardware_server.host
         ].reject(&:blank?).join(', ')
       result << { :item => description }
-    }
+    end
 
     render :json => { :data => result }
   end
