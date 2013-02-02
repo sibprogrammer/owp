@@ -9,7 +9,7 @@ class Backup < ActiveRecord::Base
   def delete_physically
     hardware_server = virtual_server.hardware_server
 
-    hardware_server.rpc_client.exec("rm #{hardware_server.backups_dir}/#{self.name}")
+    hardware_server.rpc_client.exec("rm -f #{hardware_server.backups_dir}/#{self.name}")
     destroy
   end
 
