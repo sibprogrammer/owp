@@ -40,7 +40,7 @@ class HardwareServer < ActiveRecord::Base
     require 'net/sftp'
 
     begin
-      Net::SSH.start(host, 'root', :password => root_password) do |ssh|
+      Net::SSH.start(host, 'root', :password => root_password, :config => false, :user_known_hosts_file => [], :keys => []) do |ssh|
         ssh.sftp.connect do |sftp|
           if !sftp_file_readable(sftp, '/proc/vz/version')
             self.errors.add :host, :openvz_not_found
