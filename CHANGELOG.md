@@ -5,6 +5,11 @@
 This version is a maintenance release. The following items were fixed and/or
 added:
 
+* Fix an ability to remove non-existing backup (issue 365).
+* Ability to see long names of server and OS templates (issue 478).
+* Basic support for scheduled backups (issue 247).
+* Add support for vSwap (issue 389).
+* Add units support for diskspace limit.
 * Ability to use native UI on mobile devices (issue 487).
 * Ability to restrict admin access by IP (issue 327).
 * Protection against Rails vulnerabilities (issue 485).
