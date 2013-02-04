@@ -263,6 +263,9 @@ class VirtualServer < ActiveRecord::Base
     path = '/etc/vz/conf'
     hardware_server.rpc_client.exec("cp #{shellescape(path)}/#{shellescape(orig_server.identity.to_s)}.conf #{shellescape(path)}/#{shellescape(identity.to_s)}.conf")
 
+    path = hardware_server.ve_root.sub('$VEID', identity.to_s)
+    hardware_server.rpc_client.exec("mkdir -p #{shellescape(path)}")
+
     orig_server.suspend
     hardware_server.rpc_client.exec("cp -a #{shellescape(orig_server.private_dir)} #{shellescape(self.private_dir)}")
     orig_server.resume

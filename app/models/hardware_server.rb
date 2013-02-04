@@ -267,6 +267,10 @@ class HardwareServer < ActiveRecord::Base
     list
   end
 
+  def ve_root
+    ve_private.sub('/private/', '/root/')
+  end
+
   private
 
     def generate_id
