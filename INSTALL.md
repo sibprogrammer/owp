@@ -3,18 +3,44 @@
 
 Table of contents:
 
-1. Requirements
-2. Installation the build
-3. Installation from SVN repository
-4. Uninstallation
+1. Introduction
+2. Installation of development version
+3. Requirements
+4. Manual installation the build
+5. Installation from Git repository
+6. Uninstallation
 
 
-## 1. Requirements
+## 1. Introduction
+
+
+Most preferable way to install the panel is to use automatic installer.
+
+```bash
+wget -O - http://ovz-web-panel.googlecode.com/svn/installer/ai.sh | sh
+```
+
+Instructions below should be used only if you can not use automatic installer due to some reason.
+
+
+## 2. Installation of development version
+
+
+To be able to test the newest features you can install latest development version.
+This build is not suitable for production and should be used only for testing purposes.
+
+```bash
+wget -O - http://ovz-web-panel.googlecode.com/svn/installer/ai.sh | \
+sh -s DOWNLOAD_URL=http://owp.softunity.com.ru/download/ovz-web-panel-latest.tgz
+```
+
+
+## 3. Requirements
 
 
 The following software is required to be installed on server with panel:
 
-* Ruby 1.8.5+ (1.9 is not supported)
+* Ruby 1.8.7+ (1.9 is not supported)
 * RubyGems
 * Ruby SQLite3 support
 
@@ -23,10 +49,10 @@ will be used for OpenVZ containers:
 
 * OpenVZ kernel
 * OpenVZ tools (vzctl, vzlist)
-* Ruby 1.8.5+ (1.9 is not supported)
+* Ruby 1.8.7+ (1.9 is not supported)
 
 
-## 2. Installation of the build
+## 4. Manual installation of the build
 
 
 Place build archive to the server where you plan to run the panel. Move 
@@ -100,15 +126,17 @@ Daemon can be stopped using the following command
 sudo ruby hw-daemon.rb stop
 ```
 
-## 3. Installation from SVN repository
 
-Source code can be checked out anonymously via:
+## 5. Installation from Git repository
+
+
+You can checkout the source code using the following command:
 
 ```bash
-svn checkout http://ovz-web-panel.googlecode.com/svn/trunk/ owp
+git clone https://github.com/sibprogrammer/owp.git
 ```
 
-File http://code.google.com/p/ovz-web-panel/source/browse/trunk/build/build.sh
+File https://github.com/sibprogrammer/owp/blob/master/build/build.sh
 contains information on how to prepare working copy.
 
 One of key steps is to create/upgrade database after code update:
@@ -118,7 +146,9 @@ cd /opt/ovz-web-panel/
 rake db:migrate RAILS_ENV="production"
 ```
 
-## 4. Uninstallation
+
+## 6. Uninstallation
+
 
 To uninstall the product need to run the command:
 
