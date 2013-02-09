@@ -83,6 +83,7 @@ class VirtualServer < ActiveRecord::Base
 
   def delete_physically
     stop
+    hardware_server.rpc_client.exec("mkdir -p #{shellescape(root_dir)}")
     hardware_server.rpc_client.exec('vzctl', 'destroy ' + identity.to_s)
     backups.each { |backup| backup.delete_physically }
     destroy
@@ -241,6 +242,10 @@ class VirtualServer < ActiveRecord::Base
     hardware_server.ve_private.sub('$VEID', identity.to_s)
   end
 
+  def root_dir
+    hardware_server.ve_root.sub('$VEID', identity.to_s)
+  end
+
   def human_diskspace
     0 != self.diskspace ? self.diskspace : I18n.translate('admin.virtual_servers.limits.unlimited')
   end
@@ -263,8 +268,7 @@ class VirtualServer < ActiveRecord::Base
     path = '/etc/vz/conf'
     hardware_server.rpc_client.exec("cp #{shellescape(path)}/#{shellescape(orig_server.identity.to_s)}.conf #{shellescape(path)}/#{shellescape(identity.to_s)}.conf")
 
-    path = hardware_server.ve_root.sub('$VEID', identity.to_s)
-    hardware_server.rpc_client.exec("mkdir -p #{shellescape(path)}")
+    hardware_server.rpc_client.exec("mkdir -p #{shellescape(root_dir)}")
 
     orig_server.suspend
     hardware_server.rpc_client.exec("cp -a #{shellescape(orig_server.private_dir)} #{shellescape(self.private_dir)}")
