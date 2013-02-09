@@ -1,10 +1,14 @@
 # Changes
 
-## OpenVZ Web Panel 2.2 (2013-??-??)
+## OpenVZ Web Panel 2.2 (2013-02-09)
 
 This version is a maintenance release. The following items were fixed and/or
 added:
 
+* Ability to remove virtual server even if root dir is broken (issue 393).
+* Fix problem with container cloning (issue 476).
+* Fix non-absolute home error during attempt to connect additional hardware
+  servers (issue 416).
 * Fix an ability to remove non-existing backup (issue 365).
 * Ability to see long names of server and OS templates (issue 478).
 * Basic support for scheduled backups (issue 247).
