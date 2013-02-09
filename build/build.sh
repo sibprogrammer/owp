@@ -27,8 +27,9 @@ cd `dirname $0`
       mv $TEXT_FILE.md $TEXT_FILE
     done
 
-    # remove Travis CI build status message
-    sed -i '/\[!/d' README
+    # remove extra markup for better readability
+    sed -i '/!\[/d' README
+    sed -i 's/^##\? //' README
 
     # prepare database
     rake db:migrate RAILS_ENV="production"
