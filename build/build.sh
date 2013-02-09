@@ -39,7 +39,7 @@ cd `dirname $0`
     # minimize distribution size
     rm -rf build vendor/rails/railties/doc/guides vendor/rails/activerecord/test
 
-    rm -rf .git
+    rm -rf .git .gitignore .travis.yml
   cd ..
 
   [ -f $PROJECT-$VERSION.tgz ] && rm $PROJECT-$VERSION.tgz || true
