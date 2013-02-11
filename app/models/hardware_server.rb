@@ -158,11 +158,12 @@ class HardwareServer < ActiveRecord::Base
       virtual_server.diskspace = get_diskspace_mb(parser.get('DISKSPACE'))
       virtual_server.vswap = get_ram_mb(parser.get('SWAPPAGES'))
 
-      if virtual_server.vswap > 0
+      if vswap and virtual_server.vswap > 0 and !unlimited_limit?(parser.get('PHYSPAGES'))
         virtual_server.memory = get_ram_mb(parser.get('PHYSPAGES'))
       else
         memory = parser.get('PRIVVMPAGES')
         virtual_server.memory = unlimited_limit?(memory) ? 0 : memory.split(":").last.to_i * 4 / 1024
+        virtual_server.vswap = 0
       end
 
       virtual_server.save(false)
