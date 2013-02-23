@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130202132959) do
+ActiveRecord::Schema.define(:version => 20130223060327) do
 
   create_table "background_jobs", :force => true do |t|
     t.string  "description"
@@ -127,7 +127,7 @@ ActiveRecord::Schema.define(:version => 20130202132959) do
   add_index "users", ["login"], :name => "index_users_on_login", :unique => true
 
   create_table "virtual_servers", :force => true do |t|
-    t.integer "identity"
+    t.string  "identity"
     t.string  "ip_address"
     t.string  "host_name"
     t.string  "state",                :limit => 20
