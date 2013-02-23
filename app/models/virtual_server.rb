@@ -10,7 +10,7 @@ class VirtualServer < ActiveRecord::Base
   has_many :backups, :dependent => :destroy
   has_many :bean_counters, :dependent => :destroy
 
-  validates_format_of :ip_address, :with => /^(((\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})|\s|(([\da-fA-F]{1,4}:?)|(::)){1,8})*|auto)$/
+  validates_format_of :ip_address, :with => /^(((\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})(\/\d+)?|\s|(([\da-fA-F]{1,4}:?)|(::)){1,8})*|auto)$/
   validates_uniqueness_of :ip_address, :allow_blank => true
   validates_uniqueness_of :identity, :scope => :hardware_server_id
   validates_confirmation_of :password
@@ -323,6 +323,7 @@ class VirtualServer < ActiveRecord::Base
 
     ip_address.split(' ').each do |ip|
       begin
+        ip, netmask = ip.split('/')
         ip = IPAddr.new(ip).to_s
       rescue
         msg = I18n.t('activerecord.errors.models.virtual_server.attributes.ip_address.invalid')

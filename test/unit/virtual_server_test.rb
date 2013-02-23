@@ -31,6 +31,11 @@ class VirtualServerTest < ActiveSupport::TestCase
     assert_valid @server_101
   end
 
+  test "IPv4 address with netmask" do
+    @server_101.ip_address = "10.0.0.1/16"
+    assert_valid @server_101
+  end
+
   test "Incorrect IP address assignment" do
     @server_101.ip_address = "not IP address"
     assert !@server_101.valid?
