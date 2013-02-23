@@ -1,5 +1,14 @@
 # Changes
 
+## OpenVZ Web Panel 2.3 (2013-02-23)
+
+This version is a maintenance release. The following items were fixed and/or
+added:
+
+* Ability to add IP with subnet mask (issue 472).
+* Support for big VEID numbers (issue 494).
+* Security improvements.
+
 ## OpenVZ Web Panel 2.2 (2013-02-09)
 
 This version is a maintenance release. The following items were fixed and/or
