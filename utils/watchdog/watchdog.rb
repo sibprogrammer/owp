@@ -86,7 +86,7 @@ class WatchdogService
     counters.each do |record|
       counter_info = record.split
       if counter_info[0] =~ /^\d+:$/
-        current_ve_id = counter_info[0].gsub(/[^\d]/, '').to_i
+        current_ve_id = counter_info[0].gsub(/[^\d]/, '')
         current_ve = @virtual_servers.find { |ve| ve.identity == current_ve_id }
         counter_info.shift
       end
@@ -122,7 +122,7 @@ class WatchdogService
       counter_info = record.split
       next if counter_info.size < 5
 
-      current_ve_id = counter_info[0].to_i
+      current_ve_id = counter_info[0]
       current_ve = @virtual_servers.find { |ve| ve.identity == current_ve_id }
 
       if current_ve and current_ve_id == current_ve.identity
@@ -151,7 +151,7 @@ class WatchdogService
       counter_info = record.split
       next if counter_info.size < 4
 
-      current_ve_id = counter_info[0].to_i
+      current_ve_id = counter_info[0]
       current_ve = @virtual_servers.find { |ve| ve.identity == current_ve_id }
 
       if current_ve and current_ve_id == current_ve.identity
@@ -179,7 +179,7 @@ class WatchdogService
       counter_info = record.split
       next if counter_info.size < 6
 
-      current_ve_id = counter_info[0].to_i
+      current_ve_id = counter_info[0]
       current_ve = @virtual_servers.find { |ve| ve.identity == current_ve_id }
 
       if current_ve and current_ve_id == current_ve.identity
