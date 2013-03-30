@@ -10,6 +10,6 @@ end
 ActionController::Base.param_parsers.delete(Mime::XML)
 
 PRODUCT_NAME = 'OpenVZ Web Panel'
-PRODUCT_VERSION = '2.5'
+PRODUCT_VERSION = '2.4'
 
 Watchdog = WatchdogClient.new unless defined? WATCHDOG_DAEMON
