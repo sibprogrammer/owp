@@ -338,7 +338,7 @@ de:
           field:
             identity: "Server ID (VEID)"
             os_template: "Betriebssystem-Vorlage"
-            select_os_template: "Betriebssystem-Vorlage ausw&auml;hlen"
+            select_os_template: "Betriebssystem-Vorlage auswählen"
             ip_address: "IP-Adresse"
             host_name: "Hostname"
             password: "Root Passwort"
@@ -355,7 +355,7 @@ de:
             select_owner: "Besitzer ausw&auml;hlen"
             no_owner: "Kein Besitzer"
             server_template: "Server-Vorlage"
-            select_server_template: "Server-Vorlage ausw&auml;hlen"
+            select_server_template: "Server-Vorlage auswählen"
             description: "Beschreibung"
             cpu_units: "CPU Einheiten"
             cpus: "Anzahl an CPUs"
