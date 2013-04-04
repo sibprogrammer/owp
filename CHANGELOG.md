@@ -1,5 +1,13 @@
 # Changes
 
+## OpenVZ Web Panel 2.4 (2013-04-04)
+
+This version is a maintenance release. The following items were fixed and/or
+added:
+
+* Empty detailed statistics charts.
+* HTML entities in German localization.
+
 ## OpenVZ Web Panel 2.3 (2013-02-23)
 
 This version is a maintenance release. The following items were fixed and/or
