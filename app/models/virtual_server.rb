@@ -111,7 +111,7 @@ class VirtualServer < ActiveRecord::Base
 
     if is_new
       if identity.blank?
-        hash = connection.select_one("SELECT MAX(identity) AS max_identity FROM virtual_servers WHERE hardware_server_id=#{hardware_server.id}")
+        hash = connection.select_one("SELECT MAX(CAST(identity AS UNSIGNED INTEGER)) AS max_identity FROM virtual_servers WHERE hardware_server_id=#{hardware_server.id}")
         self.identity = hash['max_identity'].to_i + 1
       end
       hardware_server.rpc_client.exec('vzctl', "create #{identity.to_s} --ostemplate #{orig_os_template} --config #{orig_server_template}")

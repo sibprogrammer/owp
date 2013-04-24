@@ -25,7 +25,7 @@ Ext.onReady(function() {
     sortInfo: { field: 'identity', direction: 'ASC' },
     fields: [
       { name: 'id' },
-      { name: 'identity' },
+      { name: 'identity', sortType: 'asInt', type: 'int' },
       { name: 'ip_address' },
       { name: 'host_name' },
       { name: 'state' },
