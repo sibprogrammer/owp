@@ -1,0 +1,146 @@
+#!/bin/sh
+###
+# OpenVZ Web Panel HW Daemon startup script
+###
+
+###
+# chkconfig: 345 97 87
+# description: OpenVZ Web Panel HW Daemon startup script
+###
+
+### BEGIN INIT INFO
+# Provides: owp-hw-daemon
+# Required-Start: vz
+# Required-Stop:
+# Default-Start: 2 3 4 5
+# Default-Stop: 0 1 6
+# Short-Description: OpenVZ Web Panel HW Daemon startup script
+# Description: OpenVZ Web Panel HW Daemon startup script
+### END INIT INFO
+
+# configuration defaults
+if [ -f `dirname $0`/../utils/hw-daemon/hw-daemon.rb ]; then
+  INSTALL_DIR=`dirname $0`/../
+else
+  INSTALL_DIR="/opt/ovz-web-panel/"
+fi
+
+LOCK_FILE=/var/lock/owp-hw-daemon
+
+# override variables here if needed
+[ -f /etc/owp-hw-daemon.conf ] && . /etc/owp-hw-daemon.conf
+
+check_environment() {
+  if [ -f /proc/vz/version ]; then
+    ENVIRONMENT="HW-NODE"
+  else
+    ENVIRONMENT="broken"
+  fi
+}
+
+echo_ok() {
+  MESSAGE=$1
+  /bin/echo -en "\033[00;32m[OK]\033[00m "
+  echo $MESSAGE
+}
+
+echo_fail() {
+  MESSAGE=$1
+  /bin/echo -en "\033[00;31m[FAIL]\033[00m "
+  echo $MESSAGE
+}
+
+start() {
+  if [ -f $LOCK_FILE ]; then
+    echo_fail "OpenVZ Web Panel HW Daemon is already running."
+    exit 1
+  fi
+
+  STATUS=0
+
+  if [ "$ENVIRONMENT" = "HW-NODE" ]; then
+    echo  "Starting OpenVZ Web Panel HW Daemon..."
+    ruby $INSTALL_DIR/utils/hw-daemon/hw-daemon.rb start > /dev/null 2>&1
+
+    if [ 0 -ne $? ]; then
+      STATUS=3
+      echo_fail "Unable to start OpenVZ Web Panel HW Daemon."
+    else
+      touch $LOCK_FILE
+      echo_ok "OpenVZ Web Panel HW Daemon was started."
+    fi
+  fi
+
+  exit $STATUS
+}
+
+stop() {
+  STATUS=0
+
+  if [ "$ENVIRONMENT" = "HW-NODE" ]; then
+    echo "Stopping OpenVZ Web Panel HW Daemon..."
+    ruby $INSTALL_DIR/utils/hw-daemon/hw-daemon.rb stop > /dev/null 2>&1
+
+    if [ 0 -ne $? ]; then
+      STATUS=2
+      echo_fail "Unable to stop OpenVZ Web Panel HW Daemon."
+    else
+      echo_ok "OpenVZ Web Panel HW Daemon was stopped."
+    fi
+  fi
+
+  rm -f $LOCK_FILE
+  return $STATUS
+}
+
+status() {
+  if [ ! -f $LOCK_FILE ]; then
+    echo_fail "OpenVZ Web Panel HW Daemon is stopped."
+    exit 1
+  fi
+
+  STATUS=0
+
+  if [ "$ENVIRONMENT" = "HW-NODE" ]; then
+    if [ ! -f $INSTALL_DIR/utils/hw-daemon/hw-daemon.pid ]; then
+      echo_fail "OpenVZ Web Panel HW Daemon is stopped."
+      STATUS=4
+    else
+      HW_DAEMON_PID=`cat $INSTALL_DIR/utils/hw-daemon/hw-daemon.pid`
+      kill -0 $HW_DAEMON_PID > /dev/null 2>&1
+      if [ 0 -ne $? ]; then
+        echo_fail "OpenVZ Web Panel HW Daemon probably died."
+        STATUS=5
+      else
+        echo_ok "OpenVZ Web Panel HW Daemon is running."
+      fi
+    fi
+  fi
+
+  echo_ok "OpenVZ Web Panel HW Daemon is running."
+  exit $STATUS
+}
+
+# main()
+check_environment
+case "$1" in
+  start)
+    start
+    ;;
+  stop)
+    stop
+    exit $?
+    ;;
+  status)
+    status
+    ;;
+  restart|reload|condrestart)
+    stop
+    start
+    ;;
+  *)
+    echo $"Usage: $0 {start|stop|restart|reload|status}"
+    exit 1
+esac
+
+exit 0
