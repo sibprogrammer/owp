@@ -85,7 +85,7 @@ ro:
       unknown_error: "Eroare necunoscuta."
       internal_error: "Eroare interna."                          
   about:
-    copyright: "Copyright 2008-2013 SoftUnity."
+    copyright: "Copyright 2008-2014 SoftUnity."
     right_reserved: "Toate drepturile rezervate."
     about_program: "Despre aplicatie"
     author: "Dezvoltator principal"
