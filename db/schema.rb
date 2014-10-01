@@ -102,7 +102,7 @@ ActiveRecord::Schema.define(:version => 20130223060327) do
   create_table "roles", :force => true do |t|
     t.string  "name"
     t.boolean "built_in"
-    t.integer "limit_backups"
+    t.integer "limit_backups", :default => -1
   end
 
   create_table "server_templates", :force => true do |t|
