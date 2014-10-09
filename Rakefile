@@ -5,13 +5,6 @@ require(File.join(File.dirname(__FILE__), 'config', 'boot'))
 
 require 'rake'
 require 'rake/testtask'
-
-begin
-  gem 'rdoc'
-  require 'rdoc/task'
-rescue Gem::LoadError
-  require 'rake/rdoctask'
-end
-
+require 'rdoc/task'
 require 'tasks/rails'
 
