@@ -17,7 +17,7 @@ class ApplicationHelperTest < ActiveSupport::TestCase
     assert_equal 2048, get_ram_mb("0:2G")
     assert_equal 1024, get_ram_mb("0:1048576k")
     assert_equal 10, get_ram_mb('2560P:2560P')
-    assert_equal 100, get_ram_mb('0:104857600')
+    assert_equal 10, get_ram_mb('0:2560')
     assert_equal 100, get_ram_mb('0:104857600B')
     assert_equal 0, get_ram_mb(nil)
     assert_equal 0, get_ram_mb("0:unlimited")
