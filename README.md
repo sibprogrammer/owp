@@ -2,7 +2,7 @@
 
 [![Build Status](https://secure.travis-ci.org/sibprogrammer/owp.png?branch=master)](http://travis-ci.org/sibprogrammer/owp) [![Code Climate](https://codeclimate.com/badge.png)](https://codeclimate.com/github/sibprogrammer/owp)
 
-Copyright (c) 2008-2014 SoftUnity, Alexei Yuzhakov <sibprogrammer@gmail.com>
+Copyright (c) 2008-2015 SoftUnity, Alexei Yuzhakov <sibprogrammer@gmail.com>
 
 Table of contents:
 
