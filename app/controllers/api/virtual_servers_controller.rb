@@ -98,7 +98,7 @@ class Api::VirtualServersController < Api::Base
             }
           }
         else
-          stats << { :parameter => "cpu_load_average', :value => '-' }
+          stats << { :parameter => 'cpu_load_average', :value => '-' }
         end
 
         helper = Object.new.extend(ActionView::Helpers::NumberHelper)
@@ -107,7 +107,7 @@ class Api::VirtualServersController < Api::Base
 
         if counter and is_running and (counter.limit.to_i > 0)
           stats << {
-            :parameter => "disk_space",
+            :parameter => 'disk_space',
             :value => {
               'text' => t(
                 'admin.virtual_servers.stats.value.disk_usage',
@@ -127,7 +127,7 @@ class Api::VirtualServersController < Api::Base
 
         if counter and is_running and (counter.limit.to_i > 0)
           stats << {
-            :parameter => "memory",
+            :parameter => 'memory',
             :value => {
               'text' => t(
                 'admin.virtual_servers.stats.value.memory_usage',
