@@ -130,7 +130,7 @@ class Api::VirtualServersController < Api::Base
                 :percent => (counter.held.to_f / counter.limit.to_f * 100).to_i.to_s,
                 :free =>  helper.number_to_human_size(counter.limit.to_i - counter.held.to_i, :locale => :en),
                 :used => helper.number_to_human_size(counter.held.to_i, :locale => :en),
-              :  total => helper.number_to_human_size(counter.limit.to_i, :locale => :en)
+                :total => helper.number_to_human_size(counter.limit.to_i, :locale => :en)
               ),
               'percent' => counter.held.to_f / counter.limit.to_f
             }
