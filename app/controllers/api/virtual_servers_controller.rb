@@ -1,6 +1,6 @@
 class Api::VirtualServersController < Api::Base
   before_filter :superadmin_required, :only => [ :delete, :create, :update, :get_by_host ]
-  before_filter :set_server_by_id, :only => [ :get, :get_advanced_limits, :delete, :start, :stop, :restart, :update, :get_stats ]
+  before_filter :set_server_by_id, :only => [ :get, :get_advanced_limits, :delete, :start, :stop, :restart, :update, :get_stats, :reinstall ]
 
   def own_servers
     virtual_servers = @current_user.virtual_servers
@@ -48,6 +48,22 @@ class Api::VirtualServersController < Api::Base
   def get_stats
     render_object_result get_usage_stats(@virtual_server)
   end
+
+  def reinstall
+    @virtual_server.password = params[:password]
+    @virtual_server.orig_os_template = params[:orig_os_template] if @current_user.can_select_os_on_reinstall?
+
+    unless @virtual_server.valid?
+     render_error :reason => 'object_not_valid'
+    end
+
+    unless @virtual_server.reinstall && virtual_server.save_physically
+      render_error :reason => 'error_occured'
+    end
+
+    render_object_result({ :success => true })
+  end
+
 
   private
 
