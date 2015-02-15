@@ -4,6 +4,6 @@ class AddAlertToBeanCounter < ActiveRecord::Migration
   end
 
   def self.down
-    remove_column :beancounters, :alert
+    remove_column :bean_counters, :alert
   end
 end
