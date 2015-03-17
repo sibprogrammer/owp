@@ -17,7 +17,7 @@ Table of contents:
 Most preferable way to install the panel is to use automatic installer.
 
 ```bash
-wget -O - http://ovz-web-panel.googlecode.com/svn/installer/ai.sh | sh
+wget -O - https://raw.githubusercontent.com/sibprogrammer/owp/master/script/ai.sh | sh
 ```
 
 Instructions below should be used only if you can not use automatic installer due to some reason.
@@ -30,7 +30,7 @@ To be able to test the newest features you can install latest development versio
 This build is not suitable for production and should be used only for testing purposes.
 
 ```bash
-wget -O - http://ovz-web-panel.googlecode.com/svn/installer/ai.sh | \
+wget -O - https://raw.githubusercontent.com/sibprogrammer/owp/master/script/ai.sh | \
 sh -s DOWNLOAD_URL=http://owp.softunity.com.ru/download/ovz-web-panel-latest.tgz
 ```
 
@@ -153,5 +153,5 @@ rake db:migrate RAILS_ENV="production"
 To uninstall the product need to run the command:
 
 ```bash
-wget -O - http://ovz-web-panel.googlecode.com/svn/installer/ai.sh | sh -s UNINSTALL=1
+wget -O - https://raw.githubusercontent.com/sibprogrammer/owp/master/script/ai.sh | sh -s UNINSTALL=1
 ```
