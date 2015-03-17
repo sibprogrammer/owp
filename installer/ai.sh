@@ -20,7 +20,7 @@ for PARAM in $@; do
   eval $PARAM
 done
 
-[ "x$DEBUG" = "x1" ] && set -xv 
+[ "x$DEBUG" = "x1" ] && set -xv
 
 log() {
   echo `date` $1 >> $LOG_FILE
@@ -36,13 +36,13 @@ puts_separator() {
 }
 
 puts_spacer() {
-  puts 
+  puts
 }
 
 exec_cmd() {
   TITLE=$1
   COMMAND=$2
-  
+
   puts "$TITLE $COMMAND"
   `$COMMAND`
 }
@@ -54,7 +54,7 @@ fatal_error() {
 
 is_command_present() {
   puts "Checking presence of the command: $1"
-  
+
   CMD=`whereis -b $1 | awk '{ print $2 }'`
   [ -n "$CMD" ] && return 0 || return 1
 }
@@ -68,8 +68,8 @@ detect_os() {
     DISTRIB_ID=`lsb_release -si`
     return 0
   fi
-  
-  [ -f /etc/redhat-release ] && DISTRIB_ID="RedHat"  
+
+  [ -f /etc/redhat-release ] && DISTRIB_ID="RedHat"
   [ -f /etc/fedora-release ] && DISTRIB_ID="Fedora"
   [ -f /etc/debian_version ] && DISTRIB_ID="Debian"
 }
@@ -81,7 +81,7 @@ resolve_deps() {
     apt-get update
     apt-get -y install ruby rubygems libsqlite3-ruby libopenssl-ruby rake
   fi
-  
+
   if [ "$DISTRIB_ID" = "RedHat" -o "$DISTRIB_ID" = "CentOS" ]; then
     yum -y install ruby
     is_command_present gem
@@ -106,9 +106,9 @@ resolve_deps() {
     if [ $? -ne 0 ]; then
       yum -y install sqlite-devel make gcc
       gem install sqlite3
-    fi 
+    fi
   fi
-  
+
   if [ "$DISTRIB_ID" = "Fedora" ]; then
     yum -y install ruby rubygems ruby-sqlite3 rubygem-rake
   fi
@@ -116,14 +116,14 @@ resolve_deps() {
 
 check_environment() {
   puts "Checking environment..."
-  
+
   [ "`whoami`" != "root" ] && fatal_error "Installer should be executed under root user."
-  
+
   puts "System info: `uname -a`"
-  
+
   detect_os
   [ "x$DISTRIB_ID" != "x" ] && puts "Detected distrib ID: $DISTRIB_ID"
-  
+
   detect_openvz
 }
 
@@ -143,14 +143,14 @@ check_dependencies() {
   else
     fatal_error "Ruby 1.8 is not installed. Please install it first."
   fi
-  
+
   is_command_present gem
   if [ $? -eq 0 ]; then
     puts "RubyGems version: `gem -v`"
   else
     fatal_error "RubyGems is not installed. Please install it first."
   fi
-  
+
   puts "Checking Ruby SQLite3 support: $RUBY_SQLITE3_CMD"
   sh -c "$RUBY_SQLITE3_CMD" > /dev/null 2>&1
   [ $? -ne 0 ] && fatal_error "Ruby SQLite3 support not found. Please install it first."
@@ -173,11 +173,11 @@ detect_openvz() {
 
 install_product() {
   puts "Installation..."
-  
+
   [ -f $INSTALL_DIR/config/database.yml ] && UPGRADE=1
-  
+
   mkdir -p $INSTALL_DIR
-  
+
   if [ -f "$DOWNLOAD_URL" ]; then
     ARCHIVE_NAME=$DOWNLOAD_URL
     puts "Local archive: $ARCHIVE_NAME"
@@ -195,15 +195,15 @@ install_product() {
     [ -f "$INSTALL_DIR/utils/hw-daemon/certs/server.crt" ] && EXCLUDE_LIST="$EXCLUDE_LIST --exclude=hw-daemon/certs/*"
   fi
   exec_cmd "Unpacking:" "tar --strip 2 -C $INSTALL_DIR -xzf $ARCHIVE_NAME $EXCLUDE_LIST"
-  
+
   if [ "x$PRESERVE_ARCHIVE" != "x1" ]; then
     exec_cmd "Removing downloaded archive:" "rm -f $ARCHIVE_NAME"
   fi
-  
+
   if [ "x$UPGRADE" = "x1" ]; then
     puts "Removing deprecated files..."
     [ -f $INSTALL_DIR/app/controllers/admin_controller.rb ] && rm $INSTALL_DIR/app/controllers/admin_controller.rb
-  
+
     puts "Upgrading database..."
     CURRENT_DIR=`pwd`
     cd $INSTALL_DIR
@@ -217,9 +217,9 @@ install_product() {
     puts "Reset remember_me tokens..."
     ruby $INSTALL_DIR/script/runner -e production "User.all.each{ |user| user.remember_token = ''; user.save }"
   fi
-  
+
   [ ! -x $INSTALL_DIR/script/owp ] && chmod +x $INSTALL_DIR/script/owp
-  
+
   if [ "$DISTRIB_ID" = "Ubuntu" -o "$DISTRIB_ID" = "Debian" -o "$DISTRIB_ID" = "RedHat" -o "$DISTRIB_ID" = "CentOS" -o "$DISTRIB_ID" = "Fedora" ]; then
     cp $INSTALL_DIR/script/owp /etc/init.d/owp
     chmod 755 /etc/init.d/owp
@@ -234,21 +234,21 @@ install_product() {
   if [ -f $INSTALL_DIR/script/owp.cron -a -d /etc/cron.daily ]; then
     cp $INSTALL_DIR/script/owp.cron /etc/cron.daily/owp.cron
     chmod 755 /etc/cron.daily/owp.cron
-  fi 
-  
+  fi
+
   if [ -f $INSTALL_DIR/config/owp.conf.sample -a ! -f /etc/owp.conf ]; then
     cp $INSTALL_DIR/config/owp.conf.sample /etc/owp.conf
     sed -i "s|^INSTALL_DIR=.*|INSTALL_DIR=$INSTALL_DIR|g" /etc/owp.conf
   fi
-  
+
   puts "Installation finished."
-  puts "Product was installed into: $INSTALL_DIR"  
+  puts "Product was installed into: $INSTALL_DIR"
   puts_spacer
 }
 
 stop_services() {
   puts "Stopping services..."
-  
+
   $INSTALL_DIR/script/owp stop
 }
 
@@ -256,7 +256,7 @@ start_services() {
   [ "x$UPGRADE" = "x1" ] && stop_services
 
   puts "Starting services..."
-  
+
   if [ "x$UPGRADE" = "x0" ]; then
     if [ "$ENVIRONMENT" = "HW-NODE" ]; then
       HW_DAEMON_CONFIG="$INSTALL_DIR/utils/hw-daemon/hw-daemon.ini"
@@ -292,20 +292,20 @@ uninstall_product() {
     puts "Panel not found. Nothing to uninstall."
     return 1
   fi
-  
+
   stop_services
   rm -rf $INSTALL_DIR
-  
+
   if [ "$DISTRIB_ID" = "Ubuntu" -o "$DISTRIB_ID" = "Debian" ]; then
     update-rc.d -f owp remove
   elif [ "$DISTRIB_ID" = "RedHat" -o "$DISTRIB_ID" = "CentOS" -o "$DISTRIB_ID" = "Fedora" ]; then
     /sbin/chkconfig --del owp
   fi
-  
+
   [ -f /etc/owp.conf ] && rm /etc/owp.conf
   [ -f /etc/init.d/owp ] && rm /etc/init.d/owp
   [ -f /etc/cron.daily/owp.cron ] && rm /etc/cron.daily/owp.cron
-  
+
   puts "Panel was uninstalled."
 }
 
@@ -313,9 +313,9 @@ main() {
   puts_separator
   puts "OpenVZ Web Panel Installer."
   puts_separator
-  
+
   check_environment
-  
+
   if [ "x$UNINSTALL" = "x1" ]; then
     uninstall_product
   else

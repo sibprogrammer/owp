@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<updates>
+  <latest>
+    <version>2.4</version>
+    <upgrade_command>wget -O - https://raw.githubusercontent.com/sibprogrammer/owp/master/installer/ai.sh | sh</upgrade_command>
+  </latest>
+</updates>
