@@ -235,7 +235,7 @@ class VirtualServer < ActiveRecord::Base
   end
 
   def backup
-    Backup.backup(self)
+    Backup.backup_job(self)
   end
 
   def private_dir
@@ -368,7 +368,7 @@ class VirtualServer < ActiveRecord::Base
     orig_ve_state = state
     suspend if 'running' == orig_ve_state
 
-    backup_info = Backup.backup(self, false)
+    backup_info = Backup.backup_job(self, false)
     backup_info.description = 'auto'
     backup_info.sync_size
     backup_info.save

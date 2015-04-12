@@ -160,4 +160,16 @@ class ApplicationController < ActionController::Base
       ActionController::Base.relative_url_root.to_s
     end
 
+    def backups_list(virtual_server)
+      backups = virtual_server.backups
+      backups.map! do |backup|
+        {
+            :id => backup.id,
+            :name => backup.name,
+            :description => backup.description,
+            :size => backup.size,
+            :archive_date => local_datetime(backup.date),
+        }
+      end
+    end
 end
