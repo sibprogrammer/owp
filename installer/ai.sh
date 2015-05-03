@@ -79,7 +79,7 @@ resolve_deps() {
 
   if [ "$DISTRIB_ID" = "Ubuntu" -o "$DISTRIB_ID" = "Debian" ]; then
     apt-get update
-    apt-get -y install ruby rubygems libsqlite3-ruby libopenssl-ruby rake
+    apt-get -y install ruby1.8 rubygems libsqlite3-ruby libruby1.8  rake
   fi
 
   if [ "$DISTRIB_ID" = "RedHat" -o "$DISTRIB_ID" = "CentOS" ]; then
