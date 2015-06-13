@@ -194,6 +194,15 @@ class VirtualServer < ActiveRecord::Base
     true
   end
 
+  def exec_command(command)
+    begin
+      result = hardware_server.rpc_client.exec('vzctl', "exec #{shellescape(command)}")
+    rescue HwDaemonExecException => e
+      result = { 'error' => e }
+    end
+    result
+  end
+  
   def run_command(command)
     filename = "/tmp/vecmd_" + generate_id.to_s
     content = "#!/bin/sh\n#{command}"
