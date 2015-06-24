@@ -1,6 +1,7 @@
 class Api::VirtualServersController < Api::Base
   before_filter :superadmin_required, :only => [ :delete, :create, :update, :get_by_host ]
-  before_filter :set_server_by_id, :only => [ :get, :get_advanced_limits, :delete, :start, :stop, :restart, :update, :get_stats, :reinstall ]
+  before_filter :set_server_by_id, :only => [ :get, :get_advanced_limits, :delete, :start, :stop, :restart, :update,
+    :get_stats, :reinstall, :exec ]
 
   def own_servers
     virtual_servers = @current_user.virtual_servers
@@ -64,6 +65,9 @@ class Api::VirtualServersController < Api::Base
     render_object_result({ :success => true })
   end
 
+  def exec
+    render_scalar_result(@virtual_server.run_command(params[:command]))
+  end
 
   private
 
