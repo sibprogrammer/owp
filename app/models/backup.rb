@@ -23,12 +23,12 @@ class Backup < ActiveRecord::Base
     end
 
     hardware_server = virtual_server.hardware_server
-    result = virtual_server.backup_job
+    result = virtual_server.backup
     job_id = result[:job]['job_id']
     backup = result[:backup]
     backup.description = description
 
-    spawn do
+    virtual_server.spawn do
       job = BackgroundJob.create('backups.create', { :identity => virtual_server.identity, :host => hardware_server.host })
 
       while true

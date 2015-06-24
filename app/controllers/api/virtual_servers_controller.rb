@@ -58,7 +58,7 @@ class Api::VirtualServersController < Api::Base
       render_error :reason => 'object_not_valid'
     end
 
-    unless @virtual_server.reinstall && virtual_server.save_physically
+    unless @virtual_server.reinstall && @virtual_server.save_physically
       render_error :reason => 'error_occured'
     end
 
