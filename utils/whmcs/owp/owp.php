@@ -1,7 +1,7 @@
 <?php
 /**
  * Description: Module for OpenVZ Web Panel integration. 
- * Site: http://code.google.com/p/ovz-web-panel/
+ * Site: http://owp.softunity.com.ru/
  */
 
 /**

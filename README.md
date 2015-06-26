@@ -53,5 +53,5 @@ change default password after the first login (using "My Profile" link).
 ## 6. Additional information
 
 Additional information can be found on the project's website:
-http://code.google.com/p/ovz-web-panel/
+http://owp.softunity.com.ru/
 
