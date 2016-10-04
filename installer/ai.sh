@@ -183,9 +183,15 @@ install_product() {
     puts "Local archive: $ARCHIVE_NAME"
     PRESERVE_ARCHIVE=1
   else
-    exec_cmd "Downloading:" "wget -nc -P $INSTALL_DIR/ $DOWNLOAD_URL"
-    [ $? -ne 0 ] && fatal_error "Failed to download distribution." 
-    ARCHIVE_NAME="$INSTALL_DIR/"`echo $DOWNLOAD_URL | sed 's/.\+\///g'`
+  cd $INSTALL_DIR/
+  wget $DOWNLOAD_URL
+  tar -xvf master.tar.gz
+  rm -rf  master.tar.gz
+  mv master/* ./
+  rm -rf master/
+   # exec_cmd "Downloading:" "wget -nc -P $INSTALL_DIR/ $DOWNLOAD_URL"
+   # [ $? -ne 0 ] && fatal_error "Failed to download distribution." 
+    #ARCHIVE_NAME="$INSTALL_DIR/"`echo $DOWNLOAD_URL | sed 's/.\+\///g'`
   fi
 
   EXCLUDE_LIST=""
@@ -194,9 +200,9 @@ install_product() {
     [ -f "$INSTALL_DIR/config/certs/server.crt" ] && EXCLUDE_LIST="$EXCLUDE_LIST --exclude=config/certs/*"
     [ -f "$INSTALL_DIR/utils/hw-daemon/certs/server.crt" ] && EXCLUDE_LIST="$EXCLUDE_LIST --exclude=hw-daemon/certs/*"
   fi
-  exec_cmd "Unpacking:" "tar --strip 2 -C $INSTALL_DIR -xzf $ARCHIVE_NAME $EXCLUDE_LIST"
- mv $INSTALL_DIR/owp/* $INSTALL_DIR
- rm -rf $INSTALL_DIR/owp
+ # exec_cmd "Unpacking:" "tar --strip 2 -C $INSTALL_DIR -xzf $ARCHIVE_NAME $EXCLUDE_LIST"
+ #mv $INSTALL_DIR/owp/* $INSTALL_DIR
+ #rm -rf $INSTALL_DIR/owp
   if [ "x$PRESERVE_ARCHIVE" != "x1" ]; then
     exec_cmd "Removing downloaded archive:" "rm -f $ARCHIVE_NAME"
   fi 
