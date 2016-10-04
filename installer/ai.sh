@@ -198,7 +198,7 @@ install_product() {
 
   if [ "x$PRESERVE_ARCHIVE" != "x1" ]; then
     exec_cmd "Removing downloaded archive:" "rm -f $ARCHIVE_NAME"
-  fi
+  fi 
 
   if [ "x$UPGRADE" = "x1" ]; then
     puts "Removing deprecated files..."
