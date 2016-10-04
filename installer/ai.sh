@@ -183,9 +183,9 @@ install_product() {
     puts "Local archive: $ARCHIVE_NAME"
     PRESERVE_ARCHIVE=1
   else
-    exec_cmd "Downloading:" "wget -nc -P $INSTALL_DIR/owp $DOWNLOAD_URL"
+    exec_cmd "Downloading:" "wget -nc -P $INSTALL_DIR/ $DOWNLOAD_URL"
     [ $? -ne 0 ] && fatal_error "Failed to download distribution." 
-    ARCHIVE_NAME="$INSTALL_DIR/owp"`echo $DOWNLOAD_URL | sed 's/.\+\///g'`
+    ARCHIVE_NAME="$INSTALL_DIR/"`echo $DOWNLOAD_URL | sed 's/.\+\///g'`
   fi
 
   EXCLUDE_LIST=""
