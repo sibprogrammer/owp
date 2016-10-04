@@ -187,8 +187,8 @@ install_product() {
   wget $DOWNLOAD_URL
   tar -xvf master.tar.gz
   rm -rf  master.tar.gz
-  mv master/* ./
-  rm -rf master/
+  mv owp-master/* ./
+  rm -rf owp-master/
    # exec_cmd "Downloading:" "wget -nc -P $INSTALL_DIR/ $DOWNLOAD_URL"
    # [ $? -ne 0 ] && fatal_error "Failed to download distribution." 
     #ARCHIVE_NAME="$INSTALL_DIR/"`echo $DOWNLOAD_URL | sed 's/.\+\///g'`
