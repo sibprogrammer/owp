@@ -176,7 +176,7 @@ class VirtualServer < ActiveRecord::Base
   def reinstall
     was_running = 'running' == real_state
     path = '/etc/vz/conf'
-    tmp_template = "tmp.template"
+    tmp_template = "#{shellescape(identity.to_s)}tmp.template"
 
     new_os_template = ""
     if orig_os_template_changed?
