@@ -2,7 +2,7 @@
 
 # global variables
 VERSION="2.4"
-DOWNLOAD_URL="http://ovz-web-panel.googlecode.com/files/ovz-web-panel-$VERSION.tgz"
+DOWNLOAD_URL="http://owp.softunity.com.ru/download/ovz-web-panel-$VERSION.tgz"
 RUBYGEMS_URL="http://production.cf.rubygems.org/rubygems/rubygems-1.3.5.tgz"
 RUBY_SQLITE3_CMD="ruby -e \"require 'rubygems'\" -e \"require 'sqlite3'\""
 LOG_FILE="/tmp/ovz-web-panel.log"
@@ -97,12 +97,11 @@ resolve_deps() {
       rm -f /tmp/$ARCHIVE_NAME
       rm -rf /tmp/$DIR_NAME
     fi
-if [[ "$VEROS" = "6" ]] ; then
-wget https://rubygems.org/downloads/sqlite3-1.3.11.gem
-gem install --local sqlite3-1.3.11.gem
-rm -f sqlite3-1.3.11.gem
-fi
-
+	if [[ "$VEROS" = "6" ]] ; then
+	wget https://rubygems.org/downloads/sqlite3-1.3.11.gem
+	gem install --local sqlite3-1.3.11.gem
+	rm -f sqlite3-1.3.11.gem
+	fi
 
     gem list rake -i
     [ $? -ne 0 ] && gem install rake
@@ -191,15 +190,9 @@ install_product() {
     puts "Local archive: $ARCHIVE_NAME"
     PRESERVE_ARCHIVE=1
   else
-  cd $INSTALL_DIR/
-  wget $DOWNLOAD_URL
-  tar -xvf master.tar.gz
-  rm -rf  master.tar.gz
-  mv owp-master/* ./
-  rm -rf owp-master/
-   # exec_cmd "Downloading:" "wget -nc -P $INSTALL_DIR/ $DOWNLOAD_URL"
-   # [ $? -ne 0 ] && fatal_error "Failed to download distribution." 
-    #ARCHIVE_NAME="$INSTALL_DIR/"`echo $DOWNLOAD_URL | sed 's/.\+\///g'`
+    exec_cmd "Downloading:" "wget -nc -P $INSTALL_DIR $DOWNLOAD_URL"
+    [ $? -ne 0 ] && fatal_error "Failed to download distribution." 
+    ARCHIVE_NAME="$INSTALL_DIR/"`echo $DOWNLOAD_URL | sed 's/.\+\///g'`
   fi
 
   EXCLUDE_LIST=""
@@ -208,12 +201,11 @@ install_product() {
     [ -f "$INSTALL_DIR/config/certs/server.crt" ] && EXCLUDE_LIST="$EXCLUDE_LIST --exclude=config/certs/*"
     [ -f "$INSTALL_DIR/utils/hw-daemon/certs/server.crt" ] && EXCLUDE_LIST="$EXCLUDE_LIST --exclude=hw-daemon/certs/*"
   fi
- # exec_cmd "Unpacking:" "tar --strip 2 -C $INSTALL_DIR -xzf $ARCHIVE_NAME $EXCLUDE_LIST"
- #mv $INSTALL_DIR/owp/* $INSTALL_DIR
- #rm -rf $INSTALL_DIR/owp
+  exec_cmd "Unpacking:" "tar --strip 2 -C $INSTALL_DIR -xzf $ARCHIVE_NAME $EXCLUDE_LIST"
+
   if [ "x$PRESERVE_ARCHIVE" != "x1" ]; then
     exec_cmd "Removing downloaded archive:" "rm -f $ARCHIVE_NAME"
-  fi 
+  fi
 
   if [ "x$UPGRADE" = "x1" ]; then
     puts "Removing deprecated files..."
@@ -228,7 +220,7 @@ install_product() {
 
     puts "Syncing physical servers state..."
     ruby $INSTALL_DIR/script/runner -e production "HardwareServer.all.each { |server| server.sync }"
- 
+
     puts "Reset remember_me tokens..."
     ruby $INSTALL_DIR/script/runner -e production "User.all.each{ |user| user.remember_token = ''; user.save }"
   fi
