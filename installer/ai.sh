@@ -83,7 +83,9 @@ resolve_deps() {
   fi
 
   if [ "$DISTRIB_ID" = "RedHat" -o "$DISTRIB_ID" = "CentOS" ]; then
-    yum -y install ruby
+    VEROSFULL=$(sed 's/^.*release //;s/ (Fin.*$//' /etc/redhat-release)
+    VEROS=${VERFULL:0:1} # return 6, 7 or 8
+    yum -y install ruby wget
     is_command_present gem
     if [ $? -ne 0 ]; then
       yum -y install ruby-devel ruby-docs ruby-ri ruby-irb ruby-rdoc
@@ -95,6 +97,11 @@ resolve_deps() {
       rm -f /tmp/$ARCHIVE_NAME
       rm -rf /tmp/$DIR_NAME
     fi
+	if [[ "$VEROS" = "6" ]] ; then
+	wget https://rubygems.org/downloads/sqlite3-1.3.11.gem
+	gem install --local sqlite3-1.3.11.gem
+	rm -f sqlite3-1.3.11.gem
+	fi
 
     gem list rake -i
     [ $? -ne 0 ] && gem install rake
