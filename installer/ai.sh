@@ -115,7 +115,6 @@ resolve_deps() {
       yum -y remove ruby193-ruby ruby193-ruby-devel  ruby193-ruby-docs ruby193-ruby-ri ruby193-ruby-irb ruby193-ruby-rdoc ruby193-rubygems
       wget -O /etc/yum.repos.d/amidevous-ruby187-epel-7.repo https://copr.fedorainfracloud.org/coprs/amidevous/ruby187/repo/epel-7/amidevous-ruby187-epel-7.repo
       yum -y install ruby187-ruby ruby187-ruby-devel ruby187-ruby-docs ruby187-ruby-ri ruby187-ruby-irb ruby187-ruby-rdoc ruby187-rubygems ruby187-rubygem-rake
-      fi
     fi
 
     gem sources -r http://gems.rubyforge.org/
