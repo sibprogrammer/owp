@@ -2,7 +2,7 @@
 
 # global variables
 VERSION="2.4"
-DOWNLOAD_URL="http://owp.softunity.com.ru/download/ovz-web-panel-$VERSION.tgz"
+DOWNLOAD_URL="https://storage.googleapis.com/google-code-archive-downloads/v2/code.google.com/ovz-web-panel/ovz-web-panel-$VERSION.tgz"
 RUBYGEMS_URL="http://production.cf.rubygems.org/rubygems/rubygems-1.3.5.tgz"
 RUBY_SQLITE3_CMD="ruby -e \"require 'rubygems'\" -e \"require 'sqlite3'\""
 LOG_FILE="/tmp/ovz-web-panel.log"
@@ -10,7 +10,7 @@ INSTALL_DIR="/opt/ovz-web-panel/"
 FORCE=0 # force installation to the same directory
 PRESERVE_ARCHIVE=0
 AUTOSOLVER=1 # automatic solving of dependencies
-DISTRIB_ID=""
+
 DEBUG=0
 UPGRADE=0
 UNINSTALL=0
@@ -62,39 +62,64 @@ is_command_present() {
 detect_os() {
   puts "Detecting distrib ID..."
 
-  is_command_present "lsb_release"
-  if [ $? -eq 0 ]; then
-    puts "LSB info: `lsb_release -a`"
-    DISTRIB_ID=`lsb_release -si`
-    return 0
-  fi
+  # Ensure the OS is compatible with the launcher
+if [ -f /etc/almalinux-release ]; then
+    OS="Alma Linux"
+    VERFULL=$(sed 's/^.*release //;s/ (Fin.*$//' /etc/centos-release)
+    VER=${VERFULL:0:1} # return 8
+elif [ -f /etc/fedora-release ]; then
+    OS="Fedora"
+    VERFULL=$(sed 's/^.*release //;s/ (Fin.*$//' /etc/fedora-release)
+    VER=${VERFULL:0:2}
+elif [ -f /etc/gentoo-release ]; then
+    OS="Gentoo"
+    VERFULL=$(sed 's/^.*release //;s/ (Fin.*$//' /etc/fedora-release)
+    VER=${VERFULL:0:2}
+elif [ -f /etc/SuSE-release ]; then
+    OS="OpenSUSE"
+    VERFULL=$(sed 's/^.*release //;s/ (Fin.*$//' /etc/fedora-release)
+    VER=${VERFULL:0:3}
+elif [ -f /etc/centos-release ]; then
+    OS="CentOs"
+    VERFULL=$(sed 's/^.*release //;s/ (Fin.*$//' /etc/centos-release)
+    VER=${VERFULL:0:1} # return 8
+elif [ -f /etc/lsb-release ]; then
+    OS=$(grep DISTRIB_ID /etc/lsb-release | sed 's/^.*=//')
+    VER=$(grep DISTRIB_RELEASE /etc/lsb-release | sed 's/^.*=//')
+elif [ -f /etc/os-release ]; then
+    OS=$(grep -w ID /etc/os-release | sed 's/^.*=//')
+    VER=$(grep VERSION_ID /etc/os-release | sed 's/^.*"\(.*\)"/\1/')
+ else
+    OS=$(uname -s)
+    VER=$(uname -r)
+fi
+ARCH=$(uname -m)
 
-  [ -f /etc/redhat-release ] && DISTRIB_ID="RedHat"
-  [ -f /etc/fedora-release ] && DISTRIB_ID="Fedora"
-  [ -f /etc/debian_version ] && DISTRIB_ID="Debian"
+echo "Detected : $OS  $VER  $ARCH"
 }
 
 resolve_deps() {
   puts "Resolving dependencies..."
 
-  if [ "$DISTRIB_ID" = "Ubuntu" -o "$DISTRIB_ID" = "Debian" ]; then
+  if [ "$OS" = "Ubuntu" -o "$OS" = "debian" ]; then
     apt-get update
     apt-get -y install ruby1.8 rubygems libsqlite3-ruby libruby1.8  rake
   fi
 
-  if [ "$DISTRIB_ID" = "RedHat" -o "$DISTRIB_ID" = "CentOS" ]; then
-    yum -y install ruby
-    is_command_present gem
-    if [ $? -ne 0 ]; then
-      yum -y install ruby-devel ruby-docs ruby-ri ruby-irb ruby-rdoc
-      wget -nc -P /tmp/ $RUBYGEMS_URL
-      ARCHIVE_NAME=`echo $RUBYGEMS_URL | sed 's/.\+\///g'`
-      DIR_NAME=`echo $ARCHIVE_NAME | sed 's/.tgz//g'`
-      tar -C /tmp/ -xzf /tmp/$ARCHIVE_NAME
-      ruby /tmp/$DIR_NAME/setup.rb
-      rm -f /tmp/$ARCHIVE_NAME
-      rm -rf /tmp/$DIR_NAME
+  if [ "$OS" = "RedHat" -o "$OS" = "CentOS" ]; then
+    if [ "$VER" = "6" ]; then
+      yum -y install ruby ruby-devel ruby-docs ruby-ri ruby-irb ruby-rdoc rubygems rubygem-rake
     fi
+    if [ "$VER" = "7" ]; then
+      yum -y remove ruby ruby-devel ruby-docs ruby-ri ruby-irb ruby-rdoc rubygems
+      yum -y remove ruby193-ruby ruby193-ruby-devel  ruby193-ruby-docs ruby193-ruby-ri ruby193-ruby-irb ruby193-ruby-rdoc ruby193-rubygems
+      wget -O /etc/yum.repos.d/amidevous-ruby187-epel-7.repo https://copr.fedorainfracloud.org/coprs/amidevous/ruby187/repo/epel-7/amidevous-ruby187-epel-7.repo
+      yum -y install ruby187-ruby ruby187-ruby-devel ruby187-ruby-docs ruby187-ruby-ri ruby187-ruby-irb ruby187-ruby-rdoc ruby187-rubygems ruby187-rubygem-rake
+    fi
+
+    gem sources -r http://gems.rubyforge.org/
+    gem sources -r https://gems.rubyforge.org/
+    gem sources -a https://rubygems.org/
 
     gem list rake -i
     [ $? -ne 0 ] && gem install rake
@@ -105,11 +130,11 @@ resolve_deps() {
     sh -c "$RUBY_SQLITE3_CMD" > /dev/null 2>&1
     if [ $? -ne 0 ]; then
       yum -y install sqlite-devel make gcc
-      gem install sqlite3
+      gem install sqlite3 -v 1.3.13
     fi
   fi
 
-  if [ "$DISTRIB_ID" = "Fedora" ]; then
+  if [ "$OS" = "Fedora" ]; then
     yum -y install ruby rubygems ruby-sqlite3 rubygem-rake
   fi
 }
@@ -122,7 +147,7 @@ check_environment() {
   puts "System info: `uname -a`"
 
   detect_os
-  [ "x$DISTRIB_ID" != "x" ] && puts "Detected distrib ID: $DISTRIB_ID"
+  [ "x$OS" != "x" ] && puts "Detected distrib ID: $OS"
 
   detect_openvz
 }
@@ -220,10 +245,10 @@ install_product() {
 
   [ ! -x $INSTALL_DIR/script/owp ] && chmod +x $INSTALL_DIR/script/owp
 
-  if [ "$DISTRIB_ID" = "Ubuntu" -o "$DISTRIB_ID" = "Debian" -o "$DISTRIB_ID" = "RedHat" -o "$DISTRIB_ID" = "CentOS" -o "$DISTRIB_ID" = "Fedora" ]; then
+  if [ "$DISTRIB_ID" = "Ubuntu" -o "$OS" = "debian" -o "$OS" = "RedHat" -o "$OS" = "CentOS" -o "$OS" = "Fedora" ]; then
     cp $INSTALL_DIR/script/owp /etc/init.d/owp
     chmod 755 /etc/init.d/owp
-    if [ "$DISTRIB_ID" = "Ubuntu" -o "$DISTRIB_ID" = "Debian" ]; then
+    if [ "$OS" = "Ubuntu" -o "$OS" = "debian" ]; then
       update-rc.d -f owp remove
       update-rc.d owp defaults 30
     else
@@ -296,9 +321,9 @@ uninstall_product() {
   stop_services
   rm -rf $INSTALL_DIR
 
-  if [ "$DISTRIB_ID" = "Ubuntu" -o "$DISTRIB_ID" = "Debian" ]; then
+  if [ "$OS" = "Ubuntu" -o "$OS" = "debian" ]; then
     update-rc.d -f owp remove
-  elif [ "$DISTRIB_ID" = "RedHat" -o "$DISTRIB_ID" = "CentOS" -o "$DISTRIB_ID" = "Fedora" ]; then
+  elif [ "$OS" = "RedHat" -o "$OS" = "CentOS" -o "$OS" = "Fedora" ]; then
     /sbin/chkconfig --del owp
   fi
 
