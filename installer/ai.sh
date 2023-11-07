@@ -134,7 +134,15 @@ resolve_deps() {
         tar -C /tmp/ -xzf /tmp/$ARCHIVE_NAME
         ruby /tmp/$DIR_NAME/setup.rb
         rm -f /tmp/$ARCHIVE_NAME
-        rm -rf /tmp/$DIR_NAME
+        rm -rf /tmp/$DIR_NAMEcat > $RPM_BUILD_ROOT/usr/bin/gem <<EOG
+#!/bin/bash
+export PATH="/opt/rh/ruby187/root/usr/bin:/opt/rh/ruby187/root/usr/sbin:\$PATH"
+export LD_LIBRARY_PATH="/opt/rh/ruby187/root/usr/lib64:\$LD_LIBRARY_PATH"
+export MANPATH="/opt/rh/ruby187/root/usr/share/man:\$MANPATH"
+export PKG_CONFIG_PATH="/opt/rh/ruby187/root/usr/lib64/pkgconfig:\$PKG_CONFIG_PATH"
+/opt/rh/ruby187/root/usr/bin/gem "\$@"
+EOG
+       chmod 777 $RPM_BUILD_ROOT/usr/bin/gem
       fi
     fi
 
